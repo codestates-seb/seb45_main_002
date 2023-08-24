@@ -1,0 +1,10 @@
+header{
+  display: flex;
+  justify-content: space-between;
+  padding: 1% 3%;
+  font-size: 5em;
+}
+img{
+  position: absolute;
+  left: 43%;
+}
