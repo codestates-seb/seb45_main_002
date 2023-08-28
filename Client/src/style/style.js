@@ -15,6 +15,10 @@ const style = {
     header: {
       height: window.innerHeight/16
     },
+    main: {
+      width: window.innerWidth/4*3,
+      height: window.innerHeight-(window.innerHeight/16)-(window.innerHeight/20)
+    },
     sidebar: {
       width: window.innerWidth/8/3-(window.innerWidth-(window.innerWidth/8*2)/20),
       icon: {

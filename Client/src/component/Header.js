@@ -1,11 +1,11 @@
-import Login from "./Login"
-import SignUp from "./SignUp"
+import Login from "./Login";
+import SignUp from "./SignUp";
 
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { styled } from "styled-components";
 
-
 import style from "../style/style";
-import { useState } from "react";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -13,17 +13,12 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   border: solid 1px orange;
   font-size: 200%;
-  &>:first-child{
+  &>*{
     display: flex;
-    justify-content: flex-start;
     padding: .5% 0;
   }
   &>:first-child>*{
     margin-left: calc(${style.layout.maxWidth}px/20/2);
-  }
-  &>:last-child{
-    display: flex;
-    padding: .5% 0;
   }
   &>:last-child>*{
     margin-right: calc(${style.layout.maxWidth}px/20/2);
@@ -36,6 +31,7 @@ const LoginButton = styled.button`
   color: white;
   font-size: 50%;
   font-weight: bolder;
+  white-space: nowrap;
   width: ${style.layout.sideMargin/3};
 `
 const SignUpButton = styled(LoginButton)`
@@ -48,15 +44,21 @@ function Header(){
   return(
     <HeaderContainer>
       <span>
-        <i className="fa-solid fa-bars"></i>
-        <img src="./textLogo.png" width="50%" height="100%" />
+        {style.layout.maxWidth<980? <i className="fa-solid fa-bars"></i> : null }
+        <Link to="/">
+          <img
+           src="./textLogo.png"
+           width={style.layout.maxWidth<980? "100%" : "200%"}
+           height="100%"
+          />
+        </Link>
       </span>
       <span>
         <LoginButton onClick={()=>setLoginModal(!loginModal)}>로그인</LoginButton>
         <SignUpButton onClick={()=>setSignUpModal(!signUpModal)}>회원가입</SignUpButton>
       </span>
-      {loginModal? <Login /> : null}
-      {signUpModal? <SignUp /> : null}
+      {loginModal? <Login loginModal={loginModal} setLoginModal={setLoginModal} /> : null}
+      {signUpModal? <SignUp signUpModal={signUpModal} setSignUpModal={setSignUpModal} /> : null}
     </HeaderContainer>
   )
 }
