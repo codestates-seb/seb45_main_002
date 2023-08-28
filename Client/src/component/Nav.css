@@ -1,0 +1,10 @@
+nav{
+  position: absolute;
+  padding: 3%;
+}
+ul{
+  list-style: none;
+}
+li{
+  border: solid orange 1px;
+}

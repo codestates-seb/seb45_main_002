@@ -1,10 +1,11 @@
 header{
   display: flex;
   justify-content: space-between;
-  padding: 1% 3%;
-  font-size: 5em;
+  padding: .5% 3%;
+  font-size: 2em;
+  border: solid 1px orange;
 }
 img{
   position: absolute;
-  left: 43%;
+  left: 47%;
 }
