@@ -1,70 +1,30 @@
-# Getting Started with Create React App
+## 1. 기술 스택 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br/>
 
-## Available Scripts
+### FE 기술 스택
+| HTML 5| CSS | Java Script | React | Redux | Styled<br/>Components |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+|<img src="https://img.icons8.com/?size=512&id=20909&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=21278&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=108784&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=123603&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=jD-fJzVguBmw&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=ttxR7mXaDvqS&format=png" width=75px ></img>|
 
-In the project directory, you can run:
+### BE 기술 스택
+| JAVA 11 | Spring | Spring Boot | Spring<br/>Security | AWS | MySql | JWT |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|
+|<img src="https://img.icons8.com/?size=512&id=13679&format=png" width=75px ></img>|<img src="https://img.icons8.com/?size=512&id=90519&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=90519&format=png" width=75px ></img>|<img src="https://img.icons8.com/?size=512&id=16231&format=png" width=75px ></img>|<img src="https://img.icons8.com/?size=512&id=33039&format=png" width=75px ></img>|<img src="https://img.icons8.com/?size=512&id=UFXRpPFebwa2&format=png" width=75px ></img>|<img src="https://img.icons8.com/?size=512&id=15451&format=png" width=75px ></img>
 
-### `npm start`
+### Tools
+| Git | GitHub | Discord |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------|
+|<img src="https://img.icons8.com/?size=512&id=xBKl2pdJg5kk&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=12599&format=png" width=75px ></img>| <img src="https://img.icons8.com/?size=512&id=iSpYyK95XXZn&format=png" width=75px ></img>|
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 2. 팀원
 
-### `npm test`
+| [(BE)]()                                                                                                                                 | [(BE)]() | [(BE)]() | [(FE)]() | [(FE)]()                                                                                             |(FE)]() | [장용민(FE)](https://github.com/poiuy4004) |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------|-----------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------|------------------------------------------|
+|<img src="width=525&height=525" width=150px ></img>|<img src="" width=150px ></img>| <img src="" width=150px ></img>|<img src="" width=150px ></img>|<img src="width=525&height=525" width=150 ></img>|<img src="" width=150px ></img>|<img src="" width=150px ></img>|
+|- <br/>- <br/>- <br/>- |-|-<br/>-<br/>-|-  <br/>- <br/>-  |-<br/>- <br/>- <br/>-|-  <br/>-<br/>- <br/>-|-  <br/>-<br/>- <br/>-<br/>-|
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br/>
