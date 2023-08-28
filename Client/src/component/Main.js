@@ -2,7 +2,7 @@ import Home from "../page/Home"
 import MyPage from "../page/MyPage"
 import TableAdd from "../page/TableAdd"
 
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import { styled } from "styled-components"
 
 import style from "../style/style"
@@ -17,16 +17,13 @@ const MainContainer = styled.main`
 function Main(){
 
   return(
-    <BrowserRouter>
-      <MainContainer>
-        <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/mypage" element={<MyPage />}></Route>
-          <Route path="/tableadd" element={<TableAdd />}></Route>
-
-        </Routes>
-      </MainContainer>
-    </BrowserRouter>
+    <MainContainer>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/mypage" element={<MyPage />}></Route>
+        <Route path="/tableadd" element={<TableAdd />}></Route>
+      </Routes>
+    </MainContainer>
   )
 }
 export default Main;
