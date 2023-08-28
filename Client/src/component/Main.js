@@ -23,7 +23,7 @@ function Main(){
           <Route path="/" element={<Home />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/tableadd" element={<TableAdd />}></Route>
-          
+
         </Routes>
       </MainContainer>
     </BrowserRouter>
