@@ -12,7 +12,7 @@ const HeaderContainer = styled.header`
   height: ${style.layout.header.height};
   justify-content: space-between;
   border: solid 1px orange;
-  font-size: 200%;
+  font-size: 2.5rem;
   &>*{
     display: flex;
     padding: .5% 0;
@@ -27,12 +27,11 @@ const HeaderContainer = styled.header`
 const LoginButton = styled.button`
   border: none;
   background-color: orange;
-  padding: 0 1%;
+  padding: 0 3%;
   color: white;
   font-size: 50%;
   font-weight: bolder;
   white-space: nowrap;
-  width: ${style.layout.sideMargin/3};
 `
 const SignUpButton = styled(LoginButton)`
   background-color: green;
@@ -44,11 +43,14 @@ function Header(){
   return(
     <HeaderContainer>
       <span>
-        {style.layout.maxWidth<980? <i className="fa-solid fa-bars"></i> : null }
+        {style.layout.maxWidth<768?  
+          <i className="fa-solid fa-bars"></i>
+          :
+          null }
         <Link to="/">
           <img
            src="./textLogo.png"
-           width={style.layout.maxWidth<980? "100%" : "200%"}
+           width={style.layout.maxWidth<768? "100%" : "200%"}
            height="100%"
           />
         </Link>

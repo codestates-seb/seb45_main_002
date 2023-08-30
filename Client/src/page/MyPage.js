@@ -3,7 +3,7 @@
 function MyPage(){
   return(
     <article>
-
+      mypage
     </article>
   )
 }
