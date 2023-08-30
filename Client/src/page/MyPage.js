@@ -1,9 +1,9 @@
-
+import Input from "../atom/Input";
 
 function MyPage(){
   return(
     <article>
-      mypage
+      <Input width={"300px"} height={"300px"} />
     </article>
   )
 }
