@@ -6,5 +6,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CommunityMapper {
     Community communityPostDtoToCommunity(CommunityPostDto communityPostDto);
+    Community communityPatchDtoToCommunity(CommunityPatchDto communityPatchDto);
     CommunityResponseDto communityToCommunityResponseDto(Community community);
 }
