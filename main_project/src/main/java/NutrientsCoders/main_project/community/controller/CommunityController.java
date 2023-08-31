@@ -50,4 +50,11 @@ public class CommunityController {
         return new ResponseEntity<>( new MultiResponseDto<>(communityMapper.communityToCommunityResponseDtos(communities),pageCommunities),
                 HttpStatus.OK);
     }
+    /** 게시글 선택 조회 **/
+    @GetMapping("/{community-id}")
+    public ResponseEntity<CommunityResponseDto> getCommunity(@PathVariable("community-id") @Positive long communityId){
+        Community community = communityService.findCommunity(communityId);
+        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }
