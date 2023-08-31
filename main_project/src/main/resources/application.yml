@@ -7,8 +7,8 @@ spring:
 #           url: jdbc:h2:mem:test
     url: jdbc:mysql://localhost:3306/netrientscoders?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${username}
-    password: ${password}
+    username: root
+    password: wjsqjs89!
   jpa:
     hibernate:
       ddl-auto: update
