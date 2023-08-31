@@ -1,15 +1,15 @@
 import Header from "./component/Header";
 import Nav from "./component/Nav";
 import Main from "./component/Main";
+import ModalComponent from "./atom/GlobalModal";
+import useModalStore from "./store/modalStore";
 
-function App() {
+const App = () => {
   return (
     <div>
       <Header />
-      <Nav />
       <Main />
     </div>
   );
-}
-
+};
 export default App;
