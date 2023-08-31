@@ -4,14 +4,10 @@ spring:
       enabled: true
       path: /h2
   datasource:
-#           url: jdbc:h2:mem:test
-    url: jdbc:mysql://localhost:3306/netrientscoders?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: wjsqjs89!
+       url: jdbc:h2:mem:test
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
