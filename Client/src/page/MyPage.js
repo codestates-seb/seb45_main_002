@@ -1,9 +1,13 @@
-
+import Input from "../atom/Input";
+import useInputStore from "../zustand/Store";
 
 function MyPage(){
+
   return(
     <article>
-      mypage
+      <Input />
+      <Input type={"button"} />
+      <Input type={"radio"} />
     </article>
   )
 }

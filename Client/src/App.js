@@ -8,7 +8,6 @@ function App() {
   return (
     <div>
       <Header />
-      <div><input></input> </div>
       {style.layout.maxWidth<768? null : <Nav />}
       <Main />
     </div>

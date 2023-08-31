@@ -13,15 +13,17 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   border: solid 1px orange;
   font-size: 2.5rem;
-  &>*{
+  &>:nth-last-child(3){
+    margin: ${style.layout.narrowMargin.width}px;
+    margin-right: ${style.layout.sideMargin+style.layout.wideMargin.width+style.layout.narrowMargin.width}px;
+  }
+  &>a{
+    padding: 3px;
+  }
+  &>:last-child{
     display: flex;
-    padding: .5% 0;
-  }
-  &>:first-child>*{
-    margin-left: calc(${style.layout.maxWidth}px/20/2);
-  }
-  &>:last-child>*{
-    margin-right: calc(${style.layout.maxWidth}px/20/2);
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    padding-left: 0 !important;
   }
 `
 const LoginButton = styled.button`
@@ -29,9 +31,10 @@ const LoginButton = styled.button`
   background-color: orange;
   padding: 0 3%;
   color: white;
-  font-size: 50%;
+  font-size: 1rem;
   font-weight: bolder;
   white-space: nowrap;
+  margin-right: ${style.layout.narrowMargin.width};
 `
 const SignUpButton = styled(LoginButton)`
   background-color: green;
@@ -42,19 +45,17 @@ function Header(){
   const [signUpModal, setSignUpModal] = useState(false)
   return(
     <HeaderContainer>
-      <span>
-        {style.layout.maxWidth<768?  
-          <i className="fa-solid fa-bars"></i>
-          :
-          null }
-        <Link to="/">
-          <img
-           src="./textLogo.png"
-           width={style.layout.maxWidth<768? "100%" : "200%"}
-           height="100%"
-          />
-        </Link>
-      </span>
+      {style.layout.maxWidth<768?  
+        <i className="fa-solid fa-bars"></i>
+        :
+        null }
+      <Link to="/">
+        <img
+         src="./textLogo.png"
+         width={style.layout.maxWidth<768? "100%" : "200%"}
+         height="100%"
+        />
+      </Link>
       <span>
         <LoginButton onClick={()=>setLoginModal(!loginModal)}>로그인</LoginButton>
         <SignUpButton onClick={()=>setSignUpModal(!signUpModal)}>회원가입</SignUpButton>
