@@ -25,12 +25,20 @@ public class FoodController {
     this.foodMapper = foodMapper;
   }
   
-  @GetMapping("/search/nutrients")
-  public ResponseEntity getFoodSearch(@RequestParam(value = "search-word" ) String searchWord) {
-    Page<Food> pageOrders = foodService.findSearchWordFoods(searchWord);
-    List<Food> foods = pageOrders.getContent();
+  //키워드로 음식 검색(브랜드 비 포함)
+  @GetMapping("/search/foods")
+  public ResponseEntity getFoodSearchKeyword(@RequestParam(value = "search-word" ) String searchWord) {
+    List<Food> foods = foodService.findBySearchWordFood_Custom(searchWord);
     List<FoodResponseDto> response = foodMapper.foodToFoodResponseDtos(foods);
-    
+
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
+
+  @GetMapping("/search/nutrients")
+  public ResponseEntity getFoodSearchNutrient(@RequestParam(value = "search-word" ) String searchWord) {
+    List<Food> foods = foodService.findByHighestNutrient(searchWord);
+    List<FoodResponseDto> response = foodMapper.foodToFoodResponseDtos(foods);
+
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
