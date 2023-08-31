@@ -6,11 +6,14 @@ import NutrientsCoders.main_project.community.dto.CommunityPostDto;
 import NutrientsCoders.main_project.community.dto.CommunityResponseDto;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.service.CommunityService;
+import NutrientsCoders.main_project.utils.dto.MultiResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/community")
@@ -37,5 +40,14 @@ public class CommunityController {
         Community community = communityService.updateCommunity(communityMapper.communityPatchDtoToCommunity(communityPatchDto));
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
         return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+    /** 게시글 전체 조회 **/
+    @GetMapping
+    public ResponseEntity<MultiResponseDto<Community>> getAllCommunity(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                            @RequestParam(name = "size", defaultValue = "10") int size){
+        Page<Community> pageCommunities = communityService.findCommunity(page-1,size);
+        List<Community> communities = pageCommunities.getContent();
+        return new ResponseEntity<>( new MultiResponseDto<>(communityMapper.communityToCommunityResponseDtos(communities),pageCommunities),
+                HttpStatus.OK);
     }
 }
