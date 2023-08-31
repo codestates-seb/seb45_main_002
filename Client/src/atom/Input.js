@@ -1,28 +1,23 @@
-import {styled} from "styled-components"
+import useInputStore from "../zustand/Store";
+import {styled} from "styled-components";
 
-function Input({
-  type, value, required, size, placeholder, autoComplete, autoFocus, multiple,
-  width, height, margin, padding, border, borderRadius, fontSize, color, backgroundColor
-}){
+
+
+function Input({type}){
 
   const InputAtom = styled.input`
-    width: ${width}; height: ${height};
-    margin: ${margin}; padding: ${padding};
-    border: ${border}; border-radius: ${borderRadius};
-    font-size: ${fontSize}; color: ${color};
-    background-color: ${backgroundColor};
-  `
   
+  `
+  const value = useInputStore(state=>state.value)
+  const setValue = useInputStore(state=>state.setValue)
+  const valueHandler=e=>setValue(e.target.value)
+
   return(
     <InputAtom
      type={type}
      value={value}
-     required={required}
-     size={size}
-     placeholder={placeholder}
-     autoComplete={autoComplete}
-     autoFocus={autoFocus}
-     multiple={multiple}
+     onChange={valueHandler}
+     autoFocus
     />
   )
 }
