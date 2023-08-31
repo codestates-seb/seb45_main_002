@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import useModalStore from "../store/modalStore";
+import ReactDOM from "react-dom";
 
 const ModalContainer = styled.div`
   z-index: 9999;
@@ -41,6 +41,8 @@ export const ModalBtn = styled.button`
 `;
 
 const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   text-align: center;
   background-color: white;
   padding: 20px;
@@ -51,14 +53,18 @@ const ContentContainer = styled.div`
   & span {
     font-size: 15px;
   }
+
+  & nth-child {
+    margin: 20px;
+  }
 `;
 
-const ModalComponent = () => {
-  const { isOpen, content, closeModal } = useModalStore();
+const Modal = ({ isOpen, onClose, content, header, footer }) => {
+  if (!isOpen) return null;
 
   const handleBackdropClick = (event) => {
     if (event.target === event.currentTarget) {
-      closeModal();
+      onClose();
     }
   };
 
@@ -66,7 +72,9 @@ const ModalComponent = () => {
     <ModalContainer $isOpen={isOpen}>
       <ModalBackdrop onClick={handleBackdropClick}>
         <ContentContainer>
+          {header}
           {content}
+          {footer}
           <span>닫으려면 창 밖을 눌러주세요</span>
         </ContentContainer>
       </ModalBackdrop>
@@ -74,4 +82,4 @@ const ModalComponent = () => {
   );
 };
 
-export default ModalComponent;
+export default Modal;
