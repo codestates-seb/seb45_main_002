@@ -40,4 +40,11 @@ public class CommunityService {
         return optionalCommunity.orElseThrow(() ->
                 new LogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
     }
+    /** 리포지토리에서 게시글을 지우는 메서드 **/
+    public void deleteCommunity(long communityId){
+        Optional<Community> optionalCommunity = communityRepository.findById(communityId);
+        optionalCommunity.orElseThrow(() ->
+                new LogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+        communityRepository.deleteById(communityId);
+    }
 }

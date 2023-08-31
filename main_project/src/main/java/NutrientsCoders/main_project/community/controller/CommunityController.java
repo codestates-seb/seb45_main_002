@@ -57,4 +57,10 @@ public class CommunityController {
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+    /** 게시글 삭제 **/
+    @DeleteMapping("/{community-id}")
+    public ResponseEntity<Void> deleteCommunity(@PathVariable("community-id") @Positive long communityId){
+        communityService.deleteCommunity(communityId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
