@@ -2,8 +2,8 @@ package NutrientsCoders.main_project.food.service;
 
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.repository.FoodRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,13 +15,25 @@ public class FoodService {
   public FoodService(FoodRepository foodRepository) {
     this.foodRepository = foodRepository;
   }
-  
-  public List<Food> findFoods() {
-    return foodRepository.findAll(Sort.by("foodId").descending()));
+
+  //키워드로 음식 검색(브랜드 포함, 커스텀 용)
+  public List<Food> findBySearchWordFood_Custom(String searchWord) {
+    Pageable pageable = PageRequest.of(0, 5);
+    return foodRepository.findBySearchWordFood_Custom(searchWord, pageable).getContent();
+  }
+
+  //영양소로 음식 검색(top 10, 브랜드 비 포함)
+  public List<Food> findByHighestNutrient(String nutrientType) {
+    Pageable pageable = PageRequest.of(0, 10);
+    return foodRepository.findTop5ByHighestNutrient(nutrientType, pageable).getContent();
+  }
+
+  //키워드로 음식 검색(브랜드 비 포함, 식단 추천용)
+  public List<Food> findSearchWordFoods(String searchWord) {
+    Pageable pageable = PageRequest.of(0, 5);
+    return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
   
-  public Page<Food> findSearchWordFoods(String searchWord) {
-  }
 //  public Food createFood(Food food) {
 //    return foodRepository.save(food);
 //  }
