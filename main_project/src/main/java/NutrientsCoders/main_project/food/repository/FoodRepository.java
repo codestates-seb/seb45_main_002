@@ -14,8 +14,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord% AND f.brand = '일반'")
     Page<Food> findBySearchWordFood(@Param("searchWord") String searchWord, Pageable pageable);
-
-    @Query("SELECT f FROM Food f  WHERE f.brand = '일반'" +
+  @Query(value = "SELECT f FROM Food f JOIN f.etcNutrients en WHERE f.brand = '일반'" +
             "ORDER BY CASE " +
             "WHEN :nutrientType = 'carbo' THEN f.carbo " +
             "WHEN :nutrientType = 'protein' THEN f.protein " +
@@ -35,6 +34,8 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "WHEN :nutrientType = 'calcium' THEN f.etcNutrients.calcium " +
             "WHEN :nutrientType = 'iron' THEN f.etcNutrients.iron " +
             "WHEN :nutrientType = 'potassium' THEN f.etcNutrients.potassium " +
-            "ELSE 0 END DESC")
-    Page<Food> findTop5ByHighestNutrient(String nutrientType, Pageable pageable);
+            "ELSE 0 END DESC",
+            countQuery = "SELECT COUNT(f) FROM Food f WHERE f.brand = '일반'")
+    Page<Food> findTop5ByHighestNutrient(@Param("nutrientType") String nutrientType, Pageable pageable);
 }
+    

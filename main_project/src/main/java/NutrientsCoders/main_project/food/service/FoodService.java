@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.food.service;
 
 import NutrientsCoders.main_project.food.entity.Food;
+import NutrientsCoders.main_project.food.repository.EtcNutrientsRepository;
 import NutrientsCoders.main_project.food.repository.FoodRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class FoodService {
   private final FoodRepository foodRepository;
+  private final EtcNutrientsRepository etcNutrientsRepository;
   
-  public FoodService(FoodRepository foodRepository) {
+  public FoodService(FoodRepository foodRepository, EtcNutrientsRepository etcNutrientsRepository) {
     this.foodRepository = foodRepository;
+    this.etcNutrientsRepository = etcNutrientsRepository;
   }
 
   //키워드로 음식 검색(브랜드 포함, 커스텀 용)
@@ -25,7 +28,8 @@ public class FoodService {
   //영양소로 음식 검색(top 10, 브랜드 비 포함)
   public List<Food> findByHighestNutrient(String nutrientType) {
     Pageable pageable = PageRequest.of(0, 10);
-    return foodRepository.findTop5ByHighestNutrient(nutrientType, pageable).getContent();
+    List<Food> foods = foodRepository.findTop5ByHighestNutrient(nutrientType, pageable).getContent();
+    return foods;
   }
 
   //키워드로 음식 검색(브랜드 비 포함, 식단 추천용)

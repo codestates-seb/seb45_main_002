@@ -14,7 +14,7 @@ public class Food {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "FOOD_ID")
+  @Column(name = "FOOD_ID", unique = true)
   private Long foodId;
 
   @Column(nullable = false, updatable = false)
@@ -44,7 +44,7 @@ public class Food {
   @Column(nullable = false, updatable = false)
   private Double fat;
   
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food", cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food")
   private EtcNutrients etcNutrients;
 
   @Column

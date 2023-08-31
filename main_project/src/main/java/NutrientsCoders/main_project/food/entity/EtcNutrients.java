@@ -1,5 +1,8 @@
 package NutrientsCoders.main_project.food.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +12,7 @@ public class EtcNutrients {
     @Column(name = "ETCNUTRIENTS_ID")
     private Long etcNutrientsId;
     
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "FOOD_ID")
     private Food food;
 
