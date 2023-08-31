@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="start">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="start2" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,16 +99,13 @@
       <recent name="NutrientsCoders.main_project.dailymeal.dto" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.MainProjectApplication">
-    <configuration name="MainProjectApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="NutrientsCoders.main_project.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="NutrientsCoders.main_project.MainProjectApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="MainProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="main_project.main" />
+      <envs>
+        <env name="username" value="root" />
+        <env name="password" value="wjsqjs89!" />
+      </envs>
+      <module name="NutrientsCoders.main_project.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="NutrientsCoders.main_project.MainProjectApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -149,6 +144,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start" />
