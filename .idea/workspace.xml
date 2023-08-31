@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/main_project/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/build.gradle" afterDir="false" />
+    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="start">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/dailymeal/entity/DailyMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/dailymeal/entity/DailyMeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/dailymeal/repository/DailyMealRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/dailymeal/repository/DailyMealRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/eachmeal/entity/EachMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/eachmeal/entity/EachMeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/eachmeal/entity/EachMealFood.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/eachmeal/entity/EachMealFood.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,10 +47,18 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="devBE" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2UgzNK7gzOQ25jvQCXoc2VCcfKT" />
   <component name="ProjectLevelVcsManager">
@@ -67,8 +84,17 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "spring.configuration.checksum": "ad8ff9a313e0aca4c1a54f74a4f883fa",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -76,6 +102,9 @@
       <recent name="D:\seb45_main_002\main_project\src\main\java\NutrientsCoders\main_project\eachmeal" />
       <recent name="D:\seb45_main_002\main_project\src\main\java\NutrientsCoders\main_project\food" />
       <recent name="D:\seb45_main_002\main_project\src\main\java\NutrientsCoders\main_project" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\seb45_main_002\main_project\src\main\resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="NutrientsCoders.main_project.dailymeal.repository" />
@@ -100,11 +129,24 @@
       <option name="presentableId" value="Default" />
       <updated>1693375976035</updated>
       <workItem from="1693375976040" duration="1997000" />
-      <workItem from="1693442258343" duration="453000" />
+      <workItem from="1693442258343" duration="16957000" />
+      <workItem from="1693460127797" duration="11261000" />
     </task>
+    <task id="LOCAL-00001" summary="start">
+      <created>1693442849704</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1693442849704</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="start" />
+    <option name="LAST_COMMIT_MESSAGE" value="start" />
   </component>
 </project>
