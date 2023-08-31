@@ -1,8 +1,10 @@
 import Home from "../page/Home";
 import MyPage from "../page/MyPage";
 import TableAdd from "../page/TableAdd";
+
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
+
 import style from "../style/style";
 
 const MainContainer = styled.main`
