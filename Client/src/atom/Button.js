@@ -7,7 +7,7 @@ const ButtonStyle = styled.button`
   height: ${(props) => (props.height ? props.height : "48px")};
   border-radius: 8px;
   color: ${(props) => (props.fontColor ? props.fontColor : "#000000")};
-  font-size: ${(props) => (props.fontSize ? props.fontSize : "14px")}
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "14px")};
 
   ${(props) =>
     props.primary
