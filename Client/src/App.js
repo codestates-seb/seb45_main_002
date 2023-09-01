@@ -8,10 +8,9 @@ function App() {
   return (
     <div>
       <Header />
-      {style.layout.maxWidth<768? null : <Nav />}
+      {style.layout.maxWidth < 768 ? null : <Nav />}
       <Main />
     </div>
   );
 }
-
 export default App;
