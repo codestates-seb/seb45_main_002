@@ -4,6 +4,7 @@ import lombok.Getter;
 
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member Not found..."),
+    COMMUNITY_NOT_FOUND(404,"Community Not found"),
     USER_EXISTS(409, "Member Already exists!"),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
