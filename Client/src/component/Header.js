@@ -13,19 +13,22 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   border: solid 1px orange;
   font-size: 2.5rem;
-  &>:nth-last-child(3){
+  & > :nth-last-child(3) {
     margin: ${style.layout.narrowMargin.width}px;
-    margin-right: ${style.layout.sideMargin+style.layout.wideMargin.width+style.layout.narrowMargin.width}px;
+    margin-right: ${style.layout.sideMargin +
+    style.layout.wideMargin.width +
+    style.layout.narrowMargin.width}px;
   }
-  &>a{
+  & > a {
     padding: 3px;
   }
-  &>:last-child{
+  & > :last-child {
     display: flex;
-    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    padding: ${style.layout.narrowMargin.height}
+      ${style.layout.narrowMargin.width};
     padding-left: 0 !important;
   }
-`
+`;
 const LoginButton = styled.button`
   border: none;
   background-color: orange;
@@ -35,34 +38,41 @@ const LoginButton = styled.button`
   font-weight: bolder;
   white-space: nowrap;
   margin-right: ${style.layout.narrowMargin.width};
-`
+`;
 const SignUpButton = styled(LoginButton)`
   background-color: green;
-`
+`;
 
-function Header(){
-  const [loginModal, setLoginModal] = useState(false)
-  const [signUpModal, setSignUpModal] = useState(false)
-  return(
+function Header() {
+  const [loginModal, setLoginModal] = useState(false);
+  const [signUpModal, setSignUpModal] = useState(false);
+  return (
     <HeaderContainer>
-      {style.layout.maxWidth<768?  
+      {style.layout.maxWidth < 768 ? (
         <i className="fa-solid fa-bars"></i>
-        :
-        null }
+      ) : null}
       <Link to="/">
         <img
-         src="./textLogo.png"
-         width={style.layout.maxWidth<768? "100%" : "200%"}
-         height="100%"
+          src="./textLogo.png"
+          width={style.layout.maxWidth < 768 ? "100%" : "200%"}
+          height="100%"
         />
       </Link>
       <span>
-        <LoginButton onClick={()=>setLoginModal(!loginModal)}>로그인</LoginButton>
-        <SignUpButton onClick={()=>setSignUpModal(!signUpModal)}>회원가입</SignUpButton>
+        <LoginButton onClick={() => setLoginModal(!loginModal)}>
+          로그인
+        </LoginButton>
+        <SignUpButton onClick={() => setSignUpModal(!signUpModal)}>
+          회원가입
+        </SignUpButton>
       </span>
-      {loginModal? <Login loginModal={loginModal} setLoginModal={setLoginModal} /> : null}
-      {signUpModal? <SignUp signUpModal={signUpModal} setSignUpModal={setSignUpModal} /> : null}
+      {loginModal ? (
+        <Login loginModal={loginModal} setLoginModal={setLoginModal} />
+      ) : null}
+      {signUpModal ? (
+        <SignUp signUpModal={signUpModal} setSignUpModal={setSignUpModal} />
+      ) : null}
     </HeaderContainer>
-  )
+  );
 }
 export default Header;
