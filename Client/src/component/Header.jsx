@@ -70,13 +70,6 @@ function Header() {
     setContent(<SignUpForm />);
   };
 
-  const handleCloseModal = () => {
-    setIsOpen(false);
-    setContent(null);
-    setHeader(null);
-    setFooter(null);
-  };
-
   return (
     <HeaderContainer>
       <span>
@@ -96,10 +89,13 @@ function Header() {
         <ModalPortal>
           <Modal
             isOpen={isOpen}
-            onClose={handleCloseModal}
-            header={header}
             content={content}
+            header={header}
             footer={footer}
+            setContent={setContent}
+            setHeader={setHeader}
+            setFooter={setFooter}
+            setIsOpen={setIsOpen}
           />
         </ModalPortal>
       </span>
