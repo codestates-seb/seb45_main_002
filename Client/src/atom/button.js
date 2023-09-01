@@ -41,8 +41,9 @@ const ButtonStyle = styled.button`
 
 const Button = ({
   children,
-  primary,
+  func,
   disabled,
+  primary,
   width,
   height,
   fontSize,
@@ -56,6 +57,7 @@ const Button = ({
       height={height}
       fontSize={fontSize}
       fontColor={fontColor}
+      onClick={func}
     >
       {children}
     </ButtonStyle>
