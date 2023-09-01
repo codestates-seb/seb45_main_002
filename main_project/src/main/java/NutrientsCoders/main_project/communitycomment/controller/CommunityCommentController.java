@@ -40,4 +40,10 @@ public class CommunityCommentController {
         CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    /** 댓글 삭제**/
+    @DeleteMapping("/{communitycomment-id}")
+    public ResponseEntity<Void> deleteCommunityComment(@PathVariable("communitycomment-id") @Positive long communitycommentId){
+        communityCommentService.deleteCommunityComment(communitycommentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
