@@ -2,18 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import style from "../style/style";
-import ModalComponent from "../atom/GlobalModal";
+import Modal from "../atom/GlobalModal";
+import ModalPortal from "../atom/ModalPortal";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { useState } from "react";
-import ReactDOM from "react-dom";
 
 const HeaderContainer = styled.header`
   display: flex;
+  max-width: 768px;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
   height: ${style.layout.header.height};
   justify-content: space-between;
   border: solid 1px orange;
-  font-size: 200%;
+  font-size: 26px;
   & > * {
     display: flex;
     padding: 0.5% 0;
@@ -68,23 +77,8 @@ function Header() {
     setFooter(null);
   };
 
-  const modalPortal =
-    isOpen &&
-    ReactDOM.createPortal(
-      <ModalComponent
-        isOpen={isOpen}
-        onClose={handleCloseModal}
-        header={header}
-        content={content}
-        footer={footer}
-      >
-        {content}
-      </ModalComponent>,
-      document.getElementById("modal-root")
-    );
-
   return (
-    <HeaderContainer id="modal-root">
+    <HeaderContainer>
       <span>
         {style.layout.maxWidth < 980 ? (
           <i className="fa-solid fa-bars"></i>
@@ -97,9 +91,17 @@ function Header() {
         </Link>
       </span>
       <span>
-        {modalPortal}
         <LoginButton onClick={handleOpenLoginModal}>로그인</LoginButton>
         <SignUpButton onClick={handleOpenSignUpModal}>회원가입</SignUpButton>
+        <ModalPortal>
+          <Modal
+            isOpen={isOpen}
+            onClose={handleCloseModal}
+            header={header}
+            content={content}
+            footer={footer}
+          />
+        </ModalPortal>
       </span>
     </HeaderContainer>
   );

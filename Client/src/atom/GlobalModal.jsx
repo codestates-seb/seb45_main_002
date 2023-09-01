@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ReactDOM from "react-dom";
 
 const ModalContainer = styled.div`
-  z-index: 9999;
   background-color: transparent;
   visibility: ${(props) => (props.$isOpen ? "visible" : "hidden")};
   position: fixed;
@@ -29,6 +28,7 @@ export const ModalBackdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  backdrop-filter: blur(4px);
 `;
 
 export const ModalBtn = styled.button`
