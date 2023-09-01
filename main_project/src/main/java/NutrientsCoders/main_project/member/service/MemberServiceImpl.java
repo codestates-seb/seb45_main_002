@@ -153,8 +153,8 @@ public class MemberServiceImpl implements MemberService {
     private int genderCalculate(String gender){
         if (gender.equals("M")){
             return 10;
-        } else if (gender.equals("FM")) {
+        } else if (gender.equals("F")) {
             return -150;
-        } else return 80;
+        } else return -80;
     }
 }
