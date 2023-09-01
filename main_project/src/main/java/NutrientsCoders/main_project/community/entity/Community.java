@@ -15,8 +15,10 @@ public class Community extends CommunityBaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityId;
     @Column
+    @NotNull
     private String communityTitle;
     @Column(columnDefinition = "TEXT")
+    @NotNull
     private String communityContent;
     @Column
     private Long recommendationCount=0L;
