@@ -5,7 +5,7 @@
 ### FE 기술 스택
 | HTML 5| CSS | Java Script | React | Zustand | Styled<br/>Components |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|-----------------------------------------------|
-|<img src="https://img.icons8.com/?size=512&id=20909&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=21278&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=108784&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=123603&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=jD-fJzVguBmw&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=ttxR7mXaDvqS&format=png" width=75px ></img>|
+|<img src="https://img.icons8.com/?size=512&id=20909&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=21278&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=108784&format=png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=123603&format=png" width=75px ></img> |<img src="https://raw.githubusercontent.com/pmndrs/zustand/main/examples/demo/public/logo512.png" width=75px ></img> |<img src="https://img.icons8.com/?size=512&id=ttxR7mXaDvqS&format=png" width=75px ></img>|
 
 ### BE 기술 스택
 | JAVA 11 | Spring | Spring Boot | Spring<br/>Security | AWS | MySql | JWT |
