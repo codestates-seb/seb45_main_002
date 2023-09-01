@@ -46,7 +46,6 @@ const LoginForm = () => {
     <>
       <LoginContainer>
         {/* TEMP */}
-
         <input placeholder="ID" />
         <input placeholder="PW" />
         <button>LOGIN</button>

@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import ReactDOM from "react-dom";
+import { useState } from "react";
 
 const ModalContainer = styled.div`
-  z-index: 9999;
   background-color: transparent;
   visibility: ${(props) => (props.$isOpen ? "visible" : "hidden")};
   position: fixed;
@@ -29,6 +29,7 @@ export const ModalBackdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  backdrop-filter: blur(4px);
 `;
 
 export const ModalBtn = styled.button`
@@ -59,18 +60,26 @@ const ContentContainer = styled.div`
   }
 `;
 
-const Modal = ({ isOpen, onClose, content, header, footer }) => {
-  if (!isOpen) return null;
-
-  const handleBackdropClick = (event) => {
-    if (event.target === event.currentTarget) {
-      onClose();
-    }
+const Modal = ({
+  isOpen,
+  content,
+  header,
+  footer,
+  setIsOpen,
+  setContent,
+  setHeader,
+  setFooter,
+}) => {
+  const handleCloseModal = () => {
+    setContent(null);
+    setHeader(null);
+    setFooter(null);
+    setIsOpen(false);
   };
 
   return (
     <ModalContainer $isOpen={isOpen}>
-      <ModalBackdrop onClick={handleBackdropClick}>
+      <ModalBackdrop onClose onClick={handleCloseModal}>
         <ContentContainer>
           {header}
           {content}
