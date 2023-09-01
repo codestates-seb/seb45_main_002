@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.communitycomment.controller;
 
 import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentMapper;
+import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentPatchDto;
 import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentPostDto;
 import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentResponseDto;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
@@ -8,6 +9,8 @@ import NutrientsCoders.main_project.communitycomment.service.CommunityCommentSer
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.Positive;
 
 @RestController
 @RequestMapping("/communitycomment")
@@ -27,5 +30,14 @@ public class CommunityCommentController {
         CommunityComment communityComment = communityCommentService.createCommunityComment(communityCommentMapper.communityCommentPostDtoToComment(communityCommentPostDto));
         CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    /** 댓글 수정 **/
+    @PatchMapping("/{communitycomment-id}")
+    public ResponseEntity<CommunityCommentResponseDto> patchCommunityComment(@PathVariable("communitycomment-id") @Positive long communitycommentId,
+                                                                            @RequestBody CommunityCommentPatchDto communityCommentPatchDto){
+        communityCommentPatchDto.setCommunityCommentId(communitycommentId);
+        CommunityComment communityComment = communityCommentService.updateCommunityComment(communityCommentMapper.communityCommentPatchDtoToComment(communityCommentPatchDto));
+        CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

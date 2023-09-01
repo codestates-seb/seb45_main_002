@@ -14,4 +14,12 @@ public class CommunityCommentService {
     public CommunityComment createCommunityComment(CommunityComment communityComment){
         return communityCommentRepository.save(communityComment);
     }
+    /** 댓글 수정 메서드 **/
+    public  CommunityComment updateCommunityComment(CommunityComment communityComment){
+        CommunityComment findCommunityComment = communityCommentRepository.findById(communityComment.getCommunityCommentId()).orElse(null);
+        findCommunityComment.setCommunityCommentContent(communityComment.getCommunityCommentContent());
+        return communityCommentRepository.save(findCommunityComment);
+    }
 }
+
+
