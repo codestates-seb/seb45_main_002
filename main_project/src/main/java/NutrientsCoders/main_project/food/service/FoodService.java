@@ -1,5 +1,6 @@
 package NutrientsCoders.main_project.food.service;
 
+import NutrientsCoders.main_project.food.entity.EtcNutrients;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.repository.EtcNutrientsRepository;
 import NutrientsCoders.main_project.food.repository.FoodRepository;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodService {
@@ -38,6 +40,18 @@ public class FoodService {
     return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
   
+  public Food findByFood(long foodId) {
+    Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
+    Food findFood = optionalFood.orElseThrow(() -> new RuntimeException());
+    
+    etcNutrientsRepository.findById(findFood.getFoodId())
+        .ifPresentOrElse(findFood::setEtcNutrients, () -> {
+          throw new RuntimeException("EtcNutrients를 찾을 수 없습니다. foodId: " + foodId);
+        });
+    
+    return findFood;
+  }
+
 //  public Food createFood(Food food) {
 //    return foodRepository.save(food);
 //  }

@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="start">
+    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/EtcNutrientsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/EtcNutrientsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" afterDir="false" />
     </list>
@@ -63,35 +65,35 @@
     <option name="showLibraryContents" value="true" />
     <option name="sortByType" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/seb45_main_002/main_project/src/main/java/NutrientsCoders/main_project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "모듈",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "spring.configuration.checksum": "2fe9cb860feac92acefcc71678169636",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/seb45_main_002/main_project/src/main/java/NutrientsCoders/main_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;2fe9cb860feac92acefcc71678169636&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\seb45_main_002\main_project\src\main\java\NutrientsCoders\main_project\eachmeal" />
@@ -132,7 +134,8 @@
       <workItem from="1693442258343" duration="16957000" />
       <workItem from="1693460127797" duration="11261000" />
       <workItem from="1693485083185" duration="1019000" />
-      <workItem from="1693494598494" duration="3762000" />
+      <workItem from="1693494598494" duration="7704000" />
+      <workItem from="1693528006155" duration="1485000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1693442849704</created>
@@ -155,7 +158,21 @@
       <option name="project" value="LOCAL" />
       <updated>1693487944933</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="수정">
+      <created>1693498426113</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1693498426113</updated>
+    </task>
+    <task id="LOCAL-00005" summary="수정">
+      <created>1693498483036</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1693498483036</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,15 +191,26 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start" />
-    <option name="LAST_COMMIT_MESSAGE" value="start" />
+    <MESSAGE value="수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="수정" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java</url>
-          <line>31</line>
+          <line>33</line>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java</url>
+          <line>26</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

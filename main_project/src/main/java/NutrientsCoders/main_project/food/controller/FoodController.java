@@ -7,10 +7,7 @@ import NutrientsCoders.main_project.food.service.FoodService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +30,8 @@ public class FoodController {
 
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
-
+  
+  //영양소로 음식 검색(브랜드 비 포함)
   @GetMapping("/search/nutrients")
   public ResponseEntity getFoodSearchNutrient(@RequestParam(value = "search-word" ) String searchWord) {
     List<Food> foods = foodService.findByHighestNutrient(searchWord);
@@ -42,15 +40,13 @@ public class FoodController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
-//  @GetMapping
-//  public ResponseEntity getFoods(@Positive @RequestParam int page,
-//                                 @Positive @RequestParam int size) {
-//    Page<Food> pageFoods = foodService.findFoods(page - 1, size);
-//    List<Food> foods = pageFoods.getContent();
-//
-//    return new ResponseEntity<>(foodMapper.foodToFoodResponseDto(food),
-//        HttpStatus.OK);
-//  }
+  @GetMapping("/foods/{food-id}")
+  public ResponseEntity getFoodSearchFoodId(@PathVariable("food-id") long foodId) {
+    Food food = foodService.findByFood(foodId);
+    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
+    
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
 
 //  @PostMapping
 //  public ResponseEntity postFood(@Valid @RequestBody FoodPostDto foodDto) {

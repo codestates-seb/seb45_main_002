@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface FoodRepository extends JpaRepository<Food, Long> {
     @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord%")
     Page<Food> findBySearchWordFood_Custom(@Param("searchWord") String searchWord, Pageable pageable);
@@ -37,5 +39,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "ELSE 0 END DESC",
             countQuery = "SELECT COUNT(f) FROM Food f WHERE f.brand = '일반'")
     Page<Food> findTop5ByHighestNutrient(@Param("nutrientType") String nutrientType, Pageable pageable);
+  
+  Optional<Food> findByFoodId(long foodId);
 }
     

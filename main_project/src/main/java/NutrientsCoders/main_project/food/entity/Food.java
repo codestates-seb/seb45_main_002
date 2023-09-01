@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -44,7 +43,7 @@ public class Food {
   @Column(nullable = false, updatable = false)
   private Double fat;
   
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food")
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food", cascade = CascadeType.PERSIST)
   private EtcNutrients etcNutrients;
 
   @Column

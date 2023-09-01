@@ -1,7 +1,7 @@
 package NutrientsCoders.main_project.food.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -66,4 +66,8 @@ public class EtcNutrients {
 
     @Column(updatable = false)
     private Double potassium;
+    
+    public EtcNutrients() {
+    
+    }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface FoodMapper {
   List<FoodResponseDto> foodToFoodResponseDtos(List<Food> foods);
+  
+  FoodResponseDto foodToFoodResponseDto(Food food);
 }
