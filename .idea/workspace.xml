@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="키워드, 영양소, id로 검색">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" afterDir="false" />
-    </list>
+    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="키워드, 영양소, id로 검색&#10;oneToOne 무한루프 해결" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +126,7 @@
       <workItem from="1693460127797" duration="11261000" />
       <workItem from="1693485083185" duration="1019000" />
       <workItem from="1693494598494" duration="7704000" />
-      <workItem from="1693528006155" duration="7679000" />
+      <workItem from="1693528006155" duration="8293000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1693442849704</created>
@@ -178,7 +170,21 @@
       <option name="project" value="LOCAL" />
       <updated>1693529749073</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="키워드, 영양소, id로 검색&#10;oneToOne 무한루프 해결">
+      <created>1693535973996</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1693535973996</updated>
+    </task>
+    <task id="LOCAL-00008" summary="키워드, 영양소, id로 검색&#10;oneToOne 무한루프 해결">
+      <created>1693536093701</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1693536093701</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,7 +205,8 @@
     <MESSAGE value="start" />
     <MESSAGE value="수정" />
     <MESSAGE value="키워드, 영양소, id로 검색" />
-    <option name="LAST_COMMIT_MESSAGE" value="키워드, 영양소, id로 검색" />
+    <MESSAGE value="키워드, 영양소, id로 검색&#10;oneToOne 무한루프 해결" />
+    <option name="LAST_COMMIT_MESSAGE" value="키워드, 영양소, id로 검색&#10;oneToOne 무한루프 해결" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
