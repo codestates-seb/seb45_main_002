@@ -6,7 +6,8 @@ const ButtonStyle = styled.button`
   width: ${(props) => (props.width ? props.width : "180px")};
   height: ${(props) => (props.height ? props.height : "48px")};
   border-radius: 8px;
-  color: #000000;
+  color: ${(props) => (props.fontColor ? props.fontColor : "#000000")};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "14px")}
 
   ${(props) =>
     props.primary
@@ -41,13 +42,23 @@ const ButtonStyle = styled.button`
   }
 `;
 
-const Button = ({ children, primary, disabled, width, height }) => {
+const Button = ({
+  children,
+  primary,
+  disabled,
+  width,
+  height,
+  fontSize,
+  fontColor,
+}) => {
   return (
     <ButtonStyle
       disabled={disabled}
       primary={primary}
       width={width}
       height={height}
+      fontSize={fontSize}
+      fontColor={fontColor}
     >
       {children}
     </ButtonStyle>
