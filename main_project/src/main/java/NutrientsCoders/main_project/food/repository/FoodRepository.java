@@ -40,6 +40,10 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             countQuery = "SELECT COUNT(f) FROM Food f WHERE f.brand = '일반'")
     Page<Food> findTop5ByHighestNutrient(@Param("nutrientType") String nutrientType, Pageable pageable);
   
-  Optional<Food> findByFoodId(long foodId);
+  
+  @Query("SELECT f FROM Food f JOIN f.etcNutrients en WHERE f.foodId = :foodId AND f.brand = '일반'")
+  Optional<Food> findByFoodId(@Param("foodId") long foodId);
+
+  
 }
     

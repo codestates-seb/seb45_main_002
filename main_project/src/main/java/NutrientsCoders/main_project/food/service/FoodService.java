@@ -4,6 +4,8 @@ import NutrientsCoders.main_project.food.entity.EtcNutrients;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.repository.EtcNutrientsRepository;
 import NutrientsCoders.main_project.food.repository.FoodRepository;
+import NutrientsCoders.main_project.utils.exception.ExceptionCode;
+import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,14 +44,7 @@ public class FoodService {
   
   public Food findByFood(long foodId) {
     Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
-    Food findFood = optionalFood.orElseThrow(() -> new RuntimeException());
-    
-    etcNutrientsRepository.findById(findFood.getFoodId())
-        .ifPresentOrElse(findFood::setEtcNutrients, () -> {
-          throw new RuntimeException("EtcNutrients를 찾을 수 없습니다. foodId: " + foodId);
-        });
-    
-    return findFood;
+    return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
 
 //  public Food createFood(Food food) {

@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="수정">
+    <list default="true" id="5dd96ef2-e989-4b16-b9d4-3cd26bd75616" name="변경" comment="키워드, 영양소, id로 검색">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/controller/FoodController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/dto/FoodResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/EtcNutrients.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/entity/Food.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/mapper/FoodMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/EtcNutrientsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/EtcNutrientsRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" beforeDir="false" afterPath="$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java" afterDir="false" />
     </list>
@@ -135,7 +134,7 @@
       <workItem from="1693460127797" duration="11261000" />
       <workItem from="1693485083185" duration="1019000" />
       <workItem from="1693494598494" duration="7704000" />
-      <workItem from="1693528006155" duration="1485000" />
+      <workItem from="1693528006155" duration="7679000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1693442849704</created>
@@ -172,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693498483036</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="키워드, 영양소, id로 검색">
+      <created>1693529749072</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1693529749073</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,28 +198,15 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start" />
     <MESSAGE value="수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="수정" />
+    <MESSAGE value="키워드, 영양소, id로 검색" />
+    <option name="LAST_COMMIT_MESSAGE" value="키워드, 영양소, id로 검색" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/service/FoodService.java</url>
-          <line>51</line>
-          <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/main_project/src/main/java/NutrientsCoders/main_project/food/repository/FoodRepository.java</url>
-          <line>26</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="NutrientsCoders.main_project.food.entity.Food" memberName="etcNutrients" />
+      </pinned-members>
+    </pin-to-top-manager>
     <watches-manager>
       <configuration name="GradleRunConfiguration">
         <watch expression="foods" />

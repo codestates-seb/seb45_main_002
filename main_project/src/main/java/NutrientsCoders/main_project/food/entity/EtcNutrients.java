@@ -1,10 +1,13 @@
 package NutrientsCoders.main_project.food.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
+@Getter
 @Entity
 public class EtcNutrients {
 
@@ -12,6 +15,7 @@ public class EtcNutrients {
     @Column(name = "ETCNUTRIENTS_ID")
     private Long etcNutrientsId;
     
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "FOOD_ID")
     private Food food;

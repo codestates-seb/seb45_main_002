@@ -32,10 +32,8 @@ public class FoodResponseDto {
     private Double protein;
 
     private Double fat;
-
+    
     private EtcNutrients etcNutrients;
 
     private Boolean morning;
-
-    private Double servingRate;
 }

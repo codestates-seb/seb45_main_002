@@ -1,5 +1,6 @@
 package NutrientsCoders.main_project.food.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
