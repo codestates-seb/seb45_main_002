@@ -1,5 +1,7 @@
 package NutrientsCoders.main_project.food.controller;
 
+import NutrientsCoders.main_project.food.dto.FoodPatchDto;
+import NutrientsCoders.main_project.food.dto.FoodPostDto;
 import NutrientsCoders.main_project.food.dto.FoodResponseDto;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.mapper.FoodMapper;
@@ -21,7 +23,7 @@ public class FoodController {
     this.foodMapper = foodMapper;
   }
   
-  //키워드로 음식 검색(브랜드 비 포함)
+  //키워드로 음식 리스트 검색(브랜드 비 포함)
   @GetMapping("/search/foods")
   public ResponseEntity<List<FoodResponseDto>> getFoodSearchKeyword(@RequestParam(value = "search-word" ) String searchWord) {
     List<Food> foods = foodService.findBySearchWordFood_Custom(searchWord);
@@ -30,7 +32,7 @@ public class FoodController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
-  //영양소로 음식 검색(브랜드 비 포함)
+  //영양소로 음식 리스트 검색(브랜드 비 포함)
   @GetMapping("/search/nutrients")
   public ResponseEntity<List<FoodResponseDto>> getFoodSearchNutrient(@RequestParam(value = "search-word" ) String searchWord) {
     List<Food> foods = foodService.findByHighestNutrient(searchWord);
@@ -39,6 +41,7 @@ public class FoodController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
+  //선택 음식 조회
   @GetMapping("/foods/{food-id}")
   public ResponseEntity<FoodResponseDto> getFoodSearchFoodId(@PathVariable("food-id") long foodId) {
     Food food = foodService.findByFood(foodId);
@@ -46,34 +49,32 @@ public class FoodController {
     
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
-
-//  @PostMapping
-//  public ResponseEntity postFood(@Valid @RequestBody FoodPostDto foodDto) {
-//    Food food = foodService.createFood(foodMapper.foodPostDtoToFood(foodDto));
-//
-//    return new ResponseEntity<>(foodMapper.foodToFoodResponseDto(food),
-//        HttpStatus.OK);
+//========================================== 커스텀 부분, memberId 필요==========================
+//  //커스텀 음식 저장
+//  @PostMapping("/foods/{member-id}")
+//  public ResponseEntity<FoodResponseDto> postFood(@PathVariable("member-id") long memberId,
+//                                                  @RequestBody FoodPostDto foodDto) {
+//    Food food = foodService.createCustomFood(foodMapper.foodPostDtoToFood(foodDto), memberId);
+//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
+//    return new ResponseEntity<>(response, HttpStatus.OK);
 //  }
+//  //커스텀 음식 수정
+//  @PatchMapping("/foods/{member-id}/{food-id}")
+//  public ResponseEntity<FoodResponseDto> patchFood(@PathVariable("food-id") long foodId,
+//                                                   @PathVariable("member-id") long memberId,
+//                                  @RequestBody FoodPatchDto foodPatchDto) {
 //
-//  @PatchMapping("/{food-id}")
-//  public ResponseEntity patchFood(
-//      @PathVariable("food-id") @Positive long foodId,
-//      @Valid @RequestBody FoodPatchDto foodPatchDto) {
-//    foodPatchDto.setFoodId(foodId);
+//    Food food =foodService.updateCustomFood(foodMapper.foodPatchDtoToFood(foodPatchDto), foodId, memberId);
+//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
 //
-//    Food food =
-//        foodService.updateFood(foodMapper.foodPatchDtoToFood(foodPatchDto));
-//
-//    return new ResponseEntity<>(foodMapper.foodToFoodResponseDto(food),
-//        HttpStatus.OK);
+//    return new ResponseEntity<>(response ,HttpStatus.OK);
 //  }
-//
+//  //커스텀 음식 삭제
 //  @DeleteMapping("/{food-id}")
-//  public ResponseEntity deleteFood(
-//      @PathVariable("food-id") @Positive long foodId) {
-//    foodService.deleteFood(foodId);
+//  public ResponseEntity<FoodResponseDto> deleteFood(@PathVariable("food-id") long foodId) {
+//    foodService.deleteCustomFood(foodId);
 //
 //    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //  }
-  
+//
 }

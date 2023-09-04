@@ -1,8 +1,6 @@
 package NutrientsCoders.main_project.food.service;
 
-import NutrientsCoders.main_project.food.entity.EtcNutrients;
 import NutrientsCoders.main_project.food.entity.Food;
-import NutrientsCoders.main_project.food.repository.EtcNutrientsRepository;
 import NutrientsCoders.main_project.food.repository.FoodRepository;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
@@ -16,11 +14,10 @@ import java.util.Optional;
 @Service
 public class FoodService {
   private final FoodRepository foodRepository;
-  private final EtcNutrientsRepository etcNutrientsRepository;
   
-  public FoodService(FoodRepository foodRepository, EtcNutrientsRepository etcNutrientsRepository) {
+  public FoodService(FoodRepository foodRepository) {
     this.foodRepository = foodRepository;
-    this.etcNutrientsRepository = etcNutrientsRepository;
+
   }
 
   //키워드로 음식 검색(브랜드 포함, 커스텀 용)
@@ -41,43 +38,29 @@ public class FoodService {
     Pageable pageable = PageRequest.of(0, 5);
     return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
+  //Id로 음식 검색
+  public Food findByFood(long foodId) { return verifyExistsFood(foodId);}
   
-  public Food findByFood(long foodId) {
+  private Food verifyExistsFood(long foodId) {
     Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
     return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
-
-//  public Food createFood(Food food) {
+  
+  
+////========================================== 커스텀 부분, memberId 어떻게 쓸것인지 생각해보기(문자열로 만들기?)
+//  //커스텀 음식 저장
+//  public Food createCustomFood(Food food, long memberId) {
+//    return foodRepository.save(food);
+//  }
+//  //커스텀 음식 수정
+//  public Food updateCustomFood(Food food, long foodId, long memberId) {
 //    return foodRepository.save(food);
 //  }
 //
-//  public Food updateFood(Food food) {
-//    return foodRepository.save(food);
+//  //커스텀 음식 삭제
+//  public void deleteCustomFood(long foodId, long memberId) {
+//        foodRepository.deleteById(foodId);
 //  }
 
-//  public Food findFood(long foodId) {
-//    return findVerifiedFood(foodId);
-//  }
 
-//
-//  public void deleteFood(long foodId) {
-//    Food findFood = findVerifiedFood(foodId);
-//
-//    foodRepository.delete(findFood);
-//  }
-  
-//  public Food findVerifiedFood(long foodId) {
-//    Optional<Food> optionalFood =
-//        foodRepository.findById(foodId);
-//    Food findFood =
-//        optionalFood.orElseThrow(() ->
-//            new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-//    return findFood;
-//  }
-  
-//  private void verifyExistsEmail(String email) {
-//    Optional<Food> food = foodRepository.findByEmail(email);
-//    if (food.isPresent())
-//      throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
-//  }
 }

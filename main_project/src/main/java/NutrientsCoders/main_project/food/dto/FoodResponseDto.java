@@ -35,5 +35,5 @@ public class FoodResponseDto {
     
     private EtcNutrients etcNutrients;
 
-    private Boolean morning;
+    private Boolean breakfast;
 }

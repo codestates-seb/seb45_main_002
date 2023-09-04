@@ -18,7 +18,7 @@ public class EachMealFood {
   @Column(name = "EATCHMEALFOOD_ID")
   private Long eachMealFoodId;
 
-  @ManyToOne
+  @ManyToOne    //단방향
   @JoinColumn(name = "FOOD_ID")
   private Food food;
 

@@ -14,7 +14,9 @@ import java.util.List;
 @Builder
 public class Member {
 
-    @Id@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "MEMBER_ID")
     private Long memberId;
 
     @Column
