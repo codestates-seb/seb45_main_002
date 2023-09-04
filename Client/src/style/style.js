@@ -1,7 +1,6 @@
 const style = {
   layout: {
     maxWidth: window.innerWidth,
-    realWidth: window.innerWidth - (window.innerWidth / 8) * 2,
     maxHeight: window.innerHeight,
     sideMargin: window.innerWidth / 8,
     wideMargin: {
