@@ -1,7 +1,5 @@
 package NutrientsCoders.main_project.food.controller;
 
-import NutrientsCoders.main_project.food.dto.FoodPatchDto;
-import NutrientsCoders.main_project.food.dto.FoodPostDto;
 import NutrientsCoders.main_project.food.dto.FoodResponseDto;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.mapper.FoodMapper;

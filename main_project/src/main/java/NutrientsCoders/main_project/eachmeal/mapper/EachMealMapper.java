@@ -23,7 +23,7 @@ public interface EachMealMapper {
     eachMeal.setTotalEachFat( eachMealDto.getTotalEachFat() );
     
     return eachMeal;
-  };
+  }
   //EachMeal-> ResponseDto
   default EachMealResponseDto eachMealToEachMealResponseDto(EachMeal eachMeal) {
     List<EachMealResponseDto.quantityFoodDto> quantityfoods = new ArrayList<>();
