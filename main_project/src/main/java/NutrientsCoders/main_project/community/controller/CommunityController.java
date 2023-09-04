@@ -74,4 +74,11 @@ public class CommunityController {
         List<Community> resultCommunity = communityMapper.communityToCommunityResponseDtos(communities);
         return new ResponseEntity<>(new MultiResponseDto<>(resultCommunity,pageCommunities),HttpStatus.OK);
     }
+    /** 게시글 추천 기능 **/
+    @GetMapping("/recommendation/{community-id}")
+    public ResponseEntity<CommunityResponseDto> recommendationCommunity(@PathVariable("community-id")@Positive long communityId){
+        Community community = communityService.recommendCommunity(communityId);
+        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

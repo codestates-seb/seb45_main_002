@@ -16,6 +16,7 @@ import java.util.Optional;
 public class CommunityService {
     private final CommunityRepository communityRepository;
 
+
     public CommunityService(CommunityRepository communityRepository) {
         this.communityRepository = communityRepository;
     }
@@ -52,5 +53,17 @@ public class CommunityService {
     public Page<Community> findTitleCommunity(String keyword, int page, int size){
         Pageable pageable = PageRequest.of(page, size);
         return communityRepository.findByCommunityTitle(keyword,pageable);
+    }
+    /** 게시글 추천 기능 **/
+    public Community recommendCommunity(long communityId){
+        Community findCommunityId = communityRepository.findById(communityId).orElse(null);
+        if(findCommunityId.isCommunityLike()) {
+             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
+             findCommunityId.setCommunityLike(false);
+        }else {
+            findCommunityId.setRecommendationCount(findCommunityId.decrementRecommendationCount());
+            findCommunityId.setCommunityLike(true);
+        }
+        return communityRepository.save(findCommunityId);
     }
 }
