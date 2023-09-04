@@ -49,9 +49,8 @@ const SignUpForm = () => {
     else{setForm({...form,errMsg: ""})}
   }
   const createAccount=()=>{
-    errMsg();
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("/login/create",{
+      axios.post("https://d9f8-14-37-234-174.ngrok-free.app/login/create",{
         nickname: form.email.slice(0,form.email.indexOf("@")),
         email: form.email,
         password: form.password
@@ -59,6 +58,7 @@ const SignUpForm = () => {
       .then(res=>navigate("/pageswitch/mypage"))
       .catch(err=>console.log(err, "회원가입에 실패하였습니다."))
     }
+    else{errMsg();}
   }
   return (
     <SignUpFormContainer>

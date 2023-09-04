@@ -53,18 +53,20 @@ const LoginForm = () => {
     }
     else{setForm({...form,errMsg: ""})}
   }
-  const loginButton=()=>{
-    errMsg();
+  const loginButton=(e)=>{
+    e.preventDefault()
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("/login",{
-        nickname: form.email.slice(0,form.email.indexOf("@")),
+      axios.post("https://d9f8-14-37-234-174.ngrok-free.app/login",{
         email: form.email,
         password: form.password
       })
-      .then(res=>navigate("/"))
+      .then(res=>{
+        console.log(res)
+        navigate("/")}
+        )
       .catch(err=>console.log(err+"실패했습니다."))
-
     }
+    else{errMsg();}
   }
   
 

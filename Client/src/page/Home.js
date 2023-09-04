@@ -29,23 +29,6 @@ function Home({ setPage }) {
     <HomeContainer>
       <div>
         캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
       </div>
       <div>
         <HomeMenu1>
