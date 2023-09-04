@@ -22,6 +22,12 @@ public class Community extends CommunityBaseTime {
     @NotNull
     private String communityContent;
     @Column
-    private Long recommendationCount=0L;
+    private long recommendationCount = 0L;
+    @Column
+    private long communityViewCount = 0L;
 
+    /** 게시판을 조회하면 viewCount 증가 **/
+    public long incrementViewCount(){
+        return ++communityViewCount;
+    }
 }

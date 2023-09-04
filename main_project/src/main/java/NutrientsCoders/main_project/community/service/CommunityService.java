@@ -6,6 +6,7 @@ import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +37,9 @@ public class CommunityService {
     }
     /** 리포지토리에서 게시글을 선택해 데이터를 가져오는 메서드 **/
     public Community findCommunity(long communityId){
-        Optional<Community> optionalCommunity = communityRepository.findById(communityId);
-        return optionalCommunity.orElseThrow(() ->
-                new LogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
+        Community findIdCommunity = communityRepository.findById(communityId).orElse(null);
+        findIdCommunity.setCommunityViewCount(findIdCommunity.incrementViewCount());
+        return communityRepository.save(findIdCommunity);
     }
     /** 리포지토리에서 게시글을 지우는 메서드 **/
     public void deleteCommunity(long communityId){
@@ -46,5 +47,10 @@ public class CommunityService {
         optionalCommunity.orElseThrow(() ->
                 new LogicException(ExceptionCode.COMMUNITY_NOT_FOUND));
         communityRepository.deleteById(communityId);
+    }
+    /** 게시글 선택 검색 로직 **/
+    public Page<Community> findTitleCommunity(String keyword, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return communityRepository.findByCommunityTitle(keyword,pageable);
     }
 }
