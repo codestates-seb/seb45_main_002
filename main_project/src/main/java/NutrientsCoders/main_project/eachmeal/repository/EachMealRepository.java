@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface EachMealRepository extends JpaRepository<EachMeal, Long> {
   
-  @Query("SELECT e FROM EachMeal e LEFT JOIN FETCH e.eachMealFoods en WHERE e.eachMealId = :eachMealId")
+  @Query("SELECT e FROM EachMeal e LEFT JOIN e.eachMealFoods en WHERE e.eachMealId = :eachMealId")
   Optional<EachMeal> findByEachMealId(@Param("eachMealId") long eachMealId);
 }

@@ -26,31 +26,32 @@ public interface EachMealMapper {
   }
   //EachMeal-> ResponseDto
   default EachMealResponseDto eachMealToEachMealResponseDto(EachMeal eachMeal) {
-    List<EachMealResponseDto.quantityFoodDto> quantityfoods = new ArrayList<>();
-    for (EachMealFood eachMealFood : eachMeal.getEachMealFoods()) {
-      Food food = eachMealFood.getFood();
-      Double quantity = eachMealFood.getQuantity();
-      
-      EachMealResponseDto.quantityFoodDto quantityFoodDto = new EachMealResponseDto.quantityFoodDto(food, quantity,
-          food.getKcal()*quantity,
-          food.getCarbo()*quantity,
-          food.getProtein()*quantity,
-          food.getFat()*quantity);
-      quantityfoods.add(quantityFoodDto);
-    }
-    
     EachMealResponseDto eachMealResponseDto = new EachMealResponseDto();
-    eachMealResponseDto.setMemberId(1);
+    eachMealResponseDto.setMemberId(1); // 임시로 memberId 설정*******
     eachMealResponseDto.setEachMealId(eachMeal.getEachMealId());
-    eachMealResponseDto.setEachMealId(eachMeal.getEachMealId());
-    eachMealResponseDto.setTotalEachKcal(eachMeal.getTotalEachKcal().doubleValue());
+    eachMealResponseDto.setTotalEachKcal((long) eachMeal.getTotalEachKcal().doubleValue());
     eachMealResponseDto.setTotalEachCarbo(eachMeal.getTotalEachCarbo());
     eachMealResponseDto.setTotalEachProtein(eachMeal.getTotalEachProtein());
     eachMealResponseDto.setTotalEachFat(eachMeal.getTotalEachFat());
-    eachMealResponseDto.setQuantityfoods(quantityfoods);
+    
+    List<EachMealResponseDto.QuantityFoodDto> quantityFoods = new ArrayList<>();
+    
+    // EachMealFood를 QuantityFoodDto로 변환하여 리스트에 추가
+    for (EachMealFood eachMealFood : eachMeal.getEachMealFoods()) {
+      EachMealResponseDto.QuantityFoodDto quantityFoodDto = new EachMealResponseDto.QuantityFoodDto();
+      quantityFoodDto.setFood(eachMealFood.getFood());
+      quantityFoodDto.setQuantity(eachMealFood.getQuantity());
+      quantityFoodDto.setRatioEachKcal(eachMealFood.getRateKcal());
+      quantityFoodDto.setRatioEachCarbo(eachMealFood.getRateCarbo());
+      quantityFoodDto.setRatioEachProtein(eachMealFood.getRateProtein());
+      quantityFoodDto.setRatioEachFat(eachMealFood.getRateFat());
+      quantityFoods.add(quantityFoodDto);
+    }
+        eachMealResponseDto.setQuantityfoods(quantityFoods);
     
     return eachMealResponseDto;
   }
+  
   //EachMealFoodDtos -> EachMealFoods
   default List<EachMealFood> eachMealFoodDtosToEachMealFoods(List<EachMealDto.EachMealFoodDto> eachMealFoodDtos) {
     return eachMealFoodDtos.stream()

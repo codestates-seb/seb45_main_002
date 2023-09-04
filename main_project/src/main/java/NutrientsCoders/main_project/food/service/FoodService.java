@@ -39,10 +39,13 @@ public class FoodService {
     return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
   //Id로 음식 검색
-  public Food findByFood(long foodId) { return verifyExistsFood(foodId);}
+  public Food findByFoodJoinNutrients(long foodId) {
+    Optional<Food> optionalFood = foodRepository.findByFoodIdJoinNutrients(foodId);
+    return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
+  }
   
-  private Food verifyExistsFood(long foodId) {
-    Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
+  public Food findByFood(long foodId) {
+    Optional<Food> optionalFood = foodRepository.findFoodByIdWithoutEtcNutrients(foodId);
     return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
   

@@ -4,6 +4,7 @@ package NutrientsCoders.main_project.food.repository;
 import NutrientsCoders.main_project.food.entity.Food;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
     @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord% AND f.brand = '일반'")
     Page<Food> findBySearchWordFood(@Param("searchWord") String searchWord, Pageable pageable);
-  @Query(value = "SELECT f FROM Food f JOIN f.etcNutrients en WHERE f.brand = '일반'" +
+  @Query(value = "SELECT f FROM Food f WHERE f.brand = '일반'" +
             "ORDER BY CASE " +
             "WHEN :nutrientType = 'carbo' THEN f.carbo " +
             "WHEN :nutrientType = 'protein' THEN f.protein " +
@@ -41,9 +42,12 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
     Page<Food> findTop5ByHighestNutrient(@Param("nutrientType") String nutrientType, Pageable pageable);
   
   //id로 food 조회
-  @Query("SELECT f FROM Food f JOIN f.etcNutrients en WHERE f.foodId = :foodId AND f.brand = '일반'")
-  Optional<Food> findByFoodId(@Param("foodId") long foodId);
+  @Query("SELECT f FROM Food f WHERE f.foodId = :foodId AND f.brand = '일반'")
+  Optional<Food> findByFoodIdJoinNutrients(@Param("foodId") long foodId);
+  //**** lazy를 해도
   
+  @Query("SELECT f FROM Food f WHERE f.foodId = :foodId AND f.brand = '일반'")
+  Optional<Food> findFoodByIdWithoutEtcNutrients(@Param("foodId") long foodId);
   
 }
     

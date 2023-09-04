@@ -25,19 +25,23 @@ public class EachMeal {
   private Member member ;
 
   @Column
-  @OneToMany(mappedBy = "eachMeal", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "eachMeal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<EachMealFood> eachMealFoods;
 
   @ManyToOne
   @JoinColumn(name = "DAILYMEAL_ID")
   private DailyMeal dailyMeal;
   
+  @Column
   private Long totalEachKcal;
   
+  @Column
   private Double totalEachCarbo;
   
+  @Column
   private Double totalEachProtein;
   
+  @Column
   private Double totalEachFat;
   public enum timeSlots {
     Breakfast(1, "아침 식사"),

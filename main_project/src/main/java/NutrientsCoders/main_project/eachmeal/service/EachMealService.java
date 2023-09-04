@@ -69,15 +69,19 @@ public class EachMealService {
     Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId);
     return optionalEachMeal.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
-  //EachMeal-EachMealFood안의 FoodId값으로 Food객체를 찾아 연결합니다
+  //EachMeal-EachMealFood안의 FoodId값으로 Food객체를 찾은 후 비율을 분석하여 연결합니다
   private List<EachMealFood> eachMealFoodsfindFood(List<EachMealFood> eachMealFoods, EachMeal eachMeal) {
     
-    return eachMealFoods.stream().peek(eachMealFood -> {
+    return eachMealFoods.stream().map(eachMealFood -> {
       long foodId = eachMealFood.getFood().getFoodId();
       Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
+      eachMealFood.setRateKcal((long) (findFood.getKcal()*eachMealFood.getQuantity()));
+      eachMealFood.setRateCarbo(findFood.getCarbo()*eachMealFood.getQuantity());
+      eachMealFood.setRateProtein(findFood.getProtein()*eachMealFood.getQuantity());
+      eachMealFood.setRateFat(findFood.getProtein()*eachMealFood.getQuantity());
+      return eachMealFood;
     }).collect(Collectors.toList());
   }
-  
 }

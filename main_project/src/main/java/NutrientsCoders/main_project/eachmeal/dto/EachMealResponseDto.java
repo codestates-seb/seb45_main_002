@@ -17,9 +17,9 @@ public class EachMealResponseDto {
   
   private Long timeSlots;
   
-  private List<quantityFoodDto> quantityfoods;
+  private List<QuantityFoodDto> quantityfoods;
   
-  private Double totalEachKcal;
+  private Long totalEachKcal;
   
   private Double totalEachCarbo;
   
@@ -28,11 +28,11 @@ public class EachMealResponseDto {
   private Double totalEachFat;
   
   @Getter
-  @AllArgsConstructor
-  public static class quantityFoodDto {
-    private Food food;
+  @Setter
+  public static class QuantityFoodDto {
+    private Food food; //Dto로?
     private Double quantity;
-    private Double ratioEachKcal;
+    private Long ratioEachKcal;
     private Double ratioEachCarbo;
     private Double ratioEachProtein;
     private Double ratioEachFat;
