@@ -11,8 +11,8 @@ const MainContainer = styled.main`
   position: absolute;
   top: ${style.layout.header.height};
   bottom: ${style.layout.wideMargin.height};
-  left: ${style.layout.sideMargin};
-  right: ${style.layout.sideMargin};
+  left: ${style.layout.maxWidth<769? 0 : style.layout.sideMargin};
+  right: ${style.layout.maxWidth<769? 0 : style.layout.sideMargin};
   border: solid 1px orange;
 `;
 
