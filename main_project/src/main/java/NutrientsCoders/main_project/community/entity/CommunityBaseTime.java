@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class CommunityBaseTime {
     @CreatedDate
     @Column(name = "CREATE_AT", updatable = false)
-    private LocalDateTime answerComment_createdAt;
+    private LocalDateTime community_createdAt;
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_AT")
-    private LocalDateTime answerComment_modifiedAt;
+    private LocalDateTime community_modifiedAt;
 }
