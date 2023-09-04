@@ -17,7 +17,7 @@ public class Member {
     @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private Long memberId;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -45,7 +45,8 @@ public class Member {
     @Column
     private Float activity;
 
-    //private List<String> avoid = new ArrayList<>();
+    //@OneToMany(mappedBy = "food")
+    //private List<food> avoid = new ArrayList<>();
 
     @Column
     private String imageUrl;

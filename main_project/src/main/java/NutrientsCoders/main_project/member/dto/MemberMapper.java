@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 public interface MemberMapper {
     Member memberPostChanger(MemberDto.Post memberpost);
 
+    MemberResponseDto.loginNext memberLoginChanger(MemberDto.Login memberlogin);
     MemberResponseDto.MyPage memberMypageChanger(Member member);
 
 }

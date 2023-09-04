@@ -30,4 +30,10 @@ public class MemberResponseDto {
         private String bmi;
         private String kcal;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class loginNext{
+        private String email;
+    }
 }

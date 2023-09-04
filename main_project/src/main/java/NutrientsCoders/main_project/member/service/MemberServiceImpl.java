@@ -4,6 +4,7 @@ import NutrientsCoders.main_project.member.dto.MemberDto;
 import NutrientsCoders.main_project.member.dto.MemberResponseDto;
 import NutrientsCoders.main_project.member.entity.Member;
 import NutrientsCoders.main_project.member.repository.MemberRepository;
+import NutrientsCoders.main_project.utils.AuthorityUtils;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service(value = "memberService")
@@ -21,9 +23,14 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder encoder;
 
-    public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder encoder) {
+    private final AuthorityUtils authorityUtils;
+
+    public MemberServiceImpl(MemberRepository memberRepository,
+                             PasswordEncoder encoder,
+                             AuthorityUtils authorityUtils) {
         this.memberRepository = memberRepository;
         this.encoder = encoder;
+        this.authorityUtils =  authorityUtils;
     }
 
 
@@ -41,6 +48,9 @@ public class MemberServiceImpl implements MemberService {
 
             //초기 설정
             member.setCreatedAt(LocalDateTime.now());
+
+            List<String> roles = authorityUtils.createRoles(member.getEmail()) ;
+            member.setRoles(roles);
 
             Member saveMember = memberRepository.save(member);
             return saveMember;
@@ -77,6 +87,13 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     public Boolean checkEmail(String email) throws Exception {
         return memberRepository.findOptionalByEmail(email).isEmpty();
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkPassword(String email,String password){
+        Member member = memberRepository.findByEmail(email);
+
+        return encoder.matches(password, member.getPassword());
     }
 
     @Override
