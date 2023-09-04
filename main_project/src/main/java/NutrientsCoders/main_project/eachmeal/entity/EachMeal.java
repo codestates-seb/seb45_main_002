@@ -1,7 +1,6 @@
 package NutrientsCoders.main_project.eachmeal.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
-import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

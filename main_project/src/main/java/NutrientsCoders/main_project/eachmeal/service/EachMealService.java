@@ -72,12 +72,11 @@ public class EachMealService {
   //EachMeal-EachMealFood안의 FoodId값으로 Food객체를 찾아 연결합니다
   private List<EachMealFood> eachMealFoodsfindFood(List<EachMealFood> eachMealFoods, EachMeal eachMeal) {
     
-    return eachMealFoods.stream().map(eachMealFood -> {
+    return eachMealFoods.stream().peek(eachMealFood -> {
       long foodId = eachMealFood.getFood().getFoodId();
       Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
-      return eachMealFood;
     }).collect(Collectors.toList());
   }
   
