@@ -28,11 +28,18 @@ const SignUpFormContainer = styled.div`
   }
   &>button{
     margin: 0 ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
+    cursor: pointer;
   }
 `
 const CheckButton = styled.button`
-  margin-left: ${style.layout.narrowMargin.width}; padding: 0;
+  margin-left: ${style.layout.narrowMargin.width};
+  padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
+  border-radius: 5px;
+  background-color: ${style.color.orangered4};
+  color: ${style.color.ivory};
   font-size: xx-small;
+  font-weight: bold;
+  cursor: pointer;
 `
 
 const SignUpForm = () => {

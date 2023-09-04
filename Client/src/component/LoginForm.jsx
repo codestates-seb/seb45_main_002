@@ -67,9 +67,7 @@ const LoginForm = () => {
         },
     }
       )
-      .then(res=>console.log(res))
-        // navigate("/")
-        
+      .then(res=>navigate("/"))
       .catch(err=>console.log(err+"실패했습니다."))
     }
     else{errMsg();}

@@ -20,7 +20,7 @@ function Main() {
   return (
     <MainContainer>
       <Routes>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="*" element={<Home />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
         <Route path="/tableadd" element={<TableAdd />}></Route>
       </Routes>
