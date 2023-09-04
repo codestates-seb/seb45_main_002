@@ -59,17 +59,22 @@ const LoginForm = () => {
       axios.post("https://d9f8-14-37-234-174.ngrok-free.app/login",{
         email: form.email,
         password: form.password
-      })
-      .then(res=>{
-        console.log(res)
-        navigate("/")}
-        )
+      },
+      {
+        headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+        },
+    }
+      )
+      .then(res=>console.log(res))
+        // navigate("/")
+        
       .catch(err=>console.log(err+"실패했습니다."))
     }
     else{errMsg();}
   }
   
-
   return (
     <LoginContainer>
       <LoginFormContainer>
@@ -82,5 +87,4 @@ const LoginForm = () => {
     </LoginContainer>
   );
 };
-
 export default LoginForm;
