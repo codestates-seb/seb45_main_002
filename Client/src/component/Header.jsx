@@ -57,14 +57,14 @@ const ProfileContainer = styled.div`
   /* margin-right: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
 
-const NavContainer = styled.div`
+const HambergerI = styled.i`
   width: 40px;
   height: 40px;
   border: solid 1px red;
   /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
 
-function Header() {
+function Header({menu,setMenu}) {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
   const [footer, setFooter] = useState(null);
@@ -80,7 +80,9 @@ function Header() {
   return (
     <HeaderContainer>
       <HeaderIconContainer>
-        <NavContainer>NAV</NavContainer>
+        {style.layout.maxWidth < 769 ? (
+          <HambergerI className="fa-solid fa-bars" onClick={()=>setMenu(!menu)} />
+        ) : null}
         <Link to="/">
           <span>뉴트리션 코더스</span>{" "}
         </Link>
