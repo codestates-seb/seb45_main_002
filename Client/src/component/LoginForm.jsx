@@ -5,6 +5,8 @@ import axios from "axios";
 
 import { styled } from "styled-components";
 
+import useZustand from "../zustand/Store";
+
 import style from "../style/style"
 
 const LoginContainer = styled.div`
@@ -16,7 +18,7 @@ const LoginFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   &>*{
-    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
+    height: ${style.layout.header.height}; width: ${style.layout.main.width*2/3};
     margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   }
@@ -36,6 +38,8 @@ const LoginFormContainer = styled.form`
 const LoginForm = () => {
 
   const navigate = useNavigate()
+
+  const setAccessToken = useZustand(state=>state.setAccessToken)
 
   const [form, setForm] = useState({
     email: "",
@@ -60,18 +64,19 @@ const LoginForm = () => {
   const loginButton=(e)=>{
     e.preventDefault()
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("https://d9f8-14-37-234-174.ngrok-free.app/login",{
+      axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login",{
         email: form.email,
         password: form.password
       },
-      {
-        headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-        },
-    }
+      {headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      }}
       )
-      .then(res=>navigate("/"))
+      .then(res=>{
+        setAccessToken(localStorage.getItem("access_token"))
+        navigate("/")
+      })
       .catch(err=>console.log(err+"실패했습니다."))
     }
     else{errMsg();}

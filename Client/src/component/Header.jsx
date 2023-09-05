@@ -5,7 +5,9 @@ import style from "../style/style";
 import Modal from "../atom/GlobalModal";
 import ModalPortal from "../atom/ModalPortal";
 import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm"
 import { useState } from "react";
+import useZustand from "../zustand/Store";
 
 const HeaderContainer = styled.header`
   width: 100vw;
@@ -57,14 +59,30 @@ const ProfileContainer = styled.div`
   /* margin-right: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
 
-const NavContainer = styled.div`
+const HambergerI = styled.i`
   width: 40px;
   height: 40px;
   border: solid 1px red;
   /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
+const LoginButton = styled.button`
+  height: ${style.layout.header.height/2};
+  border: none;
+  background-color: orange;
+  color: white;
+  font-size: ${style.layout.header.height/3};
+  font-weight: bolder;
+  white-space: nowrap;
+  cursor: pointer;
+`
+const SignUpButton = styled(LoginButton)`
+  background-color: green;
+`
 
-function Header() {
+function Header({menu,setMenu}) {
+
+  const accessToken = useZustand(state=>state.accessToken)
+  
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
   const [footer, setFooter] = useState(null);
@@ -76,14 +94,45 @@ function Header() {
     setFooter("login footer입니다");
     setContent(<LoginForm />);
   };
+  const handleOpenSignUpModal = () => {
+    setIsOpen(true);
+    setHeader("signup header입니다");
+    setFooter("sigunup footer입니다");
+    setContent(<SignUpForm />);
+  };
 
   return (
     <HeaderContainer>
       <HeaderIconContainer>
-        <NavContainer>NAV</NavContainer>
+        {style.layout.maxWidth < 769 ? (
+          <HambergerI className="fa-solid fa-bars" onClick={()=>setMenu(!menu)} />
+        ) : null}
         <Link to="/">
           <span>뉴트리션 코더스</span>{" "}
         </Link>
+        {accessToken?
+        <span>
+          <img alt="My Page" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
+          <SignUpButton>로그아웃</SignUpButton>
+        </span>
+        :
+        <span>
+          <LoginButton onClick={handleOpenLoginModal}>로그인</LoginButton>
+          <SignUpButton onClick={handleOpenSignUpModal}>회원가입</SignUpButton>
+          <ModalPortal>
+            <Modal
+              isOpen={isOpen}
+              content={content}
+              header={header}
+              footer={footer}
+              setContent={setContent}
+              setHeader={setHeader}
+              setFooter={setFooter}
+              setIsOpen={setIsOpen}
+            />
+          </ModalPortal>
+        </span>
+        }
         <ProfileContainer
           onClick={
             // isLoggedIn ?
