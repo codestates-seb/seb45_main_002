@@ -5,6 +5,7 @@ import style from "../style/style";
 import Modal from "../atom/GlobalModal";
 import ModalPortal from "../atom/ModalPortal";
 import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm"
 import { useState } from "react";
 import useZustand from "../zustand/Store";
 
@@ -64,6 +65,19 @@ const HambergerI = styled.i`
   border: solid 1px red;
   /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
+const LoginButton = styled.button`
+  height: ${style.layout.header.height/2};
+  border: none;
+  background-color: orange;
+  color: white;
+  font-size: ${style.layout.header.height/3};
+  font-weight: bolder;
+  white-space: nowrap;
+  cursor: pointer;
+`
+const SignUpButton = styled(LoginButton)`
+  background-color: green;
+`
 
 function Header({menu,setMenu}) {
 
@@ -80,6 +94,12 @@ function Header({menu,setMenu}) {
     setFooter("login footer입니다");
     setContent(<LoginForm />);
   };
+  const handleOpenSignUpModal = () => {
+    setIsOpen(true);
+    setHeader("signup header입니다");
+    setFooter("sigunup footer입니다");
+    setContent(<SignUpForm />);
+  };
 
   return (
     <HeaderContainer>
@@ -93,7 +113,7 @@ function Header({menu,setMenu}) {
         {accessToken?
         <span>
           <img alt="My Page" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
-          <LogoutButton>로그아웃</LogoutButton>
+          <SignUpButton>로그아웃</SignUpButton>
         </span>
         :
         <span>
