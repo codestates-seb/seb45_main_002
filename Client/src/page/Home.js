@@ -49,8 +49,8 @@ function Home({ setPage }) {
       </div>
       <div>
         <HomeMenu1>
-          <Link>
-            <div>1</div>
+          <Link to="/diet">
+            <div>diet</div>
           </Link>
         </HomeMenu1>
         <HomeMenu2>
