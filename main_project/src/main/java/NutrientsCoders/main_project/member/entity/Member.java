@@ -19,7 +19,7 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long memberId;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -47,7 +47,8 @@ public class Member {
     @Column
     private Float activity;
 
-    //private List<String> avoid = new ArrayList<>();
+    //@OneToMany(mappedBy = "food")
+    //private List<food> avoid = new ArrayList<>();
 
     @Column
     private String imageUrl;

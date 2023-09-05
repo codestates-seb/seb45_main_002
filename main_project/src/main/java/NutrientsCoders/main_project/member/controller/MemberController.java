@@ -18,6 +18,7 @@ import java.net.URI;
 @RequestMapping("")
 @Validated
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -26,6 +27,11 @@ public class MemberController {
     public MemberController(MemberService memberService, MemberMapper memberMapper) {
         this.memberService = memberService;
         this.memberMapper = memberMapper;
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity mainsend (){
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/login/check")
@@ -63,6 +69,18 @@ public class MemberController {
     }
 
     //login
+    @PostMapping("/login")
+    public ResponseEntity<MemberResponseDto.loginNext> loginMember(@RequestBody MemberDto.Login memberLogin) throws Exception {
+        if(memberService.checkEmail(memberLogin.getEmail())){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!memberService.checkPassword(memberLogin.getEmail(), memberLogin.getPassword())){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        MemberResponseDto.loginNext response = memberMapper.memberLoginChanger(memberLogin);
+        return ResponseEntity.ok(response);
+    }
 
     @PatchMapping("/mypage/{member-id}")
     public ResponseEntity<MemberResponseDto.MyPage> updateMember(@PathVariable("member-id")Long memberId ,
