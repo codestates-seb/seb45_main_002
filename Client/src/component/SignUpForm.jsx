@@ -10,6 +10,7 @@ const SignUpFormContainer = styled.div`
   display: flex;
   flex-direction: column;
   &>*{
+    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
     margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width} 0;
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   }
@@ -18,11 +19,12 @@ const SignUpFormContainer = styled.div`
     padding: 0 !important;
   }
   &>:nth-child(1)>input{
+    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   }
   &>:nth-child(4){
     height: ${style.layout.narrowMargin.height};
-    margin: 3px; padding: 0;
+    margin: 0; padding: 0;
     font-size: xx-small;
     color: rgb(125, 0, 0);
   }
@@ -32,12 +34,12 @@ const SignUpFormContainer = styled.div`
   }
 `
 const CheckButton = styled.button`
+  height: ${style.layout.sideMargin}; width: ${style.layout.main.width/4};
   margin-left: ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   border-radius: 5px;
   background-color: ${style.color.orangered4};
   color: ${style.color.ivory};
-  font-size: xx-small;
   font-weight: bold;
   cursor: pointer;
 `

@@ -16,17 +16,21 @@ const LoginFormContainer = styled.form`
   display: flex;
   flex-direction: column;
   &>*{
+    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
     margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   }
+  &>:nth-child(2){
+    margin-bottom: ${style.layout.narrowMargin.height/2};
+  }
   &>div{
-    height: ${style.layout.narrowMargin.height};
-    margin: 3px; padding: 0;
+    height: 0;
+    margin: 0px; padding: 0;
     font-size: xx-small;
     color: rgb(125, 0, 0);
   }
   &>button{
-    margin: 0 ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
+    margin: ${style.layout.narrowMargin.height*3/2} ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
   }
 `
 const LoginForm = () => {

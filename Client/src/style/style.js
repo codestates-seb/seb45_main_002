@@ -2,7 +2,7 @@ const style = {
   layout: {
     maxWidth: window.innerWidth,
     maxHeight: window.innerHeight,
-    sideMargin: window.innerWidth / 8,
+    sideMargin: window.innerWidth<769? 0 : window.innerWidth / 8,
     wideMargin: {
       width: (window.innerWidth - (window.innerWidth / 8) * 2) / 20,
       height: window.innerHeight / 40,
@@ -15,7 +15,7 @@ const style = {
       height: window.innerHeight / 16,
     },
     main: {
-      width: (window.innerWidth / 4) * 3,
+      width: window.innerWidth<769? window.innerWidth : (window.innerWidth / 4) * 3,
       height:
         window.innerHeight - window.innerHeight / 16 - window.innerHeight / 40,
     },
