@@ -5,7 +5,7 @@ import style from "../style/style";
 import Modal from "../atom/GlobalModal";
 import ModalPortal from "../atom/ModalPortal";
 import LoginForm from "./LoginForm";
-import SignUpForm from "./SignUpForm"
+import SignUpForm from "./SignUpForm";
 import { useState } from "react";
 import useZustand from "../zustand/Store";
 
@@ -43,46 +43,61 @@ const HeaderContainer = styled.header`
 const HeaderIconContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   max-width: 768px;
   width: 100%;
+  padding: 5px;
 `;
 
-const ProfileContainer = styled.div`
-  width: 40px;
-  height: 40px;
-  background-color: white;
-  color: black;
-  white-space: nowrap;
-  border: 1px solid #444444;
-  border-radius: 50%;
-  cursor: pointer;
-  /* margin-right: calc(${style.layout.maxWidth}px / 20 / 4); */
-`;
+// const ProfileContainer = styled.div`
+//   width: 40px;
+//   height: 40px;
+//   background-color: white;
+//   color: black;
+//   white-space: nowrap;
+//   border: 1px solid #444444;
+//   border-radius: 50%;
+//   cursor: pointer;
+//   margin-right: calc(${style.layout.maxWidth}px / 20 / 4);
+// `;
 
-const HambergerI = styled.i`
+const HambergerContainer = styled.div`
   width: 40px;
   height: 40px;
-  border: solid 1px red;
+  /* border: solid 1px red; */
+  justify-content: center;
+  align-items: center;
+  & > i {
+    width: 90%;
+    height: 00%;
+  }
   /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
+
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 30%;
+  height: ${style.layout.header.height / 2};
+`;
+
 const LoginButton = styled.button`
-  height: ${style.layout.header.height/2};
+  height: ${style.layout.header.height / 2};
   border: none;
   background-color: orange;
   color: white;
-  font-size: ${style.layout.header.height/3};
+  font-size: ${style.layout.header.height / 5};
   font-weight: bolder;
   white-space: nowrap;
   cursor: pointer;
-`
+`;
 const SignUpButton = styled(LoginButton)`
   background-color: green;
-`
+`;
 
-function Header({menu,setMenu}) {
+function Header({ menu, setMenu }) {
+  const accessToken = useZustand((state) => state.accessToken);
 
-  const accessToken = useZustand(state=>state.accessToken)
-  
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
   const [footer, setFooter] = useState(null);
@@ -104,36 +119,53 @@ function Header({menu,setMenu}) {
   return (
     <HeaderContainer>
       <HeaderIconContainer>
-        {style.layout.maxWidth < 769 ? (
-          <HambergerI className="fa-solid fa-bars" onClick={()=>setMenu(!menu)} />
-        ) : null}
+        <HambergerContainer>
+          {style.layout.maxWidth < 769 ? (
+            <i
+              className="fa-solid fa-bars fa-2x"
+              onClick={() => setMenu(!menu)}
+            />
+          ) : null}
+        </HambergerContainer>
         <Link to="/">
           <span>뉴트리션 코더스</span>{" "}
         </Link>
-        {accessToken?
-        <span>
-          <img alt="My Page" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
-          <SignUpButton>로그아웃</SignUpButton>
-        </span>
-        :
-        <span>
-          <LoginButton onClick={handleOpenLoginModal}>로그인</LoginButton>
-          <SignUpButton onClick={handleOpenSignUpModal}>회원가입</SignUpButton>
-          <ModalPortal>
-            <Modal
-              isOpen={isOpen}
-              content={content}
-              header={header}
-              footer={footer}
-              setContent={setContent}
-              setHeader={setHeader}
-              setFooter={setFooter}
-              setIsOpen={setIsOpen}
-            />
-          </ModalPortal>
-        </span>
-        }
-        <ProfileContainer
+
+        <BtnContainer>
+          {accessToken ? (
+            <>
+              <img
+                alt="My Page"
+                src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116"
+                height={
+                  style.layout.header.height - style.layout.narrowMargin.height
+                }
+              ></img>
+              <SignUpButton>로그아웃</SignUpButton>
+            </>
+          ) : (
+            <>
+              <LoginButton onClick={handleOpenLoginModal}>로그인</LoginButton>
+              <SignUpButton onClick={handleOpenSignUpModal}>
+                회원가입
+              </SignUpButton>
+              {/* 
+              <ModalPortal>
+                <Modal
+                  isOpen={isOpen}
+                  content={content}
+                  header={header}
+                  footer={footer}
+                  setContent={setContent}
+                  setHeader={setHeader}
+                  setFooter={setFooter}
+                  setIsOpen={setIsOpen}
+                />
+              </ModalPortal> */}
+            </>
+          )}
+        </BtnContainer>
+        {/* <ProfileContainer
           onClick={
             // isLoggedIn ?
             handleOpenLoginModal
@@ -147,7 +179,7 @@ function Header({menu,setMenu}) {
             }
             alt="profileimage"
           />
-        </ProfileContainer>
+        </ProfileContainer> */}
       </HeaderIconContainer>
       <ModalPortal>
         <Modal
