@@ -27,10 +27,10 @@ function Diet() {
 }, []);
 
   const searchFoodHandler = () => {
-    // axios.get(`${SERVER_URL}/search/foods`).then((response) => {
-    //   console.log(response);
-    //   setSearchFoodList(response.data.foods);
-    // });
+  axios.get(`${SERVER_URL}/search/foods`).then((response) => {
+    console.log(response);
+    setSearchFoodList(response.data.foods);
+  });
   };
 
   const AddFoodHandler = (name, kcal) => {
