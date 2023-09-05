@@ -73,7 +73,7 @@ public class EachMealService {
   //EachMeal-EachMealFood안의 FoodId값으로 Food객체를 찾은 후 비율을 분석하여 연결합니다
   private List<EachMealFood> eachMealFoodsfindFood(List<EachMealFood> eachMealFoods, EachMeal eachMeal) {
     
-    return eachMealFoods.stream().map(eachMealFood -> {
+    return eachMealFoods.stream().peek(eachMealFood -> {
       long foodId = eachMealFood.getFood().getFoodId();
       Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
@@ -82,7 +82,6 @@ public class EachMealService {
       eachMealFood.setRateCarbo(findFood.getCarbo()*eachMealFood.getQuantity());
       eachMealFood.setRateProtein(findFood.getProtein()*eachMealFood.getQuantity());
       eachMealFood.setRateFat(findFood.getProtein()*eachMealFood.getQuantity());
-      return eachMealFood;
     }).collect(Collectors.toList());
   }
 }

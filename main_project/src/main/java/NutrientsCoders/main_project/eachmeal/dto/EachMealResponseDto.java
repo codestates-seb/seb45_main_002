@@ -1,8 +1,5 @@
 package NutrientsCoders.main_project.eachmeal.dto;
 
-import NutrientsCoders.main_project.food.entity.EtcNutrients;
-import NutrientsCoders.main_project.food.entity.Food;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
