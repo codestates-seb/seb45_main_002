@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,13 +40,8 @@ public class FoodService {
     return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
   //Id로 음식 검색
-  public Food findByFoodJoinNutrients(long foodId) {
-    Optional<Food> optionalFood = foodRepository.findByFoodIdJoinNutrients(foodId);
-    return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
-  }
-  
   public Food findByFood(long foodId) {
-    Optional<Food> optionalFood = foodRepository.findFoodByIdWithoutEtcNutrients(foodId);
+    Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
     return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
   

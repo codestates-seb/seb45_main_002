@@ -42,7 +42,7 @@ public class FoodController {
   //선택 음식 조회
   @GetMapping("/foods/{food-id}")
   public ResponseEntity<FoodResponseDto> getFoodSearchFoodId(@PathVariable("food-id") long foodId) {
-    Food food = foodService.findByFoodJoinNutrients(foodId);
+    Food food = foodService.findByFood(foodId);
     FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
     
     return new ResponseEntity<>(response,HttpStatus.OK);

@@ -5,6 +5,7 @@ import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealFoodRepository;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealRepository;
 import NutrientsCoders.main_project.food.entity.Food;
+import NutrientsCoders.main_project.food.repository.FoodRepository;
 import NutrientsCoders.main_project.food.service.FoodService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
@@ -18,13 +19,13 @@ import java.util.stream.Collectors;
 @Service
 public class EachMealService {  
   private final EachMealRepository eachMealRepository;
-  private final FoodService foodService;
+  private final FoodRepository foodRepository;
   private final EachMealFoodRepository eachMealFoodRepository;
   
-  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository) {
+  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, FoodRepository foodRepository, EachMealFoodRepository eachMealFoodRepository) {
     this.eachMealRepository = eachMealRepository;
+    this.foodRepository = foodRepository;
     this.eachMealFoodRepository = eachMealFoodRepository;
-    this.foodService = foodService;
   }
   
   //foodId로 food 엔티티를 찾아 끼니 저장
@@ -36,16 +37,16 @@ public class EachMealService {
     return eachMealRepository.save(eachMeal);
   }
   //선택 끼니 조회
+  @Transactional
   public EachMeal findByEachMeal(long eachMealId) {
-    
     return verifyExistsEachMeal(eachMealId);
   }
   
-  @Transactional
   //선택 끼니 수정
+  @Transactional
   public EachMeal updateEachMeal(EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId);
-
+    deleteEachMealFoods(eachMealId);
     List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
     findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
@@ -75,7 +76,8 @@ public class EachMealService {
     
     return eachMealFoods.stream().peek(eachMealFood -> {
       long foodId = eachMealFood.getFood().getFoodId();
-      Food findFood  = foodService.findByFood(foodId);
+      Food findFood  = foodRepository.findByFoodId(foodId)
+          .orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
       eachMealFood.setRateKcal((long) (findFood.getKcal()*eachMealFood.getQuantity()));

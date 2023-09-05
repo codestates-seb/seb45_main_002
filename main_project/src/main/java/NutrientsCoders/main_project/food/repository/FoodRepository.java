@@ -42,11 +42,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
   //id로 food 조회
   @Query("SELECT f FROM Food f WHERE f.foodId = :foodId AND f.brand = '일반'")
-  Optional<Food> findByFoodIdJoinNutrients(@Param("foodId") long foodId);
-  //**** lazy를 해도
-  
-  @Query("SELECT f FROM Food f WHERE f.foodId = :foodId AND f.brand = '일반'")
-  Optional<Food> findFoodByIdWithoutEtcNutrients(@Param("foodId") long foodId);
-  
+  Optional<Food> findByFoodId(@Param("foodId") long foodId);
+
 }
     
