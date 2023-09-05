@@ -25,3 +25,7 @@ logging:
 server:
   port: 8080
 
+jwt:
+  key: ${JWT_SECRET_KEY}
+  access-exp-min: 3
+  refresh-exp-min: 30

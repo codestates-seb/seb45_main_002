@@ -1,6 +1,8 @@
 package NutrientsCoders.main_project.eachmeal.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 @Getter
@@ -20,7 +22,9 @@ public class EachMealDto {
   private Double totalEachProtein;
   
   private Double totalEachFat;
+
   @Getter
+  @NoArgsConstructor(access = AccessLevel.PROTECTED)
   public static class EachMealFoodDto {
     private long eachMealFoodId;
     
