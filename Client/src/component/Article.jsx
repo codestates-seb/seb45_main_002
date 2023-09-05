@@ -27,7 +27,7 @@ const TitleContainer = styled.div`
   align-items: flex-start;
   width: 100%;
   height: 80%;
-  border-bottom: 1px solid #ffc1237b;
+  border-bottom: 1px solid #ffc123;
   font-size: 18px;
   margin-bottom: 10px;
 `;

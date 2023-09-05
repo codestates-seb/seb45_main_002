@@ -1,6 +1,9 @@
 import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
 import useArticleStore from "../zustand/ArticleStore";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
+import { useState } from "react";
+import { keyframes } from "styled-components";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -29,11 +32,12 @@ const TitleContainer = styled.div`
 
 const ContentContainer = styled.div`
   width: 100%;
-  height: 70%;
-  /* border: 1px solid red; */
-  padding: 0.5rem;
+  max-height: 70%;
+  border: 1px solid red;
+  padding: 10px;
 
   & > div {
+    padding-top: 1rem;
     width: 100%;
     height: 40vh;
     max-height: 70%;
@@ -90,36 +94,79 @@ const FoodInfo = styled.div`
   /* border: 1px solid red; */
 `;
 
-const DietBtnContainer = styled.div`
-  display: flex;
-`;
-
-const DietBtn = styled.div`
-  display: flex;
-  background-color: #ffc123;
-  color: black;
-  justify-content: center;
-  align-items: center;
-  max-width: 30%;
-  width: auto;
-  height: 30px;
+const BtnContainer = styled.div`
   padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
-  font-size: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  display: flex;
+
+  width: 100%;
+  height: 3em;
+  border: 1px solid red;
+  gap: 10px;
 `;
 
-const SubmitBtn = styled.div`
+const CommonBtn = styled.div`
   display: flex;
   width: 60px;
   height: 20px;
   background-color: #ffc123;
   border-radius: 10px;
-  margin-top: 10px;
   justify-content: center;
   align-items: center;
   font-size: 12px;
 `;
+
+const beat = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
+const HeartIcon = styled.div`
+  position: relative;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+`;
+
+const HeartOutline = styled(HeartOutlined)`
+  font-size: 18px;
+  color: ${(props) => (props.isChecked ? "black" : "red")};
+  transition: color 1s;
+`;
+
+const HeartFill = styled(HeartFilled)`
+  font-size: 18px;
+  color: red;
+  animation: ${(props) =>
+    props.isChecked ? "" : `${beat} 0.8s ease infinite`};
+  transition: color 1s;
+`;
+
+const LikeBtn = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const onClick = () => {
+    setIsChecked((prev) => !prev);
+  };
+
+  return (
+    <HeartIcon onClick={onClick}>
+      {isChecked ? (
+        <HeartFill isChecked={isChecked} />
+      ) : (
+        <HeartOutline isChecked={isChecked} />
+      )}
+    </HeartIcon>
+  );
+};
 
 const ArticleDetail = ({ like, created_at, views, communityContent }) => {
   const { communityId } = useParams();
@@ -157,8 +204,15 @@ const ArticleDetail = ({ like, created_at, views, communityContent }) => {
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <div>{communityContent}</div>
+        <div>
+          콘텐츠입니다
+          {communityContent}
+        </div>
       </ContentContainer>
+      <BtnContainer>
+        <CommonBtn />
+        <LikeBtn />
+      </BtnContainer>
     </WriteFormContainer>
   );
 };

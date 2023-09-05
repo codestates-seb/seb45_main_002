@@ -7,7 +7,8 @@ const HomeContainer = styled.article`
   text-align: center;
   & > :first-child {
     height: ${style.layout.main.height / 2};
-    padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
+    /* padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin
+      .width}; */
   }
   & > :last-child {
     height: ${style.layout.main.height / 2};

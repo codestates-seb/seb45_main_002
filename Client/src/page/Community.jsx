@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import useArticleStore from "../zustand/ArticleStore";
 import ArticleDetail from "../component/ArticleDetail";
+import style from "../style/style";
 
 const CommunityContainer = styled.div`
   display: flex;
@@ -16,6 +17,7 @@ const CommunityContainer = styled.div`
   align-items: center;
   background-color: #efefef;
   padding: 15px;
+  margin-left: -${style.layout.sideMargin};
 `;
 
 const CommunityBody = styled.div`
