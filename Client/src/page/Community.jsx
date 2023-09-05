@@ -51,7 +51,7 @@ const WriteBtn = styled.div`
   color: black;
 
 `;
-export const CommunityPage = () => {
+const CommunityPage = () => {
   const { articles, fetchArticles } = useArticleStore();
 
   useEffect(() => {
@@ -85,3 +85,5 @@ export const CommunityPage = () => {
     </>
   );
 };
+
+export default CommunityPage;

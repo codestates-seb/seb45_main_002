@@ -64,7 +64,7 @@ function Home({ setPage }) {
           </Link>
         </HomeMenu1>
         <HomeMenu2>
-          <Link to="/Community" onClick={() => setPage("Community")}>
+          <Link to="/community" onClick={() => setPage("community")}>
             <div>4</div>
           </Link>
         </HomeMenu2>
