@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ReactDOM from "react-dom";
-import { useState } from "react";
 
 const ModalContainer = styled.div`
   background-color: transparent;
@@ -98,7 +96,8 @@ const Modal = ({
   return (
     <ModalContainer $isOpen={isOpen}>
       <ModalBackdrop onClick={handleCloseModal}>
-        <ContentContainer onClick={(e) => e.stopPropagation()}>
+
+       <ContentContainer onClick={e=>e.stopPropagation()}>
           <HeaderContainer>{header}</HeaderContainer>
           {content}
           <FooterContainer>{footer}</FooterContainer>
