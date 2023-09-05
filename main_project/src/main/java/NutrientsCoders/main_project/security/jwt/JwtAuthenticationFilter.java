@@ -67,13 +67,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     // AccessToken 발급 과정 (유저 정보 대입)
-    private String delegateAccessToken(Member member) {
+    private String delegateAccessToken(Member member) { //email대신 id, 닉네임,유저 권한 대입
         Map<String, Object> claims = new HashMap<>();
         claims.put("memberId",member.getMemberId());
-        claims.put("username", member.getEmail());
+        claims.put("username", member.getNickname());
         claims.put("roles", member.getRoles());
 
-        String subject = member.getEmail();
+        String subject = member.getNickname();
         Date expiration = jwtmaker.getTokenExpiration(jwtmaker.getAccessExpiration());
 
         String base64EncodedSecretKey = jwtmaker.encodeBase64SecretKey(jwtmaker.getSecret());
@@ -83,7 +83,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     // RefreshToken 발급 과정
     private String delegateRefreshToken(Member member) {
-        String subject = member.getEmail();
+        String subject = member.getNickname();
         Date expiration = jwtmaker.getTokenExpiration(jwtmaker.getRefreshExpiration());
         String base64EncodedSecretKey = jwtmaker.encodeBase64SecretKey(jwtmaker.getSecret());
 

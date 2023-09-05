@@ -32,9 +32,10 @@ public class MemberDetailsService implements UserDetailsService {
         return new MemberDetails(findMember);
     }
 
-    private final class MemberDetails extends Member implements UserDetails {
+    private final class MemberDetails extends Member implements UserDetails { //details 생성
         MemberDetails(Member member) {
             setMemberId(member.getMemberId());
+            setNickname(member.getNickname());
             setEmail(member.getEmail());
             setPassword(member.getPassword());
             setRoles(member.getRoles());
