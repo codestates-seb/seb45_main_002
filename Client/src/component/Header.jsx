@@ -5,49 +5,63 @@ import style from "../style/style";
 import Modal from "../atom/GlobalModal";
 import ModalPortal from "../atom/ModalPortal";
 import LoginForm from "./LoginForm";
-import SignUpForm from "./SignUpForm";
 import { useState } from "react";
 
 const HeaderContainer = styled.header`
+  width: 100vw;
+  box-sizing: border-box;
   display: flex;
-  max-width: 768px;
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
   height: ${style.layout.header.height};
-  justify-content: space-between;
-  border: solid 1px orange;
-  font-size: 26px;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 2px #444444;
+  font-size: 18px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+
   & > * {
+    align-items: center;
     display: flex;
-    padding: 0.5% 0;
+    /* padding: 0, auto; */
+    font-family: "Gugi", "sans-serif";
   }
-  & > :first-child > * {
+
+  /* & > :first-child > * {
     margin-left: calc(${style.layout.maxWidth}px / 20 / 2);
   }
   & > :last-child > * {
     margin-right: calc(${style.layout.maxWidth}px / 20 / 2);
+  } */
+
+  & > link {
+    text-decoration: none;
+    color: inherit;
   }
 `;
 
-const LoginButton = styled.button`
-  border: none;
-  background-color: orange;
-  padding: 0 1%;
-  color: white;
-  font-size: 50%;
-  font-weight: bolder;
-  white-space: nowrap;
-  width: ${style.layout.sideMargin / 3};
-  cursor: pointer;
+const HeaderIconContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  max-width: 768px;
+  width: 100%;
 `;
-const SignUpButton = styled(LoginButton)`
-  background-color: green;
+
+const ProfileContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: black;
+  white-space: nowrap;
+  border: 1px solid #444444;
+  border-radius: 50%;
+  cursor: pointer;
+  /* margin-right: calc(${style.layout.maxWidth}px / 20 / 4); */
+`;
+
+const NavContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  border: solid 1px red;
+  /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
 `;
 
 function Header() {
@@ -63,42 +77,41 @@ function Header() {
     setContent(<LoginForm />);
   };
 
-  const handleOpenSignUpModal = () => {
-    setIsOpen(true);
-    setHeader("signup header입니다");
-    setFooter("sigunup footer입니다");
-    setContent(<SignUpForm />);
-  };
-
   return (
     <HeaderContainer>
-      <span>
-        {style.layout.maxWidth < 980 ? (
-          <i className="fa-solid fa-bars"></i>
-        ) : null}
+      <HeaderIconContainer>
+        <NavContainer>NAV</NavContainer>
         <Link to="/">
-          <img
-            width={style.layout.maxWidth < 980 ? "100%" : "200%"}
-            alt="logo"
-          />
+          <span>뉴트리션 코더스</span>{" "}
         </Link>
-      </span>
-      <span>
-        <LoginButton onClick={handleOpenLoginModal}>로그인</LoginButton>
-        <SignUpButton onClick={handleOpenSignUpModal}>회원가입</SignUpButton>
-        <ModalPortal>
-          <Modal
-            isOpen={isOpen}
-            content={content}
-            header={header}
-            footer={footer}
-            setContent={setContent}
-            setHeader={setHeader}
-            setFooter={setFooter}
-            setIsOpen={setIsOpen}
+        <ProfileContainer
+          onClick={
+            // isLoggedIn ?
+            handleOpenLoginModal
+            // : undefined
+          }
+        >
+          <img
+            src={
+              // user.imageUrl ||
+              "image/profileimage.svg"
+            }
+            alt="profileimage"
           />
-        </ModalPortal>
-      </span>
+        </ProfileContainer>
+      </HeaderIconContainer>
+      <ModalPortal>
+        <Modal
+          isOpen={isOpen}
+          content={content}
+          header={header}
+          footer={footer}
+          setContent={setContent}
+          setHeader={setHeader}
+          setFooter={setFooter}
+          setIsOpen={setIsOpen}
+        />
+      </ModalPortal>
     </HeaderContainer>
   );
 }

@@ -29,23 +29,6 @@ function Home({ setPage }) {
     <HomeContainer>
       <div>
         캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
-        캘린더 위치
-        <br />
       </div>
       <div>
         <HomeMenu1>
@@ -64,7 +47,7 @@ function Home({ setPage }) {
           </Link>
         </HomeMenu1>
         <HomeMenu2>
-          <Link>
+          <Link to="/Community" onClick={() => setPage("Community")}>
             <div>4</div>
           </Link>
         </HomeMenu2>
