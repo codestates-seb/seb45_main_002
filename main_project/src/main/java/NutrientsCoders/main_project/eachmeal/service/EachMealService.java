@@ -37,6 +37,7 @@ public class EachMealService {
   }
   //선택 끼니 조회
   public EachMeal findByEachMeal(long eachMealId) {
+    
     return verifyExistsEachMeal(eachMealId);
   }
   

@@ -43,19 +43,7 @@ public class EachMeal {
   
   @Column
   private Double totalEachFat;
-  public enum timeSlots {
-    Breakfast(1, "아침 식사"),
-    Lunch(2, "점심 식사"),
-    Dinner(3, "저녁 식사");
-
-    @Getter
-    private int num;
-
-    @Getter
-    private String mealType;
-
-    timeSlots(int num, String mealType) {
-    }
-  }
-
+  
+  @Column
+  private Integer timeSlot;
   }

@@ -21,33 +21,42 @@ public interface EachMealMapper {
     eachMeal.setTotalEachCarbo( eachMealDto.getTotalEachCarbo() );
     eachMeal.setTotalEachProtein( eachMealDto.getTotalEachProtein() );
     eachMeal.setTotalEachFat( eachMealDto.getTotalEachFat() );
+    eachMeal.setTimeSlot(eachMealDto.getTimeSlots());
     
     return eachMeal;
   }
   //EachMeal-> ResponseDto
   default EachMealResponseDto eachMealToEachMealResponseDto(EachMeal eachMeal) {
-    EachMealResponseDto eachMealResponseDto = new EachMealResponseDto();
-    eachMealResponseDto.setMemberId(1); // 임시로 memberId 설정*******
-    eachMealResponseDto.setEachMealId(eachMeal.getEachMealId());
-    eachMealResponseDto.setTotalEachKcal((long) eachMeal.getTotalEachKcal().doubleValue());
-    eachMealResponseDto.setTotalEachCarbo(eachMeal.getTotalEachCarbo());
-    eachMealResponseDto.setTotalEachProtein(eachMeal.getTotalEachProtein());
-    eachMealResponseDto.setTotalEachFat(eachMeal.getTotalEachFat());
+    EachMealResponseDto eachMealResponseDto = EachMealResponseDto.builder()
+        .memberId(1)
+        .eachMealId(eachMeal.getEachMealId())
+        .timeSlots(eachMeal.getTimeSlot())
+        .totalEachKcal(eachMeal.getTotalEachKcal())
+        .totalEachCarbo(eachMeal.getTotalEachCarbo())
+        .totalEachProtein(eachMeal.getTotalEachProtein())
+        .totalEachFat(eachMeal.getTotalEachFat())
+        .build();
     
     List<EachMealResponseDto.QuantityFoodDto> quantityFoods = new ArrayList<>();
     
     // EachMealFood를 QuantityFoodDto로 변환하여 리스트에 추가
     for (EachMealFood eachMealFood : eachMeal.getEachMealFoods()) {
-      EachMealResponseDto.QuantityFoodDto quantityFoodDto = new EachMealResponseDto.QuantityFoodDto();
-      quantityFoodDto.setFood(eachMealFood.getFood());
-      quantityFoodDto.setQuantity(eachMealFood.getQuantity());
-      quantityFoodDto.setRatioEachKcal(eachMealFood.getRateKcal());
-      quantityFoodDto.setRatioEachCarbo(eachMealFood.getRateCarbo());
-      quantityFoodDto.setRatioEachProtein(eachMealFood.getRateProtein());
-      quantityFoodDto.setRatioEachFat(eachMealFood.getRateFat());
+      EachMealResponseDto.QuantityFoodDto quantityFoodDto = EachMealResponseDto.QuantityFoodDto.builder()
+          .foodId(eachMealFood.getFood().getFoodId())
+          .brand(eachMealFood.getFood().getBrand())
+          .foodName(eachMealFood.getFood().getFoodName())
+          .foodCategory1(eachMealFood.getFood().getFoodCategory1())
+          .foodCategory2(eachMealFood.getFood().getFoodCategory2())
+          .servingSize(eachMealFood.getFood().getServingSize())
+          .quantity(eachMealFood.getQuantity())
+          .ratioEachKcal(eachMealFood.getRateKcal())
+          .ratioEachCarbo(eachMealFood.getRateCarbo())
+          .ratioEachProtein(eachMealFood.getRateProtein())
+          .ratioEachFat(eachMealFood.getRateFat())
+          .build();
       quantityFoods.add(quantityFoodDto);
     }
-        eachMealResponseDto.setQuantityfoods(quantityFoods);
+    eachMealResponseDto.setQuantityfoods(quantityFoods);
     
     return eachMealResponseDto;
   }
