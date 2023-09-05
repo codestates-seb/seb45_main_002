@@ -1,20 +1,19 @@
 package NutrientsCoders.main_project.food.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
+@TableGenerator(name = "generator", initialValue = 10000)
 @Getter
 @Setter
 @Entity
 public class Food {
   
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "FOOD_ID", unique = true)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "generator")
+  @Column(name = "FOOD_ID")
   private Long foodId;
 
   @Column(nullable = false, updatable = false)
@@ -44,9 +43,9 @@ public class Food {
   @Column(nullable = false, updatable = false)
   private Double fat;
   
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food", cascade = CascadeType.PERSIST)
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "food", cascade = CascadeType.ALL)
   private EtcNutrients etcNutrients;
 
   @Column
-  private Boolean morning;
+  private Boolean breakfast;
 }
