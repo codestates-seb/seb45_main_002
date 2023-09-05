@@ -5,7 +5,6 @@ import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealFoodRepository;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealRepository;
 import NutrientsCoders.main_project.food.entity.Food;
-import NutrientsCoders.main_project.food.repository.FoodRepository;
 import NutrientsCoders.main_project.food.service.FoodService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
@@ -19,13 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class EachMealService {  
   private final EachMealRepository eachMealRepository;
-  private final FoodRepository foodRepository;
+  private final FoodService foodService;
   private final EachMealFoodRepository eachMealFoodRepository;
   
-  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, FoodRepository foodRepository, EachMealFoodRepository eachMealFoodRepository) {
+  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository) {
     this.eachMealRepository = eachMealRepository;
-    this.foodRepository = foodRepository;
     this.eachMealFoodRepository = eachMealFoodRepository;
+    this.foodService = foodService;
   }
   
   //foodId로 food 엔티티를 찾아 끼니 저장
@@ -46,7 +45,7 @@ public class EachMealService {
   @Transactional
   public EachMeal updateEachMeal(EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId);
-    deleteEachMealFoods(eachMealId);
+    eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
     List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
     findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
@@ -60,7 +59,6 @@ public class EachMealService {
     eachMealRepository.deleteById(eachMealId);
   }
   
-  
   //전체 eachMealFood 목록 삭제
   @Transactional
   public void deleteEachMealFoods(long eachMealId) {
@@ -69,15 +67,14 @@ public class EachMealService {
   
   private EachMeal verifyExistsEachMeal(long eachMealId) {
     Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId);
-    return optionalEachMeal.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
+    return optionalEachMeal.orElseThrow(() -> new LogicException(ExceptionCode.EACHMEAL_NOT_FOUND));
   }
-  //EachMeal-EachMealFood안의 FoodId값으로 Food객체를 찾은 후 비율을 분석하여 연결합니다
+  //EachMealFood의 FoodId값으로 Food객체를 찾은 후 비율을 분석하여 EachMeal에 다시 저장합니다
   private List<EachMealFood> eachMealFoodsfindFood(List<EachMealFood> eachMealFoods, EachMeal eachMeal) {
     
     return eachMealFoods.stream().peek(eachMealFood -> {
       long foodId = eachMealFood.getFood().getFoodId();
-      Food findFood  = foodRepository.findByFoodId(foodId)
-          .orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
+      Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
       eachMealFood.setRateKcal((long) (findFood.getKcal()*eachMealFood.getQuantity()));
