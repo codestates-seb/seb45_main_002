@@ -1,7 +1,7 @@
 import Home from "../page/Home";
 import MyPage from "../page/MyPage";
 import Diet from "../page/Diet";
-import { Community } from "../page/Community";
+import CommunityPage from "../page/Community";
 
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
@@ -23,6 +23,7 @@ function Main() {
       <Routes>
         <Route path="*" element={<Home />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
+        <Route path="/community" element={<CommunityPage />}></Route>
         <Route path="/diet" element={<Diet />}></Route>
       </Routes>
     </MainContainer>

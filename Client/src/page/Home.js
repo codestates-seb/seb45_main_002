@@ -27,9 +27,7 @@ const HomeMenu2 = styled(HomeMenu1)`
 function Home({ setPage }) {
   return (
     <HomeContainer>
-      <div>
-        캘린더 위치
-      </div>
+      <div>캘린더 위치</div>
       <div>
         <HomeMenu1>
           <Link to="/diet">
@@ -47,8 +45,8 @@ function Home({ setPage }) {
           </Link>
         </HomeMenu1>
         <HomeMenu2>
-          <Link to="/Community" onClick={() => setPage("Community")}>
-            <div>4</div>
+          <Link to="/community" onClick={() => setPage("community")}>
+            <div>커뮤니티</div>
           </Link>
         </HomeMenu2>
         <HomeMenu1>
