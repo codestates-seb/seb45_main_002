@@ -1,7 +1,9 @@
-import { create } from "zustand";
+import {create} from "zustand"
 
-const useInputStore = create((set) => ({
+const useZustand = create((set) => ({
   value: "",
-  setValue: (value) => set({ value: value }),
-}));
-export default useInputStore;
+  setValue: (value)=>set({value: value}),
+  accessToken: localStorage.getItem("access_token"),
+  setAccessToken: (token)=>({accessToken: token})
+}))
+export default useZustand;
