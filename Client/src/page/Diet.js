@@ -12,25 +12,25 @@ function Diet() {
   const [searchFoodList, setSearchFoodList] = useState([]);
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${SERVER_URL}/dailymeals/{dailymealid}`)
-  //     .then((response) => {
-  //       // 성공한 경우 실행
-  //       console.log(response);
-  //       setMeal(response.data);
-  //     })
-  //     .catch((error) => {
-  //       // 에러인 경우 실행
-  //       console.log(error);
-  //     });
-  // }, []);
+  useEffect(() => {
+  axios
+  .get(`${SERVER_URL}/dailymeals/{dailymealid}`)
+  .then((response) => {
+      // 성공한 경우 실행
+      console.log(response);
+      setMeal(response.data);
+   })
+   .catch((error) => {
+      // 에러인 경우 실행
+      console.log(error);
+   });
+}, []);
 
   const searchFoodHandler = () => {
-    // axios.get(`${SERVER_URL}/search/foods`).then((response) => {
-    //   console.log(response);
-    //   setSearchFoodList(response.data.foods);
-    // });
+  axios.get(`${SERVER_URL}/search/foods`).then((response) => {
+    console.log(response);
+    setSearchFoodList(response.data.foods);
+  });
   };
 
   const AddFoodHandler = (name, kcal) => {
