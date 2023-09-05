@@ -63,4 +63,22 @@ public class CommunityController {
         communityService.deleteCommunity(communityId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    /** 게시글 제목으로 검색 **/
+    @GetMapping("/title-search")
+    public ResponseEntity<MultiResponseDto<Community>> searchTitle(@RequestParam(name = "keyword")String keyword,
+                                                            @RequestParam(name = "page" ,defaultValue = "0") @Positive int page,
+                                                            @RequestParam(name = "size",defaultValue = "10") @Positive int size){
+        Page<Community> pageCommunities = communityService.findTitleCommunity(keyword, page-1, size);
+        //여기서 Content -> title 이다.
+        List<Community> communities = pageCommunities.getContent();
+        List<Community> resultCommunity = communityMapper.communityToCommunityResponseDtos(communities);
+        return new ResponseEntity<>(new MultiResponseDto<>(resultCommunity,pageCommunities),HttpStatus.OK);
+    }
+    /** 게시글 추천 기능 **/
+    @GetMapping("/recommendation/{community-id}")
+    public ResponseEntity<CommunityResponseDto> recommendationCommunity(@PathVariable("community-id")@Positive long communityId){
+        Community community = communityService.recommendCommunity(communityId);
+        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }
