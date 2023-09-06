@@ -8,15 +8,16 @@ import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
 import NutrientsCoders.main_project.utils.TokenChanger;
 import NutrientsCoders.main_project.utils.UriCreator;
+
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import jdk.jshell.spi.ExecutionControl;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 

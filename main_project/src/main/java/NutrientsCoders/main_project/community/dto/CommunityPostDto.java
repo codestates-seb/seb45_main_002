@@ -8,4 +8,5 @@ import lombok.Setter;
 public class CommunityPostDto {
     private String communityTitle;
     private String communityContent;
+
 }

@@ -1,4 +1,4 @@
-package NutrientsCoders.main_project.community.entity;
+package NutrientsCoders.main_project.communitycomment.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class CommunityBaseTime {
+public class CommunityCommentBaseTime {
     @CreatedDate
     @Column(name = "CREATE_AT", updatable = false)
-    private LocalDateTime community_createdAt;
+    private LocalDateTime answerComment_createdAt;
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_AT")
-    private LocalDateTime community_modifiedAt;
+    private LocalDateTime answerComment_modifiedAt;
 }
