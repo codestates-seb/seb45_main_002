@@ -12,7 +12,7 @@ import java.util.List;
 public class EachMealResponseDto {
   private long memberId;
   private long eachMealId;
-  private Integer timeslots;
+  private Integer timeSlots;
   private Long totalEachKcal;
   private Double totalEachCarbo;
   private Double totalEachProtein;

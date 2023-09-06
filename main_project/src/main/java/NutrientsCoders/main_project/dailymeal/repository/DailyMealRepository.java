@@ -15,7 +15,10 @@ public interface DailyMealRepository extends JpaRepository<DailyMeal, Long> {
   @Query("SELECT dm FROM DailyMeal dm WHERE dm.date = :date and dm.member.memberId = :memberId")
   Optional<DailyMeal> findDailyMealByDate(@Param("date") LocalDate date, @Param("memberId") long memberId);
   
-  
+  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId")
+  List<DailyMeal> findAllByMemeberId(@Param("memberId") long memberId);
+
+
 //  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId")
 //  List<DailyMeal> findDailyMealsByMemberId(Long memberId);
 

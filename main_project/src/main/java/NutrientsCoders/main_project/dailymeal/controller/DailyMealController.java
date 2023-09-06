@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.dailymeal.controller;
 
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealMultiResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
@@ -51,6 +52,15 @@ public class DailyMealController {
     DailyMeal dailyMeal = dailyMealService.findByDailyMeal(memberId, date);
     DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
 
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
+  
+  //맴버 식단 전체 조회
+  @GetMapping
+  public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMeals() {
+    List<DailyMeal> dailyMeals = dailyMealService.findByDailyMeals(memberId);
+    List<DailyMealMultiResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
+    
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
 

@@ -31,8 +31,12 @@ public class DailyMealService {
   }
   
   //전체 식단 조회
-  //  public DailyMeal findByDailyMeals(long dailyMealId) {
-  //  }
+  public List<DailyMeal> findByDailyMeals(long memberId) {
+    List<DailyMeal> dailyMeals = dailyMealRepository.findAllByMemeberId(memberId);
+    return Optional.of(dailyMeals)
+        .filter(list -> !list.isEmpty())
+        .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
+  }
   
   //식단 수정
   public DailyMeal updateDailyMeal(long memberId, DailyMeal dailyMeal, LocalDate date) {
@@ -40,7 +44,6 @@ public class DailyMealService {
     findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
     return dailyMealRepository.save(dailyMeal);
   }
-  
   //식단 삭제
   public void deleteDailyMeal(LocalDate date, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMeal(memberId, date);
@@ -86,6 +89,8 @@ public class DailyMealService {
 //  }
     return null;
   }
+  
+
 }
 
 

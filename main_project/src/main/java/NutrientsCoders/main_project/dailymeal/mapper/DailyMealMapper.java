@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.dailymeal.mapper;
 
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealMultiResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
@@ -19,7 +20,7 @@ public interface DailyMealMapper {
     dailyMeal.setName(dailyMealDto.getName());
     dailyMeal.setFavorite(dailyMealDto.getFavorite());
     return dailyMeal;
-  };
+  }
   default DailyMealResponseDto dailyMealToDailyMealResponseDto(DailyMeal savedDailyMeal) {
     DailyMealResponseDto dailyMealResponseDto = new DailyMealResponseDto();
     dailyMealResponseDto.setDailyMealId(savedDailyMeal.getDailyMealId());
@@ -65,8 +66,9 @@ public interface DailyMealMapper {
     dailyMealResponseDto.setEachMeals(eachMealDtos);
     return dailyMealResponseDto;
   }
-
-  }
+  
+  List<DailyMealMultiResponseDto> dailyMealsToDailyMealResponseDtos(List<DailyMeal> dailyMeal);
+}
   
 
 
