@@ -10,61 +10,35 @@ import { useState } from "react";
 import useZustand from "../zustand/Store";
 
 const HeaderContainer = styled.header`
-  width: 100vw;
-  box-sizing: border-box;
   display: flex;
-  height: ${style.layout.header.height};
-  justify-content: center;
-  align-items: center;
-  border-bottom: solid 2px #444444;
-  font-size: 18px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-
-  & > * {
-    align-items: center;
-    display: flex;
-    /* padding: 0, auto; */
-    font-family: "Gugi", "sans-serif";
-  }
-
-  /* & > :first-child > * {
-    margin-left: calc(${style.layout.maxWidth}px / 20 / 2);
-  }
-  & > :last-child > * {
-    margin-right: calc(${style.layout.maxWidth}px / 20 / 2);
-  } */
-
-  & > link {
-    text-decoration: none;
-    color: inherit;
-  }
-`;
-
-const HeaderIconContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  max-width: 768px;
+  position: fixed;
+  top: 0;
   width: 100%;
-`;
-
-const ProfileContainer = styled.div`
-  width: 40px;
-  height: 40px;
-  background-color: white;
-  color: black;
-  white-space: nowrap;
-  border: 1px solid #444444;
-  border-radius: 50%;
-  cursor: pointer;
-  /* margin-right: calc(${style.layout.maxWidth}px / 20 / 4); */
-`;
+  height: ${style.layout.header.height};
+  justify-content: space-between;
+  border: solid 1px orange;
+  font-size: ${style.layout.header.height*7/8};
+  &>*{
+    display: flex;
+  }
+  &>:first-child>*{
+    margin-left: ${style.layout.maxWidth/20/3}px;
+  }
+  &>:last-child{
+    align-items: center;
+    margin-right: ${style.layout.maxWidth/20/3}px;
+    padding: 1% 0;
+  }
+  &>:last-child>*{
+    margin-right: ${style.layout.maxWidth/20/3}px;
+    padding: 0 3%;
+  }
+`
 
 const HambergerI = styled.i`
-  width: 40px;
-  height: 40px;
-  border: solid 1px red;
-  /* margin-left: calc(${style.layout.maxWidth}px / 20 / 4); */
-`;
+  cursor: pointer;
+`
+
 const LoginButton = styled.button`
   height: ${style.layout.header.height/2};
   border: none;
@@ -88,6 +62,11 @@ function Header({menu,setMenu}) {
   const [footer, setFooter] = useState(null);
   const [header, setHeader] = useState(null);
 
+  function logoutButton(){
+    localStorage.removeItem("access_token")
+    window.location.reload()
+  }
+
   const handleOpenLoginModal = () => {
     setIsOpen(true);
     setHeader("login header입니다");
@@ -103,17 +82,22 @@ function Header({menu,setMenu}) {
 
   return (
     <HeaderContainer>
-      <HeaderIconContainer>
+      <span>
         {style.layout.maxWidth < 769 ? (
           <HambergerI className="fa-solid fa-bars" onClick={()=>setMenu(!menu)} />
         ) : null}
         <Link to="/">
-          <span>뉴트리션 코더스</span>{" "}
+          <img
+            src="https://media.discordapp.net/attachments/483947972380327936/1144245243550638090/NutritionCoders-1.png?width=1498&height=1002"
+            height={style.layout.header.height*7/8}
+            alt="logo"
+          />
         </Link>
-        {accessToken?
+      </span>
+      {accessToken?
         <span>
-          <img alt="My Page" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
-          <SignUpButton>로그아웃</SignUpButton>
+          <img alt="My Page" src="image/profileimage.svg" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
+          <SignUpButton onClick={logoutButton}>로그아웃</SignUpButton>
         </span>
         :
         <span>
@@ -131,25 +115,7 @@ function Header({menu,setMenu}) {
               setIsOpen={setIsOpen}
             />
           </ModalPortal>
-        </span>
-        }
-        <ProfileContainer
-          onClick={
-            // isLoggedIn ?
-            handleOpenLoginModal
-            // : undefined
-          }
-        >
-          <img
-            src={
-              // user.imageUrl ||
-              "image/profileimage.svg"
-            }
-            alt="profileimage"
-          />
-        </ProfileContainer>
-      </HeaderIconContainer>
-      <ModalPortal>
+          <ModalPortal>
         <Modal
           isOpen={isOpen}
           content={content}
@@ -161,6 +127,8 @@ function Header({menu,setMenu}) {
           setIsOpen={setIsOpen}
         />
       </ModalPortal>
+        </span>
+      }
     </HeaderContainer>
   );
 }
