@@ -39,7 +39,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate()
 
-  const setAccessToken = useZustand(state=>state.setAccessToken)
+  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
 
   const [form, setForm] = useState({
     email: "",
@@ -74,8 +74,9 @@ const LoginForm = () => {
       }}
       )
       .then(res=>{
+        window.location.reload()
         setAccessToken(localStorage.getItem("access_token"))
-        navigate("/")
+        
       })
       .catch(err=>console.log(err+"실패했습니다."))
     }

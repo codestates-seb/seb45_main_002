@@ -2,6 +2,7 @@ import Home from "../page/Home";
 import MyPage from "../page/MyPage";
 import Diet from "../page/Diet";
 import CommunityPage from "../page/Community";
+import CommunityWrite from "../page/CommunityWrite"
 
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
@@ -24,6 +25,7 @@ function Main() {
         <Route path="*" element={<Home />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
         <Route path="/community" element={<CommunityPage />}></Route>
+        <Route path="/community/write" element={<CommunityWrite />}></Route>
         <Route path="/diet" element={<Diet />}></Route>
       </Routes>
     </MainContainer>

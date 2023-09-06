@@ -53,7 +53,7 @@ const SignUpButton = styled(LoginButton)`
 
 function Header({menu,setMenu}) {
 
-  const accessToken = useZustand(state=>state.accessToken)
+  const accessToken = useZustand.useToken(state=>state.accessToken)
   
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);

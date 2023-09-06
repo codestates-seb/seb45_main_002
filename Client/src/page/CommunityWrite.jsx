@@ -1,6 +1,4 @@
 import { styled } from "styled-components";
-import { useParams } from "react-router-dom";
-import useArticleStore from "../zustand/ArticleStore";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -14,17 +12,14 @@ const WriteFormContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 5%;
-
+  /* border: 1px solid black; */
   padding: 0.5rem;
-  margin-bottom: 20px;
 
-  border-top: 2px solid #ffc123;
-  border-bottom: 2px solid #ffc123;
+  & > input {
+    width: 100%;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -33,13 +28,11 @@ const ContentContainer = styled.div`
   /* border: 1px solid red; */
   padding: 0.5rem;
 
-  & > div {
+  & > textarea {
     width: 100%;
     height: 40vh;
     max-height: 70%;
-    background-color: transparent;
-    border-top: 2px solid #ffc123;
-    border-bottom: 2px solid #ffc123;
+    vertical-align: top;
   }
 `;
 
@@ -121,19 +114,16 @@ const SubmitBtn = styled.div`
   font-size: 12px;
 `;
 
-const ArticleDetail = ({ like, created_at, views, communityContent }) => {
-  const { communityId } = useParams();
-  const { articles } = useArticleStore();
-
-  const article = articles.find(
-    (article) => article.communityId === parseInt(communityId)
-  );
-
-  return (
+function CommunityWrite(){
+  return(
     <WriteFormContainer>
       <TitleContainer>
-        <div>제목입니다</div>
+        <input placeholder="제목" />
       </TitleContainer>
+      <DietBtnContainer>
+        <DietBtn>이미지 추가하기</DietBtn>
+        <DietBtn>식단 불러오기</DietBtn>
+      </DietBtnContainer>
       <DietContainer>
         <DietImageContainer>
           <img alt="dietimg" />
@@ -148,19 +138,18 @@ const ArticleDetail = ({ like, created_at, views, communityContent }) => {
             <FoodInfo>YYY</FoodInfo>
           </div>
           <div>
-            저녁
-            <FoodInfo>ZZZ</FoodInfo>
+            저녁 <FoodInfo>ZZZ</FoodInfo>
           </div>
           <div>
-            총<FoodInfo>XYZXYZ</FoodInfo>
+            총 <FoodInfo>XYZXYZ</FoodInfo>
           </div>
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <div>{communityContent}</div>
+        <textarea placeholder="내용" />
+        <SubmitBtn>SUBMIT</SubmitBtn>
       </ContentContainer>
     </WriteFormContainer>
   );
 };
-
-export default ArticleDetail;
+export default CommunityWrite;
