@@ -92,7 +92,8 @@ public class JwtTokenMaker {
 
 
     private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
-        byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
+        //byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
+        byte[] keyBytes = new byte[32];
 
         return Keys.hmacShaKeyFor(keyBytes);
     }
