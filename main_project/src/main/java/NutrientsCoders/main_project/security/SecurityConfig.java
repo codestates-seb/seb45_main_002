@@ -2,8 +2,11 @@ package NutrientsCoders.main_project.security;
 
 import NutrientsCoders.main_project.security.jwt.JwtAuthenticationFilter;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
+import NutrientsCoders.main_project.security.jwt.JwtVerificationFilter;
+import NutrientsCoders.main_project.utils.AuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,14 +20,18 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
 
     private final JwtTokenMaker tokenMaker;
+    private final AuthorityUtils authorityUtils; //Custom
 
-    public SecurityConfig(JwtTokenMaker tokenMaker) {
+    public SecurityConfig(JwtTokenMaker tokenMaker,
+                          AuthorityUtils authorityUtils) {
         this.tokenMaker = tokenMaker;
+        this.authorityUtils = authorityUtils;
     }
 
     @Bean
@@ -42,10 +49,22 @@ public class SecurityConfig {
                 .httpBasic().disable()//postman 요청 허용
                 .apply(new CustomFilterConfig())
                 .and()
-                .authorizeRequests()
-                .antMatchers("/h2/**").permitAll()
-                //.anyRequest().authenticated() //다른 요청은 인증 필요함
-                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .antMatchers(HttpMethod.GET, "/main").permitAll()
+
+                        .antMatchers(HttpMethod.POST, "/login/**").permitAll()
+
+                        .antMatchers(HttpMethod.PATCH, "/mypage/**").hasRole("USER")
+                        .antMatchers(HttpMethod.DELETE, "/mypage/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/mypage/**").hasRole("USER")
+
+                        .antMatchers(HttpMethod.POST, "/member/**").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/member/**").hasRole("USER")
+
+
+
+                        .anyRequest().permitAll()
+                )
 
         ;
 
@@ -64,7 +83,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://d9f8-14-37-234-174.ngrok-free.app","http://localhost:8080","http://localhost:3000")); //로컬환경 + npm 환경
         configuration.setAllowedMethods(Arrays.asList("GET","PATCH","DELETE","POST","OPTIONS")); //+options
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh"));
         configuration.setAllowCredentials(true);
 
@@ -86,13 +105,12 @@ public class SecurityConfig {
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
             // JwtVerificationFilter의 인스턴스를 생성 및 사용되는 객체들을 생성자로 DI
-            // JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenMaker, authorityUtils);
 
             // JwtAuthenticationFilter를 Spring Security Filter Chain에 추가
-            builder.addFilter(jwtAuthenticationFilter);
+            builder.addFilter(jwtAuthenticationFilter)
             //JwtVerificationFilter를 JwtAuthenticationFilter 뒤에 추가
-            //-> 위에 인증에 성공한 후 발급받은 JWT가 클라이언트의 request header(Authorization 헤더)에 포함되어 있을 경우에만 동작
-            //.addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+            .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
     }
 
