@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ModalContainer = styled.div`
   background-color: transparent;
   visibility: ${(props) => (props.$isOpen ? "visible" : "hidden")};
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
@@ -16,14 +16,13 @@ const ModalContainer = styled.div`
 `;
 
 export const ModalBackdrop = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
   top: 0;
   left: 0;
   right: 0;
@@ -96,8 +95,7 @@ const Modal = ({
   return (
     <ModalContainer $isOpen={isOpen}>
       <ModalBackdrop onClick={handleCloseModal}>
-
-       <ContentContainer onClick={e=>e.stopPropagation()}>
+        <ContentContainer onClick={(e) => e.stopPropagation()}>
           <HeaderContainer>{header}</HeaderContainer>
           {content}
           <FooterContainer>{footer}</FooterContainer>

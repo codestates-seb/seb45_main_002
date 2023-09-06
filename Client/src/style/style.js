@@ -2,7 +2,7 @@ const style = {
   layout: {
     maxWidth: window.innerWidth,
     maxHeight: window.innerHeight,
-    sideMargin: window.innerWidth<769? 0 : window.innerWidth / 8,
+    sideMargin: window.innerWidth < 769 ? 0 : window.innerWidth / 8,
     wideMargin: {
       width: (window.innerWidth - (window.innerWidth / 8) * 2) / 20,
       height: window.innerHeight / 40,
@@ -12,10 +12,13 @@ const style = {
       height: window.innerHeight / 40 / 2,
     },
     header: {
-      height: window.innerHeight / 16,
+      height: 60,
     },
     main: {
-      width: window.innerWidth<769? window.innerWidth : (window.innerWidth / 4) * 3,
+      width:
+        window.innerWidth < 769
+          ? window.innerWidth
+          : (window.innerWidth / 4) * 3,
       height:
         window.innerHeight - window.innerHeight / 16 - window.innerHeight / 40,
     },
@@ -29,6 +32,7 @@ const style = {
     },
   },
   color: {
+    white: "rgb(255,255,255)",
     darkgoldenrod: "rgb(184,134,11)",
     darkgoldenrod1: "rgb(255,185,15)",
     darkgoldenrod2: "rgb(238,173,14)",
@@ -155,8 +159,8 @@ const style = {
     yellow2: "rgb(238,238,0)",
     yellow3: "rgb(205,205,0)",
     yellow4: "rgb(139,139,0)",
-    yellowgreen: "rgb(154,205,50)"
-  }
+    yellowgreen: "rgb(154,205,50)",
+  },
 };
 export default style;
 
