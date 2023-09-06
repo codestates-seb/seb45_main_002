@@ -33,6 +33,11 @@ const LoginFormContainer = styled.form`
   }
   &>button{
     margin: ${style.layout.narrowMargin.height*3/2} ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
+    background-color: rgb(255, 184, 47);
+    font-weight: bolder;
+    &:active{
+      background-color: rgb(255, 222, 111);
+    }
   }
 `
 const LoginForm = () => {

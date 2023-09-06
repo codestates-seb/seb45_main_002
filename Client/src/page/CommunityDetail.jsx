@@ -80,7 +80,7 @@ function CommunityDetail(){
 
   const communityId = useParams();
 
-  const articles = useZustand.useArticle(state=>state.articles);
+  const articles = useZustand.useArticles(state=>state.articles);
 
   const article = articles.find(
     (article) => article.communityId === communityId["*"]

@@ -1,25 +1,22 @@
-import useInputStore from "../zustand/Store";
+
 import {styled} from "styled-components";
 
 const InputAtom = styled.input`
-  width: ${props=>props.width}; height: ${props=>props.height};
-  margin: ${props=>props.margin}; padding: ${props=>props.padding};
-  border: ${props=>props.border}; border-radius: ${props=>props.borderRadius};
+  border: solid 1px rgb(255, 184, 47);
+  border-radius: 8px;
+  ${props=>props.styling}
 `
 
-function Input({type,width,height,margin,padding,border,borderRadius,inValue}){
-
-  const value = useInputStore(state=>state.value)
-  const setValue = useInputStore(state=>state.setValue)
-  const valueHandler=e=>setValue(e.target.value)
+function Input({type,value,onChange,placeholder,styling}){
 
   return(
     <InputAtom
      type={type}
-     value={type.includes("text") ? value : inValue}
-     onChange={type.includes("text")? valueHandler : null}
+     value={value}
+     onChange={onChange}
+     placeholder={placeholder}
 
-     width={width} height={height} margin={margin} padding={padding} border={border} borderRadius={borderRadius}
+     styling={styling}
     />
   )
 }

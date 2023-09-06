@@ -19,6 +19,7 @@ const TitleContainer = styled.div`
   justify-content: center;
   align-items: flex-start;
   border-bottom: 1px solid #ffc1237b;
+  cursor: pointer;
 `
 
 const InfoContainer = styled.div`
@@ -35,8 +36,8 @@ const Article = ({article}) => {
   }
 
   return (
-    <ArticleContainer onClick={openArticle}>
-      <TitleContainer>{article.communityTitle}</TitleContainer>
+    <ArticleContainer>
+      <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
       <InfoContainer>
         좋아요 {article.communitylike} 조회수 {article.communityViewCount}{" "}
         {article.community_createdAt}

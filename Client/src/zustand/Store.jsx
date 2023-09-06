@@ -1,4 +1,6 @@
-import {create} from "zustand"
+import axios from "axios";
+
+import {create} from "zustand";
 
 const useZustand = {
   useToken: 
@@ -6,9 +8,9 @@ const useZustand = {
       value: "",
       setValue: (value)=>set({value: value}),
       accessToken: localStorage.getItem(null),
-      setAccessToken: (token)=>({accessToken: token})
+      setAccessToken: (token)=>set({accessToken: token})
     })),
-  useArticle:
+  useArticles:
     create((set)=>({
       articles: [
         {
@@ -21,19 +23,19 @@ const useZustand = {
           community_modifiedAt: "2023-08-28", // 게시물의 수정일자
           content: "blahblahblah..."
         },
-        {
-          communityId: "2",
-          communityTitle: "게시물 제목 2",
-          communityContent: "게시물 내용 2",
-          countLike: 525,
-          community_createdAt: "2023-08-29",
-          updated_at: "2023-08-29",
-          communityViewCount: 333,
-          content: "blahblahblah..."
-        },
-        
+        {communityId: "2", communityTitle: "게시물 제목 2", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
       ],
-      setArticle: (newArticle) => set({articles: newArticle})
+      setArticles: (newArticle)=>set({articles: [newArticle]}),
+      axiosArticles: () => {
+        axios.get("https://57b4-59-9-144-107.ngrok-free.app/community?page=1&size=",{
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          }
+        })
+        .then(res=>set({articles: res.data.data}))
+        .catch(err=>console.log(err+"글 목록 불러오기를 실패했습니다."))
+      }
     }))
 }
 export default useZustand;

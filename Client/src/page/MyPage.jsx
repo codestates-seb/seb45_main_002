@@ -1,12 +1,17 @@
 import Input from "../atom/Input";
-import useInputStore from "../zustand/Store";
 
 function MyPage() {
   return (
     <article>
-      <Input type={"text"} width={"300px"} height={"300px"} margin={"30px"} padding={"30px"} border={"solid 5px red"} borderRadius={"50px"} />
-      <Input inValue={"버튼"} type={"button"} width={"300px"} height={"300px"} margin={"30px"} padding={"30px"} border={"solid 5px red"} borderRadius={"50px"} />
-      <Input type={"radio"} />
+      <Input
+       type={"text"}
+       value={"광광우럭따"}
+       onChange={()=>console.log("광광")}
+       placeholder={"광광울었냐"}
+
+       styling={""}
+      />
+      <input type="text" value="이건 샘플" placeholder="이건 샘플" ></input>
     </article>
   );
 }
