@@ -41,25 +41,16 @@ const CommunityPage = () => {
 
   const articles = useZustand.useArticle(state=>state.articles)
 
-  // useEffect(() => {
-  //   fetchArticles();
-  // }, []);
-
   return (
     <CommunityContainer>
       <CommunityBody>
         <ArticleList>
           <BtnContainer>
-            <Link to="/community/write" ><WriteBtn>글쓰기</WriteBtn></Link>
+            <Link to="/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
           </BtnContainer>
           {articles.map((article) => (
             <Article
-              key={article.communityId}
-              title={article.communityTitle}
-              likes={article.communityLike}
-              views={article.communityViewCount}
-              createdAt={article.community_createdAt}
-              articleId={article.communityId}
+              article={article}
             />
           ))}
           <SearchForm />

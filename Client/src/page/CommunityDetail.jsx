@@ -1,6 +1,8 @@
-import { styled } from "styled-components";
 import { useParams } from "react-router-dom";
-import useArticleStore from "../zustand/ArticleStore";
+
+import { styled } from "styled-components";
+
+import useZustand from "../zustand/Store";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -74,12 +76,14 @@ const SubmitBtn = styled.div`
   align-items: center;
 `;
 
-function CommunityDetail({ like, created_at, views, communityContent }){
-  const { communityId } = useParams();
-  const { articles } = useArticleStore();
+function CommunityDetail(){
+
+  const communityId = useParams();
+
+  const articles = useZustand.useArticle(state=>state.articles);
 
   const article = articles.find(
-    (article) => article.communityId === parseInt(communityId)
+    (article) => article.communityId === communityId["*"]
   );
 
   return (
@@ -110,7 +114,7 @@ function CommunityDetail({ like, created_at, views, communityContent }){
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <div>{communityContent}</div>
+        <div>{article.content}</div>
       </ContentContainer>
     </WriteFormContainer>
   );

@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 import { styled } from "styled-components";
-import useArticleStore from "../zustand/ArticleStore";
+
+import useZustand from "../zustand/Store";
 
 const ArticleContainer = styled.div`
   background-color: white;
@@ -23,17 +26,16 @@ const InfoContainer = styled.div`
   justify-content: right;
 `
 
-const Article = ({ articleId }) => {
-  const { articles } = useArticleStore();
+const Article = ({article}) => {
 
-  const article = articles.find((article) => article.communityId === articleId);
+  const navigate = useNavigate()
 
-  if (!article) {
-    return alert("article error");
+  function openArticle(){
+    navigate(`/community/detail/${article.communityId}`)
   }
 
   return (
-    <ArticleContainer>
+    <ArticleContainer onClick={openArticle}>
       <TitleContainer>{article.communityTitle}</TitleContainer>
       <InfoContainer>
         좋아요 {article.communitylike} 조회수 {article.communityViewCount}{" "}
