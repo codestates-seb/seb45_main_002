@@ -47,32 +47,4 @@ public class FoodController {
     
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
-//========================================== 커스텀 부분, memberId 필요==========================
-//  //커스텀 음식 저장
-//  @PostMapping("/foods/{member-id}")
-//  public ResponseEntity<FoodResponseDto> postFood(@PathVariable("member-id") long memberId,
-//                                                  @RequestBody FoodPostDto foodDto) {
-//    Food food = foodService.createCustomFood(foodMapper.foodPostDtoToFood(foodDto), memberId);
-//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
-//    return new ResponseEntity<>(response, HttpStatus.OK);
-//  }
-//  //커스텀 음식 수정
-//  @PatchMapping("/foods/{member-id}/{food-id}")
-//  public ResponseEntity<FoodResponseDto> patchFood(@PathVariable("food-id") long foodId,
-//                                                   @PathVariable("member-id") long memberId,
-//                                  @RequestBody FoodPatchDto foodPatchDto) {
-//
-//    Food food =foodService.updateCustomFood(foodMapper.foodPatchDtoToFood(foodPatchDto), foodId, memberId);
-//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
-//
-//    return new ResponseEntity<>(response ,HttpStatus.OK);
-//  }
-//  //커스텀 음식 삭제
-//  @DeleteMapping("/{food-id}")
-//  public ResponseEntity<FoodResponseDto> deleteFood(@PathVariable("food-id") long foodId) {
-//    foodService.deleteCustomFood(foodId);
-//
-//    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//  }
-//
 }

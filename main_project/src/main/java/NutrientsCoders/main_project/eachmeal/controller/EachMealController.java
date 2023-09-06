@@ -61,14 +61,5 @@ public class EachMealController {
    eachMealService.deleteEachMeal(eachMealId);
   
   return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-}
-  
-  
-  //끼니 비우기(수정 시 기존 음식을 지울 때 사용)
-  @DeleteMapping("/{eachmealid}/foodreset")
-  public ResponseEntity<EachMealResponseDto> clearEachMealFood(@PathVariable("eachmealid") long eachMealId) {
-    eachMealService.deleteEachMealFoods(eachMealId);
-    
-    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

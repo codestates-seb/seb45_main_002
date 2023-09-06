@@ -1,12 +1,13 @@
 package NutrientsCoders.main_project.dailymeal.entity;
 
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -20,21 +21,32 @@ public class DailyMeal {
   @Column(name = "DAILYMEAL_ID")
   private Long dailyMealId;
 
+  @ManyToOne
+  @JoinColumn(name = "MEMBER_ID")
+  private Member member;
+  
+  @Column(nullable = false)
+  private LocalDate date;
+
   @Column(nullable = false)
   private String name;
-
-//  @Column
-//  @ManyToOne
-//  @JoinColumn(name = "MEMBER_ID")
-//  private Member member;
 
   @Column
   private Boolean favorite = false;
 
-  @Column
-  private Timestamp createAt;
-
   @OneToMany(mappedBy = "dailyMeal", cascade = CascadeType.REMOVE)
-  private List<EachMeal> eachMealList;
+  private List<EachMeal> eachMeals;
+  
+  @Column
+  private Double totalEachKcal;
+  
+  @Column
+  private Double totalEachCarbo;
+  
+  @Column
+  private Double totalEachProtein;
+  
+  @Column
+  private Double totalEachFat;
   
 }
