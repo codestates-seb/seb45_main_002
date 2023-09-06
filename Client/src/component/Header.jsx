@@ -29,10 +29,6 @@ const HeaderContainer = styled.header`
     margin-right: ${style.layout.maxWidth/20/3}px;
     padding: 1% 0;
   }
-  &>:last-child>*{
-    margin-right: ${style.layout.maxWidth/20/3}px;
-    padding: 0 3%;
-  }
 `
 
 const HambergerI = styled.i`
@@ -43,6 +39,8 @@ const LoginButton = styled.button`
   height: ${style.layout.header.height/2};
   border: none;
   background-color: orange;
+  margin-right: ${style.layout.maxWidth/20/3}px;
+  padding: 0 3%;
   color: white;
   font-size: ${style.layout.header.height/3};
   font-weight: bolder;

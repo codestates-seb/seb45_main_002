@@ -14,12 +14,15 @@ const MenuContainer = styled.article`
   background-color: rgba(125,125,125,0.5);
   padding-top: ${style.layout.narrowMargin.height};
   z-index: 999;
+  &>a{
+    height: ${style.layout.header.height};
+  }
 `
 
-function Hamberger(){
+function Hamberger({page,menu,setMenu}){
 
   return(
-    <MenuContainer>
+    <MenuContainer onClick={(e)=>setMenu(!menu)}>
       <Link to="/"><img height={style.layout.header.height} alt="serch" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585284116530/Frame_1.png?width=116&height=116"></img></Link>
       <Link to="/"><img height={style.layout.header.height} alt="home" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585548349542/Frame_2.png?width=116&height=116"></img></Link>
       <Link to="/mypage"><img height={style.layout.header.height} alt="mypage" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116"></img></Link>
