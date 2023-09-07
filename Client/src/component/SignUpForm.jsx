@@ -68,7 +68,7 @@ const SignUpForm = () => {
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
 
   function checkEmailHandler(){
-    axios.post("https://d4e8-14-37-234-174.ngrok-free.app/login/check",{
+    axios.post("http://43.201.194.176:8080/login/check",{
       email: form.email
     })
     .then(res=>{
@@ -95,7 +95,7 @@ const SignUpForm = () => {
   }
   function createAccount(){
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password) && checkEmail){
-      axios.post("https://d4e8-14-37-234-174.ngrok-free.app/login/create",{
+      axios.post("http://43.201.194.176:8080/login/create",{
         nickname: form.email.slice(0,form.email.indexOf("@")),
         email: form.email,
         password: form.password

@@ -13,7 +13,8 @@ import style from "../style/style";
 const MainContainer = styled.main`
   position: absolute;
   top: ${style.layout.header.height};
-  bottom: ${style.layout.wideMargin.height};
+  bottom: 0;
+  /* bottom: ${style.layout.wideMargin.height}; */
   left: ${style.layout.sideMargin};
   right: ${style.layout.sideMargin};
   border: solid 1px orange;

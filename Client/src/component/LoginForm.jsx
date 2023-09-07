@@ -69,7 +69,7 @@ const LoginForm = () => {
   const loginButton=(e)=>{
     e.preventDefault()
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("https://d4e8-14-37-234-174.ngrok-free.app/login",{
+      axios.post("http://43.201.194.176:8080/login",{
         email: form.email,
         password: form.password
       },
@@ -100,7 +100,7 @@ const LoginForm = () => {
   const parsedHash = new URLSearchParams(window.location.hash.substring(1));
   const accessToken = parsedHash.get("access_token");
   function consoleLog(){
-    axios.get("https://d4e8-14-37-234-174.ngrok-free.app/auth",{
+    axios.get("http://43.201.194.176:8080/auth",{
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
