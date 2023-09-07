@@ -81,7 +81,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://d9f8-14-37-234-174.ngrok-free.app","http://localhost:8080","http://localhost:3000")); //로컬환경 + npm 환경
+        configuration.setAllowedOrigins(Arrays.asList("http://43.201.194.176:8080","http://mainproj.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET","PATCH","DELETE","POST","OPTIONS")); //+options
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh"));

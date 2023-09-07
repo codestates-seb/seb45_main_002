@@ -59,7 +59,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(member);   // Access Token을 생성
         String refreshToken = delegateRefreshToken(member); // Refresh Token을 생성
 
-        response.setHeader("Access","SecurityBearer "+ accessToken);  // 클라이언트 측의 자격을 증명
+        response.setHeader("Authorization","SecurityBearer "+ accessToken);  // 클라이언트 측의 자격을 증명
         response.setHeader("Refresh", refreshToken);                   // Access Token을 새로 발급받기 위해 클라이언트에게 추가적으로 제공
 
         response.sendRedirect("/main"); //성공 시 이동

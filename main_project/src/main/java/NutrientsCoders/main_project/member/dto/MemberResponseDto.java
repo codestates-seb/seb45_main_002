@@ -19,6 +19,8 @@ public class MemberResponseDto {
         private String gender;
         private Integer age;
         private Float activity;
+        private Float bmi;
+        private Float needKcal;
         private String imageUrl;
         private LocalDateTime createdAt;
         private List<String> avoid;

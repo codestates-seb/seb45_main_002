@@ -41,14 +41,14 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException { //jwt 1차 유효 검증 (값이 비어있거나 스티커 없으면 무효)
-        String authorization = request.getHeader("Access");
+        String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("SecurityBearer");
     }
 
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Access").replace("SecurityBearer ", ""); // header에서 access 라고 되어있는거 가져옴 + 1차 토큰 검증
+        String jws = request.getHeader("Authorization").replace("SecurityBearer ", ""); // header에서 access 라고 되어있는거 가져옴 + 1차 토큰 검증
         String base64EncodedSecretKey = jwtTokenMaker.encodeBase64SecretKey(jwtTokenMaker.getSecret());
 
         return jwtTokenMaker.getClaims(jws, base64EncodedSecretKey).getBody();   // parsing
