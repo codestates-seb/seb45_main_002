@@ -10,9 +10,6 @@ import java.util.List;
 public class DailyMealDto {
   
   @NotNull
-  private Long memberId;
-  
-  @NotNull
   private LocalDate date;
   
   @NotNull

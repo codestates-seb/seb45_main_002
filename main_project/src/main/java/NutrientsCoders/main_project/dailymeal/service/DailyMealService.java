@@ -3,6 +3,7 @@ package NutrientsCoders.main_project.dailymeal.service;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,17 @@ import java.util.Optional;
 
 @Service
 public class DailyMealService {
-  DailyMealRepository dailyMealRepository;
-  public DailyMealService(DailyMealRepository dailyMealRepository) {
+  private final DailyMealRepository dailyMealRepository;
+  private final MemberService memberService;
+  public DailyMealService(DailyMealRepository dailyMealRepository, MemberService memberService) {
     this.dailyMealRepository = dailyMealRepository;
+    this.memberService = memberService;
   }
   
   //식단 저장
-  public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals) {
+  public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long memberId) throws Exception {
     dailyMeal.setEachMeals(eachMeals);
+    dailyMeal.setMember(memberService.findMember(memberId));
 //    EachMeal analyzedDailyMeal = analyzeMeal(dailyMeal);
     return dailyMealRepository.save(dailyMeal);
   }

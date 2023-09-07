@@ -24,7 +24,7 @@ public class JwtTokenMaker {
     private String secret;
 
     @Getter
-    @Value("${jwt.access-exp-min}")
+    @Value("${jwt.access-exp-min}00")
     private int accessExpiration;
 
     @Getter

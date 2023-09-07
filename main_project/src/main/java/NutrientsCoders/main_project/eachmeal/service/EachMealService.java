@@ -6,6 +6,7 @@ import NutrientsCoders.main_project.eachmeal.repository.EachMealFoodRepository;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealRepository;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.service.FoodService;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.stereotype.Service;
@@ -20,17 +21,20 @@ public class EachMealService {
   private final EachMealRepository eachMealRepository;
   private final FoodService foodService;
   private final EachMealFoodRepository eachMealFoodRepository;
+  private final MemberService memberService;
   
-  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository) {
+  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository, MemberService memberService) {
     this.eachMealRepository = eachMealRepository;
     this.eachMealFoodRepository = eachMealFoodRepository;
     this.foodService = foodService;
+    this.memberService = memberService;
   }
   
   //foodId로 food 엔티티를 찾아 끼니 저장
   @Transactional
-  public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods) {
+  public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods, long memberId) throws Exception {
     eachMealFoods = eachMealFoodsfindFood(eachMealFoods, eachMeal);
+    eachMeal.setMember(memberService.findMember(memberId));
     eachMeal.setEachMealFoods(eachMealFoods);
     
     return eachMealRepository.save(eachMeal);
@@ -60,10 +64,6 @@ public class EachMealService {
   }
   
   //전체 eachMealFood 목록 삭제
-  @Transactional
-  public void deleteEachMealFoods(long eachMealId) {
-    eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
-  }
   
   private EachMeal verifyExistsEachMeal(long eachMealId) {
     Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId);

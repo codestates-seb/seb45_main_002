@@ -22,22 +22,15 @@ public class FoodService {
   }
 
   //키워드로 음식 검색(브랜드 포함, 커스텀 용)
-  public List<Food> findBySearchWordFood_Custom(String searchWord) {
+  public List<Food> findBySearchWordFood(String searchWord, long memberId) {
     Pageable pageable = PageRequest.of(0, 5);
-    return foodRepository.findBySearchWordFood_Custom(searchWord, pageable).getContent();
+    return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
   }
 
   //영양소로 음식 검색(top 10, 브랜드 비 포함)
   public List<Food> findByHighestNutrient(String nutrientType) {
     Pageable pageable = PageRequest.of(0, 10);
-    List<Food> foods = foodRepository.findTop5ByHighestNutrient(nutrientType, pageable).getContent();
-    return foods;
-  }
-
-  //키워드로 음식 검색(브랜드 비 포함, 식단 추천용)
-  public List<Food> findSearchWordFoods(String searchWord) {
-    Pageable pageable = PageRequest.of(0, 5);
-    return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
+    return foodRepository.findTop5ByHighestNutrient(nutrientType, pageable).getContent();
   }
   //Id로 음식 검색
   public Food findByFood(long foodId) {
@@ -45,21 +38,46 @@ public class FoodService {
     return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
   
+
+  //키워드로 음식 검색(브랜드 비 포함, 식단 추천용)
+  public List<Food> findSearchWordFoods(String searchWord) {
+    Pageable pageable = PageRequest.of(0, 5);
+    return foodRepository.findBySearchWordFood(searchWord, pageable).getContent();
+  }
   
-////========================================== 커스텀 부분, memberId 어떻게 쓸것인지 생각해보기(문자열로 만들기?)
-//  //커스텀 음식 저장
-//  public Food createCustomFood(Food food, long memberId) {
-//    return foodRepository.save(food);
-//  }
-//  //커스텀 음식 수정
-//  public Food updateCustomFood(Food food, long foodId, long memberId) {
-//    return foodRepository.save(food);
-//  }
-//
-//  //커스텀 음식 삭제
-//  public void deleteCustomFood(long foodId, long memberId) {
-//        foodRepository.deleteById(foodId);
-//  }
+  
+//========================================== 커스텀 부분
+  //커스텀 음식 저장
+  public Food createCustomFood(Food food, long memberId) {
+    String brand = "Custom"+memberId;
+    food.setBrand(brand);
+    food.setFoodCategory1("myfoods");
+    food.setFoodCategory2("");
+    return foodRepository.save(food);
+  }
+  //커스텀 음식 수정
+  public Food updateCustomFood(Food food, long foodId, long memberId) {
+    String brand = "Custom"+memberId;
+    Food findFood = foodRepository.findByFoodId(foodId)
+        .orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
+
+    findFood.setFoodName(food.getFoodName());
+    findFood.setServingSize(food.getServingSize());
+    findFood.setKcal(food.getKcal());
+    findFood.setFoodName(food.getFoodName());
+    findFood.setCarbo(food.getCarbo());
+    findFood.setProtein(food.getProtein());
+    findFood.setFat(food.getFat());
+    findFood.setEtcNutrients(food.getEtcNutrients());
+    findFood.setBrand(brand);
+    food.setFoodCategory1("myfoods");
+    return foodRepository.save(findFood);
+  }
+
+  //커스텀 음식 삭제
+  public void deleteCustomFood(long foodId) {
+        foodRepository.deleteById(foodId);
+  }
 
 
 }

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public interface DailyMealMapper {
   default DailyMeal dailyMealDtoToDailyMeal(DailyMealDto dailyMealDto){
     DailyMeal dailyMeal = new DailyMeal();
-//    dailyMeal.setMember(dailyMealDto.getMemberId()); //*******************memberId
     dailyMeal.setDate(dailyMealDto.getDate());
     dailyMeal.setName(dailyMealDto.getName());
     dailyMeal.setFavorite(dailyMealDto.getFavorite());

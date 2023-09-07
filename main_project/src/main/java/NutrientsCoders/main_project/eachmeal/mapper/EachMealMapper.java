@@ -28,7 +28,7 @@ public interface EachMealMapper {
   //EachMeal-> ResponseDto
   default EachMealResponseDto eachMealToEachMealResponseDto(EachMeal eachMeal) {
     EachMealResponseDto eachMealResponseDto = EachMealResponseDto.builder()
-        .memberId(1)
+        .memberId(eachMeal.getMember().getMemberId())
         .eachMealId(eachMeal.getEachMealId())
         .timeSlots(eachMeal.getTimeSlot())
         .totalEachKcal(eachMeal.getTotalEachKcal())
