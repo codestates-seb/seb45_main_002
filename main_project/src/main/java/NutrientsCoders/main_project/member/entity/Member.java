@@ -14,12 +14,10 @@ import java.util.List;
 @Builder
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "MEMBER_ID")
+    @Id@GeneratedValue(strategy = GenerationType.AUTO)
     private Long memberId;
 
-    @Column(nullable = false)
+    @Column
     private String email;
 
     @Column(nullable = false)
@@ -47,8 +45,7 @@ public class Member {
     @Column
     private Float activity;
 
-    //@OneToMany(mappedBy = "food")
-    //private List<food> avoid = new ArrayList<>();
+    //private List<String> avoid = new ArrayList<>();
 
     @Column
     private String imageUrl;

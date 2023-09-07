@@ -16,6 +16,7 @@ public interface MemberService {
     Member findMember(Long memberId) throws Exception;
     void deleteMember(Long meberId) throws Exception;
 
+
     MemberResponseDto.bmi checkBmi(Long memberId);
 
 }

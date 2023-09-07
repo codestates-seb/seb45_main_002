@@ -3,6 +3,8 @@ package NutrientsCoders.main_project.community.service;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
 import NutrientsCoders.main_project.communitycomment.repository.CommunityCommentRepository;
+import NutrientsCoders.main_project.member.entity.Member;
+import NutrientsCoders.main_project.member.repository.MemberRepository;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
@@ -17,17 +19,20 @@ import java.util.Optional;
 public class CommunityService {
     private final CommunityRepository communityRepository;
     private final CommunityCommentRepository communityCommentRepository;
+    private final MemberRepository memberRepository;
 
 
-    public CommunityService(CommunityRepository communityRepository, CommunityCommentRepository communityCommentRepository) {
+    public CommunityService(CommunityRepository communityRepository, CommunityCommentRepository communityCommentRepository, MemberRepository memberRepository) {
         this.communityRepository = communityRepository;
         this.communityCommentRepository = communityCommentRepository;
+        this.memberRepository = memberRepository;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
     public Community createCommunity(Community community){
         community.setCommunityCommentList(communityCommentRepository.findByCommunityCommentId(community.getCommunityId()));
-        // 커뮤니티 리스트
+        Member member = verifyExistingMember(community.getMember().getMemberId());
+        community.setMember(member);
         return communityRepository.save(community);
     }
     /** 리포지토리에 수정한 데이터를 저장하는 메서드 **/
@@ -70,5 +75,9 @@ public class CommunityService {
             findCommunityId.setCommunityLike(true);
         }
         return communityRepository.save(findCommunityId);
+    }
+    /** 멤버아이디 존재 확인 **/
+    public Member verifyExistingMember(long memeberId){
+        return memberRepository.findByMemberId(memeberId);
     }
 }

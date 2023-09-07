@@ -167,6 +167,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+
     private int genderCalculate(String gender){
         if (gender.equals("M")){
             return 10;

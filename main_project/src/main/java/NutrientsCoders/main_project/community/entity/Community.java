@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.community.entity;
 
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
+import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,13 +29,19 @@ public class Community extends CommunityBaseTime {
     private long communityViewCount = 0L;
     @Column
     private boolean communityLike = true;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID",nullable = false)
+    private Member member;
+    /** 멤버 공간 제공 **/
+    public void setMember(Member member) {
+        this.member = member;
+    }
     @OneToMany(mappedBy = "community",cascade = CascadeType.REMOVE)
     private List<CommunityComment> communityCommentList = new ArrayList<>();
-
+    /** 리스트 형태로 공간 제공 **/
     public void setCommunityCommentList(List<CommunityComment> communityCommentList) {
         this.communityCommentList = communityCommentList;
     }
-
     /** 댓글 작성하면 게시글에 반영 **/
     public void setAddCommunityCommentList(CommunityComment communityComment) {
         this.communityCommentList.add(communityComment);
