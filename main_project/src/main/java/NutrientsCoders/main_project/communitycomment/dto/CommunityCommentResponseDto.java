@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommunityCommentResponseDto {
+    private Long communityId;
     private Long communityCommentId;
     private String communityCommentContent;
 }
+

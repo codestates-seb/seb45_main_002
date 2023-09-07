@@ -1,9 +1,6 @@
 package NutrientsCoders.main_project.community.controller;
 
-import NutrientsCoders.main_project.community.dto.CommunityMapper;
-import NutrientsCoders.main_project.community.dto.CommunityPatchDto;
-import NutrientsCoders.main_project.community.dto.CommunityPostDto;
-import NutrientsCoders.main_project.community.dto.CommunityResponseDto;
+import NutrientsCoders.main_project.community.dto.*;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.service.CommunityService;
 import NutrientsCoders.main_project.utils.dto.MultiResponseDto;
@@ -52,9 +49,9 @@ public class CommunityController {
     }
     /** 게시글 선택 조회 **/
     @GetMapping("/{community-id}")
-    public ResponseEntity<CommunityResponseDto> getCommunity(@PathVariable("community-id") @Positive long communityId){
+    public ResponseEntity<CommunityAllResponseDto> getCommunity(@PathVariable("community-id") @Positive long communityId){
         Community community = communityService.findCommunity(communityId);
-        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        CommunityAllResponseDto response = communityMapper.communityToCommunityAllResponseDto(community);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     /** 게시글 삭제 **/
