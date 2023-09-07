@@ -1,5 +1,8 @@
 package NutrientsCoders.main_project.communitycomment.service;
 
+import NutrientsCoders.main_project.community.entity.Community;
+import NutrientsCoders.main_project.community.repository.CommunityRepository;
+import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentPostDto;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
 import NutrientsCoders.main_project.communitycomment.repository.CommunityCommentRepository;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
@@ -11,12 +14,21 @@ import java.util.Optional;
 @Service
 public class CommunityCommentService {
     private final CommunityCommentRepository communityCommentRepository;
-    public CommunityCommentService(CommunityCommentRepository communityCommentRepository) {
+    private final CommunityRepository communityRepository;
+
+    public CommunityCommentService(CommunityCommentRepository communityCommentRepository, CommunityRepository communityRepository) {
         this.communityCommentRepository = communityCommentRepository;
+        this.communityRepository = communityRepository;
     }
+
     /** 댓글 생성 메서드 **/
-    public CommunityComment createCommunityComment(CommunityComment communityComment){
-        return communityCommentRepository.save(communityComment);
+    public CommunityComment createCommunityComment(CommunityCommentPostDto communityCommentPostDto){
+        CommunityComment comment = new CommunityComment();
+        Community community = new Community();
+        community.setAddCommunityCommentList(comment);
+        comment.setCommunityCommentContent(communityCommentPostDto.getCommunityCommentContent());
+        comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
+        return communityCommentRepository.save(comment);
     }
     /** 댓글 수정 메서드 **/
     public CommunityComment updateCommunityComment(CommunityComment communityComment){
@@ -31,6 +43,7 @@ public class CommunityCommentService {
                     new LogicException(ExceptionCode.COMMENT_NOT_FOUND));
         communityCommentRepository.deleteById(communityCommentId);
     }
+
 }
 
 
