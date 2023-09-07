@@ -113,18 +113,6 @@ function Header({menu,setMenu}) {
               setIsOpen={setIsOpen}
             />
           </ModalPortal>
-          <ModalPortal>
-        <Modal
-          isOpen={isOpen}
-          content={content}
-          header={header}
-          footer={footer}
-          setContent={setContent}
-          setHeader={setHeader}
-          setFooter={setFooter}
-          setIsOpen={setIsOpen}
-        />
-      </ModalPortal>
         </span>
       }
     </HeaderContainer>
