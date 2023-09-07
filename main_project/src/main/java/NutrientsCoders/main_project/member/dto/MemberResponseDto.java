@@ -27,8 +27,8 @@ public class MemberResponseDto {
     @Getter@Setter
     @AllArgsConstructor
     public static class bmi{
-        private String bmi;
-        private String kcal;
+        private Float bmi;
+        private Float kcal;
     }
 
     @Getter

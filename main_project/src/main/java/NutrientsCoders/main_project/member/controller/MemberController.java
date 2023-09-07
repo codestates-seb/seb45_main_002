@@ -44,7 +44,7 @@ public class MemberController {
     }
 
     @GetMapping("/testCon")
-    public ResponseEntity<Long> test(@RequestHeader String token){
+    public ResponseEntity<Long> test(@RequestHeader("Access") String token){
 
 
         return new ResponseEntity<>(tc.getMemberId(token),HttpStatus.OK);
