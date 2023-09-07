@@ -36,7 +36,7 @@ public class DailyMealController {
   
   //작성한 식단 저장
   @PostMapping
-  public ResponseEntity<DailyMealResponseDto> yourEndpoint(@RequestHeader("Authorization") String token,
+  public ResponseEntity<DailyMealResponseDto> createDailyMeal(@RequestHeader("Authorization") String token,
                                                            @RequestBody DailyMealDto dailyMealDto) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
@@ -49,9 +49,9 @@ public class DailyMealController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
   
-  //작성한 식단 조회
-  @GetMapping("/{dateStr}")
-  public ResponseEntity<DailyMealResponseDto> getDailyMeal(@RequestHeader("Authorization") String token,
+  //작성한 식단 조회(날짜)
+  @GetMapping("date/{dateStr}")
+  public ResponseEntity<DailyMealResponseDto> getDailyMealByDate(@RequestHeader("Authorization") String token,
                                                            @PathVariable("dateStr") String dateStr) {
     long memberId = tokenChanger.getMemberId(token);
     LocalDate date = LocalDate.parse(dateStr);
@@ -61,11 +61,32 @@ public class DailyMealController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
-  //맴버 식단 전체 조회
-  @GetMapping
-  public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMeals(@RequestHeader("Authorization") String token) {
+  //작성한 식단 조회(Id)
+  @GetMapping("/{dailymeal-id}")
+  public ResponseEntity<DailyMealResponseDto> getDailyMealById(@RequestHeader("Authorization") String token,
+                                                           @PathVariable("dailymeal-id") long dailyMealId) {
     long memberId = tokenChanger.getMemberId(token);
-    List<DailyMeal> dailyMeals = dailyMealService.findByDailyMeals(memberId);
+    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(memberId, dailyMealId);
+    DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
+    
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
+  
+  //식단 전체 조회(캘린더)
+  @GetMapping
+  public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token) {
+    long memberId = tokenChanger.getMemberId(token);
+    List<DailyMeal> dailyMeals = dailyMealService.findByDateDailyMeals(memberId);
+    List<DailyMealMultiResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
+    
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
+  
+  //식단 전체 조회(선호)
+  @GetMapping("/favorite")
+  public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMealsByFavorit(@RequestHeader("Authorization") String token) {
+    long memberId = tokenChanger.getMemberId(token);
+    List<DailyMeal> dailyMeals = dailyMealService.findByfavoritDailyMeals(memberId);
     List<DailyMealMultiResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
     
     return new ResponseEntity<>(response,HttpStatus.OK);

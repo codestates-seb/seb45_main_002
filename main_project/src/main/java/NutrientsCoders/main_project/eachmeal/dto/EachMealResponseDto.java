@@ -13,6 +13,7 @@ public class EachMealResponseDto {
   private long memberId;
   private long eachMealId;
   private Integer timeSlots;
+  private Boolean favorite;
   private Long totalEachKcal;
   private Double totalEachCarbo;
   private Double totalEachProtein;

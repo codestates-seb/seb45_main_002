@@ -33,6 +33,9 @@ public class EachMeal {
   private DailyMeal dailyMeal;
   
   @Column
+  private Boolean favorite = false;
+  
+  @Column
   private Long totalEachKcal;
   
   @Column

@@ -25,7 +25,7 @@ public class DailyMeal {
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
   
-  @Column(nullable = false)
+  @Column(unique = true)
   private LocalDate date;
 
   @Column(nullable = false)

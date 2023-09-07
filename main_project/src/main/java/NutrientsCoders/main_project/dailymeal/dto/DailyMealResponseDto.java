@@ -28,6 +28,7 @@ public class DailyMealResponseDto {
     private long memberId;
     private long eachMealId;
     private Integer timeSlots;
+    private Boolean favorite;
     private List<QuantityFoodDto> quantityfoods;
     private Long totalEachKcal;
     private Double totalEachCarbo;

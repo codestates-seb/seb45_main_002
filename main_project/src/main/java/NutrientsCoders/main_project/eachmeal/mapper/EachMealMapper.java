@@ -31,6 +31,7 @@ public interface EachMealMapper {
         .memberId(eachMeal.getMember().getMemberId())
         .eachMealId(eachMeal.getEachMealId())
         .timeSlots(eachMeal.getTimeSlot())
+        .favorite(eachMeal.getFavorite())
         .totalEachKcal(eachMeal.getTotalEachKcal())
         .totalEachCarbo(eachMeal.getTotalEachCarbo())
         .totalEachProtein(eachMeal.getTotalEachProtein())

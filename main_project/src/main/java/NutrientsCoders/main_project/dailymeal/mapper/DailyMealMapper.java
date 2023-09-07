@@ -36,6 +36,7 @@ public interface DailyMealMapper {
       DailyMealResponseDto.EachMealDto eachMealDto = DailyMealResponseDto.EachMealDto.builder()
           .eachMealId(eachMeal.getEachMealId())
           .timeSlots(eachMeal.getTimeSlot())
+          .favorite(eachMeal.getFavorite())
           .totalEachKcal(eachMeal.getTotalEachKcal())
           .totalEachCarbo(eachMeal.getTotalEachCarbo())
           .totalEachProtein(eachMeal.getTotalEachProtein())

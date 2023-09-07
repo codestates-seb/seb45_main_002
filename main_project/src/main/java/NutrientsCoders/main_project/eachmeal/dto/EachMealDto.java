@@ -13,6 +13,8 @@ public class EachMealDto {
   
   private Integer timeSlots;
   
+  private Boolean favorite;
+  
   private List<EachMealFoodDto> foods;
   
   private Double totalEachKcal;

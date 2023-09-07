@@ -29,14 +29,28 @@ public class DailyMealService {
     return dailyMealRepository.save(dailyMeal);
   }
 
-  //선택 식단 조회
+  //선택 식단 조회(날짜)
   public DailyMeal findByDailyMeal(long memberId, LocalDate date) {
-    return verifyExistsEachMeal(memberId, date);
+    return verifyExistsEachMealByDate(memberId, date);
   }
   
-  //전체 식단 조회
-  public List<DailyMeal> findByDailyMeals(long memberId) {
-    List<DailyMeal> dailyMeals = dailyMealRepository.findAllByMemeberId(memberId);
+  //선택 식단 조회(ID)
+  public DailyMeal findByDailyMeal(long memberId, long dailyMealId) {
+    Optional<DailyMeal> optionalDailyMeal = dailyMealRepository.findDailyMealById(dailyMealId, memberId);
+    return optionalDailyMeal.orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
+  }
+  
+  //전체 식단 조회(캘린더)
+  public List<DailyMeal> findByDateDailyMeals(long memberId) {
+    List<DailyMeal> dailyMeals = dailyMealRepository.findAllDateByMemberId(memberId);
+    return Optional.of(dailyMeals)
+        .filter(list -> !list.isEmpty())
+        .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
+  }
+  
+  //전체 식단 조회(선호)
+  public List<DailyMeal> findByfavoritDailyMeals(long memberId) {
+    List<DailyMeal> dailyMeals = dailyMealRepository.findAllfavoriteByMemeberId(memberId);
     return Optional.of(dailyMeals)
         .filter(list -> !list.isEmpty())
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
@@ -44,20 +58,22 @@ public class DailyMealService {
   
   //식단 수정
   public DailyMeal updateDailyMeal(long memberId, DailyMeal dailyMeal, LocalDate date) {
-    DailyMeal findDailyMeal = verifyExistsEachMeal(memberId, date);
+    DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
     findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
     return dailyMealRepository.save(dailyMeal);
   }
+  
   //식단 삭제
   public void deleteDailyMeal(LocalDate date, long memberId) {
-    DailyMeal findDailyMeal = verifyExistsEachMeal(memberId, date);
+    DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
     dailyMealRepository.deleteById(findDailyMeal.getDailyMealId());
   }
   
-  public DailyMeal verifyExistsEachMeal(long memberId, LocalDate date) {
+  public DailyMeal verifyExistsEachMealByDate(long memberId, LocalDate date) {
     Optional<DailyMeal> optionalDailyMeal = dailyMealRepository.findDailyMealByDate(date, memberId);
     return optionalDailyMeal.orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
+  
   //식단 분석 메서드
   private EachMeal analyzeMeal(DailyMeal dailyMeal) {
     //    Long kacl = eachMeal.getTotalEachKcal();
