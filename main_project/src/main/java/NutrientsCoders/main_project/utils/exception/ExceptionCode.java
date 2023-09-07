@@ -9,6 +9,8 @@ public enum ExceptionCode {
     USER_EXISTS(409, "Member Already exists!"),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
+    EACHMEAL_NOT_FOUND(404, "EachMeal not found..."),
+    DAILYMEAL_NOT_FOUND(404, "DailyMeal not found..."),
     CANNOT_APPLY(403, "can not change, check your conditions"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     SERVER_ERROR(500, "SERVER ERROR !!!"),

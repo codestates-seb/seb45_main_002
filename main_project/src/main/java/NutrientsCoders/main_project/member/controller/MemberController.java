@@ -5,14 +5,19 @@ import NutrientsCoders.main_project.member.dto.MemberMapper;
 import NutrientsCoders.main_project.member.dto.MemberResponseDto;
 import NutrientsCoders.main_project.member.entity.Member;
 import NutrientsCoders.main_project.member.service.MemberService;
+import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
+import NutrientsCoders.main_project.utils.TokenChanger;
 import NutrientsCoders.main_project.utils.UriCreator;
+
+import NutrientsCoders.main_project.utils.exception.ExceptionCode;
+import NutrientsCoders.main_project.utils.exception.LogicException;
 import jdk.jshell.spi.ExecutionControl;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 
@@ -20,14 +25,30 @@ import java.net.URI;
 @RequestMapping("")
 @Validated
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper memberMapper;
+    private final TokenChanger tc;
 
-    public MemberController(MemberService memberService, MemberMapper memberMapper) {
+    public MemberController(MemberService memberService, MemberMapper memberMapper,
+                            TokenChanger tc) {
         this.memberService = memberService;
         this.memberMapper = memberMapper;
+        this.tc=tc;
+    }
+
+    @GetMapping("/main")
+    public ResponseEntity mainsend (){
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/testCon")
+    public ResponseEntity<Long> test(@RequestHeader String token){
+
+
+        return new ResponseEntity<>(tc.getMemberId(token),HttpStatus.OK);
     }
 
     @PostMapping("/login/check")
@@ -45,12 +66,12 @@ public class MemberController {
             URI uri = UriCreator.create("/member/", member.getMemberId());
 
             return ResponseEntity.created(uri).build();
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (LogicException e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
-    @PostMapping("/login/createinfo")
+    @PostMapping("/member/createinfo")
     public ResponseEntity<Member> postInfoMember(@RequestBody MemberDto.AddInfo memberinfo) throws Exception {
         Member member = memberService.additionMemberInfo(memberinfo);
         return ResponseEntity.ok(member);
@@ -65,6 +86,18 @@ public class MemberController {
     }
 
     //login
+    @PostMapping("/login")
+    public ResponseEntity<MemberResponseDto.loginNext> loginMember(@RequestBody MemberDto.Login memberLogin) throws Exception {
+        if(memberService.checkEmail(memberLogin.getEmail())){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!memberService.checkPassword(memberLogin.getEmail(), memberLogin.getPassword())){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        MemberResponseDto.loginNext response = memberMapper.memberLoginChanger(memberLogin);
+        return ResponseEntity.ok(response);
+    }
 
     @PatchMapping("/mypage/{member-id}")
     public ResponseEntity<MemberResponseDto.MyPage> updateMember(@PathVariable("member-id")Long memberId ,

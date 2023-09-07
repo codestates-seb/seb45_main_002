@@ -9,6 +9,7 @@ public interface MemberService {
     Member createMember(Member member) throws Exception;
     Member additionMemberInfo(MemberDto.AddInfo addInfo) throws Exception;
     Boolean checkEmail(String email) throws Exception;
+    Boolean checkPassword(String email,String password);
     Boolean login(MemberDto.Login login) throws Exception;
 
     Member updateMember(Long memberId,MemberDto.Patch memberpatch) throws Exception;
