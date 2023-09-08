@@ -32,7 +32,7 @@ const Article = ({article}) => {
   const navigate = useNavigate()
 
   function openArticle(){
-    navigate(`/community/detail/${article.communityId}`)
+    navigate(`/pageswitch/community/detail/${article.communityId}`)
   }
 
   return (

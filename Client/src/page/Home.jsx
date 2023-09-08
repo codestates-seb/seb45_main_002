@@ -45,12 +45,12 @@ function Home({ setPage }) {
           </Link>
         </HomeMenu1>
         <HomeMenu2>
-        <Link to="/community" onClick={() => setPage("community")}>
+        <Link to="/pageswitch" onClick={() => setPage("community")}>
             <div>커뮤니티</div>
           </Link>
         </HomeMenu2>
         <HomeMenu1>
-          <Link to="/mypage">
+          <Link to="/pageswitch" onClick={() => setPage("mypage")}>
             <div>마이페이지</div>
           </Link>
         </HomeMenu1>

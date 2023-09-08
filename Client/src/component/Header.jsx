@@ -54,6 +54,12 @@ const SignUpButton = styled(LoginButton)`
 function Header({menu,setMenu}) {
 
   const accessToken = useZustand.useToken(state=>state.accessToken)
+  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
+  const refreshToken = useZustand.useToken(state=>state.refreshToken)
+  const setRefreshToken = useZustand.useToken(state=>state.setRefreshToken)
+
+  localStorage.getItem("access_token")? setAccessToken(localStorage.getItem("access_token")) : setAccessToken("")
+  localStorage.getItem("refresh_token")? setRefreshToken(localStorage.getItem("refresh_token")) : setRefreshToken("")
   
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
@@ -62,6 +68,7 @@ function Header({menu,setMenu}) {
 
   function logoutButton(){
     localStorage.removeItem("access_token")
+    localStorage.removeItem("refresh_token")
     window.location.reload()
   }
 

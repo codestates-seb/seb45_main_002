@@ -7,8 +7,10 @@ const useZustand = {
     create((set) => ({
       value: "",
       setValue: (value)=>set({value: value}),
-      accessToken: localStorage.getItem(null),
-      setAccessToken: (token)=>set({accessToken: token})
+      accessToken: "",
+      setAccessToken: (token)=>set({accessToken: token}),
+      refreshToken: "",
+      setRefreshToken: (token)=>set({refreshToken: token})
     })),
   useArticles:
     create((set)=>({

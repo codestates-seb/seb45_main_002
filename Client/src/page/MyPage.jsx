@@ -1,9 +1,9 @@
+import { useState,useEffect } from "react";
 
+import axios from "axios";
+import {styled} from "styled-components";
 
-import {styled} from "styled-components"
-
-import style from "../style/style"
-import { useState } from "react"
+import style from "../style/style";
 
 const MypageContainer = styled.article`
   height: ${style.layout.main.height+style.layout.wideMargin.height}; width: ${style.layout.main.width};
@@ -16,7 +16,6 @@ const MypageContainer = styled.article`
     >li{
       height: ${style.layout.header.height};
       width: ${style.layout.main.width/4-8};
-      ${console.log(style.layout.main.width)}
       float: left;
       background-color: white; border: solid 1px orange;
       padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
@@ -48,7 +47,38 @@ const MypageBox = styled.section`
   background-color: white;
 `
 
+
+const TabTest = styled.div`
+  & input{
+    display:none;
+  }
+  & input:checked ~ label{
+    background: #ccc;
+  }
+  &>div{
+    display:none; 
+    width: 100%;
+    text-align:left; 
+    padding: 20px;
+    position:absolute; 
+    left:0; top:40px; 
+    box-sizing: border-box; 
+    border : 5px solid #f9f9f9;
+  }
+  & input:checked ~ div{
+    display: block;
+  }
+`
+
+function loadProfile(){
+  axios.get("http://43.201.194.176:8080/mypage/")
+  .then(res=>console.log(res))
+  .catch(err=>console.log(err))
+}
+
 function MyPage() {
+
+  useEffect(()=>loadProfile(),[])
 
   const [profile, setProfile] = useState(1);
 
@@ -61,7 +91,23 @@ function MyPage() {
         <li></li>
       </ul>
       <MypageBox>
-        <div></div>
+        <TabTest>
+          <input type="radio" checked name="tabmenu" id="tab1"></input>
+          <label for="tab1">tab1</label>
+          <div className="tabCon">
+            tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />tabCon1<br />
+          </div>
+          <input type="radio" name="tabmenu" id="tab2"></input>
+          <label for="tab2">tab2</label>
+          <div className="tabCon">
+            tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />tabCon2<br />
+          </div>
+          <input type="radio" name="tabmenu" id="tab3"></input>
+          <label for="tab3">tab3</label>
+          <div className="tabCon">
+            tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />tabCon3<br />
+          </div>
+        </TabTest>
         <div>
 
         </div>

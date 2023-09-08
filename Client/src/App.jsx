@@ -12,11 +12,11 @@ function App() {
   const [page, setPage] = useState("")
 
   const [menu, setMenu] = useState(false)
-  
+
   return (
     <div>
       <Header menu={menu} setMenu={setMenu} />
-      {style.layout.maxWidth < 769 ? null : <Nav />}
+      {style.layout.maxWidth < 769 ? null : <Nav setPage={setPage} />}
       {menu? <Hamberger setPage={setPage} menu={menu} setMenu={setMenu} /> : null}
       <Main page={page} setPage={setPage} />
     </div>

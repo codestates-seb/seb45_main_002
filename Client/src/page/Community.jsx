@@ -36,7 +36,7 @@ const WriteBtn = styled.div`
   color: black;
 `
 
-const CommunityPage = () => {
+const CommunityList = () => {
 
   // // 페이지에서 axios 하여 zustand 에 넣기 - 실패
   // const setArticles = useZustand.useArticles(state=>state.setArticles);
@@ -67,7 +67,7 @@ const CommunityPage = () => {
       <CommunityBody>
         <ArticleList>
           <BtnContainer>
-            <Link to="/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
+            <Link to="/pageswitch/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
           </BtnContainer>
           {articles.map((article) => (
             <Article
@@ -80,4 +80,4 @@ const CommunityPage = () => {
     </CommunityContainer>
   );
 };
-export default CommunityPage;
+export default CommunityList;

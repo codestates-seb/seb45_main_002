@@ -44,7 +44,8 @@ const LoginForm = () => {
 
   const navigate = useNavigate()
 
-  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
+  const accessToken = useZustand.useToken(state=>state.accessToken)
+  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)  
 
   const [form, setForm] = useState({
     email: "",
@@ -66,23 +67,18 @@ const LoginForm = () => {
     }
     else{setForm({...form,errMsg: ""})}
   }
-  const loginButton=(e)=>{
+
+  function loginButton(e){
     e.preventDefault()
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
       axios.post("http://43.201.194.176:8080/login",{
         email: form.email,
         password: form.password
-      },
-      {
-        headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        }
-      }
-      )
+      })
       .then(res=>{
-        setAccessToken(localStorage.getItem("access_token"))
-        window.location.reload()
+        localStorage.setItem("access_token",res.headers.authorization)
+        localStorage.setItem("refresh_token",res.headers.refresh)
+        navigate("/pageswitch/mypage")
       })
       .catch(err=>console.log(err+"실패했습니다."))
     }
@@ -96,21 +92,20 @@ const LoginForm = () => {
     "response_type=token&" +
     "scope=" +
     "https://www.googleapis.com/auth/userinfo.email"
+    let parsedHash = new URLSearchParams(window.location.hash.substring(1));
+    setAccessToken(parsedHash.get("access_token"));
   }
-  const parsedHash = new URLSearchParams(window.location.hash.substring(1));
-  const accessToken = parsedHash.get("access_token");
-  function consoleLog(){
+
+  function sendBackend(){
     axios.get("http://43.201.194.176:8080/auth",{
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
         'token': accessToken
         }
     })
     .then(res=>console.log(res+"JWT 발급 < 성공 > 입니다."))
     .catch(err=>console.log(err+"JWT 발급 < 실패 > 입니다."))
   }
-
   return (
     <LoginContainer>
       <LoginFormContainer>
@@ -120,7 +115,7 @@ const LoginForm = () => {
         <button onClick={loginButton}>LOGIN</button>
       </LoginFormContainer>
       <button onClick={googleLoginButton}>google login</button>
-      <button onClick={consoleLog}>콘솔찍기</button>
+      <button onClick={sendBackend}>sendBackend</button>
     </LoginContainer>
   );
 };
