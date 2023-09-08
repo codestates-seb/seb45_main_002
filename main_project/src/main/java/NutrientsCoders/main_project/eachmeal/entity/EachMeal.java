@@ -36,7 +36,7 @@ public class EachMeal {
   private Boolean favorite = false;
   
   @Column
-  private Long totalEachKcal;
+  private Double totalEachKcal;
   
   @Column
   private Double totalEachCarbo;
@@ -52,6 +52,8 @@ public class EachMeal {
 
   public void calculateTotal() {
     if (eachMealFoods != null && !eachMealFoods.isEmpty()) {
+      totalEachKcal = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateKcal)
+                            .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalEachCarbo = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateCarbo)
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalEachProtein = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateProtein)
@@ -59,6 +61,7 @@ public class EachMeal {
       totalEachFat = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateFat)
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
     } else {
+      totalEachKcal = 0.0;
       totalEachCarbo = 0.0;
       totalEachProtein = 0.0;
       totalEachFat = 0.0;

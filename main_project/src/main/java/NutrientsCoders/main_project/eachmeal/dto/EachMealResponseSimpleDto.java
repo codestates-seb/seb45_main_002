@@ -10,7 +10,7 @@ import lombok.Setter;
 public class EachMealResponseSimpleDto {
   private long eachMealId;
   private Boolean favorite;
-  private Long totalEachKcal;
+  private Double totalEachKcal;
   private Double totalEachCarbo;
   private Double totalEachProtein;
   private Double totalEachFat;

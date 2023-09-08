@@ -39,7 +39,7 @@ public class DailyMealController {
                                                            @RequestBody DailyMealDto dailyMealDto) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
-        .map(eachMealService::findByEachMeal)
+        .map(eachMeal -> eachMealService.findByEachMeal(memberId, eachMeal))
         .collect(Collectors.toList());
     
     DailyMeal dailyMeal = dailyMealService.createDailyMeal(

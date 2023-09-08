@@ -14,7 +14,7 @@ public class EachMealResponseDto {
   private long eachMealId;
   private Integer timeSlots;
   private Boolean favorite;
-  private Long totalEachKcal;
+  private Double totalEachKcal;
   private Double totalEachCarbo;
   private Double totalEachProtein;
   private Double totalEachFat;

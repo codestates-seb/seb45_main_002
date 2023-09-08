@@ -51,6 +51,8 @@ public class DailyMeal {
   
   public void calculateTotal() {
     if (eachMeals != null && !eachMeals.isEmpty()) {
+      totalDailyKcal = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachKcal)
+          .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalDailyCarbo = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachCarbo)
           .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalDailyProtein = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachProtein)
@@ -58,6 +60,7 @@ public class DailyMeal {
       totalDailyFat = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachFat)
           .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
     } else {
+      totalDailyKcal = 0.0;
       totalDailyCarbo = 0.0;
       totalDailyProtein = 0.0;
       totalDailyFat = 0.0;

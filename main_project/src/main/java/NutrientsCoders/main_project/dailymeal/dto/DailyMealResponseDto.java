@@ -30,7 +30,7 @@ public class DailyMealResponseDto {
     private Integer timeSlots;
     private Boolean favorite;
     private List<QuantityFoodDto> quantityfoods;
-    private Long totalEachKcal;
+    private Double totalEachKcal;
     private Double totalEachCarbo;
     private Double totalEachProtein;
     private Double totalEachFat;

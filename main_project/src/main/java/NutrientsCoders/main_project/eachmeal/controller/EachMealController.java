@@ -78,7 +78,8 @@ public class EachMealController {
   @DeleteMapping("/{eachmealid}")
   public ResponseEntity<EachMealResponseDto> deleteEachMeal(@RequestHeader("Authorization") String token,
                                                             @PathVariable("eachmealid") long eachMealId) {
-  eachMealService.deleteEachMeal(eachMealId);
+  long memberId = tokenChanger.getMemberId(token);
+  eachMealService.deleteEachMeal(eachMealId, memberId);
   
   return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

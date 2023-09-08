@@ -65,8 +65,8 @@ public class EachMealService {
   
   //선택 끼니 삭제
   @Transactional
-  public void deleteEachMeal(long eachMealId) {
-    eachMealRepository.deleteById(eachMealId);
+  public void deleteEachMeal(long eachMealId, long memberId) {
+    eachMealRepository.delete(verifyExistsEachMeal(eachMealId, memberId));
   }
   
   //전체 eachMealFood 목록 삭제
