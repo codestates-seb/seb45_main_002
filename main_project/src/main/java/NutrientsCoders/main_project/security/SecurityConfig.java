@@ -1,5 +1,7 @@
 package NutrientsCoders.main_project.security;
 
+import NutrientsCoders.main_project.member.repository.MemberRepository;
+import NutrientsCoders.main_project.security.custom.LoginSuccessHandler;
 import NutrientsCoders.main_project.security.jwt.JwtAuthenticationFilter;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
 import NutrientsCoders.main_project.security.jwt.JwtVerificationFilter;
@@ -82,7 +84,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://d9f8-14-37-234-174.ngrok-free.app","http://localhost:8080","http://localhost:3000")); //로컬환경 + npm 환경
+        configuration.setAllowedOrigins(Arrays.asList("http://43.201.194.176:8080","http://mainproj.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET","PATCH","DELETE","POST","OPTIONS")); //+options
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh"));
@@ -104,6 +106,8 @@ public class SecurityConfig {
             // JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, tokenMaker);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new LoginSuccessHandler());
 
             // JwtVerificationFilter의 인스턴스를 생성 및 사용되는 객체들을 생성자로 DI
              JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenMaker, authorityUtils);
