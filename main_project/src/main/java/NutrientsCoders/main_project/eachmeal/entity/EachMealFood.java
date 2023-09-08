@@ -27,11 +27,12 @@ public class EachMealFood {
   @ManyToOne
   @JoinColumn(name = "EATCHMEAL_ID")
   private EachMeal eachMeal;
-
+  
+  @Column
   private Double quantity;
   
   @Column
-  private Long rateKcal;
+  private Double rateKcal;
   
   @Column
   private Double rateCarbo;
@@ -41,4 +42,6 @@ public class EachMealFood {
   
   @Column
   private Double rateFat;
+  
+
 }

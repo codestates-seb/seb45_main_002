@@ -25,12 +25,12 @@ public class CommunityCommentController {
     }
 
     /** 댓글 등록 **/
-    @PostMapping
-    public ResponseEntity<CommunityCommentResponseDto> postCommunityComment(@RequestBody CommunityCommentPostDto communityCommentPostDto){
-        CommunityComment communityComment = communityCommentService.createCommunityComment(communityCommentMapper.communityCommentPostDtoToComment(communityCommentPostDto));
-        CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<CommunityCommentResponseDto> postCommunityComment(@RequestBody CommunityCommentPostDto communityCommentPostDto){
+//        CommunityComment communityComment = communityCommentService.createCommunityComment(communityCommentMapper.communityCommentPostDtoToComment(communityCommentPostDto));
+//        CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
+//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    }
     /** 댓글 수정 **/
     @PatchMapping("/{communitycomment-id}")
     public ResponseEntity<CommunityCommentResponseDto> patchCommunityComment(@PathVariable("communitycomment-id") @Positive long communitycommentId,

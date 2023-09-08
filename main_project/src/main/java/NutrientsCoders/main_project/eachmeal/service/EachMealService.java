@@ -6,6 +6,7 @@ import NutrientsCoders.main_project.eachmeal.repository.EachMealFoodRepository;
 import NutrientsCoders.main_project.eachmeal.repository.EachMealRepository;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.service.FoodService;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.stereotype.Service;
@@ -20,31 +21,40 @@ public class EachMealService {
   private final EachMealRepository eachMealRepository;
   private final FoodService foodService;
   private final EachMealFoodRepository eachMealFoodRepository;
+  private final MemberService memberService;
   
-  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository) {
+  public EachMealService(EachMealRepository eachMealRepository, FoodService foodService, EachMealFoodRepository eachMealFoodRepository, MemberService memberService) {
     this.eachMealRepository = eachMealRepository;
     this.eachMealFoodRepository = eachMealFoodRepository;
     this.foodService = foodService;
+    this.memberService = memberService;
   }
   
   //foodId로 food 엔티티를 찾아 끼니 저장
   @Transactional
-  public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods) {
+  public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods, long memberId) throws Exception {
     eachMealFoods = eachMealFoodsfindFood(eachMealFoods, eachMeal);
+    eachMeal.setMember(memberService.findMember(memberId));
     eachMeal.setEachMealFoods(eachMealFoods);
+    eachMeal.calculateTotal();
     
     return eachMealRepository.save(eachMeal);
   }
   //선택 끼니 조회
   @Transactional
-  public EachMeal findByEachMeal(long eachMealId) {
-    return verifyExistsEachMeal(eachMealId);
+  public EachMeal findByEachMeal(long eachMealId, long memberId) {
+    return verifyExistsEachMeal(eachMealId, memberId);
+  }
+  
+  //끼니 전체 조회
+  public List<EachMeal> findByEachMeals(long memberId) {
+    return eachMealRepository.findEachMealByMemberId(memberId);
   }
   
   //선택 끼니 수정
   @Transactional
-  public EachMeal updateEachMeal(EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
-    EachMeal findEachMeal = verifyExistsEachMeal(eachMealId);
+  public EachMeal updateEachMeal(EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId, long memberId) {
+    EachMeal findEachMeal = verifyExistsEachMeal(eachMealId, memberId);
     eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
     List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
     findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
@@ -55,18 +65,13 @@ public class EachMealService {
   
   //선택 끼니 삭제
   @Transactional
-  public void deleteEachMeal(long eachMealId) {
-    eachMealRepository.deleteById(eachMealId);
+  public void deleteEachMeal(long eachMealId, long memberId) {
+    eachMealRepository.delete(verifyExistsEachMeal(eachMealId, memberId));
   }
   
   //전체 eachMealFood 목록 삭제
-  @Transactional
-  public void deleteEachMealFoods(long eachMealId) {
-    eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
-  }
-  
-  private EachMeal verifyExistsEachMeal(long eachMealId) {
-    Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId);
+  private EachMeal verifyExistsEachMeal(long eachMealId, long memberId) {
+    Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId, memberId);
     return optionalEachMeal.orElseThrow(() -> new LogicException(ExceptionCode.EACHMEAL_NOT_FOUND));
   }
   //EachMealFood의 FoodId값으로 Food객체를 찾은 후 비율을 분석하여 EachMeal에 다시 저장합니다
@@ -77,7 +82,7 @@ public class EachMealService {
       Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
-      eachMealFood.setRateKcal((long) (findFood.getKcal()*eachMealFood.getQuantity()));
+      eachMealFood.setRateKcal(findFood.getKcal()*eachMealFood.getQuantity());
       eachMealFood.setRateCarbo(findFood.getCarbo()*eachMealFood.getQuantity());
       eachMealFood.setRateProtein(findFood.getProtein()*eachMealFood.getQuantity());
       eachMealFood.setRateFat(findFood.getProtein()*eachMealFood.getQuantity());

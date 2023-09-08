@@ -22,7 +22,7 @@ public class EachMeal {
 
   @ManyToOne
   @JoinColumn(name = "MEMBER_ID")
-  private Member member ;
+  private Member member;
 
   @Column
   @OneToMany(mappedBy = "eachMeal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -33,7 +33,10 @@ public class EachMeal {
   private DailyMeal dailyMeal;
   
   @Column
-  private Long totalEachKcal;
+  private Boolean favorite = false;
+  
+  @Column
+  private Double totalEachKcal;
   
   @Column
   private Double totalEachCarbo;
@@ -46,4 +49,22 @@ public class EachMeal {
   
   @Column
   private Integer timeSlot;
+
+  public void calculateTotal() {
+    if (eachMealFoods != null && !eachMealFoods.isEmpty()) {
+      totalEachKcal = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateKcal)
+                            .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalEachCarbo = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateCarbo)
+                            .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalEachProtein = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateProtein)
+                            .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalEachFat = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateFat)
+                            .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+    } else {
+      totalEachKcal = 0.0;
+      totalEachCarbo = 0.0;
+      totalEachProtein = 0.0;
+      totalEachFat = 0.0;
+    }
+  }
   }

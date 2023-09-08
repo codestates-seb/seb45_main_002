@@ -2,6 +2,7 @@ package NutrientsCoders.main_project.community.service;
 
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
+import NutrientsCoders.main_project.communitycomment.repository.CommunityCommentRepository;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
@@ -15,16 +16,20 @@ import java.util.Optional;
 @Service
 public class CommunityService {
     private final CommunityRepository communityRepository;
+    private final CommunityCommentRepository communityCommentRepository;
 
 
-    public CommunityService(CommunityRepository communityRepository) {
+    public CommunityService(CommunityRepository communityRepository, CommunityCommentRepository communityCommentRepository) {
         this.communityRepository = communityRepository;
+        this.communityCommentRepository = communityCommentRepository;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
-    public Community createCommunity(Community community){
-        return communityRepository.save(community);
-    }
+//    public Community createCommunity(Community community){
+//        community.setCommunityCommentList(communityCommentRepository.findByCommunityComment(community.getCommunityId()));
+//        // 커뮤니티 리스트
+//        return communityRepository.save(community);
+//    }
     /** 리포지토리에 수정한 데이터를 저장하는 메서드 **/
     public Community updateCommunity(Community community){
         Community findCommunityId = communityRepository.findById(community.getCommunityId()).orElse(null);

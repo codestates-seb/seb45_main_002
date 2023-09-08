@@ -71,6 +71,11 @@ public class EtcNutrients {
     @Column(updatable = false)
     private Double potassium;
     
+    @Column(updatable = false)
+    private Double SaturatedFat;
+    
+    
+    
     public EtcNutrients() {
     
     }

@@ -2,6 +2,7 @@ package NutrientsCoders.main_project.eachmeal.mapper;
 
 import NutrientsCoders.main_project.eachmeal.dto.EachMealDto;
 import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseDto;
+import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseSimpleDto;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import NutrientsCoders.main_project.food.entity.Food;
@@ -17,10 +18,6 @@ public interface EachMealMapper {
   default EachMeal eachMealDtoToEachMeal(EachMealDto eachMealDto){
     EachMeal eachMeal = new EachMeal(); //dailymealId 추가 사용시 dto로 set말고 파라미터로 넘기기
     eachMeal.setEachMealFoods(eachMealFoodDtosToEachMealFoods(eachMealDto.getFoods()));
-    eachMeal.setTotalEachKcal( eachMealDto.getTotalEachKcal().longValue());
-    eachMeal.setTotalEachCarbo( eachMealDto.getTotalEachCarbo() );
-    eachMeal.setTotalEachProtein( eachMealDto.getTotalEachProtein() );
-    eachMeal.setTotalEachFat( eachMealDto.getTotalEachFat() );
     eachMeal.setTimeSlot(eachMealDto.getTimeSlots());
     
     return eachMeal;
@@ -28,9 +25,10 @@ public interface EachMealMapper {
   //EachMeal-> ResponseDto
   default EachMealResponseDto eachMealToEachMealResponseDto(EachMeal eachMeal) {
     EachMealResponseDto eachMealResponseDto = EachMealResponseDto.builder()
-        .memberId(1)
+        .memberId(eachMeal.getMember().getMemberId())
         .eachMealId(eachMeal.getEachMealId())
         .timeSlots(eachMeal.getTimeSlot())
+        .favorite(eachMeal.getFavorite())
         .totalEachKcal(eachMeal.getTotalEachKcal())
         .totalEachCarbo(eachMeal.getTotalEachCarbo())
         .totalEachProtein(eachMeal.getTotalEachProtein())
@@ -75,4 +73,5 @@ public interface EachMealMapper {
         .collect(Collectors.toList());
   }
   
+  List<EachMealResponseSimpleDto> eachMealToEachMealResponseSimpleDto(List<EachMeal> eachMeal);
 }
