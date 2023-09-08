@@ -31,7 +31,7 @@ public class EachMealResponseDto {
     private String foodCategory2;
     private Long servingSize;
     private Double quantity;
-    private Long ratioEachKcal;
+    private Double ratioEachKcal;
     private Double ratioEachCarbo;
     private Double ratioEachProtein;
     private Double ratioEachFat;

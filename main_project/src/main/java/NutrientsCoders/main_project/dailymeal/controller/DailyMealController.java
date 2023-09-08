@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,17 +48,6 @@ public class DailyMealController {
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
   
-  //작성한 식단 조회(날짜)
-  @GetMapping("date/{dateStr}")
-  public ResponseEntity<DailyMealResponseDto> getDailyMealByDate(@RequestHeader("Authorization") String token,
-                                                           @PathVariable("dateStr") String dateStr) {
-    long memberId = tokenChanger.getMemberId(token);
-    LocalDate date = LocalDate.parse(dateStr);
-    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(memberId, date);
-    DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
-
-    return new ResponseEntity<>(response,HttpStatus.OK);
-  }
   
   //작성한 식단 조회(Id)
   @GetMapping("/{dailymeal-id}")
@@ -72,18 +60,8 @@ public class DailyMealController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
-  //식단 전체 조회(캘린더)
-  @GetMapping
-  public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token) {
-    long memberId = tokenChanger.getMemberId(token);
-    List<DailyMeal> dailyMeals = dailyMealService.findByDateDailyMeals(memberId);
-    List<DailyMealMultiResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
-    
-    return new ResponseEntity<>(response,HttpStatus.OK);
-  }
-  
   //식단 전체 조회(선호)
-  @GetMapping("/favorite")
+  @GetMapping
   public ResponseEntity<List<DailyMealMultiResponseDto>> getDailyMealsByFavorit(@RequestHeader("Authorization") String token) {
     long memberId = tokenChanger.getMemberId(token);
     List<DailyMeal> dailyMeals = dailyMealService.findByfavoritDailyMeals(memberId);
@@ -93,26 +71,24 @@ public class DailyMealController {
   }
 
   //작성한 식단 수정
-  @PatchMapping("/{dateStr}")
+  @PatchMapping("/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
                                                              @RequestBody DailyMealDto dailyMealDto,
-                                                             @PathVariable("dateStr") String dateStr) {
+                                                             @PathVariable("dailymeal-id") long dailyMealId) {
     long memberId = tokenChanger.getMemberId(token);
-    LocalDate date = LocalDate.parse(dateStr);
     DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
-    DailyMeal updateDailyMeal = dailyMealService.updateDailyMeal(memberId, dailyMeal, date);
+    DailyMeal updateDailyMeal = dailyMealService.updateDailyMeal(memberId, dailyMeal, dailyMealId);
     DailyMealResponseDto response
         = dailyMealMapper.dailyMealToDailyMealResponseDto(updateDailyMeal);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   //작성한 식단 삭제
-  @DeleteMapping("/{dateStr}")
+  @DeleteMapping("/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> deleteDailyMeal(@RequestHeader("Authorization") String token,
-                                                              @PathVariable("dateStr") String dateStr) {
+                                                              @PathVariable("dailymeal-id") long dailyMealId) {
     long memberId = tokenChanger.getMemberId(token);
-    LocalDate date = LocalDate.parse(dateStr);
-    dailyMealService.deleteDailyMeal(date, memberId);
+    dailyMealService.deleteDailyMeal(dailyMealId, memberId);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }

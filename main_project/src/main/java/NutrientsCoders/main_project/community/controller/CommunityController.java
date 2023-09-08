@@ -23,12 +23,12 @@ public class CommunityController {
         this.communityMapper = communityMapper;
     }
     /** 게시글 등록 **/
-    @PostMapping
-    public ResponseEntity<CommunityResponseDto> postCommunity(@RequestBody CommunityPostDto communityPostDto){
-        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto));
-        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
-    }
+//    @PostMapping
+//    public ResponseEntity<CommunityResponseDto> postCommunity(@RequestBody CommunityPostDto communityPostDto){
+//        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto));
+//        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+//        return new ResponseEntity<>(response,HttpStatus.CREATED);
+//    }
     /** 게시글 수정 **/
     @PatchMapping("/{community-id}")
     public ResponseEntity<CommunityResponseDto> patchCommunity(@PathVariable("community-id") @Positive long communityId,

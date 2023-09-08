@@ -38,15 +38,29 @@ public class DailyMeal {
   private List<EachMeal> eachMeals;
   
   @Column
-  private Double totalEachKcal;
+  private Double totalDailyKcal;
   
   @Column
-  private Double totalEachCarbo;
+  private Double totalDailyCarbo;
   
   @Column
-  private Double totalEachProtein;
+  private Double totalDailyProtein;
   
   @Column
-  private Double totalEachFat;
+  private Double totalDailyFat;
   
+  public void calculateTotal() {
+    if (eachMeals != null && !eachMeals.isEmpty()) {
+      totalDailyCarbo = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachCarbo)
+          .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalDailyProtein = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachProtein)
+          .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalDailyFat = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachFat)
+          .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+    } else {
+      totalDailyCarbo = 0.0;
+      totalDailyProtein = 0.0;
+      totalDailyFat = 0.0;
+    }
+  }
 }

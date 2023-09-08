@@ -2,6 +2,7 @@ package NutrientsCoders.main_project.eachmeal.controller;
 
 import NutrientsCoders.main_project.eachmeal.dto.EachMealDto;
 import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseDto;
+import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseSimpleDto;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import NutrientsCoders.main_project.eachmeal.mapper.EachMealMapper;
@@ -42,19 +43,31 @@ public class EachMealController {
   @GetMapping("/{eachmealid}")
   public ResponseEntity<EachMealResponseDto> getEachMeal(@RequestHeader("Authorization") String token,
                                                          @PathVariable("eachmealid") long eachMealId) {
-    EachMeal eachMeal = eachMealService.findByEachMeal(eachMealId);
+    long memberId = tokenChanger.getMemberId(token);
+    EachMeal eachMeal = eachMealService.findByEachMeal(eachMealId, memberId);
     EachMealResponseDto response = eachMealMapper.eachMealToEachMealResponseDto(eachMeal);
 
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
+  
+  //작성한 끼니 전체 조회(본인꺼만)
+  @GetMapping
+  public ResponseEntity<List<EachMealResponseSimpleDto>> getEachMeals(@RequestHeader("Authorization") String token) {
+    long memberId = tokenChanger.getMemberId(token);
+    List<EachMeal> eachMeals = eachMealService.findByEachMeals(memberId);
+    List<EachMealResponseSimpleDto> simpleDtos = eachMealMapper.eachMealToEachMealResponseSimpleDto(eachMeals);
+    return new ResponseEntity<>(simpleDtos, HttpStatus.OK);
+  }
 
   //작성한 끼니 수정
   @PatchMapping("/{eachmealid}")
-  public ResponseEntity<EachMealResponseDto> patchEachMeal(@PathVariable("eachmealid") long eachMealId,
+  public ResponseEntity<EachMealResponseDto> patchEachMeal(@RequestHeader("Authorization") String token,
+                                                           @PathVariable("eachmealid") long eachMealId,
                                                            @RequestBody EachMealDto eachMealDto) {
+    long memberId = tokenChanger.getMemberId(token);
     List<EachMealFood> eachMealFoods = eachMealMapper.eachMealFoodDtosToEachMealFoods(eachMealDto.getFoods());
     EachMeal eachMeal = eachMealMapper.eachMealDtoToEachMeal(eachMealDto);
-    EachMeal updateEachMeal = eachMealService.updateEachMeal(eachMeal, eachMealFoods, eachMealId);
+    EachMeal updateEachMeal = eachMealService.updateEachMeal(eachMeal, eachMealFoods, eachMealId, memberId);
     
     EachMealResponseDto response
         = eachMealMapper.eachMealToEachMealResponseDto(updateEachMeal);
