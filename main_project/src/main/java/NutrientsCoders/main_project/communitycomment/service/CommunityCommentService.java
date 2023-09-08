@@ -22,14 +22,14 @@ public class CommunityCommentService {
     }
 
     /** 댓글 생성 메서드 **/
-    public CommunityComment createCommunityComment(CommunityCommentPostDto communityCommentPostDto){
-        CommunityComment comment = new CommunityComment();
-        Community community = new Community();
-        community.setAddCommunityCommentList(comment);
-        comment.setCommunityCommentContent(communityCommentPostDto.getCommunityCommentContent());
-        comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
-        return communityCommentRepository.save(comment);
-    }
+//    public CommunityComment createCommunityComment(CommunityCommentPostDto communityCommentPostDto){
+//        CommunityComment comment = new CommunityComment();
+//        Community community = new Community();
+//        community.setAddCommunityCommentList(comment);
+//        comment.setCommunityCommentContent(communityCommentPostDto.getCommunityCommentContent());
+//        comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
+//        return communityCommentRepository.save(comment);
+//    }
     /** 댓글 수정 메서드 **/
     public CommunityComment updateCommunityComment(CommunityComment communityComment){
         CommunityComment findCommunityComment = communityCommentRepository.findById(communityComment.getCommunityCommentId()).orElse(null);
