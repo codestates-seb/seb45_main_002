@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DailyMealMultiResponseDto {
+public class DailyMealSimpleResponseDto {
   private Long dailyMealId;
   private LocalDate date;
   private String name;

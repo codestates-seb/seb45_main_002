@@ -53,7 +53,7 @@ public class EachMealService {
   
   //선택 끼니 수정
   @Transactional
-  public EachMeal updateEachMeal(EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId, long memberId) {
+  public EachMeal updateEachMeal(long memberId, EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId, memberId);
     eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
     List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);

@@ -8,7 +8,6 @@ import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,7 @@ public class DailyMealService {
   }
   
   //선택 식단 조회(ID)
-  public DailyMeal findByDailyMeal(long memberId, long dailyMealId) {
+  public DailyMeal findByDailyMeal(long dailyMealId, long memberId) {
     return verifyExistsEachMeal(dailyMealId, memberId);
   }
   
@@ -44,8 +43,8 @@ public class DailyMealService {
   }
   
   //선택 식단 수정(ID)
-  public DailyMeal updateDailyMeal(long memberId, DailyMeal dailyMeal, long dailyMealId) {
-    DailyMeal findDailyMeal = verifyExistsEachMeal(memberId, dailyMealId);
+  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, long dailyMealId, long memberId) {
+    DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
     findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
     return dailyMealRepository.save(dailyMeal);
   }
@@ -59,42 +58,6 @@ public class DailyMealService {
   public DailyMeal verifyExistsEachMeal(long dailyMealId, long memberId) {
     Optional<DailyMeal> optionalDailyMeal = dailyMealRepository.findDailyMealById(dailyMealId, memberId);
     return optionalDailyMeal.orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
-  }
-  
-  //식단 분석 메서드
-  private EachMeal analyzeMeal(DailyMeal dailyMeal) {
-    //    Long kacl = eachMeal.getTotalEachKcal();
-//    Double carbohydrates = eachMeal.getTotalEachCarbo();
-//    Double proteins = eachMeal.getTotalEachProtein();
-//    Double fats = eachMeal.getTotalEachFat();
-//
-//
-//    calculator(carbohydrates, proteins, fats);//무엇을 계산해서 보여줄까??
-//  private static void calculator(Double carbohydrates, Double proteins, Double fats) {
-//    //총 섭취 그램 수 계산
-//    double totalGrams = carbohydrates + proteins + fats;
-//
-//    //섭취 탄단지 비율 계산
-//    double percentCarbo = (carbohydrates / totalGrams) * 100;
-//    double percentProteins = (proteins / totalGrams) * 100;
-//    double percentFats = (fats / totalGrams) * 100;
-//
-//    //칼로리 대비 적정량 계산(실제는 그람 대비임)
-//    double idealCarbohydrates = totalGrams * (3.0 / 10.0);
-//    double idealProteins = totalGrams * (5.0 / 10.0);
-//    double idealFats = totalGrams * (2.0 / 10.0);
-//
-//    //적정량 대비 초과, 부족(양)
-//    double overCarbohydrates = Math.abs(carbohydrates - idealCarbohydrates);
-//    double overProteins = Math.abs(proteins - idealProteins);
-//    double overFats = Math.abs(fats - idealFats);
-//
-//    //적정량 대비 초과, 부족(비율)
-//    double overPercentCarbo = ((carbohydrates - idealCarbohydrates) / idealCarbohydrates) * 100;
-//    double overPercentProteins = ((proteins - idealProteins) / idealProteins) * 100;
-//    double overPercentFats = ((fats - idealFats) / idealFats) * 100;
-//  }
-    return null;
   }
 }
 
