@@ -56,7 +56,7 @@ public class Analysis {
   private Double overPercentProteins;
   @Column
   private Double overPercentFats;
-  public void calculator(Double carbohydrates, Double proteins, Double fats, Double kacl) {
+  public void calculator(Double kacl, Double carbohydrates, Double proteins, Double fats) {
     // 초과, 부족 칼로리 계산(음수는 부족, 양수는 초과)
     overKcal = idealKacl - kacl;
     
