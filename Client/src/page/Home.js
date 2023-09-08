@@ -1,19 +1,21 @@
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-
+import CustomCalendar from "../component/Calendar/Calendar";
 import style from "../style/style";
+import moment from "moment";
+import { useState } from "react";
 
 const HomeContainer = styled.article`
   text-align: center;
   & > :first-child {
     height: ${style.layout.main.height / 2};
-    /* padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin
-      .width}; */
+    padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
   }
   & > :last-child {
     height: ${style.layout.main.height / 2};
   }
 `;
+
 const HomeMenu1 = styled.section`
   width: ${(style.layout.main.width / 3) * 2};
   height: ${style.layout.main.height / 2 / 5};
@@ -26,9 +28,11 @@ const HomeMenu2 = styled(HomeMenu1)`
 `;
 
 function Home({ setPage }) {
+  const [nowDate, setNowDate] = useState("날짜");
+
   return (
     <HomeContainer>
-      <div>캘린더 위치</div>
+      <CustomCalendar />
       <div>
         <HomeMenu1>
           <Link to="/diet">
@@ -46,7 +50,7 @@ function Home({ setPage }) {
           </Link>
         </HomeMenu1>
         <HomeMenu2>
-        <Link to="/community" onClick={() => setPage("community")}>
+          <Link to="/community" onClick={() => setPage("community")}>
             <div>커뮤니티</div>
           </Link>
         </HomeMenu2>

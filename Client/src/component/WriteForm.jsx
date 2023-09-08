@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { styled } from "styled-components";
+import Input from "../atom/Input";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -115,10 +117,31 @@ const SubmitBtn = styled.div`
 `;
 
 const WriteForm = () => {
+  const [form, setForm] = useState({
+    title: "",
+    content: "",
+  });
+  const [titleValue, setTitleValue] = useState("");
+  const [contentValue, setContentValue] = useState("");
+
+  const handleTitleChange = (e) => {
+    setTitleValue(e.target.value);
+  };
+
+  const handleContentChange = (e) => {
+    setContentValue(e.target.value);
+  };
+
   return (
     <WriteFormContainer>
       <TitleContainer>
-        <input placeholder="제목" />
+        {/* <input placeholder="제목" /> */}
+        <Input
+          type="title"
+          placeholder="제목"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+        />
       </TitleContainer>
       <DietBtnContainer>
         <DietBtn>이미지 추가하기</DietBtn>
@@ -146,7 +169,16 @@ const WriteForm = () => {
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <textarea placeholder="내용" />
+        <Input
+          type="email"
+          placeholder="내용"
+          width="100%"
+          height="100%"
+          borderRadius={"5px"}
+          value={form.content}
+          onChange={(e) => setForm({ ...form, content: e.target.value })}
+        />
+
         <SubmitBtn>SUBMIT</SubmitBtn>
       </ContentContainer>
     </WriteFormContainer>

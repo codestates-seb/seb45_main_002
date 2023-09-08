@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ModalContainer = styled.div`
+  z-index: 9999;
   background-color: transparent;
   visibility: ${(props) => (props.$isOpen ? "visible" : "hidden")};
   position: fixed;
@@ -96,8 +97,7 @@ const Modal = ({
   return (
     <ModalContainer $isOpen={isOpen}>
       <ModalBackdrop onClick={handleCloseModal}>
-
-       <ContentContainer onClick={e=>e.stopPropagation()}>
+        <ContentContainer onClick={(e) => e.stopPropagation()}>
           <HeaderContainer>{header}</HeaderContainer>
           {content}
           <FooterContainer>{footer}</FooterContainer>
