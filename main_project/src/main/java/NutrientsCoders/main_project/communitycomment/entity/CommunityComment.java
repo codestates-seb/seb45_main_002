@@ -2,7 +2,6 @@ package NutrientsCoders.main_project.communitycomment.entity;
 
 import NutrientsCoders.main_project.community.entity.Community;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class CommunityComment extends CommunityCommentBaseTime{
     private String communityCommentContent;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "COMMUNITY_ID",updatable = false,nullable = false)
+    @JoinColumn(name = "COMMUNITY_ID",nullable = false)
     private Community community;
 
     /** 커뮤니티 아이디 설정 **/

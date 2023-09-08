@@ -1,6 +1,5 @@
 package NutrientsCoders.main_project.communitycomment.service;
 
-import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
 import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentPostDto;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
@@ -43,7 +42,6 @@ public class CommunityCommentService {
                     new LogicException(ExceptionCode.COMMENT_NOT_FOUND));
         communityCommentRepository.deleteById(communityCommentId);
     }
-
 }
 
 

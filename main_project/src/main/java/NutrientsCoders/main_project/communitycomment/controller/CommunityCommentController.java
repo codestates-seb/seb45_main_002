@@ -27,8 +27,10 @@ public class CommunityCommentController {
     /** 댓글 등록 **/
     @PostMapping
     public ResponseEntity<CommunityCommentResponseDto> postCommunityComment(@RequestBody CommunityCommentPostDto communityCommentPostDto){
-        CommunityComment communityComment = communityCommentService.createCommunityComment(communityCommentMapper.communityCommentPostDtoToComment(communityCommentPostDto));
+        communityCommentPostDto.setCommunityId(communityCommentPostDto.getCommunityId());
+        CommunityComment communityComment = communityCommentService.createCommunityComment(communityCommentPostDto);
         CommunityCommentResponseDto response = communityCommentMapper.communityCommentResponseDtoToComment(communityComment);
+        response.setCommunityId(communityCommentPostDto.getCommunityId());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     /** 댓글 수정 **/

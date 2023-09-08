@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,6 @@ public class FoodService {
   
   public FoodService(FoodRepository foodRepository) {
     this.foodRepository = foodRepository;
-
   }
 
   //키워드로 음식 검색(브랜드 포함, 커스텀 용)

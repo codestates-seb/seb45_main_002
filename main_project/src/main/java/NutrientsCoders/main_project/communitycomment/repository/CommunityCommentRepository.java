@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CommunityCommentRepository extends JpaRepository<CommunityComment,Long> {
+    List<CommunityComment> findByCommunityCommentId(long communityId);
 }
