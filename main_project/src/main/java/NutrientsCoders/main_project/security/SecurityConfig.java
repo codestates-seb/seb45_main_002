@@ -1,5 +1,7 @@
 package NutrientsCoders.main_project.security;
 
+import NutrientsCoders.main_project.member.repository.MemberRepository;
+import NutrientsCoders.main_project.security.custom.LoginSuccessHandler;
 import NutrientsCoders.main_project.security.jwt.JwtAuthenticationFilter;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
 import NutrientsCoders.main_project.security.jwt.JwtVerificationFilter;
@@ -103,6 +105,8 @@ public class SecurityConfig {
             // JwtAuthenticationFilter에서 사용되는 AuthenticationManager와 JwtTokenizer를 DI
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, tokenMaker);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new LoginSuccessHandler());
 
             // JwtVerificationFilter의 인스턴스를 생성 및 사용되는 객체들을 생성자로 DI
              JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenMaker, authorityUtils);

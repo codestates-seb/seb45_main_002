@@ -38,10 +38,7 @@ public class MemberController {
         this.tc=tc;
     }
 
-    @GetMapping("/main")
-    public ResponseEntity mainsend (){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 
     @GetMapping("/testCon")
     public ResponseEntity<Long> test(@RequestHeader("Authorization") String token){
