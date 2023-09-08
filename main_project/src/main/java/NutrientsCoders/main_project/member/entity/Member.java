@@ -47,6 +47,12 @@ public class Member {
     @Column
     private Float activity;
 
+    @Column
+    private Float needKcal;
+
+    @Column
+    private Float bmi;
+
     //@OneToMany(mappedBy = "food")
     //private List<food> avoid = new ArrayList<>();
 
