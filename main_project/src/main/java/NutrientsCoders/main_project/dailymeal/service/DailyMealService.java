@@ -26,7 +26,6 @@ public class DailyMealService {
     dailyMeal.setEachMeals(eachMeals);
     dailyMeal.setMember(memberService.findMember(memberId));
     dailyMeal.calculateTotal();
-//    DailyMeal analyzedDailyMeal = analyzeMeal(dailyMeal);
     return dailyMealRepository.save(dailyMeal);
   }
   
