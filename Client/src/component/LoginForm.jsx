@@ -85,26 +85,36 @@ const LoginForm = () => {
     else{errMsg();}
   }
   
-  function googleLoginButton(){
+
+  async function getGoogleToken(){
     window.location.href = "https://accounts.google.com/o/oauth2/auth?" +
     "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
     "redirect_uri=http://localhost:3000/&" +
     "response_type=token&" +
     "scope=" +
     "https://www.googleapis.com/auth/userinfo.email"
-    let parsedHash = new URLSearchParams(window.location.hash.substring(1));
-    setAccessToken(parsedHash.get("access_token"));
+    const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
+    return parsedHash
+  }
+  async function googleLoginButton(e){
+    // getGoogleToken()
+    // for(let el of new URLSearchParams(window.location.hash.substring(1))){
+      // console.log(el)
+    // }
+    
+    localStorage.setItem("google_access_token",await getGoogleToken())
   }
 
   function sendBackend(){
-    axios.get("http://43.201.194.176:8080/auth",{
-      headers: {
-        'Content-Type': 'application/json',
-        'token': accessToken
-        }
-    })
-    .then(res=>console.log(res+"JWT 발급 < 성공 > 입니다."))
-    .catch(err=>console.log(err+"JWT 발급 < 실패 > 입니다."))
+    window.location.href="http://43.201.194.176:8080/oauth2/authorization/google"
+    // axios.get("http://43.201.194.176:8080/auth",{
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'token': accessToken
+    //     }
+    // })
+    // .then(res=>console.log(res+"JWT 발급 < 성공 > 입니다."))
+    // .catch(err=>console.log(err+"JWT 발급 < 실패 > 입니다."))
   }
   return (
     <LoginContainer>
