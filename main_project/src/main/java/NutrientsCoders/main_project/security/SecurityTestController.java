@@ -14,10 +14,10 @@ public class SecurityTestController {
 
 
     @GetMapping("/auth")
-    public ResponseEntity<String> test(@RequestHeader("token") String token){
+    public ResponseEntity<String> test(@RequestHeader("token")String token){
 
-        System.out.println(token);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        System.out.println("Token received: " + token);
+        return ResponseEntity.ok(token);
     }
 
 }

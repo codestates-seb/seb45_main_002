@@ -14,8 +14,10 @@ public interface MemberService {
 
     Member updateMember(Long memberId,MemberDto.Patch memberpatch) throws Exception;
     Member findMember(Long memberId) throws Exception;
+    Member findMember(String email);
     void deleteMember(Long meberId) throws Exception;
 
     MemberResponseDto.bmi checkBmi(Long memberId);
 
+    Member createOAuth2Member(Member member);
 }
