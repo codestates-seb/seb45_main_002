@@ -67,7 +67,7 @@ public class EachMealController {
     long memberId = tokenChanger.getMemberId(token);
     List<EachMealFood> eachMealFoods = eachMealMapper.eachMealFoodDtosToEachMealFoods(eachMealDto.getFoods());
     EachMeal eachMeal = eachMealMapper.eachMealDtoToEachMeal(eachMealDto);
-    EachMeal updateEachMeal = eachMealService.updateEachMeal(eachMeal, eachMealFoods, eachMealId, memberId);
+    EachMeal updateEachMeal = eachMealService.updateEachMeal(memberId, eachMeal, eachMealFoods, eachMealId);
     
     EachMealResponseDto response
         = eachMealMapper.eachMealToEachMealResponseDto(updateEachMeal);
