@@ -1,7 +1,7 @@
 package NutrientsCoders.main_project.dailymeal.mapper;
 
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealMultiResponseDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
@@ -27,6 +27,10 @@ public interface DailyMealMapper {
     dailyMealResponseDto.setDate(savedDailyMeal.getDate());
     dailyMealResponseDto.setName(savedDailyMeal.getName());
     dailyMealResponseDto.setFavorite(savedDailyMeal.getFavorite());
+    dailyMealResponseDto.setTotalDailyKcal(savedDailyMeal.getTotalDailyKcal());
+    dailyMealResponseDto.setTotalDailyCarbo(savedDailyMeal.getTotalDailyCarbo());
+    dailyMealResponseDto.setTotalDailyProtein(savedDailyMeal.getTotalDailyProtein());
+    dailyMealResponseDto.setTotalDailyFat(savedDailyMeal.getTotalDailyFat());
     //식단 set
     
     List<EachMeal> eachMeals = savedDailyMeal.getEachMeals();
@@ -67,7 +71,7 @@ public interface DailyMealMapper {
     return dailyMealResponseDto;
   }
   
-  List<DailyMealMultiResponseDto> dailyMealsToDailyMealResponseDtos(List<DailyMeal> dailyMeal);
+  List<DailyMealSimpleResponseDto> dailyMealsToDailyMealResponseDtos(List<DailyMeal> dailyMeal);
 }
   
 

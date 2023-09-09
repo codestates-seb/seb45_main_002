@@ -11,6 +11,7 @@ public enum ExceptionCode {
     FOOD_NOT_FOUND(404, "food not found..."),
     EACHMEAL_NOT_FOUND(404, "EachMeal not found..."),
     DAILYMEAL_NOT_FOUND(404, "DailyMeal not found..."),
+    ANALYSIS_NOT_FOUND(404, "Analysis not found..." ),
     CANNOT_APPLY(403, "can not change, check your conditions"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     SERVER_ERROR(500, "SERVER ERROR !!!"),
