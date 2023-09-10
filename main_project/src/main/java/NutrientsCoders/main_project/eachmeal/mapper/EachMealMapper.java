@@ -68,7 +68,6 @@ public interface EachMealMapper {
           food.setFoodId(eachMealFoodDto.getFoodId());
           eachMealFood.setFood(food);
           eachMealFood.setQuantity(eachMealFoodDto.getQuantity());
-          eachMealFood.calculateRate();
           return eachMealFood;
         })
         .collect(Collectors.toList());

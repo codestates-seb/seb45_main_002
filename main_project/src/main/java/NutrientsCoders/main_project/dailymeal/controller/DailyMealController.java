@@ -96,19 +96,4 @@ public class DailyMealController {
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
-  
-  //작성한 식단 저장
-  @PostMapping
-  public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
-                                                              @RequestBody DailyMealDto dailyMealDto) throws Exception {
-    long memberId = tokenChanger.getMemberId(token);
-    List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
-        .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
-        .collect(Collectors.toList());
-    
-    DailyMeal dailyMeal = dailyMealSuggests.createSuggestDailyMeal(
-        dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto), eachMeals, memberId);
-    DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
-    return new ResponseEntity<>(response, HttpStatus.OK);
-  }
 }
