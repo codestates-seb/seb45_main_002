@@ -25,7 +25,6 @@ import java.net.URI;
 @RequestMapping("")
 @Validated
 @Slf4j
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MemberController {
 
     private final MemberService memberService;
@@ -39,13 +38,10 @@ public class MemberController {
         this.tc=tc;
     }
 
-    @GetMapping("/main")
-    public ResponseEntity mainsend (){
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 
     @GetMapping("/testCon")
-    public ResponseEntity<Long> test(@RequestHeader String token){
+    public ResponseEntity<Long> test(@RequestHeader("Authorization") String token){
 
 
         return new ResponseEntity<>(tc.getMemberId(token),HttpStatus.OK);
@@ -72,9 +68,9 @@ public class MemberController {
     }
 
     @PostMapping("/member/createinfo")
-    public ResponseEntity<Member> postInfoMember(@RequestBody MemberDto.AddInfo memberinfo) throws Exception {
+    public ResponseEntity<MemberResponseDto.MyPage> postInfoMember(@RequestBody MemberDto.AddInfo memberinfo) throws Exception {
         Member member = memberService.additionMemberInfo(memberinfo);
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(memberMapper.memberMypageChanger(member));
     }
 
     @GetMapping("/mypage/{member-id}")

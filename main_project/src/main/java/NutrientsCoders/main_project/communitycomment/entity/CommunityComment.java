@@ -17,6 +17,8 @@ public class CommunityComment extends CommunityCommentBaseTime{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long communityCommentId;
+    @Column
+    private Long memberId;
     @Column(columnDefinition = "text")
     @NotNull
     private String communityCommentContent;
@@ -24,7 +26,9 @@ public class CommunityComment extends CommunityCommentBaseTime{
     @ManyToOne
     @JoinColumn(name = "COMMUNITY_ID",nullable = false)
     private Community community;
-
+//    @ManyToOne
+//    @JoinColumn(name = "MEMBER_ID",nullable = false)
+//    private Member member;
     /** 커뮤니티 아이디 설정 **/
     public void setCommunity(Community community){
         this.community = community;

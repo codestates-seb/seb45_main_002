@@ -14,13 +14,15 @@ import java.util.List;
 @Builder
 public class Member {
 
-    @Id@GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "MEMBER_ID")
     private Long memberId;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Column(nullable = false)
@@ -45,7 +47,14 @@ public class Member {
     @Column
     private Float activity;
 
-    //private List<String> avoid = new ArrayList<>();
+    @Column
+    private Float needKcal;
+
+    @Column
+    private Float bmi;
+
+    //@OneToMany(mappedBy = "food")
+    //private List<food> avoid = new ArrayList<>();
 
     @Column
     private String imageUrl;
@@ -53,4 +62,7 @@ public class Member {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Member(String email) {
+        this.email = email;
+    }
 }

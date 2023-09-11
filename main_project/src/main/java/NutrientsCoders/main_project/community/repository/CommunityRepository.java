@@ -12,5 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface CommunityRepository extends JpaRepository<Community,Long> {
     @Query("SELECT c FROM Community c WHERE LOWER(c.communityTitle) LIKE LOWER(CONCAT('%',:keyword,'%')) ORDER BY c.community_createdAt DESC")
     Page<Community> findByCommunityTitle(@Param("keyword")String keyword, Pageable pageable);
+    @Query("SELECT c from Community c where c.communityId = :communityId")
     Community findByCommunityId(long communityId);
+    @Query("SELECT c from Community c where c.member.memberId = :memberId")
+    Community findByMemberId(long memberId);
 }

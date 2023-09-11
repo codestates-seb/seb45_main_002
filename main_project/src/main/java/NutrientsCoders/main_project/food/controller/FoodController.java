@@ -4,6 +4,7 @@ import NutrientsCoders.main_project.food.dto.FoodResponseDto;
 import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.mapper.FoodMapper;
 import NutrientsCoders.main_project.food.service.FoodService;
+import NutrientsCoders.main_project.utils.TokenChanger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,16 +16,20 @@ import java.util.List;
 public class FoodController {
   private final FoodService foodService;
   private final FoodMapper foodMapper;
+  private final TokenChanger tokenChanger;
   
-  public FoodController(FoodService foodService, FoodMapper foodMapper) {
+  public FoodController(FoodService foodService, FoodMapper foodMapper, TokenChanger tokenChanger) {
     this.foodService = foodService;
     this.foodMapper = foodMapper;
+    this.tokenChanger = tokenChanger;
   }
   
-  //키워드로 음식 리스트 검색(브랜드 비 포함)
+  //키워드로 음식 리스트 검색(브랜드 포함)
   @GetMapping("/search/foods")
-  public ResponseEntity<List<FoodResponseDto>> getFoodSearchKeyword(@RequestParam(value = "search-word" ) String searchWord) {
-    List<Food> foods = foodService.findBySearchWordFood_Custom(searchWord);
+  public ResponseEntity<List<FoodResponseDto>> getFoodSearchKeyword(@RequestHeader("Authorization") String token,
+                                                                    @RequestParam(value = "search-word" ) String searchWord) {
+    long memberId = tokenChanger.getMemberId(token);
+    List<Food> foods = foodService.findBySearchWordFood(searchWord, memberId);
     List<FoodResponseDto> response = foodMapper.foodToFoodResponseDtos(foods);
 
     return new ResponseEntity<>(response,HttpStatus.OK);
@@ -47,32 +52,4 @@ public class FoodController {
     
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
-//========================================== 커스텀 부분, memberId 필요==========================
-//  //커스텀 음식 저장
-//  @PostMapping("/foods/{member-id}")
-//  public ResponseEntity<FoodResponseDto> postFood(@PathVariable("member-id") long memberId,
-//                                                  @RequestBody FoodPostDto foodDto) {
-//    Food food = foodService.createCustomFood(foodMapper.foodPostDtoToFood(foodDto), memberId);
-//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
-//    return new ResponseEntity<>(response, HttpStatus.OK);
-//  }
-//  //커스텀 음식 수정
-//  @PatchMapping("/foods/{member-id}/{food-id}")
-//  public ResponseEntity<FoodResponseDto> patchFood(@PathVariable("food-id") long foodId,
-//                                                   @PathVariable("member-id") long memberId,
-//                                  @RequestBody FoodPatchDto foodPatchDto) {
-//
-//    Food food =foodService.updateCustomFood(foodMapper.foodPatchDtoToFood(foodPatchDto), foodId, memberId);
-//    FoodResponseDto response = foodMapper.foodToFoodResponseDto(food);
-//
-//    return new ResponseEntity<>(response ,HttpStatus.OK);
-//  }
-//  //커스텀 음식 삭제
-//  @DeleteMapping("/{food-id}")
-//  public ResponseEntity<FoodResponseDto> deleteFood(@PathVariable("food-id") long foodId) {
-//    foodService.deleteCustomFood(foodId);
-//
-//    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//  }
-//
 }
