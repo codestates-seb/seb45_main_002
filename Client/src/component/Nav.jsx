@@ -21,7 +21,7 @@ const UlBox = styled.ul`
   }
 `;
 
-function Nav() {
+function Nav({setPage}) {
   return (
     <NavContainer>
       <UlBox>
