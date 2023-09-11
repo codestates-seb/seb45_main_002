@@ -93,16 +93,16 @@ const LoginForm = () => {
     "response_type=token&" +
     "scope=" +
     "https://www.googleapis.com/auth/userinfo.email"
-    const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
-    return parsedHash
+    // const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
+    // return parsedHash
   }
   async function googleLoginButton(e){
-    // getGoogleToken()
+    getGoogleToken()
     // for(let el of new URLSearchParams(window.location.hash.substring(1))){
       // console.log(el)
     // }
     
-    localStorage.setItem("google_access_token",await getGoogleToken())
+    // localStorage.setItem("google_access_token",await getGoogleToken())
   }
 
   function sendBackend(){

@@ -29,7 +29,7 @@ const useZustand = {
       ],
       setArticles: (newArticle)=>set({articles: [newArticle]}),
       axiosArticles: () => {
-        axios.get("https://57b4-59-9-144-107.ngrok-free.app/community?page=1&size=",{
+        axios.get("http://43.201.194.176:8080/community?page=1&size=",{
           headers: {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': '69420',
