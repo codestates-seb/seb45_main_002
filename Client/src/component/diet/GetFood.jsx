@@ -5,7 +5,7 @@ const GetFood = (foodId) => {
   const [food, setFood] = useState();
   const token = "";
   axios
-    .get(`${process.env.SERVER_URL}/foods/${foodId}`, {
+    .get(`http://43.201.194.176:8080/foods/${foodId}`, {
       headers: { Authorization: token },
     })
     .then((response) => {

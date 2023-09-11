@@ -7,7 +7,7 @@ const GetDailyDiet = (dateStr) => {
 
   useEffect(() => {
     axios
-      .get(`${process.env.SERVER_URL}/dailymeals/${dateStr}`, {
+      .get(`http://43.201.194.176:8080/dailymeals/${dateStr}`, {
         headers: { Authorization: token },
       })
       .then((response) => {
