@@ -1,61 +1,59 @@
-import { styled } from "styled-components";
-import useArticleStore from "../zustand/ArticleStore";
+import { useNavigate } from "react-router-dom";
 
-const ArticleContainer = styled.div`
+import { styled } from "styled-components";
+
+import useZustand from "../zustand/Store";
+
+import style from "../style/style";
+
+const ArticleContainer = styled.ul`
   background-color: white;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 10%;
   border-left: 8px solid #ffc123;
   border-radius: 0 10px 10px 0px;
-  padding: 7px;
   box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
-`;
+  list-style: none;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  width: ${style.layout.main.width-style.layout.wideMargin.width*2};
+`
 
-// const ProfileContainer = styled.div`
-//   width: 30px;
-//   height: 30px;
-//   border-radius: 50%;
-//   border: 1px solid red;
-// `;
+const ArticleBox = styled.li`
+`
 
 const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 100%;
-  height: 80%;
-  border-bottom: 1px solid #ffc123;
-  font-size: 18px;
-  margin-bottom: 10px;
-`;
+  border-bottom: 1px solid #ffc1237b;
+  cursor: pointer;
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+`
 
 const InfoContainer = styled.div`
-  height: auto;
-  display: inline;
   text-align: right;
   justify-content: right;
-  font-size: 12px;
-`;
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+`
 
-const Article = ({ articleId }) => {
-  const { articles } = useArticleStore();
+const Article = ({article}) => {
 
-  const article = articles.find((article) => article.communityId === articleId);
+  const navigate = useNavigate()
 
-  if (!article) {
-    return alert("article error");
+  function openArticle(){
+    navigate(`/pageswitch/community/detail/${article.communityId}`)
   }
 
   return (
     <ArticleContainer>
-      <TitleContainer>{article.communityTitle}</TitleContainer>
-      <InfoContainer>
-        좋아요 {article.communitylike} 조회수 {article.communityViewCount}{" "}
-        {article.community_createdAt}
-      </InfoContainer>
+      <ArticleBox>
+        <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
+        <InfoContainer>
+          좋아요 {article.communitylike} 조회수 {article.communityViewCount}{" "}
+          {article.community_createdAt}
+        </InfoContainer>
+      </ArticleBox>
     </ArticleContainer>
   );
 };
