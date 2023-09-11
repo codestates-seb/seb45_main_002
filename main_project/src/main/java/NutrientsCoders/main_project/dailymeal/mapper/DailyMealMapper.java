@@ -21,16 +21,17 @@ public interface DailyMealMapper {
     return dailyMeal;
   }
   default DailyMealResponseDto dailyMealToDailyMealResponseDto(DailyMeal savedDailyMeal) {
-    DailyMealResponseDto dailyMealResponseDto = new DailyMealResponseDto();
-    dailyMealResponseDto.setDailyMealId(savedDailyMeal.getDailyMealId());
-    dailyMealResponseDto.setMemberId(savedDailyMeal.getMember().getMemberId());
-    dailyMealResponseDto.setDate(savedDailyMeal.getDate());
-    dailyMealResponseDto.setName(savedDailyMeal.getName());
-    dailyMealResponseDto.setFavorite(savedDailyMeal.getFavorite());
-    dailyMealResponseDto.setTotalDailyKcal(savedDailyMeal.getTotalDailyKcal());
-    dailyMealResponseDto.setTotalDailyCarbo(savedDailyMeal.getTotalDailyCarbo());
-    dailyMealResponseDto.setTotalDailyProtein(savedDailyMeal.getTotalDailyProtein());
-    dailyMealResponseDto.setTotalDailyFat(savedDailyMeal.getTotalDailyFat());
+    DailyMealResponseDto dailyMealResponseDto = DailyMealResponseDto.builder()
+    .dailyMealId(savedDailyMeal.getDailyMealId())
+    .memberId(savedDailyMeal.getMember().getMemberId())
+    .date(savedDailyMeal.getDate())
+    .name(savedDailyMeal.getName())
+    .favorite(savedDailyMeal.getFavorite())
+    .totalDailyKcal(savedDailyMeal.getTotalDailyKcal())
+    .totalDailyCarbo(savedDailyMeal.getTotalDailyCarbo())
+    .totalDailyProtein(savedDailyMeal.getTotalDailyProtein())
+    .totalDailyFat(savedDailyMeal.getTotalDailyFat())
+    .build();
     //식단 set
     
     List<EachMeal> eachMeals = savedDailyMeal.getEachMeals();

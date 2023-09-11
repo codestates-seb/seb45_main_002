@@ -46,6 +46,15 @@ public class Food {
   @Column(updatable = false)
   private Double fat;
   
+  @Column(updatable = false)
+  private Double carboRate;
+  
+  @Column(updatable = false)
+  private Double proteinRate;
+  
+  @Column(updatable = false)
+  private Double fatRate;
+  
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "food", cascade = CascadeType.ALL)
   private EtcNutrients etcNutrients;
 

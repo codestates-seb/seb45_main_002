@@ -1,5 +1,6 @@
 package NutrientsCoders.main_project.dailymeal.entity;
 
+import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
@@ -25,6 +26,9 @@ public class DailyMeal {
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
   
+  @OneToOne(mappedBy = "dailyMeal", cascade = CascadeType.REMOVE)
+  private Analysis analysis;
+  
   @Column(unique = true)
   private LocalDate date;
 
@@ -34,7 +38,7 @@ public class DailyMeal {
   @Column
   private Boolean favorite = false;
 
-  @OneToMany(mappedBy = "dailyMeal", cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "dailyMeal", cascade = CascadeType.ALL)
   private List<EachMeal> eachMeals;
   
   @Column

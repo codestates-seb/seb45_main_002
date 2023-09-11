@@ -6,6 +6,7 @@ import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
+import NutrientsCoders.main_project.dailymeal.service.DailyMealSuggestService;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.utils.TokenChanger;
@@ -24,10 +25,13 @@ public class DailyMealController {
   private final DailyMealService dailyMealService;
   private final DailyMealMapper dailyMealMapper;
   private final EachMealService eachMealService;
+  private final DailyMealSuggestService dailyMealSuggests;
   private final TokenChanger tokenChanger;
   
-  public DailyMealController(DailyMealService dailyMealService, DailyMealMapper dailyMealMapper, EachMealService eachMealService, TokenChanger tokenChanger) {
+  public DailyMealController(DailyMealService dailyMealService, DailyMealMapper dailyMealMapper,
+                             EachMealService eachMealService, DailyMealSuggestService dailyMealSuggests, TokenChanger tokenChanger) {
     this.dailyMealService = dailyMealService;
+    this.dailyMealSuggests = dailyMealSuggests;
     this.dailyMealMapper = dailyMealMapper;
     this.eachMealService = eachMealService;
     this.tokenChanger = tokenChanger;
@@ -45,7 +49,7 @@ public class DailyMealController {
     DailyMeal dailyMeal = dailyMealService.createDailyMeal(
         dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto), eachMeals, memberId);
         DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
   
@@ -54,7 +58,7 @@ public class DailyMealController {
   public ResponseEntity<DailyMealResponseDto> getDailyMealById(@RequestHeader("Authorization") String token,
                                                            @PathVariable("dailymeal-id") long dailyMealId) {
     long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(memberId, dailyMealId);
+    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(dailyMealId, memberId);
     DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
     
     return new ResponseEntity<>(response,HttpStatus.OK);
@@ -91,5 +95,15 @@ public class DailyMealController {
     dailyMealService.deleteDailyMeal(dailyMealId, memberId);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+  
+  //  식단 추천 받기
+  @PostMapping("/suggest/{analysis-id}")
+  public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
+                                                                     @PathVariable("analysis-id") long analysisId) throws Exception {
+    long memberId = tokenChanger.getMemberId(token);
+    DailyMeal dailyMeal = dailyMealSuggests.suggestDailyMeal(analysisId, memberId);
+    DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 }

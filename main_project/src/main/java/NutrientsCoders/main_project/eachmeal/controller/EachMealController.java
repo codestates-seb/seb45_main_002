@@ -36,7 +36,7 @@ public class EachMealController {
     EachMeal eachMeal = eachMealMapper.eachMealDtoToEachMeal(eachMealDto);
     EachMeal savedEachMeal = eachMealService.createEachMeal(eachMeal, eachMealFoods, memberId);
     EachMealResponseDto response = eachMealMapper.eachMealToEachMealResponseDto(savedEachMeal);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
   //작성한 끼니 조회

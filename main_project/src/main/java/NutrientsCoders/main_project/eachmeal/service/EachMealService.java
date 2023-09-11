@@ -82,10 +82,7 @@ public class EachMealService {
       Food findFood  = foodService.findByFood(foodId);
       eachMealFood.setFood(findFood);
       eachMealFood.setEachMeal(eachMeal);
-      eachMealFood.setRateKcal(findFood.getKcal()*eachMealFood.getQuantity());
-      eachMealFood.setRateCarbo(findFood.getCarbo()*eachMealFood.getQuantity());
-      eachMealFood.setRateProtein(findFood.getProtein()*eachMealFood.getQuantity());
-      eachMealFood.setRateFat(findFood.getProtein()*eachMealFood.getQuantity());
+      eachMealFood.calculateRate();
     }).collect(Collectors.toList());
   }
 }

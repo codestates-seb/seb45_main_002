@@ -37,7 +37,6 @@ public class FoodService {
     Optional<Food> optionalFood = foodRepository.findByFoodId(foodId);
     return optionalFood.orElseThrow(() -> new LogicException(ExceptionCode.FOOD_NOT_FOUND));
   }
-  
 
   //키워드로 음식 검색(브랜드 비 포함, 식단 추천용)
   public List<Food> findSearchWordFoods(String searchWord) {

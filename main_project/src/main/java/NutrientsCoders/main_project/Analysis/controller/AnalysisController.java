@@ -4,8 +4,11 @@ import NutrientsCoders.main_project.Analysis.dto.AnalysisResponseDto;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.mapper.AnalysisMapper;
 import NutrientsCoders.main_project.Analysis.service.AnalysisService;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
+import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
+import NutrientsCoders.main_project.dailymeal.service.DailyMealSuggestService;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.TokenChanger;
 import org.springframework.http.HttpStatus;
@@ -40,7 +43,7 @@ public class AnalysisController {
     Analysis analysis = analysisService.createAnalysis(dailyMeal, needKacl);
     AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
     
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
   //작성한 분석 조회(Id)

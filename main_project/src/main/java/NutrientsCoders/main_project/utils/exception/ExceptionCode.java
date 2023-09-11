@@ -7,6 +7,7 @@ public enum ExceptionCode {
     COMMUNITY_NOT_FOUND(404,"Community Not found"),
     COMMENT_NOT_FOUND(404,"Comment Not found"),
     USER_EXISTS(409, "Member Already exists!"),
+    MEAL_ALREADY_FULL(409, "DailyMeal already full"),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
     EACHMEAL_NOT_FOUND(404, "EachMeal not found..."),

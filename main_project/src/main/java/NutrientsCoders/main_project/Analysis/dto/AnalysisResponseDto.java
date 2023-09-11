@@ -15,9 +15,9 @@ public class AnalysisResponseDto {
   
   private Double totalGrams;
   
-  private long percentCarbos;
-  private long percentProteins;
-  private long percentFats;
+  private Double percentCarbos;
+  private Double percentProteins;
+  private Double percentFats;
   
   private Double idealCarbohydrates;
   private Double idealProteins;
