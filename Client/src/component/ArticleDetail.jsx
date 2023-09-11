@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import useArticleStore from "../zustand/ArticleStore";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useState } from "react";
-import { keyframes } from "styled-components";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -33,14 +32,17 @@ const TitleContainer = styled.div`
 const ContentContainer = styled.div`
   width: 100%;
   max-height: 70%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   padding: 10px;
+  text-align: right;
 
   & > div {
+    text-align: left;
+    margin-top: 1rem;
     padding-top: 1rem;
     width: 100%;
     height: 40vh;
-    max-height: 70%;
+    max-height: 90%;
     background-color: transparent;
     border-top: 2px solid #ffc123;
     border-bottom: 2px solid #ffc123;
@@ -102,7 +104,7 @@ const BtnContainer = styled.div`
 
   width: 100%;
   height: 3em;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   gap: 10px;
 `;
 
@@ -117,18 +119,6 @@ const CommonBtn = styled.div`
   font-size: 12px;
 `;
 
-const beat = keyframes`
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-`;
-
 const HeartIcon = styled.div`
   position: relative;
   cursor: pointer;
@@ -139,15 +129,11 @@ const HeartIcon = styled.div`
 const HeartOutline = styled(HeartOutlined)`
   font-size: 18px;
   color: ${(props) => (props.isChecked ? "black" : "red")};
-  transition: color 1s;
 `;
 
 const HeartFill = styled(HeartFilled)`
   font-size: 18px;
   color: red;
-  animation: ${(props) =>
-    props.isChecked ? "" : `${beat} 0.8s ease infinite`};
-  transition: color 1s;
 `;
 
 const LikeBtn = () => {
@@ -168,7 +154,13 @@ const LikeBtn = () => {
   );
 };
 
-const ArticleDetail = ({ like, created_at, views, communityContent }) => {
+const ArticleDetail = ({
+  like,
+  CommunityCreatedAt,
+  views,
+  communityContent,
+  communityTitle,
+}) => {
   const { communityId } = useParams();
   const { articles } = useArticleStore();
 
@@ -179,8 +171,9 @@ const ArticleDetail = ({ like, created_at, views, communityContent }) => {
   return (
     <WriteFormContainer>
       <TitleContainer>
-        <div>제목입니다</div>
+        <div> {communityTitle}제목입니다</div>
       </TitleContainer>
+
       <DietContainer>
         <DietImageContainer>
           <img alt="dietimg" />
@@ -204,6 +197,7 @@ const ArticleDetail = ({ like, created_at, views, communityContent }) => {
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
+        n년n월n일 {CommunityCreatedAt}
         <div>
           콘텐츠입니다
           {communityContent}

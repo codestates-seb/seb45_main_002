@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import Calendar from "../component/Calendar";
+import { useState } from "react";
 
 const HomeMenuContainer = styled.article`
   section {
@@ -35,6 +36,8 @@ const HomeMenuContainer = styled.article`
 `;
 
 function Home({ setPage }) {
+  const [nowDate, setNowDate] = useState("날짜");
+
   return (
     <>
       <Calendar />

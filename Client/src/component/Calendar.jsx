@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import style from "../style/style";
-
+import CustomCalendar from "./Calendar/Calendar";
 const StyleCalendar = styled.div`
   width: calc(100% - 16px);
   max-width: 340px;
@@ -11,10 +11,15 @@ const StyleCalendar = styled.div`
   margin-right: auto;
   background-color: ${style.color.white};
   border-radius: 8px;
+  padding: 10px;
 `;
 
 const Calendar = () => {
-  return <StyleCalendar></StyleCalendar>;
+  return (
+    <StyleCalendar>
+      <CustomCalendar />
+    </StyleCalendar>
+  );
 };
 
 export default Calendar;
