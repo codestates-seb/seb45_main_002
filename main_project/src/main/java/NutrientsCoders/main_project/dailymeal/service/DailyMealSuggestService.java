@@ -160,7 +160,7 @@ public class DailyMealSuggestService {
       PageRequest pageable = PageRequest.of(0, 5);
       List<Food> foodList = new ArrayList<>();
       Food randomFood = new Food();
-      
+      //foodList 에서 문제 **
       if (timeSlot.equals("1")) { //아침은 디저트x
         foodList = foodRepository.findInCategoryBreackFast(category, timeSlot, orderbyDsce, pageable).getContent();
         if (foodList.isEmpty()) {
