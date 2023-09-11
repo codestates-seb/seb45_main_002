@@ -133,9 +133,9 @@ const CustomCalendar = () => {
         name: "식단명",
         favorite: false,
         eachMeals: [
-          ["아침메뉴: 어쩌구 18일"],
-          ["점심: 저쩌구 18일 "],
-          ["저녁: 어저구 18일"],
+          ["아침메뉴: 18일 아침"],
+          ["점심: 18일 점심"],
+          ["저녁: 18일 저녁"],
         ],
         totalDailyKcal: 1000,
         totalDailyCarbo: 500,
@@ -154,9 +154,9 @@ const CustomCalendar = () => {
         name: "식단명",
         favorite: false,
         eachMeals: [
-          ["아침메뉴: 어쩌구 11월13일"],
-          ["점심: 저쩌구 18일 "],
-          ["저녁: 어저구 18일"],
+          ["아침메뉴: 12월13일 아침"],
+          ["점심: 12월13일 점심 "],
+          ["저녁: 12월13일 저녁"],
         ],
         totalDailyKcal: 1000,
         totalDailyCarbo: 500,
@@ -173,9 +173,7 @@ const CustomCalendar = () => {
           const [year, month, day] = item.date.split("-");
           const startDate = new Date(year, month - 1, day);
           const endDate = new Date(year, month - 1, day);
-
           const eachMealsArray = item.eachMeals.map((meal) => meal.eachMeal);
-
           return {
             start: startDate,
             end: endDate,

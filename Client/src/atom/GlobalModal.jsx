@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ModalContainer = styled.div`
-  z-index: 9999;
+  /* z-index: 9999; */
   background-color: transparent;
   visibility: ${(props) => (props.$isOpen ? "visible" : "hidden")};
   position: absolute;
