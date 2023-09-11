@@ -15,7 +15,7 @@ const CalendarContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   padding: 0;
 `;
 
@@ -112,9 +112,9 @@ const CustomCalendar = () => {
         name: "식단명",
         favorite: false,
         eachMeals: [
-          ["아침메뉴: 15일 아침 "],
-          ["점심: 15일 점심"],
-          ["저녁: 15일 저녁 "],
+          "아침메뉴: 15일 아침",
+          "점심: 15일 점심",
+          "저녁: 15일 저녁 ",
         ],
         totalDailyKcal: 1000,
         totalDailyCarbo: 500,
@@ -134,6 +134,27 @@ const CustomCalendar = () => {
         favorite: false,
         eachMeals: [
           ["아침메뉴: 어쩌구 18일"],
+          ["점심: 저쩌구 18일 "],
+          ["저녁: 어저구 18일"],
+        ],
+        totalDailyKcal: 1000,
+        totalDailyCarbo: 500,
+        totalDailyProtein: 500,
+        totalDailyFat: 500,
+      },
+    },
+    {
+      start: new Date(2023, 11, 13),
+      end: new Date(2023, 11, 13),
+      hasDiet: true,
+      dietInfo: {
+        dailyMealId: 2,
+        memberId: 5,
+        date: "2023-11-13",
+        name: "식단명",
+        favorite: false,
+        eachMeals: [
+          ["아침메뉴: 어쩌구 11월13일"],
           ["점심: 저쩌구 18일 "],
           ["저녁: 어저구 18일"],
         ],
