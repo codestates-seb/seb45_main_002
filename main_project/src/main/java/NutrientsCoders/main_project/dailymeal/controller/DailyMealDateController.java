@@ -30,7 +30,7 @@ public class DailyMealDateController {
   }
   
     //작성한 식단 조회(날짜)
-  @GetMapping("{dateStr}")
+  @GetMapping("/{dateStr}")
   public ResponseEntity<DailyMealResponseDto> getDailyMealByDate(@RequestHeader("Authorization") String token,
                                                            @PathVariable("dateStr") String dateStr) {
     long memberId = tokenChanger.getMemberId(token);

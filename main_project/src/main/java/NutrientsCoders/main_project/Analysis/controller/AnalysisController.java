@@ -23,18 +23,14 @@ public class AnalysisController {
   private final TokenChanger tokenChanger;
   private final DailyMealService dailyMealService;
   private final MemberService memberService;
-  private final DailyMealSuggestService dailyMealSuggestService;
-  private final DailyMealMapper dailyMealMapper;
   
   public AnalysisController(AnalysisService analysisService, AnalysisMapper analysisMapper,
-                            TokenChanger tokenChanger, DailyMealService dailyMealService, MemberService memberService, DailyMealSuggestService dailyMealSuggestService, DailyMealMapper dailyMealMapper) {
+                            TokenChanger tokenChanger, DailyMealService dailyMealService, MemberService memberService) {
     this.analysisService = analysisService;
     this.analysisMapper = analysisMapper;
     this.tokenChanger = tokenChanger;
     this.dailyMealService = dailyMealService;
     this.memberService = memberService;
-    this.dailyMealSuggestService = dailyMealSuggestService;
-    this.dailyMealMapper = dailyMealMapper;
   }
   
   //작성한 분석 저장
@@ -47,7 +43,7 @@ public class AnalysisController {
     Analysis analysis = analysisService.createAnalysis(dailyMeal, needKacl);
     AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
     
-    return new ResponseEntity<>(response, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
   //작성한 분석 조회(Id)
@@ -65,15 +61,5 @@ public class AnalysisController {
     analysisService.deleteAnalysis(analysisId);
     
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  }
-  
-//  작성한 식단 저장
-  @PostMapping("/suggest/{analysis-id}")
-  public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
-                                                                     @PathVariable("analysis-id") long analysisId) throws Exception {
-    long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealSuggestService.suggestDailyMeal(analysisId, memberId);
-    DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
-    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 }

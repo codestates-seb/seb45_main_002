@@ -49,6 +49,10 @@ public class EachMeal {
   
   @Column
   private Integer timeSlot;
+  
+  private Double totalPercentCarbo;
+  private Double totalPercentProtein;
+  private Double totalPercentFat;
 
   public void calculateTotal() {
     if (eachMealFoods != null && !eachMealFoods.isEmpty()) {
@@ -60,6 +64,12 @@ public class EachMeal {
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalEachFat = Math.round(eachMealFoods.stream().mapToDouble(EachMealFood::getRateFat)
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      
+      Double totalMacros = totalEachCarbo + totalEachProtein + totalEachFat;
+      totalPercentCarbo =  Math.round(totalEachCarbo / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
+      totalPercentProtein =  Math.round(totalEachProtein / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
+      totalPercentFat =  Math.round(1.0 - totalPercentCarbo - totalPercentProtein)* Math.pow(10, 2) / Math.pow(10, 2);
+      
     } else {
       totalEachKcal = 0.0;
       totalEachCarbo = 0.0;

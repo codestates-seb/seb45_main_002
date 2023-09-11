@@ -8,6 +8,7 @@ import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class AnalysisService {
@@ -19,8 +20,13 @@ public class AnalysisService {
   
   @Transactional
   public Analysis createAnalysis(DailyMeal dailyMeal, Double needKacl) {
-    return analysisRepository.save(analyzeMeal(dailyMeal, needKacl));
+    Analysis analysis = analyzeMeal(dailyMeal, needKacl);
+    Optional<Analysis> findAnalysis = analysisRepository.findByDailyMeal(dailyMeal);
+    
+    findAnalysis.ifPresent(analysisRepository::delete);
+    return analysisRepository.save(analysis);
   }
+
   @Transactional
   public Analysis findByAnalysis(long analysisId) {
     return verifyExistsEachMeal(analysisId);
