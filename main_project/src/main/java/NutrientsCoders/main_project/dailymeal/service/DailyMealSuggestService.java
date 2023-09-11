@@ -11,8 +11,6 @@ import NutrientsCoders.main_project.food.entity.Food;
 import NutrientsCoders.main_project.food.repository.FoodSuggestRepository;
 import NutrientsCoders.main_project.member.entity.Member;
 import NutrientsCoders.main_project.member.service.MemberService;
-import NutrientsCoders.main_project.utils.exception.ExceptionCode;
-import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -74,23 +72,20 @@ public class DailyMealSuggestService {
                                analysis.getPercentFats()};
     
     String[][] category = {
-        {"412120", "쌀밥.잡곡밥류", "김치", "반찬1", "반찬2", "국", "간식"},
-        {"511120", "죽류", "김치", "반찬1", "반찬2", "국", "간식"},
-        {"612010", "비빔밥류", "김치", "반찬2", null, "국", "간식"},
-        {"612010", "볶음밥류", "김치", "반찬2", null, "국", "간식"},
-        {"612010", "덮밥류", "김치", "반찬2", null, "국", "간식"},
-        {"612010", "기타 밥류", "김치", "반찬2", null, "국", "간식"},
-        {"612010", "김밥류", "김치", "반찬2", null, "국", "간식"},
-        {"711010", "기타 국밥류", "김치", "반찬2", null, null,"간식"},
-        {"811000", "중식면류", "김치", "장아찌.절임류", null, null, "간식"},
-        {"811000", "스파게티류", "김치", "장아찌.절임류", null, null, "간식"},
-        {"811000", "국수류", "김치", "장아찌.절임류", null, null,"간식"},
-        {"502200", "기타 빵류", null, "스프류", "샐러드", null,"간식"},
-        {"502200", "샌드위치류", null, "스프류", "샐러드", null,"간식"},
-        {"502200", "식빵류", null, "스프류", "샐러드", null,"간식"},
-        {"502200", "앙금빵류", null, "스프류", "샐러드", null,"간식"},
-        {"502200", "크림빵류", null, "스프류", "샐러드", null,"간식"},
-        {"502200", "페이스트리류", null, "스프류", "샐러드", null,"간식"},
+        {"10520", "쌀밥.잡곡밥류", "김치", "반찬1", "반찬2", "국"},
+        {"10520", "죽류", "김치", "반찬1", "반찬2", "국"},
+        {"10500", "비빔밥류", "김치", "반찬1", null, "국"},
+        {"10500", "볶음밥류", "김치", "반찬1", null, "국"},
+        {"10500", "기타 밥류", "김치", "반찬1", null, "국"},
+        {"10500", "김밥류", "김치", "반찬1", null, "국"},
+        {"10500", "기타 국밥류", "김치", "반찬1", null, null},
+        {"10500", "국수류", "김치", "반찬1", null, null},
+        {"10160", "기타 빵류", null, "스프류", "샐러드", null},
+        {"10160", "샌드위치류", null, "스프류", "샐러드", null},
+        {"10160", "식빵류", null, "스프류", "샐러드", null},
+        {"10160", "앙금빵류", null, "스프류", "샐러드", null},
+        {"10160", "크림빵류", null, "스프류", "샐러드", null},
+        {"10160", "페이스트리류", null, "스프류", "샐러드", null},
     };
     
     String[] soup = {"채소류찌개.전골", "채소류국.탕", "육류찌개.전골", "육류국.탕",
@@ -106,17 +101,13 @@ public class DailyMealSuggestService {
     String[] side2 = {
         "채소류찜", "채소류조림", "채소류볶음","채소류구이", "젓갈류","장아찌.절임류",
         "나물.채소류무침","나물.숙채류", "기타 튀김류","기타 찜류", "기타 조림류",
-        "기타 전.적", "기타 생채.무침류","기타 볶음류"
-    };
-    
-    String[] dessert = {
-        "한과류", "빙수류", "떡볶이류", "떡류", "도넛류", "기타 음료류", "곡류 및 서류"
+        "기타 전.적", "기타 생채.무침류","기타 볶음류", "장아찌.절임류"
     };
     
     for (int i = 1; i <= 3; i++) {
       if (!createEachType[i]) {
         EachMeal eachMeal = suggestEachMeal(baseMacrosPercent, Integer.toString(i), eachRemainKcal,
-            category, soup, side1, side2, dessert);
+            category, soup, side1, side2);
         eachMeal.setTimeSlot(i);
         eachMeals.add(eachMeal);
       }
@@ -126,7 +117,7 @@ public class DailyMealSuggestService {
   
   // EachMeal 을 만드는 작업
   EachMeal suggestEachMeal(Double[] baseMacrosPercent, String breakfast, long baseRemainKcal, String[][] allCategory,
-                           String[] soup, String[] side1, String[] side2, String[] dessert) {
+                           String[] soup, String[] side1, String[] side2) {
     long remainKcal = baseRemainKcal;
     Random random = new Random();
     String orderbyDsce = "-Protein";
@@ -148,9 +139,6 @@ public class DailyMealSuggestService {
         case "국":
           category = soup[random.nextInt(soup.length)];
           break;
-        case "간식":
-          category = dessert[random.nextInt(dessert.length)];
-          break;
       }
       
       double limitKcal;
@@ -158,6 +146,7 @@ public class DailyMealSuggestService {
       int quantityInt = Integer.parseInt(quantityString[i-1]);
       if (quantityInt == 0) {
         limitKcal = remainKcal - eachMeal.getTotalEachKcal(); //남은 칼로리
+        if (limitKcal <  0){break;}
       } else {
         limitKcal = (quantityInt / 10.0) * baseRemainKcal; //비율
       }
@@ -178,14 +167,20 @@ public class DailyMealSuggestService {
       } else {
         foodList = foodRepository.findInCategoryOther(category, orderbyDsce, pageable).getContent();
         if (foodList.isEmpty()) {
-          i = i - 1;
+          i -= 1;
           selectNum = random.nextInt(allCategory.length);
           continue;
         }
         randomFood = foodList.get(random.nextInt(foodList.size()));
       }
-      // limitkacl, 타입 정렬 구현하기
-  
+      
+      //비율 보정
+      if (i > 2  && randomFood.getCarboRate() > randomFood.getProteinRate()) {
+        selectNum = random.nextInt(allCategory.length);
+        i -= 1;
+        continue;
+      }
+      
       double quantity = 1.0;
       if (randomFood.getKcal() > limitKcal) {
         quantity = limitKcal / randomFood.getKcal(); //제한 칼로리 대비 제공량 설정
@@ -198,19 +193,35 @@ public class DailyMealSuggestService {
       eachMeal.calculateTotal();
       
       
+      //비율 보정 2
+      if (i > 4 && eachMeal.getTotalPercentCarbo() > 0.35 && eachMeal.getTotalPercentProtein() < 0.5 && eachMeal.getTotalPercentFat() > 0.2) {
+        selectNum = random.nextInt(allCategory.length);
+        i = 0;
+        continue;
+      }
+      
       //음식 추가 후 부족한 비율 확인
       orderbyDsce = findOrderType(eachMeal, baseMacrosPercent);
       remainKcal -= eachMeal.getTotalEachKcal();
     }
-    
-    
+      //칼로리 보정
+      while (baseRemainKcal - eachMeal.getTotalEachKcal() > 50){
+        eachMeal.getEachMealFoods().stream().forEach(eachMealFood -> {
+          if (eachMealFood.getRateProtein() > eachMealFood.getRateCarbo()) {
+            eachMealFood.setQuantity(eachMealFood.getQuantity() + 0.03);
+            eachMealFood.calculateRate();
+          }
+        });
+        eachMeal.calculateTotal();
+      }
+      
       return eachMeal;
-    }
+  }
     
     
   private String findOrderType(EachMeal eachMeal, Double[] baseMacrosPercent) {
     Double[] targetMacros = {0.3 , 0.5 , 0.2};
-   //더 나은 방법이 있을지???
+
     eachMeal.calculateTotal();
     baseMacrosPercent[0] = (baseMacrosPercent[0] + eachMeal.getTotalPercentCarbo()) / 2;
     baseMacrosPercent[1] = (baseMacrosPercent[0] + eachMeal.getTotalPercentProtein()) / 2;

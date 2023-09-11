@@ -66,9 +66,10 @@ public class EachMeal {
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       
       Double totalMacros = totalEachCarbo + totalEachProtein + totalEachFat;
-      totalPercentCarbo =  Math.round(totalEachCarbo / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
-      totalPercentProtein =  Math.round(totalEachProtein / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
-      totalPercentFat =  Math.round(1.0 - totalPercentCarbo - totalPercentProtein)* Math.pow(10, 2) / Math.pow(10, 2);
+      totalPercentCarbo =  Math.round((totalEachCarbo / totalMacros) * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalPercentProtein =  Math.round((totalEachProtein / totalMacros) * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalPercentFat =  Math.round((1.0 - totalPercentCarbo - totalPercentProtein) * Math.pow(10, 2)) / Math.pow(10, 2);
+      
       
     } else {
       totalEachKcal = 0.0;
