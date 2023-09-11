@@ -45,14 +45,14 @@ public class DailyMealSuggestService {
     Member member = memberService.findMember(memberId);
     DailyMeal dailyMeal = dailyMealService.findByDailyMeal(analysis.getDailyMeal().getDailyMealId(), memberId);
     dailyMeal = createSuggestDaily(analysis, dailyMeal);
-    dailyMeal.getEachMeals().stream().forEach(eachMeal -> eachMeal.setMember(member));
+    dailyMeal.getEachMeals().forEach(eachMeal -> eachMeal.setMember(member));
     dailyMeal.setMember(member);
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
   }
   
   //dailyMeal 생성
-  private DailyMeal createSuggestDaily(Analysis analysis, DailyMeal dailyMeal) throws Exception {
+  private DailyMeal createSuggestDaily(Analysis analysis, DailyMeal dailyMeal) {
     cannotSuggest(dailyMeal, analysis.getOverKcal()); //제안 가능 여부 확인
     List<EachMeal> eachMeals = createSuggestEachMeals(analysis, dailyMeal.getEachMeals());
     dailyMeal.setEachMeals(eachMealRepository.saveAll(eachMeals));
@@ -137,14 +137,19 @@ public class DailyMealSuggestService {
     for (int i = 1; i < allCategory[selectNum].length; i++) {
       String category = allCategory[selectNum][i];
       if (category == null) continue;
-      if (category.equals("반찬1")) {
-        category = side1[random.nextInt(side1.length)];
-      } else if (category.equals("반찬2")) {
-        category = side2[random.nextInt(side2.length)];
-      } else if (category.equals("국")) {
-        category = soup[random.nextInt(soup.length)];
-      } else if (category.equals("간식")) {
-        category = dessert[random.nextInt(dessert.length)];
+      switch (category) {
+        case "반찬1":
+          category = side1[random.nextInt(side1.length)];
+          break;
+        case "반찬2":
+          category = side2[random.nextInt(side2.length)];
+          break;
+        case "국":
+          category = soup[random.nextInt(soup.length)];
+          break;
+        case "간식":
+          category = dessert[random.nextInt(dessert.length)];
+          break;
       }
       
       double limitKcal;
@@ -181,7 +186,7 @@ public class DailyMealSuggestService {
       // limitkacl, 타입 정렬 구현하기
       List<EachMealFood> eachMealFoods = new ArrayList<>();
   
-      Double quantity = 1.0;
+      double quantity = 1.0;
       if (randomFood.getKcal() > limitKcal) {
         quantity = limitKcal / randomFood.getKcal(); //제한 칼로리 대비 제공량 설정
       }
@@ -213,11 +218,11 @@ public class DailyMealSuggestService {
     baseMacrosPercent[2] = (baseMacrosPercent[0] + eachMeal.getTotalPercentFat()) / 2;
     
     //음수면 부족, 양수면 초과
-    Double diffCarbo = baseMacrosPercent[0] - targetMacros[0];
-    Double diffProtein = baseMacrosPercent[1] - targetMacros[1];
-    Double diffFat = baseMacrosPercent[2] - targetMacros[2];
+    double diffCarbo = baseMacrosPercent[0] - targetMacros[0];
+    double diffProtein = baseMacrosPercent[1] - targetMacros[1];
+    double diffFat = baseMacrosPercent[2] - targetMacros[2];
     
-    Double absMax = Math.max(Math.abs(diffCarbo), Math.max(Math.abs(diffProtein), Math.abs(diffFat)));
+    double absMax = Math.max(Math.abs(diffCarbo), Math.max(Math.abs(diffProtein), Math.abs(diffFat)));
     
     String[] orderbyDsce = {"-carbo", "-protein", "-fat", "+carbo", "+protein", "+fat"};
     
@@ -239,7 +244,6 @@ public class DailyMealSuggestService {
     long num = dailyMeal.getEachMeals().stream().count(); //포함 끼니 갯수
     long baseRemainKacl = (long) (remainKacl/(3-num));
     if (num == 3){
-      new LogicException(ExceptionCode.MEAL_ALREADY_FULL);
       System.out.println("끼니가 적어도 한개 이상 비워져 있어야 추천을 받을 수 있습니다");
       new Exception();}
     

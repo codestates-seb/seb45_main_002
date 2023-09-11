@@ -6,6 +6,9 @@ import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,13 +38,12 @@ public class DailyMealService {
   }
   
   //전체 식단 조회(선호)
-  public List<DailyMeal> findByfavoritDailyMeals(long memberId) {
-    List<DailyMeal> dailyMeals = dailyMealRepository.findAllfavoriteByMemeberId(memberId);
+  public Page<DailyMeal> findByfavoritDailyMeals(long memberId, Pageable pageable) {
+    Page<DailyMeal> dailyMeals = dailyMealRepository.findAllfavoriteByMemeberId(memberId, pageable);
     return Optional.of(dailyMeals)
         .filter(list -> !list.isEmpty())
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
-  
   //선택 식단 수정(ID)
   public DailyMeal updateDailyMeal(DailyMeal dailyMeal, long dailyMealId, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
