@@ -18,5 +18,4 @@ public class MainProjectApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(MainProjectApplication.class);
 	}
-
 }

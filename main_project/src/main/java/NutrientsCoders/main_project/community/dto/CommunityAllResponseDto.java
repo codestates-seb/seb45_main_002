@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.community.dto;
 
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
+import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +19,5 @@ public class CommunityAllResponseDto {
     private LocalDateTime community_createdAt;
     private LocalDateTime community_modifiedAt;
     private List<CommunityComment> communityCommentList;
+    private Member member;
 }
