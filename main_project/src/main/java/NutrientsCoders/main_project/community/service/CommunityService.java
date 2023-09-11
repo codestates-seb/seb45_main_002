@@ -25,10 +25,12 @@ public class CommunityService {
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
+
     public Community createCommunity(Community community,long memberId){
         community.setMember(memberRepository.findByMemberId(memberId));
         return communityRepository.save(community);
     }
+
     /** 리포지토리에 수정한 데이터를 저장하는 메서드 **/
     public Community updateCommunity(Community community,long memberId){
         try {

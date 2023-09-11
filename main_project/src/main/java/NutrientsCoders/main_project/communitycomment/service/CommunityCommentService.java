@@ -35,6 +35,7 @@ public class CommunityCommentService {
         comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
         return communityCommentRepository.save(comment);
     }
+
     /** 댓글 수정 메서드 **/
     public CommunityComment updateCommunityComment(CommunityComment communityComment,long memberId){
         try {

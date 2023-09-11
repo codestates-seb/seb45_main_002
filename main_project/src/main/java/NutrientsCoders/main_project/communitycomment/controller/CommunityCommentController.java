@@ -37,6 +37,7 @@ public class CommunityCommentController {
         response.setCommunityId(communityCommentPostDto.getCommunityId());
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
     /** 댓글 수정 **/
     @PatchMapping("/{communitycomment-id}")
     public ResponseEntity<CommunityCommentResponseDto> patchCommunityComment(@RequestHeader("Authorization") String token,@PathVariable("communitycomment-id") @Positive long communitycommentId,
