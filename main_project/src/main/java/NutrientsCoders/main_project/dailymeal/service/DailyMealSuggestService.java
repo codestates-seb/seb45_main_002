@@ -61,7 +61,7 @@ public class DailyMealSuggestService {
   }
   
   //eachMeals 생성
-  List<EachMeal> createSuggestEachMeals(Analysis analysis, List<EachMeal> eachMeals) throws Exception {
+  List<EachMeal> createSuggestEachMeals(Analysis analysis, List<EachMeal> eachMeals) {
     boolean hasBreakfast = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 1);
     boolean hasLunch = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 2);
     boolean hasDinner = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 3);
@@ -124,13 +124,15 @@ public class DailyMealSuggestService {
     return eachMeals;
   }
   
-  
-  EachMeal suggestEachMeal(Double[] baseMacrosPercent, String timeSlot, long eachRemainKcal, String[][] allCategory,
+  // EachMeal 을 만드는 작업
+  EachMeal suggestEachMeal(Double[] baseMacrosPercent, String timeSlot, long baseRemainKcal, String[][] allCategory,
                            String[] soup, String[] side1, String[] side2, String[] dessert) {
+    long remainKcal = baseRemainKcal;
     Random random = new Random();
     String orderbyDsce = "-Protein";
     int selectNum = random.nextInt(allCategory.length);
     EachMeal eachMeal = new EachMeal();
+    EachMealFood eachMealFood = new EachMealFood();
     
     for (int i = 1; i < allCategory[selectNum].length; i++) {
       String category = allCategory[selectNum][i];
@@ -145,13 +147,13 @@ public class DailyMealSuggestService {
         category = dessert[random.nextInt(dessert.length)];
       }
       
-      Double limitKacl;
+      double limitKcal;
       String[] quantityString = allCategory[selectNum][0].split("");
-      int quantityInt = Integer.parseInt(quantityString[i]);
-      if (quantityInt == 0 ) {
-        limitKacl = eachRemainKcal - eachMeal.getTotalEachKcal(); //남은 칼로리
+      int quantityInt = Integer.parseInt(quantityString[i-1]);
+      if (quantityInt == 0) {
+        limitKcal = remainKcal - eachMeal.getTotalEachKcal(); //남은 칼로리
       } else {
-        limitKacl = (quantityInt / 10.0) * eachRemainKcal; //비율
+        limitKcal = (quantityInt / 10.0) * baseRemainKcal; //비율
       }
       
       //카테고리별로 음식 랜덤 선택
@@ -161,20 +163,40 @@ public class DailyMealSuggestService {
       
       if (timeSlot.equals("1")) { //아침은 디저트x
         foodList = foodRepository.findInCategoryBreackFast(category, timeSlot, orderbyDsce, pageable).getContent();
+        if (foodList.isEmpty()) {
+          i = i - 1;
+          selectNum = random.nextInt(allCategory.length);
+          continue;
+        }
         randomFood = foodList.get(random.nextInt(foodList.size()));
       } else {
         foodList = foodRepository.findInCategoryOther(category, orderbyDsce, pageable).getContent();
+        if (foodList.isEmpty()) {
+          i = i - 1;
+          selectNum = random.nextInt(allCategory.length);
+          continue;
+        }
         randomFood = foodList.get(random.nextInt(foodList.size()));
       }
       // limitkacl, 타입 정렬 구현하기
+      List<EachMealFood> eachMealFoods = new ArrayList<>();
+  
+      Double quantity = 1.0;
+      if (randomFood.getKcal() > limitKcal) {
+        quantity = limitKcal / randomFood.getKcal(); //제한 칼로리 대비 제공량 설정
+      }
       
-      Double quantity =  limitKacl/randomFood.getKcal(); //제한 칼로리 대비 제공량 설정
-      EachMealFood eachMealFood = new EachMealFood(randomFood, quantity);
+      eachMealFood.setFood(randomFood);
+      eachMealFood.setQuantity(quantity);
       eachMealFood.calculateRate();
-      eachMeal.getEachMealFoods().add(eachMealFood);
+      eachMealFoods.add(eachMealFood);
+      eachMeal.setEachMealFoods(eachMealFoods);
+      eachMeal.calculateTotal();
+      
       
       //음식 추가 후 부족한 비율 확인
       orderbyDsce = findOrderType(eachMeal, baseMacrosPercent);
+      remainKcal -= eachMeal.getTotalEachKcal();
     }
     
     
@@ -184,7 +206,7 @@ public class DailyMealSuggestService {
     
   private String findOrderType(EachMeal eachMeal, Double[] baseMacrosPercent) {
     Double[] targetMacros = {0.3 , 0.5 , 0.2};
-    
+   //더 나은 방법이 있을지???
     eachMeal.calculateTotal();
     baseMacrosPercent[0] = (baseMacrosPercent[0] + eachMeal.getTotalPercentCarbo()) / 2;
     baseMacrosPercent[1] = (baseMacrosPercent[0] + eachMeal.getTotalPercentProtein()) / 2;
@@ -215,14 +237,14 @@ public class DailyMealSuggestService {
   
   private void cannotSuggest(DailyMeal dailyMeal, Double remainKacl) {
     long num = dailyMeal.getEachMeals().stream().count(); //포함 끼니 갯수
-    long eachRemainKacl = (long) (remainKacl/(3-num));
+    long baseRemainKacl = (long) (remainKacl/(3-num));
     if (num == 3){
       new LogicException(ExceptionCode.MEAL_ALREADY_FULL);
       System.out.println("끼니가 적어도 한개 이상 비워져 있어야 추천을 받을 수 있습니다");
       new Exception();}
     
     
-    if (eachRemainKacl < 500){
+    if (baseRemainKacl < 500){
       System.out.println("남은 끼니당 칼로리가 적어도 500kacl 이상일 때에만 추천 받을 수 있습니다");
       new Exception();} //정리되면 추가하기
   }
