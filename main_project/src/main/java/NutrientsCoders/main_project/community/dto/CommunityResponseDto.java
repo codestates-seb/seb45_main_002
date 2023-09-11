@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class CommunityResponseDto {
     private Long communityId;
+    private Long memberId;
     private String communityTitle;
     private String communityContent;
     private long recommendationCount;

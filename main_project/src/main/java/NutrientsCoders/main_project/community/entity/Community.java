@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.community.entity;
 
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
+import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,29 +28,42 @@ public class Community extends CommunityBaseTime {
     @Column
     private long communityViewCount = 0L;
     @Column
-    private boolean communityLike = true;
-    @OneToMany(mappedBy = "community",cascade = CascadeType.REMOVE)
+    private int communityLike = 0;
+    @ElementCollection
+    @CollectionTable(name = "memberId", joinColumns = @JoinColumn(name = "member_Id"))
+    @Column(name = "members",insertable = false, updatable = false)
+    private List<Long> members;
+    public void addMembers(long memberId){
+        members.add(memberId);
+    }
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID",nullable = false)
+    private Member member;
+    public void setMember(Member member) {
+        this.member = member;
+    }
+    @OneToMany(mappedBy = "community")
     private List<CommunityComment> communityCommentList = new ArrayList<>();
-
-    public void setCommunityCommentList(List<CommunityComment> communityCommentList) {
-        this.communityCommentList = communityCommentList;
-    }
-
-    /** 댓글 작성하면 게시글에 반영 **/
-    public void setAddCommunityCommentList(CommunityComment communityComment) {
-        this.communityCommentList.add(communityComment);
-    }
+//    @OneToMany(mappedBy = "community")
+//    private List<CommunityMember> communityMemeberList = new ArrayList<>();
     /** 게시판을 조회하면 viewCount 증가 **/
     public long incrementViewCount(){
         return ++communityViewCount;
     }
-    /** like가 true이면 recommendationCount 증가 **/
+    /** like가 0이면 recommendationCount 증가 **/
     public long incrementRecommendationCount(){
         return ++recommendationCount;
     }
-    /** like가 false이면 recommendationCount 감소 **/
+    /** like가 1이면 recommendationCount 감소 **/
     public long decrementRecommendationCount(){
         return --recommendationCount;
     }
-
+    public boolean isMemberId(long memberId){
+        for (int i = 0; i < members.size(); i++) {
+            if(members.indexOf(i) == memberId){ return true;}
+        }
+        return false;
+    }
 }
+
+

@@ -8,6 +8,7 @@ import NutrientsCoders.main_project.utils.AuthorityUtils;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Service(value = "memberService")
 @Slf4j
+@Lazy
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -34,7 +36,21 @@ public class MemberServiceImpl implements MemberService {
         this.authorityUtils =  authorityUtils;
     }
 
+    @Override
+    public Member findMember(String email){
 
+        return memberRepository.findByEmail(email);
+    }
+
+    @Override
+    public Member createOAuth2Member(Member member){
+        member.setCreatedAt(LocalDateTime.now());
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
+        return memberRepository.save(member);
+    }
 
     @Override
     @Transactional

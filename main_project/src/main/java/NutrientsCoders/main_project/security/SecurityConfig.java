@@ -1,21 +1,32 @@
 package NutrientsCoders.main_project.security;
 
 import NutrientsCoders.main_project.member.repository.MemberRepository;
+import NutrientsCoders.main_project.member.service.MemberService;
+import NutrientsCoders.main_project.security.OAuth2.OAuth2SuccessHandler;
+
 import NutrientsCoders.main_project.security.custom.LoginSuccessHandler;
 import NutrientsCoders.main_project.security.jwt.JwtAuthenticationFilter;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
 import NutrientsCoders.main_project.security.jwt.JwtVerificationFilter;
 import NutrientsCoders.main_project.utils.AuthorityUtils;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -32,11 +43,22 @@ public class SecurityConfig {
     private final JwtTokenMaker tokenMaker;
     private final AuthorityUtils authorityUtils; //Custom
 
+    private final MemberService memberService;
+
     public SecurityConfig(JwtTokenMaker tokenMaker,
-                          AuthorityUtils authorityUtils) {
+                          AuthorityUtils authorityUtils,
+                          @Lazy MemberService memberService) {
         this.tokenMaker = tokenMaker;
         this.authorityUtils = authorityUtils;
+        this.memberService = memberService;
     }
+
+
+    @Value("${spring.security.oauth2.client.registration.google.clientId}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.client.registration.google.clientSecret}")
+    private String clientSecret;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -69,6 +91,9 @@ public class SecurityConfig {
 
                         .anyRequest().permitAll()
                 )
+
+                .oauth2Login(oauth2 ->
+                        oauth2.successHandler(new OAuth2SuccessHandler(tokenMaker,authorityUtils,memberService)))
 
         ;
 
@@ -115,9 +140,31 @@ public class SecurityConfig {
             // JwtAuthenticationFilter를 Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
             //JwtVerificationFilter를 JwtAuthenticationFilter 뒤에 추가
-            .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+            .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)
+            //oauth2 로그인 활용
+            .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class)
+
+            ;
         }
     }
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        var clientRegistration = clientRegistration();
 
+        return new InMemoryClientRegistrationRepository(clientRegistration);
+    }
+
+
+    private ClientRegistration clientRegistration() {
+
+        return CommonOAuth2Provider
+                .GOOGLE
+                .getBuilder("google")
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .build();
+    }
 }
+
+
 
