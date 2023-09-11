@@ -10,6 +10,9 @@ import { useState } from "react";
 import useZustand from "../zustand/Store";
 
 const HeaderContainer = styled.header`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   box-sizing: border-box;
   display: flex;
@@ -19,6 +22,7 @@ const HeaderContainer = styled.header`
   border-bottom: solid 2px #444444;
   font-size: 18px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  background-color: ${style.color.white};
 
   & > * {
     align-items: center;

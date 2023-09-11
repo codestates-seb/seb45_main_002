@@ -5,16 +5,20 @@ import CommunityPage from "../page/Community";
 
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
-
 import style from "../style/style";
 
 const MainContainer = styled.main`
-  position: absolute;
-  top: ${style.layout.header.height};
-  bottom: ${style.layout.wideMargin.height};
-  left: ${style.layout.sideMargin};
-  right: ${style.layout.sideMargin};
-  border: solid 1px orange;
+  width: 100%;
+  max-width: 600px;
+  height: max-content;
+  min-height: 100vh;
+  padding-top: ${style.layout.header.height};
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #efefef;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.2);
 `;
 
 function Main() {
