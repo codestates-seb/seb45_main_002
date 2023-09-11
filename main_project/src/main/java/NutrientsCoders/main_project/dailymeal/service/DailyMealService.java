@@ -23,6 +23,7 @@ public class DailyMealService {
   //식단 저장
   public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long memberId) throws Exception {
     dailyMeal.setEachMeals(eachMeals);
+    eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
