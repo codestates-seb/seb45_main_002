@@ -4,7 +4,7 @@ import Calendar from "../component/Calendar";
 import { useState } from "react";
 
 const HomeMenuContainer = styled.article`
-  section {
+  >* {
     width: calc(600px - 130px);
     height: 48px;
     margin-bottom: 10px;
