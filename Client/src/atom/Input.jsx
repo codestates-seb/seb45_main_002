@@ -1,41 +1,33 @@
-import useInputStore from "../zustand/Store";
-import { styled } from "styled-components";
+
+import {styled} from "styled-components";
 
 const InputAtom = styled.input`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  margin: ${(props) => props.margin};
-  padding: ${(props) => props.padding};
-  border: ${(props) => props.border};
-  border-radius: ${(props) => props.borderRadius};
-`;
+  border: solid 1px rgb(255, 184, 47);
+  border-radius: 8px;
+  ${props=>props.styling}
+`
 
-function Input({
-  type,
-  width,
-  height,
-  margin,
-  padding,
-  border,
-  borderRadius,
-  inValue,
-}) {
-  const value = useInputStore((state) => state.value);
-  const setValue = useInputStore((state) => state.setValue);
-  const valueHandler = (e) => setValue(e.target.value);
+function Input({type,value,onChange,placeholder,styling}){
 
-  return (
+  return(
     <InputAtom
-      type={type}
-      value={type.includes("text") ? value : inValue}
-      onChange={type.includes("text") ? valueHandler : null}
-      width={width}
-      height={height}
-      margin={margin}
-      padding={padding}
-      border={border}
-      borderRadius={borderRadius}
+     type={type}
+     value={value}
+     onChange={onChange}
+     placeholder={placeholder}
+
+     styling={styling}
     />
-  );
+  )
 }
 export default Input;
+
+// 샘플 (모든 속성들은 없어도 동작합니다.)
+// <Input
+//   type={"text"} 
+//   value={"value값"}
+//   onChange={()=>console.log("이벤트 자유롭게 작성")}
+//   placeholder={"임의표시"}
+// 
+//   styling={"width: 500px; height: 500px;"} // 이곳에 styled component에서 사용되는 css 스타일링 문법을 넣어서 인풋을 스타일링할 수 있습니다.
+// />
