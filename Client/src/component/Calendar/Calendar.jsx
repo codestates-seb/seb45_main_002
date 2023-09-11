@@ -167,7 +167,7 @@ const CustomCalendar = () => {
   ]);
   useEffect(() => {
     axios
-      .get("/api/")
+      .get("http://43.201.194.176:8080/")
       .then((response) => {
         const modifiedData = response.data.map((item) => {
           const [year, month, day] = item.date.split("-");
