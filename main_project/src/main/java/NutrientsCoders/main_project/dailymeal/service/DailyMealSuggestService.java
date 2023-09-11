@@ -125,14 +125,15 @@ public class DailyMealSuggestService {
   }
   
   // EachMeal 을 만드는 작업
-  EachMeal suggestEachMeal(Double[] baseMacrosPercent, String timeSlot, long baseRemainKcal, String[][] allCategory,
+  EachMeal suggestEachMeal(Double[] baseMacrosPercent, String breakfast, long baseRemainKcal, String[][] allCategory,
                            String[] soup, String[] side1, String[] side2, String[] dessert) {
     long remainKcal = baseRemainKcal;
     Random random = new Random();
     String orderbyDsce = "-Protein";
     int selectNum = random.nextInt(allCategory.length);
     EachMeal eachMeal = new EachMeal();
-    EachMealFood eachMealFood = new EachMealFood();
+    List<EachMealFood> eachMealFoods = new ArrayList<>();
+    eachMeal.setEachMealFoods(eachMealFoods);
     
     for (int i = 1; i < allCategory[selectNum].length; i++) {
       String category = allCategory[selectNum][i];
@@ -166,8 +167,8 @@ public class DailyMealSuggestService {
       List<Food> foodList = new ArrayList<>();
       Food randomFood = new Food();
       //foodList 에서 문제 **
-      if (timeSlot.equals("1")) { //아침은 디저트x
-        foodList = foodRepository.findInCategoryBreackFast(category, timeSlot, orderbyDsce, pageable).getContent();
+      if (breakfast.equals("1")) {
+        foodList = foodRepository.findInCategoryBreakfast(category, breakfast, orderbyDsce, pageable).getContent();
         if (foodList.isEmpty()) {
           i = i - 1;
           selectNum = random.nextInt(allCategory.length);
@@ -184,18 +185,16 @@ public class DailyMealSuggestService {
         randomFood = foodList.get(random.nextInt(foodList.size()));
       }
       // limitkacl, 타입 정렬 구현하기
-      List<EachMealFood> eachMealFoods = new ArrayList<>();
   
       double quantity = 1.0;
       if (randomFood.getKcal() > limitKcal) {
         quantity = limitKcal / randomFood.getKcal(); //제한 칼로리 대비 제공량 설정
       }
-      
+      EachMealFood eachMealFood = new EachMealFood();
       eachMealFood.setFood(randomFood);
       eachMealFood.setQuantity(quantity);
       eachMealFood.calculateRate();
-      eachMealFoods.add(eachMealFood);
-      eachMeal.setEachMealFoods(eachMealFoods);
+      eachMeal.getEachMealFoods().add(eachMealFood);
       eachMeal.calculateTotal();
       
       

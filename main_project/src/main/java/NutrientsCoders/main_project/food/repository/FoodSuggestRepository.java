@@ -10,19 +10,26 @@ import org.springframework.data.repository.query.Param;
 
 public interface FoodSuggestRepository extends JpaRepository<Food, Long> {
   
-  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot" +
-      " ORDER BY CASE :orderbyDsce" +
-      " WHEN '-protein' THEN f.protein" +
-      " WHEN '-fat' THEN f.fat" +
-      " WHEN '-carbo' THEN f.carbo END desc ")
-  Page<Food> findInCategoryBreackFast(@Param("category") String category, @Param("orderbyDsce") String orderbyDsce,
-                                      @Param("timeSlot") String timeSlot, Pageable pageable);
+  @Query("SELECT f FROM Food f WHERE f.breakfast = :breakfast OR f.foodCategory2 = :category" +
+      " ORDER BY " +
+      " CASE WHEN :orderbyDsce = '-protein' THEN f.protein END DESC," +
+      " CASE WHEN :orderbyDsce = '-fat' THEN f.fat END DESC," +
+      " CASE WHEN :orderbyDsce = '-carbo' THEN f.carbo END DESC," +
+      " CASE WHEN :orderbyDsce = '+protein' THEN f.protein END ASC," +
+      " CASE WHEN :orderbyDsce = '+fat' THEN f.fat END ASC," +
+      " CASE WHEN :orderbyDsce = '+carbo' THEN f.carbo END ASC")
+  Page<Food> findInCategoryBreakfast(@Param("category") String category, @Param("orderbyDsce") String orderbyDsce,
+                                     @Param("breakfast") String breakfast, Pageable pageable);
+
 
   @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category" +
-      " ORDER BY CASE :orderbyDsce" +
-      " WHEN '-protein' THEN f.protein" +
-      " WHEN '-fat' THEN f.fat" +
-      " WHEN '-carbo' THEN f.carbo END desc ")
+      " ORDER BY " +
+      " CASE WHEN :orderbyDsce = '-protein' THEN f.protein END DESC," +
+      " CASE WHEN :orderbyDsce = '-fat' THEN f.fat END DESC," +
+      " CASE WHEN :orderbyDsce = '-carbo' THEN f.carbo END DESC," +
+      " CASE WHEN :orderbyDsce = '+protein' THEN f.protein END ASC," +
+      " CASE WHEN :orderbyDsce = '+fat' THEN f.fat END ASC," +
+      " CASE WHEN :orderbyDsce = '+carbo' THEN f.carbo END ASC")
   Page<Food> findInCategoryOther(@Param("category") String category, @Param("orderbyDsce") String orderbyDsce, Pageable pageable);
 }
 
