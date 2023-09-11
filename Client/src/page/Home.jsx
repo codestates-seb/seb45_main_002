@@ -4,7 +4,7 @@ import Calendar from "../component/Calendar";
 import { useState } from "react";
 
 const HomeMenuContainer = styled.article`
-  section {
+  >* {
     width: calc(600px - 130px);
     height: 48px;
     margin-bottom: 10px;
@@ -43,8 +43,12 @@ function Home({ setPage }) {
       <Calendar />
       <HomeMenuContainer>
         <section>식단 관리</section>
-        <section>커뮤니티</section>
-        <section>마이페이지</section>
+        <Link to="/pageswitch" onClick={() => setPage("community")}>
+          커뮤니티
+        </Link>
+        <Link to="/pageswitch" onClick={() => setPage("mypage")}>
+          마이페이지
+        </Link>
       </HomeMenuContainer>
     </>
   );

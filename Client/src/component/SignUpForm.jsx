@@ -10,8 +10,8 @@ const SignUpFormContainer = styled.div`
   display: flex;
   flex-direction: column;
   &>*{
-    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
-    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width} 0;
+    height: ${style.layout.header.height}; width: ${style.layout.main.width*2/3};
+    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   }
   &>:nth-child(1){
@@ -19,8 +19,11 @@ const SignUpFormContainer = styled.div`
     padding: 0 !important;
   }
   &>:nth-child(1)>input{
-    height: ${style.layout.sideMargin}; width: ${style.layout.main.width};
+    height: ${style.layout.header.height}; width: ${style.layout.main.width};
     padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
+  }
+  &>:nth-child(3){
+    margin-bottom: ${style.layout.narrowMargin.height/2};
   }
   &>:nth-child(4){
     height: ${style.layout.narrowMargin.height};
@@ -29,12 +32,12 @@ const SignUpFormContainer = styled.div`
     color: rgb(125, 0, 0);
   }
   &>button{
-    margin: 0 ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
+    margin: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
     cursor: pointer;
   }
 `
 const CheckButton = styled.button`
-  height: ${style.layout.sideMargin}; width: ${style.layout.main.width/4};
+  height: ${style.layout.header.height}; width: ${style.layout.main.width/4};
   margin-left: ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width/2};
   border-radius: 5px;
@@ -42,6 +45,12 @@ const CheckButton = styled.button`
   color: ${style.color.ivory};
   font-weight: bold;
   cursor: pointer;
+  &:hover{
+    background-color: ${style.color.darkorange1}
+  }
+  &:active{
+    background-color: ${style.color.gold};
+  }
 `
 
 const SignUpForm = () => {
@@ -57,6 +66,18 @@ const SignUpForm = () => {
 
   const emailRegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
+
+  function checkEmailHandler(){
+    axios.post("http://43.201.194.176:8080/login/check",{
+      email: form.email
+    })
+    .then(res=>{
+      console.log(res)
+      setCheckEmail(true)}
+      )
+    .catch(err=>console.log(err+"실패했습니다."))
+  }
+
   function errMsg(){
     if(!emailRegExp.test(form.email) || form.email===""){
       setForm({...form,errMsg: "이메일이 형식에 맞지 않습니다."})
@@ -74,7 +95,7 @@ const SignUpForm = () => {
   }
   function createAccount(){
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password) && checkEmail){
-      axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login/create",{
+      axios.post("http://43.201.194.176:8080/login/create",{
         nickname: form.email.slice(0,form.email.indexOf("@")),
         email: form.email,
         password: form.password
@@ -83,14 +104,6 @@ const SignUpForm = () => {
       .catch(err=>console.log(err, "회원가입에 실패하였습니다."))
     }
     else{errMsg();}
-  }
-
-  function checkEmailHandler(){
-    axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login/check",{
-      email: form.email
-    })
-    .then(res=>setCheckEmail(true))
-    .catch(err=>console.log(err+"실패했습니다."))
   }
 
   return (

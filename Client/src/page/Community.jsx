@@ -1,91 +1,77 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import axios from "axios";
 import { styled } from "styled-components";
+
 import Article from "../component/Article";
 import SearchForm from "../component/SearchForm";
-import WriteForm from "../component/WriteForm";
-import axios from "axios";
-import { useEffect } from "react";
-import useArticleStore from "../zustand/ArticleStore";
-import ArticleDetail from "../component/ArticleDetail";
-import style from "../style/style";
 
-const CommunityContainer = styled.div`
+import useZustand from "../zustand/Store";
+
+import style from "../style/style"
+
+const CommunityContainer = styled.article`
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  /* border: 1px solid green; */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #efefef;
-  padding: 15px;
-  margin-left: -${style.layout.sideMargin};
-`;
-
-const CommunityBody = styled.div`
-  max-width: 768px;
-  width: 100vw;
-  height: 100vh;
-  /* border: 1px solid royalblue; */
-`;
-
-const ArticleList = styled.div`
-  max-width: 768px;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  /* border: 1px solid crimson; */
-  /* padding: 20px; */
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
 `;
 
 const BtnContainer = styled.div`
   display: flex;
-  width: 100%;
-  height: 5%;
-  justify-content: right;
-  align-items: right;
-  padding-top: 20px;
-  margin-bottom: 20px;
+  width: ${style.layout.main.width-style.layout.wideMargin.width*2};
+  justify-content: end;
+  margin-bottom: ${style.layout.narrowMargin.height};
 `;
 const WriteBtn = styled.div`
   background-color: #ffc123;
-  width: auto;
-  height: 20px;
-  border: 0.5px solid 
+  border: 0.5px solid;
   color: black;
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  border-radius: 10px;
+`
 
-`;
-const CommunityPage = () => {
-  const { articles, fetchArticles } = useArticleStore();
+const CommunityList = () => {
 
-  useEffect(() => {
-    fetchArticles();
-  }, []);
+  // // 페이지에서 axios 하여 zustand 에 넣기 - 실패
+  // const setArticles = useZustand.useArticles(state=>state.setArticles);
+  // function loadArticlesList(){
+  //   axios.get("https://57b4-59-9-144-107.ngrok-free.app/community?page=1&size=",{
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'ngrok-skip-browser-warning': '69420',
+  //       }
+  //     })
+  //     .then(res=>setArticles({articles: res.data.data}))
+  //     .catch(err=>console.log(err+"글 목록 불러오기를 실패했습니다."))
+  // }
+  // useEffect(()=>{
+  //   loadArticlesList()
+  // },[])
+
+  // // zustand에서 바로 axios 실행하기 - 성공
+  const axiosArticles = useZustand.useArticles(state=>state.axiosArticles);
+  useEffect(()=>{
+    axiosArticles()
+  },[])
+
+  const articles = useZustand.useArticles(state=>state.articles)
 
   return (
-    <>
-      <CommunityContainer>
-        <CommunityBody>
-          <ArticleList>
-            <BtnContainer>
-              <WriteBtn>글쓰기</WriteBtn>
-            </BtnContainer>
-            {articles.map((article) => (
-              <Article
-                key={article.communityId}
-                title={article.communityTitle}
-                likes={article.communityLike}
-                views={article.communityViewCount}
-                createdAt={article.community_createdAt}
-                articleId={article.communityId}
-              />
-            ))}
-            <SearchForm />
-          </ArticleList>
-          <WriteForm></WriteForm>
-          <ArticleDetail></ArticleDetail>
-        </CommunityBody>
-      </CommunityContainer>
-    </>
+    <CommunityContainer>
+      <BtnContainer>
+        <Link to="/pageswitch/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
+      </BtnContainer>
+      {articles.map((article) => (
+        <Article
+          article={article}
+        />
+      ))}
+      <SearchForm />
+    </CommunityContainer>
   );
 };
-
-export default CommunityPage;
+export default CommunityList;

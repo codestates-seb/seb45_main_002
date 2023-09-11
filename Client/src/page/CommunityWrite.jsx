@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { styled } from "styled-components";
-import Input from "../atom/Input";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -116,32 +114,11 @@ const SubmitBtn = styled.div`
   font-size: 12px;
 `;
 
-const WriteForm = () => {
-  const [form, setForm] = useState({
-    title: "",
-    content: "",
-  });
-  const [titleValue, setTitleValue] = useState("");
-  const [contentValue, setContentValue] = useState("");
-
-  const handleTitleChange = (e) => {
-    setTitleValue(e.target.value);
-  };
-
-  const handleContentChange = (e) => {
-    setContentValue(e.target.value);
-  };
-
-  return (
+function CommunityWrite(){
+  return(
     <WriteFormContainer>
       <TitleContainer>
-        {/* <input placeholder="제목" /> */}
-        <Input
-          type="title"
-          placeholder="제목"
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-        />
+        <input placeholder="제목" />
       </TitleContainer>
       <DietBtnContainer>
         <DietBtn>이미지 추가하기</DietBtn>
@@ -169,20 +146,10 @@ const WriteForm = () => {
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <Input
-          type="email"
-          placeholder="내용"
-          width="100%"
-          height="100%"
-          borderRadius={"5px"}
-          value={form.content}
-          onChange={(e) => setForm({ ...form, content: e.target.value })}
-        />
-
+        <textarea placeholder="내용" />
         <SubmitBtn>SUBMIT</SubmitBtn>
       </ContentContainer>
     </WriteFormContainer>
   );
 };
-
-export default WriteForm;
+export default CommunityWrite;

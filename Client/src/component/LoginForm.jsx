@@ -33,13 +33,19 @@ const LoginFormContainer = styled.form`
   }
   &>button{
     margin: ${style.layout.narrowMargin.height*3/2} ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
+    background-color: rgb(255, 184, 47);
+    font-weight: bolder;
+    &:active{
+      background-color: rgb(255, 222, 111);
+    }
   }
 `
 const LoginForm = () => {
 
   const navigate = useNavigate()
 
-  const setAccessToken = useZustand(state=>state.setAccessToken)
+  const accessToken = useZustand.useToken(state=>state.accessToken)
+  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)  
 
   const [form, setForm] = useState({
     email: "",
@@ -61,27 +67,55 @@ const LoginForm = () => {
     }
     else{setForm({...form,errMsg: ""})}
   }
-  const loginButton=(e)=>{
+
+  function loginButton(e){
     e.preventDefault()
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login",{
+      axios.post("http://43.201.194.176:8080/login",{
         email: form.email,
         password: form.password
-      },
-      {headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      }}
-      )
+      })
       .then(res=>{
-        setAccessToken(localStorage.getItem("access_token"))
-        navigate("/")
+        localStorage.setItem("access_token",res.headers.authorization)
+        localStorage.setItem("refresh_token",res.headers.refresh)
+        navigate("/pageswitch/mypage")
       })
       .catch(err=>console.log(err+"실패했습니다."))
     }
     else{errMsg();}
   }
   
+
+  async function getGoogleToken(){
+    window.location.href = "https://accounts.google.com/o/oauth2/auth?" +
+    "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
+    "redirect_uri=http://localhost:3000/&" +
+    "response_type=token&" +
+    "scope=" +
+    "https://www.googleapis.com/auth/userinfo.email"
+    // const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
+    // return parsedHash
+  }
+  async function googleLoginButton(e){
+    getGoogleToken()
+    // for(let el of new URLSearchParams(window.location.hash.substring(1))){
+      // console.log(el)
+    // }
+    
+    // localStorage.setItem("google_access_token",await getGoogleToken())
+  }
+
+  function sendBackend(){
+    window.location.href="http://43.201.194.176:8080/oauth2/authorization/google"
+    // axios.get("http://43.201.194.176:8080/auth",{
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'token': accessToken
+    //     }
+    // })
+    // .then(res=>console.log(res+"JWT 발급 < 성공 > 입니다."))
+    // .catch(err=>console.log(err+"JWT 발급 < 실패 > 입니다."))
+  }
   return (
     <LoginContainer>
       <LoginFormContainer>
@@ -90,7 +124,8 @@ const LoginForm = () => {
         <div>{form.errMsg}</div>
         <button onClick={loginButton}>LOGIN</button>
       </LoginFormContainer>
-      <button>OAUTH LOGIN</button>
+      <button onClick={googleLoginButton}>google login</button>
+      <button onClick={sendBackend}>sendBackend</button>
     </LoginContainer>
   );
 };
