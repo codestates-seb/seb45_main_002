@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 // import { useForm, SubmitHandler } from "react-hook-form";
 import { styled } from "styled-components";
 import axios from "axios";
@@ -12,7 +13,8 @@ const StyleDiet = styled.div`
 `;
 
 function Diet() {
-  const [meal, setMeal] = useState(GetDailyDiet());
+  const { date } = useParams();
+  const [meal, setMeal] = useState(GetDailyDiet(date));
 
   const [inputSearchFood, setInputSearchFood] = useState("");
   const [searchFoodList, setSearchFoodList] = useState([]);
@@ -79,7 +81,7 @@ function Diet() {
       </StyleDiet>
     );
   } else {
-    return <PostNewDailyDiet setMeal={setMeal} />;
+    return <PostNewDailyDiet dateStr={date} setMeal={setMeal} />;
   }
 }
 
