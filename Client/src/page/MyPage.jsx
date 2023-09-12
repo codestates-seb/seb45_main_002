@@ -72,8 +72,8 @@ const TabTest = styled.div`
 
 function loadProfile(){
   axios.get("http://43.201.194.176:8080/mypage/",{
-    headet: {
-      Authorization: localStorage.getItem("Authorization")
+    headers: {
+      Authorization: localStorage.getItem("Authorization").substring(15)
     }
   })
   .then(res=>console.log(res+"서버접속 성공"))
@@ -119,7 +119,7 @@ function MyPage() {
         </TabTest>
         <div>
         <Consolebtn onClick={()=>{
-          console.log("http://43.201.194.176:8080/mypage/"+localStorage.getItem("Authorization"))
+          console.log("http://43.201.194.176:8080/mypage/"+localStorage.getItem("Authorization").substring(15))
         }}>콘솔로그 찍는 버튼</Consolebtn>
         </div>
       </MypageBox>
