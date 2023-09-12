@@ -157,7 +157,7 @@ public class DailyMealSuggestService {
       Food randomFood = new Food();
       //foodList 에서 문제 **
       if (breakfast.equals("1")) {
-        foodList = foodRepository.findInCategoryBreakfast(category, breakfast, orderbyDsce, pageable).getContent();
+        foodList = foodRepository.findInCategoryBreakfast(category, orderbyDsce, pageable).getContent();
         if (foodList.isEmpty()) {
           i = i - 1;
           selectNum = random.nextInt(allCategory.length);
