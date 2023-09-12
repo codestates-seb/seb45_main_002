@@ -107,7 +107,7 @@ const LoginForm = () => {
   }
 
   function sendBackend(){
-    window.location.href="http://43.201.194.176:8080/oauth2/authorization/google"
+    window.location.href ="http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
     // axios.get("http://43.201.194.176:8080/auth",{
     //   headers: {
     //     'Content-Type': 'application/json',
