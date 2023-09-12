@@ -29,13 +29,13 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper memberMapper;
-    private final TokenChanger tc;
+    private final TokenChanger tokenChanger;
 
     public MemberController(MemberService memberService, MemberMapper memberMapper,
-                            TokenChanger tc) {
+                            TokenChanger tokenChanger) {
         this.memberService = memberService;
         this.memberMapper = memberMapper;
-        this.tc=tc;
+        this.tokenChanger=tokenChanger;
     }
 
 
@@ -44,7 +44,7 @@ public class MemberController {
     public ResponseEntity<Long> test(@RequestHeader("Authorization") String token){
 
 
-        return new ResponseEntity<>(tc.getMemberId(token),HttpStatus.OK);
+        return new ResponseEntity<>(tokenChanger.getMemberId(token),HttpStatus.OK);
     }
 
     @PostMapping("/login/check")
@@ -73,10 +73,10 @@ public class MemberController {
         return ResponseEntity.ok(memberMapper.memberMypageChanger(member));
     }
 
-    @GetMapping("/mypage/{member-id}")
-    public ResponseEntity<MemberResponseDto.MyPage> mypageMember(@PathVariable("member-id") Long memberId) throws Exception {
+    @GetMapping("/mypage")
+    public ResponseEntity<MemberResponseDto.MyPage> mypageMember(@RequestHeader("Authorization") String token) throws Exception {
         MemberResponseDto.MyPage response =
-                memberMapper.memberMypageChanger(memberService.findMember(memberId));
+                memberMapper.memberMypageChanger(memberService.findMember(tokenChanger.getMemberId(token)));
 
         return ResponseEntity.ok(response);
     }
@@ -95,25 +95,25 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/mypage/{member-id}")
-    public ResponseEntity<MemberResponseDto.MyPage> updateMember(@PathVariable("member-id")Long memberId ,
+    @PatchMapping("/mypage")
+    public ResponseEntity<MemberResponseDto.MyPage> updateMember(@RequestHeader("Authorization") String token ,
                                                                  @RequestBody MemberDto.Patch memberpatch) throws Exception {
-        Member member = memberService.updateMember(memberId,memberpatch);
+        Member member = memberService.updateMember(tokenChanger.getMemberId(token),memberpatch);
         MemberResponseDto.MyPage response = memberMapper.memberMypageChanger(member);
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/mypage/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id")Long memberId) throws Exception {
-        memberService.deleteMember(memberId);
+    @DeleteMapping("/mypage")
+    public ResponseEntity deleteMember(@RequestHeader("Authorization") String token) throws Exception {
+        memberService.deleteMember(tokenChanger.getMemberId(token));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/member/{member-id}")
-    public ResponseEntity<MemberResponseDto.bmi> bmiMember(@PathVariable("member-id")Long memberId) throws Exception {
+    @GetMapping("/member")
+    public ResponseEntity<MemberResponseDto.bmi> bmiMember(@RequestHeader("Authorization") String token) throws Exception {
 
-        MemberResponseDto.bmi response = memberService.checkBmi(memberId);
+        MemberResponseDto.bmi response = memberService.checkBmi(tokenChanger.getMemberId(token));
 
         return ResponseEntity.ok(response);
     }
