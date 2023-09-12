@@ -74,13 +74,11 @@ const customToolbar = (toolbar) => {
 };
 
 const CustomCalendar = () => {
-  const accessToken = useZustand.useToken((state) => state.accessToken);
-  const refreshToken = useZustand.useToken((state) => state.refreshToken);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
   const [modalFooter, setModalFooter] = useState(null);
+
   const [events, setEvents] = useState([
     {
       title: "eventTItle",
@@ -90,16 +88,14 @@ const CustomCalendar = () => {
   ]);
 
   const [meals, setMeals] = useState([]);
-
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
     const fetchedMeals = async () => {
       try {
         const response = await axios.get(
-          "http://43.201.194.176:8080/dailymeals/",
+          "http://43.201.194.176:8080/dailymeals",
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            headers: { Authorization: token },
           }
         );
         setMeals(response.data);
@@ -108,7 +104,7 @@ const CustomCalendar = () => {
       }
     };
     fetchedMeals();
-  }, [accessToken]);
+  }, [token]);
 
   const handleAddEvent = (newEvent) => {
     setEvents([...events, newEvent]);
@@ -150,7 +146,7 @@ const CustomCalendar = () => {
             `http://43.201.194.176:8080/dailymeals/${dateStr}`,
             {
               headers: {
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: token,
               },
             }
           );
