@@ -22,6 +22,9 @@ public class Analysis {
   private DailyMeal dailyMeal;
   
   @Column
+  private String result;
+  
+  @Column
   private Double idealKacl;
   @Column
   private Double overKcal;

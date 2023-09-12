@@ -22,8 +22,9 @@ public class AnalysisService {
   public Analysis createAnalysis(DailyMeal dailyMeal, Double needKacl) {
     Analysis analysis = analyzeMeal(dailyMeal, needKacl);
     Optional<Analysis> findAnalysis = analysisRepository.findByDailyMeal(dailyMeal);
-    
     findAnalysis.ifPresent(analysisRepository::delete);
+    analysis.setResult(checkResult(analysis));
+    
     return analysisRepository.save(analysis);
   }
 
@@ -42,6 +43,19 @@ public class AnalysisService {
     return analysisRepository.findById(analysisId)
         .orElseThrow(() -> new LogicException(ExceptionCode.ANALYSIS_NOT_FOUND));
   }
+  
+  public String checkResult(Analysis analysis){
+    Double overCarbos = analysis.getOverPercentCarbos();  // 변수 이름 수정
+    Double overProteins = analysis.getOverPercentProteins();
+    Double overFats = analysis.getOverPercentFats();  // 변수 이름 수정
+    
+    Double overSum = overCarbos + overProteins + overFats;
+    
+    if (overSum < 1.5) return "양호";
+    else if (overSum < 3.0) return "보통";
+    else return "불량";
+  }
+
   
   //식단 분석 메서드
   private Analysis analyzeMeal(DailyMeal dailyMeal, Double needKacl)  {
