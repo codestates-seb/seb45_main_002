@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PostNewDailyDiet from "./PostNewDailyDiet";
 
 const today = new Date();
 let year = today.getFullYear(); // 년도
@@ -20,14 +21,13 @@ const GetDailyDiet = (
       })
       .then((response) => {
         console.log(response);
-        setMeal(() => {
-          return response.data;
-        });
+        setMeal(response.data);
       })
       .catch((error) => {
         console.log(error);
+        setMeal(PostNewDailyDiet(dateStr));
       });
-  }, [dateStr]);
+  }, [dateStr, token]);
 
   return meal;
 };

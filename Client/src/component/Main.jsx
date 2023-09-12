@@ -37,6 +37,7 @@ function Main({ page, setPage }) {
           path="/pageswitch/community/detail/*"
           element={<CommunityDetail />}
         ></Route>
+        <Route path="/pageswitch/diet" element={<Diet />}></Route>
         <Route path="/pageswitch/diet/:date" element={<Diet />}></Route>
         <Route path="/pageswitch" element={<PageSwitch page={page} />}></Route>
       </Routes>
