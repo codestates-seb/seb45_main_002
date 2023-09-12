@@ -8,16 +8,19 @@ import NutrientsCoders.main_project.utils.AuthorityUtils;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service(value = "memberService")
 @Slf4j
+@Lazy
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -33,7 +36,21 @@ public class MemberServiceImpl implements MemberService {
         this.authorityUtils =  authorityUtils;
     }
 
+    @Override
+    public Member findMember(String email){
 
+        return memberRepository.findByEmail(email);
+    }
+
+    @Override
+    public Member createOAuth2Member(Member member){
+        member.setCreatedAt(LocalDateTime.now());
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
+        return memberRepository.save(member);
+    }
 
     @Override
     @Transactional
@@ -76,6 +93,11 @@ public class MemberServiceImpl implements MemberService {
             Optional.of(addInfo.getAge()).ifPresent(member::setAge);
             Optional.of(addInfo.getActivity()).ifPresent(member::setActivity);
 
+            MemberResponseDto.bmi checked = checkBmi(member.getMemberId());
+
+            Optional.of(checked.getKcal()).ifPresent(member::setNeedKcal);
+            Optional.of(checked.getBmi()).ifPresent(member::setBmi);
+
             return member;
         }catch (Exception e){
             log.error(e.getMessage());
@@ -114,6 +136,11 @@ public class MemberServiceImpl implements MemberService {
             Optional.ofNullable(member.getActivity()).ifPresent(changeMember::setActivity);
             Optional.ofNullable(member.getNickname()).ifPresent(changeMember::setNickname);
             Optional.ofNullable(member.getImageUrl()).ifPresent(changeMember::setImageUrl);
+
+            MemberResponseDto.bmi checked = checkBmi(changeMember.getMemberId());
+
+            Optional.ofNullable(checked.getKcal()).ifPresent(changeMember::setNeedKcal);
+            Optional.ofNullable(checked.getBmi()).ifPresent(changeMember::setBmi);
 
             return memberRepository.save(changeMember);
         }catch (Exception e){
@@ -162,8 +189,12 @@ public class MemberServiceImpl implements MemberService {
         float bmi = (float) (weight /((height/100.0)*(height/100.0)));
         float kcal = (float)(((10*weight)+(6.25*height)-(5*age)+gender)*activity);
 
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        bmi = Float.parseFloat(decimalFormat.format(bmi));
+        kcal = Float.parseFloat(decimalFormat.format(kcal));
 
-        return new MemberResponseDto.bmi(String.format("%.2f",bmi),String.format("%.2f",kcal));
+
+        return new MemberResponseDto.bmi(bmi,kcal);
     }
 
 

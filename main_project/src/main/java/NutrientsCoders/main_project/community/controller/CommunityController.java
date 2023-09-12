@@ -1,11 +1,9 @@
 package NutrientsCoders.main_project.community.controller;
 
-import NutrientsCoders.main_project.community.dto.CommunityMapper;
-import NutrientsCoders.main_project.community.dto.CommunityPatchDto;
-import NutrientsCoders.main_project.community.dto.CommunityPostDto;
-import NutrientsCoders.main_project.community.dto.CommunityResponseDto;
+import NutrientsCoders.main_project.community.dto.*;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.service.CommunityService;
+import NutrientsCoders.main_project.utils.TokenChanger;
 import NutrientsCoders.main_project.utils.dto.MultiResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,24 +19,35 @@ import java.util.List;
 public class CommunityController {
     private final CommunityService communityService;
     private final CommunityMapper communityMapper;
-    public CommunityController(CommunityService communityService, CommunityMapper communityMapper) {
+    private final TokenChanger tokenChanger;
+
+    public CommunityController(CommunityService communityService, CommunityMapper communityMapper, TokenChanger tokenChanger) {
         this.communityService = communityService;
         this.communityMapper = communityMapper;
+        this.tokenChanger = tokenChanger;
     }
+
     /** 게시글 등록 **/
+
     @PostMapping
-    public ResponseEntity<CommunityResponseDto> postCommunity(@RequestBody CommunityPostDto communityPostDto){
-        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto));
+    public ResponseEntity<CommunityResponseDto> postCommunity(@RequestHeader("Authorization") String token, @RequestBody CommunityPostDto communityPostDto){
+
+        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto), tokenChanger.getMemberId(token));
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        response.setMemberId(communityPostDto.getMemberId());
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
+
     /** 게시글 수정 **/
     @PatchMapping("/{community-id}")
     public ResponseEntity<CommunityResponseDto> patchCommunity(@PathVariable("community-id") @Positive long communityId,
+                                                               @RequestHeader("Authorization") String token,
                                                                @RequestBody CommunityPatchDto communityPatchDto){
+        Long memberId = tokenChanger.getMemberId(token);
         communityPatchDto.setCommunityId(communityId);
-        Community community = communityService.updateCommunity(communityMapper.communityPatchDtoToCommunity(communityPatchDto));
+        Community community = communityService.updateCommunity(communityMapper.communityPatchDtoToCommunity(communityPatchDto),memberId);
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        response.setMemberId(memberId);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     /** 게시글 전체 조회 **/
@@ -52,15 +61,16 @@ public class CommunityController {
     }
     /** 게시글 선택 조회 **/
     @GetMapping("/{community-id}")
-    public ResponseEntity<CommunityResponseDto> getCommunity(@PathVariable("community-id") @Positive long communityId){
+    public ResponseEntity<CommunityAllResponseDto> getCommunity(@PathVariable("community-id") @Positive long communityId){
         Community community = communityService.findCommunity(communityId);
-        CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
+        CommunityAllResponseDto response = communityMapper.communityToCommunityAllResponseDto(community);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
     /** 게시글 삭제 **/
     @DeleteMapping("/{community-id}")
-    public ResponseEntity<Void> deleteCommunity(@PathVariable("community-id") @Positive long communityId){
-        communityService.deleteCommunity(communityId);
+    public ResponseEntity<Void> deleteCommunity(@RequestHeader("Authorization") String token,@PathVariable("community-id") @Positive long communityId){
+        Long memberId = tokenChanger.getMemberId(token);
+        communityService.deleteCommunity(communityId,memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     /** 게시글 제목으로 검색 **/
@@ -74,11 +84,14 @@ public class CommunityController {
         List<Community> resultCommunity = communityMapper.communityToCommunityResponseDtos(communities);
         return new ResponseEntity<>(new MultiResponseDto<>(resultCommunity,pageCommunities),HttpStatus.OK);
     }
-    /** 게시글 추천 기능 **/
+     /** 게시글 추천 기능 **/
     @GetMapping("/recommendation/{community-id}")
-    public ResponseEntity<CommunityResponseDto> recommendationCommunity(@PathVariable("community-id")@Positive long communityId){
-        Community community = communityService.recommendCommunity(communityId);
+    public ResponseEntity<CommunityResponseDto> recommendationCommunity(@PathVariable("community-id")@Positive long communityId,
+                                                                        @RequestHeader("Authorization") String token) {
+        Long memberId = tokenChanger.getMemberId(token);
+        Community community = communityService.recommendCommunity(communityId, memberId);
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        response.setMemberId(memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

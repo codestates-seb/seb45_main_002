@@ -11,12 +11,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
-    @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord%")
-    Page<Food> findBySearchWordFood_Custom(@Param("searchWord") String searchWord, Pageable pageable);
-
-    @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord% AND f.brand = '일반'")
-    Page<Food> findBySearchWordFood(@Param("searchWord") String searchWord, Pageable pageable);
-  @Query(value = "SELECT f FROM Food f WHERE f.brand = '일반'" +
+  @Query("SELECT f FROM Food f WHERE f.foodName LIKE %:searchWord%")
+  Page<Food> findBySearchWordFood(@Param("searchWord") String searchWord, Pageable pageable);
+  @Query(value = "SELECT f FROM Food f " +
             "ORDER BY CASE " +
             "WHEN :nutrientType = 'carbo' THEN f.carbo " +
             "WHEN :nutrientType = 'protein' THEN f.protein " +
@@ -36,12 +33,14 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "WHEN :nutrientType = 'calcium' THEN f.etcNutrients.calcium " +
             "WHEN :nutrientType = 'iron' THEN f.etcNutrients.iron " +
             "WHEN :nutrientType = 'potassium' THEN f.etcNutrients.potassium " +
+            "WHEN :nutrientType = 'saturatiedFat' THEN f.etcNutrients.SaturatedFat " +
+      
             "ELSE 0 END DESC",
-            countQuery = "SELECT COUNT(f) FROM Food f WHERE f.brand = '일반'")
+            countQuery = "SELECT COUNT(f) FROM Food f")
     Page<Food> findTop5ByHighestNutrient(@Param("nutrientType") String nutrientType, Pageable pageable);
 
   //id로 food 조회
-  @Query("SELECT f FROM Food f WHERE f.foodId = :foodId AND f.brand = '일반'")
+  @Query("SELECT f FROM Food f WHERE f.foodId = :foodId")
   Optional<Food> findByFoodId(@Param("foodId") long foodId);
 
 }
