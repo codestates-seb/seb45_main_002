@@ -76,6 +76,11 @@ public class EachMeal {
       totalEachCarbo = 0.0;
       totalEachProtein = 0.0;
       totalEachFat = 0.0;
+      
+      totalPercentCarbo = 0.0;
+      totalPercentProtein = 0.0;
+      totalPercentFat = 0.0;
+      
     }
   }
   }

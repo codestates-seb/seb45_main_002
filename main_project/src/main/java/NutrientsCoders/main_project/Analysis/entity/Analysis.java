@@ -79,9 +79,9 @@ public class Analysis {
     overProteins = Math.round((proteins - idealProteins) * 100) / 100.0;
     overFats = Math.round((fats - idealFats) * 100) / 100.0;
     // 초과 비율 계산
-    overPercentCarbos = Math.round(((carbohydrates - idealCarbohydrates) / idealCarbohydrates)  * 100) / 100.0;
-    overPercentProteins = Math.round(((proteins - idealProteins) / idealProteins)  * 100) / 100.0;
-    overPercentFats = Math.round(((fats - idealFats) / idealFats) * 100) / 100.0;
+    overPercentCarbos = Math.round((percentCarbos - 0.3)  * 100) / 100.0;
+    overPercentProteins = Math.round((percentProteins - 0.5) * 100) / 100.0;
+    overPercentFats = Math.round((percentFats - 0.2) * 100) / 100.0;
   }
 
 }

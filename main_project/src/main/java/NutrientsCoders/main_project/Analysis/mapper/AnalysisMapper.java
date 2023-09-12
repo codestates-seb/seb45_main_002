@@ -34,7 +34,7 @@ public interface AnalysisMapper {
         AnalysisResponseDto.overPercentMacro.builder()
             .overPercentCarbos(savedanalysis.getOverPercentCarbos())
             .overPercentProteins(savedanalysis.getOverPercentProteins())
-            .overPercentFats(savedanalysis.getOverFats()).build();
+            .overPercentFats(savedanalysis.getOverPercentFats()).build();
     
     AnalysisResponseDto analysisResponseDto =
         AnalysisResponseDto.builder()

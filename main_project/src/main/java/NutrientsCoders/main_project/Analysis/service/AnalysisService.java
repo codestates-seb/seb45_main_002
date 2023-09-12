@@ -20,6 +20,9 @@ public class AnalysisService {
   
   @Transactional
   public Analysis createAnalysis(DailyMeal dailyMeal, Double needKacl) {
+    
+    if (dailyMeal.getEachMeals().isEmpty()) {throw new LogicException(ExceptionCode.DAILYMEAL_EMPTY);}
+
     Analysis analysis = analyzeMeal(dailyMeal, needKacl);
     Optional<Analysis> findAnalysis = analysisRepository.findByDailyMeal(dailyMeal);
     findAnalysis.ifPresent(analysisRepository::delete);
