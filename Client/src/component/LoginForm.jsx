@@ -90,7 +90,7 @@ const LoginForm = () => {
   async function getGoogleToken(){
     window.location.href = "https://accounts.google.com/o/oauth2/auth?" +
     "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
-    "redirect_uri=http://localhost:3000/&" +
+    "redirect_uri=http://43.201.194.176:8080/" +
     "response_type=token&" +
     "scope=" +
     "https://www.googleapis.com/auth/userinfo.email"
@@ -107,7 +107,10 @@ const LoginForm = () => {
   }
 
   function sendBackend(){
-    window.location.href ="http://43.201.194.176:8080/oauth2/authorization/google"
+    window.location.href ="http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
+
+    // window.location.href ="http://43.201.194.176:8080/oauth2/authorization/google"
+
     // axios.get("http://43.201.194.176:8080/auth",{
     //   headers: {
     //     'Content-Type': 'application/json',
