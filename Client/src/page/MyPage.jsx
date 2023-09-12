@@ -71,10 +71,19 @@ const TabTest = styled.div`
 `
 
 function loadProfile(){
-  axios.get("http://43.201.194.176:8080/mypage/")
-  .then(res=>console.log(res))
-  .catch(err=>console.log(err))
+  axios.get("http://43.201.194.176:8080/mypage/",{
+    headet: {
+      Authorization: localStorage.getItem("Authorization")
+    }
+  })
+  .then(res=>console.log(res+"서버접속 성공"))
+  .catch(err=>console.log(err+"서버접속 실패"))
 }
+
+const Consolebtn = styled.button`
+  width: 500px;
+  height: 500px;
+`
 
 function MyPage() {
 
@@ -109,7 +118,9 @@ function MyPage() {
           </div>
         </TabTest>
         <div>
-
+        <Consolebtn onClick={()=>{
+          console.log("http://43.201.194.176:8080/mypage/"+localStorage.getItem("Authorization"))
+        }}>콘솔로그 찍는 버튼</Consolebtn>
         </div>
       </MypageBox>
     </MypageContainer>

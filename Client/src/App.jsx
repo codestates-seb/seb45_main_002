@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div>
-      <Header menu={menu} setMenu={setMenu} />
+      <Header menu={menu} setMenu={setMenu} setPage={setPage} />
       {style.layout.maxWidth < 769 ? null : <Nav setPage={setPage} />}
       {menu? <Hamberger setPage={setPage} menu={menu} setMenu={setMenu} /> : null}
       <Main page={page} setPage={setPage} />

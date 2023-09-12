@@ -68,14 +68,23 @@ const SignUpForm = () => {
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
 
   function checkEmailHandler(){
-    axios.post("http://43.201.194.176:8080/login/check",{
-      email: form.email
-    })
-    .then(res=>{
-      console.log(res)
-      setCheckEmail(true)}
-      )
-    .catch(err=>console.log(err+"실패했습니다."))
+    if(form.email===""){
+      setForm({...form,errMsg: "이메일을 입력해주시기 바랍니다."})
+    }
+    else{
+      axios.post("http://43.201.194.176:8080/login/check",{
+        email: form.email
+      })
+      .then(res=>{
+        console.log(res)
+        setCheckEmail(true)
+        setForm({...form,errMsg: "[ 중복 확인 ]이 완료되었습니다."})
+      })
+      .catch(err=>{
+        console.log(err+"실패했습니다.")
+        setForm({...form,errMsg: "이미 등록된 계정입니다."})
+      })
+    }
   }
 
   function errMsg(){
