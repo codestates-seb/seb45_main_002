@@ -98,11 +98,11 @@ public class DailyMealController {
   }
   
   //  식단 추천 받기
-  @PostMapping("/suggest/{analysis-id}")
+  @PostMapping("/suggest/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
-                                                                     @PathVariable("analysis-id") long analysisId) throws Exception {
+                                                                     @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealSuggests.suggestDailyMeal(analysisId, memberId);
+    DailyMeal dailyMeal = dailyMealSuggests.suggestDailyMeal(dailyMealId, memberId);
     DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
