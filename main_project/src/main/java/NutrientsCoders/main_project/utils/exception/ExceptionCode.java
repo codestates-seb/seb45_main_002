@@ -1,12 +1,14 @@
 package NutrientsCoders.main_project.utils.exception;
 
 import lombok.Getter;
+@Getter
 
 public enum ExceptionCode {
     MEMBER_NOT_FOUND(404, "Member Not found..."),
     COMMUNITY_NOT_FOUND(404,"Community Not found"),
     COMMENT_NOT_FOUND(404,"Comment Not found"),
     USER_EXISTS(409, "Member Already exists!"),
+    DATE_EXISTS(409, "Date Already exists!"),
     MEAL_ALREADY_FULL(409, "DailyMeal already full"),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
@@ -18,10 +20,8 @@ public enum ExceptionCode {
     SERVER_ERROR(500, "SERVER ERROR !!!"),
     INVALID(400, "Invalid status, check your request");
 
-    @Getter
     private final int status;
 
-    @Getter
     private final String message;
 
     ExceptionCode(int code, String message) {
