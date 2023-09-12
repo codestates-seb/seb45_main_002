@@ -4,7 +4,7 @@ import Calendar from "../component/Calendar";
 import { useState } from "react";
 
 const HomeMenuContainer = styled.article`
-  >* {
+  > * {
     width: calc(600px - 130px);
     height: 48px;
     margin-bottom: 10px;
@@ -25,7 +25,7 @@ const HomeMenuContainer = styled.article`
       width: calc(100vw - 10px);
     }
   }
-  section:last-child {
+  a:last-child {
     margin-left: auto;
     margin-right: 0;
     padding-left: 0;
@@ -42,7 +42,9 @@ function Home({ setPage }) {
     <>
       <Calendar />
       <HomeMenuContainer>
-        <section>식단 관리</section>
+        <Link to="/pageswitch" onClick={() => setPage("diet")}>
+          식단 관리
+        </Link>
         <Link to="/pageswitch" onClick={() => setPage("community")}>
           커뮤니티
         </Link>

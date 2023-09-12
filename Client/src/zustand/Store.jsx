@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {create} from "zustand";
+import { create } from "zustand";
 
 const useZustand = {
   useToken: 
@@ -31,13 +31,13 @@ const useZustand = {
       axiosArticlesList: () => {
         axios.get("http://43.201.194.176:8080/community?page=1&size=",{
           headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': '69420',
-          }
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "69420",
+          },
         })
-        .then(res=>set({articles: res.data.data}))
-        .catch(err=>console.log(err+"글 목록 불러오기를 실패했습니다."))
-      }
-    }))
-}
+        .then((res) => set({ articles: res.data.data }))
+        .catch((err) => console.log(err + "글 목록 불러오기를 실패했습니다."));
+    },
+  })),
+};
 export default useZustand;
