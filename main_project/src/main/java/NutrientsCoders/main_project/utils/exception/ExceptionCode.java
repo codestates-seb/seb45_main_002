@@ -10,6 +10,7 @@ public enum ExceptionCode {
     USER_EXISTS(409, "Member Already exists!"),
     DATE_EXISTS(409, "Date Already exists!"),
     MEAL_ALREADY_FULL(409, "DailyMeal already full"),
+    CALORIE_TOO_LOW(409,"The calorie input is too low"),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
     EACHMEAL_NOT_FOUND(404, "EachMeal not found..."),

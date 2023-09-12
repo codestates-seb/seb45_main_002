@@ -25,7 +25,6 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
             "WHEN :nutrientType = 'vitaminB1' THEN f.etcNutrients.vitaminB1 " +
             "WHEN :nutrientType = 'vitaminB2' THEN f.etcNutrients.vitaminB2 " +
             "WHEN :nutrientType = 'vitaminB3' THEN f.etcNutrients.vitaminB3 " +
-            "WHEN :nutrientType = 'vitaminB6' THEN f.etcNutrients.vitaminB6 " +
             "WHEN :nutrientType = 'vitaminB12' THEN f.etcNutrients.vitaminB12 " +
             "WHEN :nutrientType = 'vitaminC' THEN f.etcNutrients.vitaminC " +
             "WHEN :nutrientType = 'vitaminD' THEN f.etcNutrients.vitaminD " +
