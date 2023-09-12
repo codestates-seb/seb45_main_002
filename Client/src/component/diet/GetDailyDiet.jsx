@@ -11,13 +11,15 @@ const GetDailyDiet = (
     date >= 10 ? date : "0" + date
   }`
 ) => {
+  const url = "http://43.201.194.176:8080/dailymeals";
+  const url1 = `http://43.201.194.176:8080/dailymeals/date/${dateStr}`;
+  console.log(url1);
   const [meal, setMeal] = useState();
   const token = localStorage.getItem("Authorization");
-  console.log(dateStr);
 
   useEffect(() => {
     axios
-      .get(`http://43.201.194.176:8080/dailymeals/date/2023-01-21`, {
+      .get(url1, {
         headers: { Authorization: token },
       })
       .then((response) => {
@@ -29,7 +31,7 @@ const GetDailyDiet = (
         //불러오기 실패시 post요청으로 dailymeals 생성
         axios
           .post(
-            "http://43.201.194.176:8080/dailymeals",
+            url,
             {
               name: "name",
               date: dateStr,
@@ -38,7 +40,6 @@ const GetDailyDiet = (
             },
             {
               headers: {
-                "Content-Type": "application/json",
                 Authorization: token,
               },
             }
@@ -50,10 +51,10 @@ const GetDailyDiet = (
             });
           })
           .catch((err) => {
-            console.log(error);
+            console.log(err);
           });
       });
-  }, [dateStr, token]);
+  }, [dateStr, token, url, url1]);
 
   return meal;
 };

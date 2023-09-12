@@ -70,8 +70,8 @@ function Diet() {
           />
           <ul>
             {Array.isArray(searchFoodList) ? (
-              searchFoodList.map((item) => (
-                <li>
+              searchFoodList.map((item, index) => (
+                <li key={index}>
                   <p>
                     {item.foodName}: {item.kcal}kcal
                   </p>
