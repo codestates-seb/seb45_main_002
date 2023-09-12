@@ -44,7 +44,7 @@ public class AnalysisController {
   }
   
   //작성한 분석 조회(Id)
-  @GetMapping("/{dailymeal-id}")
+  @GetMapping("/{anlysis-id}")
   public ResponseEntity<AnalysisResponseDto> getAnalysisById(@PathVariable("anlysis-id") long analysisId) {
     Analysis analysis = analysisService.findByAnalysis(analysisId);
     AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
@@ -53,7 +53,7 @@ public class AnalysisController {
   }
   
   //작성한 분석 삭제
-  @DeleteMapping("/{dailymeal-id}")
+  @DeleteMapping("/{anlysis-id}")
   public ResponseEntity<AnalysisResponseDto> deleteAnalysis(@PathVariable("anlysis-id") long analysisId) {
     analysisService.deleteAnalysis(analysisId);
     
