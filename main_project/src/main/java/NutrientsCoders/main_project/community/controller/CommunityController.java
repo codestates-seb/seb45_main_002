@@ -87,10 +87,11 @@ public class CommunityController {
      /** 게시글 추천 기능 **/
     @GetMapping("/recommendation/{community-id}")
     public ResponseEntity<CommunityResponseDto> recommendationCommunity(@PathVariable("community-id")@Positive long communityId,
-                                                                        @RequestHeader("Authorization") String token){
+                                                                        @RequestHeader("Authorization") String token) {
         Long memberId = tokenChanger.getMemberId(token);
-        Community community = communityService.recommendCommunity(communityId,memberId);
+        Community community = communityService.recommendCommunity(communityId, memberId);
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        response.setMemberId(memberId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

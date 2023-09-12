@@ -3,6 +3,8 @@ package NutrientsCoders.main_project.community.service;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
 
+import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
+import NutrientsCoders.main_project.member.entity.Member;
 import NutrientsCoders.main_project.member.repository.MemberRepository;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +20,19 @@ import org.springframework.stereotype.Service;
 public class CommunityService {
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
+    private final DailyMealRepository dailyMealRepository;
 
-    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository) {
+    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealRepository dailyMealRepository) {
         this.communityRepository = communityRepository;
         this.memberRepository = memberRepository;
+        this.dailyMealRepository = dailyMealRepository;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
 
     public Community createCommunity(Community community,long memberId){
         community.setMember(memberRepository.findByMemberId(memberId));
+        community.setDailyMeal(dailyMealRepository.findByMemberId(memberId));
         return communityRepository.save(community);
     }
 
@@ -81,8 +86,10 @@ public class CommunityService {
     }
     public Community recommendCommunity(long communityId,long memberId){
         Community findCommunityId = communityRepository.findById(communityId).orElse(null);
-        if(findCommunityId.getCommunityLike()==0 && findCommunityId.isMemberId(memberId) == false) {
+        Member findMemberId = memberRepository.findByMemberId(memberId);
+        if(findMemberId.getCommunityLike() == 0 && findCommunityId.isMemberId(memberId) == false) {
             findCommunityId.addMembers(memberId);
+            System.out.println(findCommunityId.getMembers());
             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
             findCommunityId.setCommunityLike(1);
             return communityRepository.save(findCommunityId);

@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.community.entity;
 
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
+import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,12 +31,15 @@ public class Community extends CommunityBaseTime {
     @Column
     private int communityLike = 0;
     @ElementCollection
-    @CollectionTable(name = "memberId", joinColumns = @JoinColumn(name = "member_Id"))
-    @Column(name = "members",insertable = false, updatable = false)
+    @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
+    @Column(name = "members",insertable = false)
     private List<Long> members;
     public void addMembers(long memberId){
         members.add(memberId);
     }
+    @ManyToOne
+    @JoinColumn(name = "DAILYMEAL_ID", nullable = true)
+    private DailyMeal dailyMeal;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID",nullable = false)
     private Member member;
@@ -60,7 +64,7 @@ public class Community extends CommunityBaseTime {
     }
     public boolean isMemberId(long memberId){
         for (int i = 0; i < members.size(); i++) {
-            if(members.indexOf(i) == memberId){ return true;}
+            if(members.get(i) == memberId){ return true;}
         }
         return false;
     }
