@@ -89,12 +89,11 @@ public class CommunityService {
         Member findMemberId = memberRepository.findByMemberId(memberId);
         if(findMemberId.getCommunityLike() == 0 && findCommunityId.isMemberId(memberId) == false) {
             findCommunityId.addMembers(memberId);
-            System.out.println(findCommunityId.getMembers());
             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
             findCommunityId.setCommunityLike(1);
             return communityRepository.save(findCommunityId);
         }else {
-            findCommunityId.getMembers().remove(memberId);
+            findCommunityId.getLikeMembers().remove(memberId);
             findCommunityId.setRecommendationCount(findCommunityId.decrementRecommendationCount());
             findCommunityId.setCommunityLike(0);
         }
