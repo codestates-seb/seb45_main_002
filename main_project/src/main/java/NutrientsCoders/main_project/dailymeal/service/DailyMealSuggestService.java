@@ -1,7 +1,5 @@
 package NutrientsCoders.main_project.dailymeal.service;
 
-import NutrientsCoders.main_project.Analysis.entity.Analysis;
-import NutrientsCoders.main_project.Analysis.service.AnalysisService;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
@@ -27,24 +25,22 @@ public class DailyMealSuggestService {
   private final MemberService memberService;
   private final EachMealRepository eachMealRepository;
   private final DailyMealService dailyMealService;
-  private final AnalysisService analysisService;
   
   public DailyMealSuggestService(DailyMealRepository dailyMealRepository, DailyMealService dailyMealService,
-                                 MemberService memberService, FoodSuggestRepository foodRepository, EachMealRepository eachMealRepository, AnalysisService analysisService) {
+                                 MemberService memberService, FoodSuggestRepository foodRepository, EachMealRepository eachMealRepository) {
     this.dailyMealRepository = dailyMealRepository;
     this.dailyMealService = dailyMealService;
     this.memberService = memberService;
     this.foodRepository = foodRepository;
     this.eachMealRepository = eachMealRepository;
-    this.analysisService = analysisService;
   }
   
   //추천 식단 생성
-  public DailyMeal suggestDailyMeal(long analysisId, long memberId) throws Exception {
-    Analysis analysis = analysisService.findByAnalysis(analysisId);
+  public DailyMeal suggestDailyMeal(long dailyMealId, long memberId) throws Exception {
+    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(dailyMealId, memberId);
     Member member = memberService.findMember(memberId);
-    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(analysis.getDailyMeal().getDailyMealId(), memberId);
-    dailyMeal = createSuggestDaily(analysis, dailyMeal);
+    Double remainKcal = member.getNeedKcal() - dailyMeal.getTotalDailyKcal();
+    dailyMeal = createSuggestDaily(dailyMeal, remainKcal);
     dailyMeal.getEachMeals().stream().forEach(eachMeal -> eachMeal.setMember(member));
     dailyMeal.setMember(member);
     dailyMeal.calculateTotal();
@@ -52,26 +48,28 @@ public class DailyMealSuggestService {
   }
   
   //dailyMeal 생성
-  private DailyMeal createSuggestDaily(Analysis analysis, DailyMeal dailyMeal) throws Exception {
-    cannotSuggest(dailyMeal, analysis.getOverKcal()); //제안 가능 여부 확인
-    List<EachMeal> eachMeals = createSuggestEachMeals(analysis, dailyMeal.getEachMeals());
+  private DailyMeal createSuggestDaily(DailyMeal dailyMeal, Double remainKcal) throws Exception {
+    cannotSuggest(dailyMeal, remainKcal); //제안 가능 여부 확인
+    List<EachMeal> eachMeals = createSuggestEachMeals(remainKcal, dailyMeal);
     dailyMeal.setEachMeals(eachMealRepository.saveAll(eachMeals));
   
     return dailyMeal;
   }
   
   //eachMeals 생성
-  List<EachMeal> createSuggestEachMeals(Analysis analysis, List<EachMeal> eachMeals) throws Exception {
+  List<EachMeal> createSuggestEachMeals(Double remainKcal, DailyMeal dailyMeal) {
+    List<EachMeal> eachMeals = dailyMeal.getEachMeals();
     boolean hasBreakfast = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 1);
     boolean hasLunch = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 2);
     boolean hasDinner = eachMeals.stream().anyMatch(eachMeal -> eachMeal.getTimeSlot() == 3);
     Boolean[] createEachType = {true, hasBreakfast, hasLunch, hasDinner};
-    int eachRemainKcal = (int) ((-1*analysis.getOverKcal())/(3-eachMeals.stream().count()));
+    int eachRemainKcal = (int) (remainKcal/(3-dailyMeal.getEachMeals().stream().count()));
     
     //초기 비율을 확인합니다
-    Double[] baseMacrosPercent = {analysis.getPercentCarbos(),
-                               analysis.getPercentProteins(),
-                               analysis.getPercentFats()};
+    Double[] baseMacrosPercent = {dailyMeal.getTotalPercentCarbos(),
+                                  dailyMeal.getTotalPercentProteins(),
+                                  dailyMeal.getTotalPercentFats()
+    };
     
     String[][] category = {
         {"412120", "쌀밥.잡곡밥류", "김치", "반찬1", "반찬2", "국", "간식"},
