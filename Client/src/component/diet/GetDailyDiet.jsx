@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import PostNewDailyDiet from "./PostNewDailyDiet";
 
-const GetDailyDiet = (dateStr) => {
+const today = new Date();
+let year = today.getFullYear(); // 년도
+let month = today.getMonth() + 1; // 월
+let date = today.getDate(); //일
+
+const GetDailyDiet = (
+  dateStr = `${year}-${month >= 10 ? month : "0" + month}-${
+    date >= 10 ? date : "0" + date
+  }`
+) => {
   const [meal, setMeal] = useState();
-  const token = "";
-
+  const token = localStorage.getItem("access_token");
   useEffect(() => {
     axios
-      .get(`http://43.201.194.176:8080/dailymeals/${dateStr}`, {
+      .get(`http://43.201.194.176:8080/dailymeals/date/${dateStr}`, {
         headers: { Authorization: token },
       })
       .then((response) => {
-        // 성공한 경우 실행
         console.log(response);
-        setMeal(() => {
-          return response.data;
-        });
+        setMeal(response.data);
       })
       .catch((error) => {
-        // 에러인 경우 실행
         console.log(error);
+        setMeal(PostNewDailyDiet(dateStr));
       });
-  }, [dateStr]);
+  }, [dateStr, token]);
 
   return meal;
 };
