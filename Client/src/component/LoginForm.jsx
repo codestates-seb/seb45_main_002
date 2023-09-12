@@ -76,8 +76,9 @@ const LoginForm = () => {
         password: form.password
       })
       .then(res=>{
-        localStorage.setItem("access_token",res.headers.authorization)
-        localStorage.setItem("refresh_token",res.headers.refresh)
+        console.log(res)
+        localStorage.setItem("Authorization",res.headers.authorization)
+        localStorage.setItem("Refresh",res.headers.refresh)
         navigate("/pageswitch/mypage")
       })
       .catch(err=>console.log(err+"실패했습니다."))

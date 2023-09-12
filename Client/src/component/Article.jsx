@@ -37,6 +37,13 @@ const InfoContainer = styled.div`
   padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
 `
 
+const LikeViewCreate = styled.span`
+  border-radius: 5px;
+  border-left: solid 3px orange;
+  padding-left: 5px;
+  margin-right: ${style.layout.narrowMargin.width};
+`
+
 const Article = ({article}) => {
 
   const navigate = useNavigate()
@@ -45,13 +52,23 @@ const Article = ({article}) => {
     navigate(`/pageswitch/community/detail/${article.communityId}`)
   }
 
+  const date = new Date(article.community_createdAt)
+  console.log(date)
+
   return (
     <ArticleContainer>
       <ArticleBox>
         <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
         <InfoContainer>
-          좋아요 {article.communitylike} 조회수 {article.communityViewCount}{" "}
-          {article.community_createdAt}
+          <LikeViewCreate>
+            좋아요 {article.communitylike}
+          </LikeViewCreate>
+          <LikeViewCreate>
+            조회수 {article.communityViewCount}
+          </LikeViewCreate>
+          <LikeViewCreate>
+            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일_{date.getHours()}:{date.getMinutes()} 
+          </LikeViewCreate>
         </InfoContainer>
       </ArticleBox>
     </ArticleContainer>

@@ -51,15 +51,15 @@ const SignUpButton = styled(LoginButton)`
   background-color: green;
 `
 
-function Header({menu,setMenu}) {
+function Header({menu,setMenu,setPage}) {
 
   const accessToken = useZustand.useToken(state=>state.accessToken)
   const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
   const refreshToken = useZustand.useToken(state=>state.refreshToken)
   const setRefreshToken = useZustand.useToken(state=>state.setRefreshToken)
 
-  localStorage.getItem("access_token")? setAccessToken(localStorage.getItem("access_token")) : setAccessToken("")
-  localStorage.getItem("refresh_token")? setRefreshToken(localStorage.getItem("refresh_token")) : setRefreshToken("")
+  localStorage.getItem("Authorization")? setAccessToken(localStorage.getItem("Authorization")) : setAccessToken("")
+  localStorage.getItem("Refresh")? setRefreshToken(localStorage.getItem("Refresh")) : setRefreshToken("")
   
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
@@ -67,8 +67,8 @@ function Header({menu,setMenu}) {
   const [header, setHeader] = useState(null);
 
   function logoutButton(){
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
+    localStorage.removeItem("Authorization")
+    localStorage.removeItem("Refresh")
     window.location.reload()
   }
 
@@ -101,7 +101,13 @@ function Header({menu,setMenu}) {
       </span>
       {accessToken?
         <span>
-          <img alt="My Page" src="image/profileimage.svg" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
+          <Link to="/pageswitch" onClick={() => setPage("mypage")}>
+            <img
+             alt="My Page"
+             src="image/profileimage.svg"
+             height={style.layout.header.height-style.layout.narrowMargin.height}
+            />
+          </Link>
           <SignUpButton onClick={logoutButton}>로그아웃</SignUpButton>
         </span>
         :
