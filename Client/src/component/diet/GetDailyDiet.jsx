@@ -29,30 +29,32 @@ const GetDailyDiet = (
       .catch((error) => {
         console.log(error);
         //불러오기 실패시 post요청으로 dailymeals 생성
-        axios
-          .post(
-            url,
-            {
-              name: "name",
-              date: dateStr,
-              favorite: false,
-              eachMeals: [],
-            },
-            {
-              headers: {
-                Authorization: token,
+        if (error.response.data === "DailyMeal not found...") {
+          axios
+            .post(
+              url,
+              {
+                name: "name",
+                date: dateStr,
+                favorite: false,
+                eachMeals: [],
               },
-            }
-          )
-          .then((response) => {
-            console.log(response);
-            setMeal(() => {
-              setMeal(response.data);
+              {
+                headers: {
+                  Authorization: token,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              setMeal(() => {
+                setMeal(response.data);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
             });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        }
       });
   }, [dateStr, token, url, url1]);
 
