@@ -150,7 +150,7 @@ const CustomCalendar = () => {
             `http://43.201.194.176:8080/dailymeals/${dateStr}`,
             {
               headers: {
-                Authorization: `Bearer ${accessToken}`, // 토큰이 필요한 경우 추가
+                Authorization: `Bearer ${accessToken}`,
               },
             }
           );
