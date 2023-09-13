@@ -7,17 +7,17 @@ const ButtonStyle = styled.button`
   justify-content: center;
   align-items: center;
   ${(props) =>
-    props.$size === "square"
+    props.size === "square"
       ? css`
           width: 60px;
           height: 60px;
         `
-      : props.$size === "fullwidth"
+      : props.size === "fullwidth"
       ? css`
           width: 100%;
           height: 48px;
         `
-      : props.$size === "small"
+      : props.size === "small"
       ? css`
           width: 148px;
           height: 32px;
@@ -30,7 +30,7 @@ const ButtonStyle = styled.button`
   color: #000000;
   font-size: 18px;
   ${(props) =>
-    props.$primary === true
+    props.primary === true
       ? css`
           background-color: #ffc123;
           border: 0;
@@ -40,7 +40,7 @@ const ButtonStyle = styled.button`
             background: #ffa24b;
           }
         `
-      : props.$primary === false
+      : props.primary === false
       ? css`
           background-color: #d9d9d9;
           border: 0;
@@ -68,6 +68,7 @@ const ButtonStyle = styled.button`
             background-color: #898989;
             color: white;
           `
+          :
         : css`
             border: 2px solid #898989;
             background-color: #ffffff;
@@ -80,8 +81,8 @@ const Button = ({ children, onClick, disabled, primary, size }) => {
   return (
     <ButtonStyle
       disabled={disabled}
-      $primary={primary}
-      $size={size}
+      primary={primary}
+      size={size}
       onClick={onClick}
     >
       {children}

@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 import GetDailyDiet from "../component/diet/GetDailyDiet";
 import EachMeal from "../component/diet/EachMeal";
 import GetFoodKeyword from "../component/diet/GetFoodKeyword";
+import Button from "../atom/button";
 
 const StyleDiet = styled.div`
   background-color: #d9d9d9;
@@ -95,7 +96,7 @@ function Diet() {
       </StyleDiet>
     );
   } else {
-    return <>error</>;
+    return <Button>error</Button>;
   }
 }
 
