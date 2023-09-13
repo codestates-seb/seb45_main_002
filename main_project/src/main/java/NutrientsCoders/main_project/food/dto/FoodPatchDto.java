@@ -8,7 +8,7 @@ public class FoodPatchDto {
   
   private Long servingSize;
   
-  private Long kcal;
+  private Double kcal;
   
   private Double carbo;
   

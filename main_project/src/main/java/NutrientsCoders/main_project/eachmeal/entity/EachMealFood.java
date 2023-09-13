@@ -53,6 +53,7 @@ public class EachMealFood {
       rateCarbo = Math.round(food.getCarbo()*quantity)* Math.pow(10, 2) / Math.pow(10, 2);
       rateProtein = Math.round(food.getProtein()*quantity)* Math.pow(10, 2) / Math.pow(10, 2);
       rateFat = Math.round(food.getFat()*quantity)* Math.pow(10, 2) / Math.pow(10, 2);
+      quantity = Math.round(quantity * 100)/100.0;
     } else {
       rateKcal = 0.0;
       rateCarbo = 0.0;

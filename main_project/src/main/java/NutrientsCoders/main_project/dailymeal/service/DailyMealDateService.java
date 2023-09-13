@@ -4,10 +4,11 @@ import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealDateRepository;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,8 @@ public class DailyMealDateService {
   }
   
   //전체 식단 조회(날짜)
-  public List<DailyMeal> findAllByDate(long memberId) {
-    List<DailyMeal> dailyMeals = dailyMealRepository.findAllDateByMemberId(memberId);
+  public Page<DailyMeal> findAllByDate(long memberId, Pageable pageable) {
+    Page<DailyMeal> dailyMeals = dailyMealRepository.findAllDateByMemberId(memberId, pageable);
     return Optional.of(dailyMeals)
         .filter(list -> !list.isEmpty())
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));

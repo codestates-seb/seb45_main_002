@@ -26,7 +26,6 @@ public class DailyMealResponseDto {
   @Getter
   @Setter
   public static class EachMealDto {
-    private long memberId;
     private long eachMealId;
     private Integer timeSlots;
     private Boolean favorite;

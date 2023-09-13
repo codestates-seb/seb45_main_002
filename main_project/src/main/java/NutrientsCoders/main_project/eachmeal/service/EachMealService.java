@@ -9,6 +9,8 @@ import NutrientsCoders.main_project.food.service.FoodService;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -47,8 +49,8 @@ public class EachMealService {
   }
   
   //끼니 전체 조회
-  public List<EachMeal> findByEachMeals(long memberId) {
-    return eachMealRepository.findEachMealByMemberId(memberId);
+  public Page<EachMeal> findByEachMeals(long memberId, Pageable pageable) {
+    return eachMealRepository.findEachMealByMemberId(memberId, pageable);
   }
   
   //선택 끼니 수정

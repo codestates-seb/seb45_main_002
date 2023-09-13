@@ -7,6 +7,9 @@ import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealDateService;
 import NutrientsCoders.main_project.utils.TokenChanger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -44,10 +47,12 @@ public class DailyMealDateController {
   
   //식단 전체 조회(캘린더)
   @GetMapping
-  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token,
+                                                                              @RequestParam int page, @RequestParam int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
-    List<DailyMeal> dailyMeals = dailyMealDateService.findAllByDate(memberId);
-    List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
+    Page<DailyMeal> dailyMeals = dailyMealDateService.findAllByDate(memberId, pageable);
+    List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals.getContent());
     
     return new ResponseEntity<>(response,HttpStatus.OK);
   }

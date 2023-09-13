@@ -45,9 +45,6 @@ public class EtcNutrients {
     private Double vitaminB3;
 
     @Column(updatable = false)
-    private Double vitaminB6;
-
-    @Column(updatable = false)
     private Double vitaminB12;
 
     @Column(updatable = false)

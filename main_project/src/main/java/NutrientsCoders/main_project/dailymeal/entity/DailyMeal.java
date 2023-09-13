@@ -29,7 +29,7 @@ public class DailyMeal {
   @OneToOne(mappedBy = "dailyMeal", cascade = CascadeType.REMOVE)
   private Analysis analysis;
   
-  @Column(unique = true)
+  @Column
   private LocalDate date;
 
   @Column(nullable = false)
