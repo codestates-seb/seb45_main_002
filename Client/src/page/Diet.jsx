@@ -86,6 +86,7 @@ function Diet() {
           </ul>
         </div>
         <div>
+          <h3>하루 섭취량</h3>
           <p>칼로리: {meal.totalDailyKcal}</p>
           <p>탄수화물: {meal.totalDailyCarbo}</p>
           <p>단백질: {meal.totalDailyProtein}</p>
