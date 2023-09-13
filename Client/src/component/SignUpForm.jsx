@@ -109,7 +109,7 @@ const SignUpForm = () => {
         email: form.email,
         password: form.password
       })
-      .then(res=>navigate("/pageswitch/mypage"))
+      .then(res=>console.log(res+"회원가입에 성공했습니다."))
       .catch(err=>console.log(err, "회원가입에 실패하였습니다."))
     }
     else{errMsg();}
