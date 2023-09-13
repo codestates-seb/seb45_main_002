@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 import GetDailyDiet from "../component/diet/GetDailyDiet";
 import EachMeal from "../component/diet/EachMeal";
 import GetFoodKeyword from "../component/diet/GetFoodKeyword";
+import Button from "../atom/button";
 
 const StyleDiet = styled.div`
   background-color: #d9d9d9;
@@ -86,6 +87,7 @@ function Diet() {
           </ul>
         </div>
         <div>
+          <h3>하루 섭취량</h3>
           <p>칼로리: {meal.totalDailyKcal}</p>
           <p>탄수화물: {meal.totalDailyCarbo}</p>
           <p>단백질: {meal.totalDailyProtein}</p>
@@ -94,7 +96,7 @@ function Diet() {
       </StyleDiet>
     );
   } else {
-    return <>error</>;
+    return <Button>error</Button>;
   }
 }
 
