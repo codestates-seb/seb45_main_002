@@ -3,6 +3,9 @@ import { css, styled } from "styled-components";
 const ButtonStyle = styled.button`
   cursor: pointer;
   padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${(props) =>
     props.$size === "square"
       ? css`
