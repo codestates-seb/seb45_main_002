@@ -32,6 +32,12 @@ const style = {
     },
   },
   color: {
+    commonOrange: "#E87E36",
+    commonYellow: "#EABA34",
+    commonBage: "#F4D787",
+    commonLightGreen: "#C6DD64",
+    commonGreen: "#2A7625",
+
     white: "rgb(255,255,255)",
     darkgoldenrod: "rgb(184,134,11)",
     darkgoldenrod1: "rgb(255,185,15)",

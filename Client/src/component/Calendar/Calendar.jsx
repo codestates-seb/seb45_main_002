@@ -82,13 +82,23 @@ const CustomCalendar = () => {
   const [events, setEvents] = useState([
     {
       title: "eventTItle",
-      start: new Date(2023, 8, 18),
-      end: new Date(2023, 8, 18),
+      start: new Date(2023, 8, 12),
+      end: new Date(2023, 8, 12),
     },
   ]);
 
   const [meals, setMeals] = useState([]);
   const token = localStorage.getItem("access_token");
+  const eventCreate = ({ date }) => {
+    const newEvent = {
+      id: events.length + 1,
+      start: date,
+      end: date,
+    };
+
+    handleAddEvent(newEvent);
+  };
+
   useEffect(() => {
     const fetchedMeals = async () => {
       try {
@@ -98,7 +108,14 @@ const CustomCalendar = () => {
             headers: { Authorization: token },
           }
         );
-        setMeals(response.data);
+        const mealData = response.data;
+        const newEvents = mealData.map((meal) => ({
+          id: meal.dailyMealId,
+          title: meal.name,
+          start: new Date(meal.date.toISOString().split("T")[0]),
+          end: new Date(meal.date.toISOString().split("T")[0]),
+        }));
+        setEvents([...events, ...newEvents]);
       } catch (error) {
         console.error("fetch error meals:", error);
       }
@@ -110,19 +127,9 @@ const CustomCalendar = () => {
     setEvents([...events, newEvent]);
   };
 
-  const eventCreate = ({ date }) => {
-    const newEvent = {
-      id: events.length + 1,
-      start: date,
-      end: date,
-    };
-
-    handleAddEvent(newEvent);
-  };
-
   const handleEventClick = (event) => {
     const eventTitle = event.title;
-    const dateStr = event.start.toISOString().split("T")[0];
+    const dateStr = event.start;
 
     // const fetchDailymeal = async () => {
     //   try {
@@ -138,7 +145,7 @@ const CustomCalendar = () => {
     const mealData = {
       dailyMealId: 13,
       memberId: 1,
-      date: "2023-09-10",
+      date: "2023-09-15",
       name: "name",
       favorite: false,
       eachMeals: ["밥,고기,김치"],
