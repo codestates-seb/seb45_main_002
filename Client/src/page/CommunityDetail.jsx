@@ -1,8 +1,7 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { styled } from "styled-components";
-
-import useZustand from "../zustand/Store";
+import axios from "axios";
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -77,19 +76,21 @@ const SubmitBtn = styled.div`
 `;
 
 function CommunityDetail(){
+  const [detail, setDetail] = useState({})
 
   const communityId = useParams();
 
-  const articles = useZustand.useArticles(state=>state.articles);
-
-  const article = articles.find(
-    (article) => article.communityId === communityId["*"]
-  );
-
+  function loadDetail(){
+    axios.get("http://43.201.194.176:8080/community/"+communityId["*"])
+    .then(res=>setDetail(res.data))
+    .catch(err=>console.log(err))
+  }
+  useEffect(()=>loadDetail(),[])
+  
   return (
     <WriteFormContainer>
       <TitleContainer>
-        <div>제목입니다</div>
+        <div>{detail.communityTitle}</div>
       </TitleContainer>
       <DietContainer>
         <DietImageContainer>
@@ -114,7 +115,7 @@ function CommunityDetail(){
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <div>{article.content}</div>
+        <div>{detail.communityContent}</div>
       </ContentContainer>
     </WriteFormContainer>
   );

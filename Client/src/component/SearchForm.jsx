@@ -1,7 +1,12 @@
 import { styled } from "styled-components";
 import { useState } from "react";
+
+import axios from "axios";
+
 import Modal from "../atom/GlobalModal";
 import ModalPortal from "../atom/ModalPortal";
+
+import useZustand from "../zustand/Store";
 
 const SearchFormContainer = styled.div`
   margin-top: 20px;
@@ -40,6 +45,8 @@ const SearchForm = () => {
   const [footer, setFooter] = useState(null);
   const [header, setHeader] = useState(null);
 
+  const setArticles = useZustand.useArticles(state=>state.setArticles)
+
   const handleOpenWarningModal = () => {
     setIsOpen(true);
     setHeader(<AlertAlert>"ALERTALERTALERTALERT "</AlertAlert>);
@@ -52,11 +59,13 @@ const SearchForm = () => {
     if (!matches) {
       handleOpenWarningModal();
     } else {
-      matches.join(" ");
+      axios.get("http://43.201.194.176:8080/community/title-search?keyword="+matches.join("")+"&page=1&size=10")
+      .then(res=>setArticles(res.data.data))
+      .catch(err=>console.log(err))
     }
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyUp = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
@@ -70,7 +79,7 @@ const SearchForm = () => {
           placeholder="Enter로 검색"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyUp={handleKeyUp}
         />
       </SearchInputContainer>
       <ModalPortal>

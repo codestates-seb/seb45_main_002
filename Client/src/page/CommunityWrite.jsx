@@ -1,6 +1,11 @@
+import { useState } from "react";
 import { styled } from "styled-components";
 
-const WriteFormContainer = styled.div`
+import axios from "axios"
+
+import style from "../style/style"
+
+const WriteFormContainer = styled.article`
   display: flex;
   flex-direction: column;
   max-width: 768px;
@@ -11,7 +16,7 @@ const WriteFormContainer = styled.div`
   padding: 10px;
 `;
 
-const TitleContainer = styled.div`
+const TitleContainer = styled.h1`
   width: 100%;
   height: 5%;
   /* border: 1px solid black; */
@@ -53,7 +58,7 @@ const DietImageContainer = styled.div`
   & > img {
     width: 90%;
     height: 90%;
-    border: 1px solid BLACK;
+    border: 1px solid black;
     border-radius: 15px;
     margin: 0 auto;
   }
@@ -85,24 +90,39 @@ const FoodInfo = styled.div`
 
 const DietBtnContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+  text-align: center;
+  &>*{
+    display: flex;
+  }
+  &>:nth-child(2){
+    display: none;
+  }
+  &>:last-child{
+    align-items: center;
+    >:first-child{
+    border: none;
+    border-radius: 10px;
+    height: 50%;
+    }
+  }
 `;
 
-const DietBtn = styled.div`
+const DietBtn = styled.label`
   display: flex;
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   background-color: #ffc123;
   color: black;
   justify-content: center;
   align-items: center;
-  max-width: 30%;
-  width: auto;
-  height: 30px;
   padding: 10px;
   margin: 5px;
   border-radius: 10px;
   font-size: 12px;
+  cursor: pointer;
 `;
 
-const SubmitBtn = styled.div`
+const SubmitBtn = styled.submit`
   display: flex;
   width: 60px;
   height: 20px;
@@ -115,18 +135,39 @@ const SubmitBtn = styled.div`
 `;
 
 function CommunityWrite(){
+
+  const [form,setForm] = useState({
+    communityTitle: "",
+    communityImg: "https://img.freepik.com/free-photo/front-view-delicious-cheeseburger-with-meat-tomatoes-green-salad-dark-background-sandwich-fast-food-meal-dish-french-fries-dinner_140725-156241.jpg?w=1480&t=st=1694570873~exp=1694571473~hmac=bf25d456d2680654d8a8aa0b398c08ba1c34d0ab50910592000964044c7d6241",
+    communityContent: "",
+    communityDietDate: Date()
+  })
+
+  function loadDietInDate(){
+    axios.get("http://43.201.194.176:8080/dailymeals"+form.communityDietDate)
+    .then(res=>console.log(res))
+    .catch(err=>console.log(err))
+  }
+
   return(
     <WriteFormContainer>
       <TitleContainer>
-        <input placeholder="제목" />
+        <input placeholder="제목" value={form.communityTitle} onChange={e=>setForm({...form,communityTitle: e.target.value})}/>
       </TitleContainer>
       <DietBtnContainer>
-        <DietBtn>이미지 추가하기</DietBtn>
-        <DietBtn>식단 불러오기</DietBtn>
+        <DietBtn htmlFor="addImg">이미지 추가하기</DietBtn>
+        <input id="addImg" type="file" accept="image/png, image/jpeg" capture></input>
+        <span>
+          <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: e.target.value})}></input>
+          <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>식단 불러오기</DietBtn>
+          </span>
       </DietBtnContainer>
       <DietContainer>
         <DietImageContainer>
-          <img alt="dietimg" />
+          <img
+           src="https://img.freepik.com/free-photo/front-view-delicious-cheeseburger-with-meat-tomatoes-green-salad-dark-background-sandwich-fast-food-meal-dish-french-fries-dinner_140725-156241.jpg?w=1480&t=st=1694570873~exp=1694571473~hmac=bf25d456d2680654d8a8aa0b398c08ba1c34d0ab50910592000964044c7d6241"
+           alt="업로드한 식단 이미지"
+          />
         </DietImageContainer>
         <DietInfoContainer>
           <div>
@@ -146,7 +187,7 @@ function CommunityWrite(){
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-        <textarea placeholder="내용" />
+        <textarea placeholder="내용" value={form.communityContent} onChange={e=>{setForm({...form,communityContent: e.target.value})}} />
         <SubmitBtn>SUBMIT</SubmitBtn>
       </ContentContainer>
     </WriteFormContainer>

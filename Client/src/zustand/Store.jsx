@@ -27,7 +27,7 @@ const useZustand = {
         },
         {communityId: "2", communityTitle: "게시물 제목 2", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
       ],
-      setArticles: (newArticle)=>set({articles: [newArticle]}),
+      setArticles: (newArticle)=>set({articles: newArticle}),
       axiosArticlesList: () => {
         axios.get("http://43.201.194.176:8080/community?page=1&size=",{
           headers: {

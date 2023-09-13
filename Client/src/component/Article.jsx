@@ -53,7 +53,6 @@ const Article = ({article}) => {
   }
 
   const date = new Date(article.community_createdAt)
-  console.log(date)
 
   return (
     <ArticleContainer>
