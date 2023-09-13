@@ -79,7 +79,8 @@ const LoginForm = () => {
         console.log(res)
         localStorage.setItem("Authorization",res.headers.authorization)
         localStorage.setItem("Refresh",res.headers.refresh)
-        navigate("/pageswitch/mypage")
+        // navigate("/pageswitch/mypage")
+        // window.location.reload()
       })
       .catch(err=>console.log(err+"실패했습니다."))
     }
@@ -90,17 +91,19 @@ const LoginForm = () => {
   async function getGoogleToken(){
     window.location.href = "https://accounts.google.com/o/oauth2/auth?" +
     "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
-    "redirect_uri=http://43.201.194.176:8080/" +
+    "redirect_uri=localhost:3000" +
     "response_type=token&" +
     "scope=" +
     "https://www.googleapis.com/auth/userinfo.email"
+
     // const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
     // return parsedHash
   }
   async function googleLoginButton(e){
     getGoogleToken()
+
     // for(let el of new URLSearchParams(window.location.hash.substring(1))){
-      // console.log(el)
+    //   console.log(el)
     // }
     
     // localStorage.setItem("google_access_token",await getGoogleToken())
@@ -109,6 +112,8 @@ const LoginForm = () => {
   function sendBackend(){
     window.location.href ="http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google"
 
+
+    // window.location.href ="http://43.201.194.176:8080/login/oauth2/code/google"
     // window.location.href ="http://43.201.194.176:8080/oauth2/authorization/google"
 
     // axios.get("http://43.201.194.176:8080/auth",{
