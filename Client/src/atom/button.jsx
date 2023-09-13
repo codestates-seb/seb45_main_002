@@ -68,7 +68,6 @@ const ButtonStyle = styled.button`
             background-color: #898989;
             color: white;
           `
-          :
         : css`
             border: 2px solid #898989;
             background-color: #ffffff;
