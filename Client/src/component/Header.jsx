@@ -26,8 +26,11 @@ const HeaderContainer = styled.header`
   }
   &>:last-child{
     align-items: center;
-    margin-right: ${style.layout.maxWidth/20/3}px;
+    margin-right: ${style.layout.maxWidth/30}px;
     padding: 1% 0;
+    >:first-child{
+      margin-right: ${style.layout.maxWidth/20/3}px;
+    }
   }
 `
 
@@ -39,7 +42,6 @@ const LoginButton = styled.button`
   height: ${style.layout.header.height/2};
   border: none;
   background-color: orange;
-  margin-right: ${style.layout.maxWidth/20/3}px;
   padding: 0 3%;
   color: white;
   font-size: ${style.layout.header.height/3};
@@ -104,8 +106,8 @@ function Header({menu,setMenu,setPage}) {
           <Link to="/pageswitch" onClick={() => setPage("mypage")}>
             <img
              alt="My Page"
-             src="image/profileimage.svg"
-             height={style.layout.header.height-style.layout.narrowMargin.height}
+             src="https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100"
+             height={style.layout.wideMargin.height*2}
             />
           </Link>
           <SignUpButton onClick={logoutButton}>로그아웃</SignUpButton>

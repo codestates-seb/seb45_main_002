@@ -54,9 +54,7 @@ const CommunityList = () => {
 
   // // zustand에서 바로 axios 실행하기 - 성공
   const axiosArticles = useZustand.useArticles(state=>state.axiosArticlesList);
-  useEffect(()=>{
-    axiosArticles()
-  },[])
+  useEffect(()=>axiosArticles(),[])
 
   const articles = useZustand.useArticles(state=>state.articles)
 
@@ -65,7 +63,7 @@ const CommunityList = () => {
       <BtnContainer>
         <Link to="/pageswitch/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
       </BtnContainer>
-      {articles.map((article) => (
+      {articles.map(article => (
         <Article
           article={article}
         />
