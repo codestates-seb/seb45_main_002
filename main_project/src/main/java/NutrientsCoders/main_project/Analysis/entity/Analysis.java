@@ -1,17 +1,11 @@
 package NutrientsCoders.main_project.Analysis.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
-import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Setter

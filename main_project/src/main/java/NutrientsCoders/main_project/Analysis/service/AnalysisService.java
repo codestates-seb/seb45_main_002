@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Service
@@ -47,7 +48,7 @@ public class AnalysisService {
     else if (result.contains("불량") && result.contains("탄수화물 섭취 비율이 너무 높습니다.")) {keyword = "저탄수화물";}
     else if (result.contains("불량") && result.contains("섭취 칼로리 양이 너무 높습니다.")) {keyword = "저칼로리";}
     
-    String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+    String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
     String auctionURL = "https://browse.auction.co.kr/search?keyword=" + encodedKeyword;
 //    String naverURL = "https://search.shopping.naver.com/search/all?query=" + encodedKeyword;
 //    String coupangURL = "https://www.coupang.com/np/search?component=&q=" + encodedKeyword;
@@ -77,7 +78,7 @@ public class AnalysisService {
     Double overProteins = analysis.getOverPercentProteins();
     Double overFats = analysis.getOverPercentFats();
     
-    Double overSum = overCarbos + overProteins + overFats;
+    double overSum = overCarbos + overProteins + overFats;
     String[] majorText = {"양호\n", "보통\n", "불량\n"};
     String[] addText ={
         "탄수화물 섭취 비율이 너무 높습니다.\n",
