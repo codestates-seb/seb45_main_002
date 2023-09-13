@@ -8,16 +8,16 @@ const Dailymealbtn = styled.button`
 `;
 
 const postCalendarData = async () => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("Authorization");
   console.log(token);
   try {
     const response = await axios.post(
       "http://43.201.194.176:8080/dailymeals",
       {
-        date: "2023-09-27",
+        date: "2023-09-09",
         name: "name",
         favorite: true,
-        eachMeals: [11, 22, 33],
+        eachMeals: [2],
       },
       {
         headers: {

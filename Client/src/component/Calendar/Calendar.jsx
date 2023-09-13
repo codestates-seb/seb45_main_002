@@ -9,6 +9,8 @@ import "moment/locale/ko";
 import axios from "axios";
 import useZustand from "../../zustand/Store";
 import style from "../../style/style";
+import Button from "../../atom/button";
+
 import { postCalendarData, PostButton } from "./PostMealBtn";
 
 const CalendarContainer = styled.div`
@@ -82,93 +84,107 @@ const CustomCalendar = () => {
 
   const [events, setEvents] = useState([
     {
-      title: "eventTItle",
+      title: "eventTitle",
       start: new Date(2023, 8, 12),
       end: new Date(2023, 8, 12),
     },
   ]);
 
-  const [meals, setMeals] = useState([]);
-  const token = localStorage.getItem("access_token");
-  const eventCreate = ({ date }) => {
-    const newEvent = {
-      id: events.length + 1,
-      start: date,
-      end: date,
-    };
-
-    handleAddEvent(newEvent);
-  };
-
   useEffect(() => {
     const fetchedMeals = async () => {
+      const token = localStorage.getItem("Authorization");
+      // console.log(localStorage.getItem("Authorization"));
+
       try {
         const response = await axios.get(
-          "http://43.201.194.176:8080/dailymeals/date?page=2&size=5",
+          "http://43.201.194.176:8080/dailymeals/date?page=1&size=5",
           {
             headers: { Authorization: token },
           }
         );
         const mealData = response.data;
-        const newEvents = mealData.map((meal) => ({
-          id: meal.dailyMealId,
-          title: meal.name,
-          start: new Date(meal.date.toISOString().split("T")[0]),
-          end: new Date(meal.date.toISOString().split("T")[0]),
+        // console.log(mealData);
+        // console.log(mealData[0]);
+        ///Object { dailyMealId: 319, date: "2023-09-13", name: "name", favorite: false, totalDailyKcal: 0, totalDailyCarbo: 0, totalDailyProtein: 0, totalDailyFat: 0 }
+        // console.log(mealData[0].date.replace(/-/g, ","));
+        /// 2023,09,13
+
+        const newEvent = mealData.map((meal) => ({
+          start: new Date(meal.date.replace(/-/g, ",")),
+          end: new Date(meal.date.replace(/-/g, ",")),
         }));
-        setEvents([...events, ...newEvents]);
+        // console.log(newEvent[0]);
+
+        setEvents((prevEvents) => [...prevEvents, ...newEvent]);
+        // console.log(events);
       } catch (error) {
-        console.error("fetch error meals:", error);
+        console.error("fetch error meals:");
       }
     };
     fetchedMeals();
-  }, [token]);
-
-  const handleAddEvent = (newEvent) => {
-    setEvents([...events, newEvent]);
-  };
+  }, []);
 
   const handleEventClick = (event) => {
     const eventTitle = event.title;
-    const dateStr = event.start;
+    const startDate = new Date(event.start);
+    startDate.setDate(startDate.getDate() + 1);
+    const dateStr = startDate.toISOString().split("T")[0];
 
-    // const fetchDailymeal = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
-    //       {
-    //         headers: {
-    //           Authorization: token,
-    //         },
-    //       }
-    //     );
-    // const mealData = response.data;
-    const mealData = {
-      dailyMealId: 13,
-      memberId: 1,
-      date: "2023-09-15",
-      name: "name",
-      favorite: false,
-      eachMeals: ["밥,고기,김치"],
-      totalDailyKcal: 51.0,
-      totalDailyCarbo: 7.0,
-      totalDailyProtein: 1.0,
-      totalDailyFat: 2.0,
+    // console.log(event);
+    // console.log(event.start);
+    console.log(dateStr);
+
+    const fetchDailymeal = async () => {
+      const token = localStorage.getItem("Authorization");
+      // console.log(localStorage.getItem("Authorization"));
+
+      try {
+        const response = await axios.get(
+          `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
+
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const mealData = response.data;
+        // const mealData = {
+        //   dailyMealId: 13,
+        //   memberId: 1,
+        //   date: "2023-09-15",
+        //   name: "name",
+        //   favorite: false,
+        //   eachMeals: ["밥,고기,김치"],
+        //   totalDailyKcal: 51.0,
+        //   totalDailyCarbo: 7.0,
+        //   totalDailyProtein: 1.0,
+        //   totalDailyFat: 2.0,
+        // };
+        setModalHeader(<h2>{eventTitle}</h2>);
+        setModalContent(
+          <div>
+            <h3>식단 정보</h3>
+            <p>메뉴: {mealData.eachMeals}</p>
+            <p>총 칼로리: {mealData.totalDailyKcal}</p>
+            <Button
+              width="80px"
+              height="20px"
+              // onClick={func}
+              fontSize="10px"
+              size="small"
+              backgroundColor="#ffc123"
+              children="식단 수정"
+            ></Button>
+          </div>
+        );
+        setIsModalOpen(true);
+      } catch (error) {
+        console.error("Error fetching meal:");
+      }
     };
-    setModalHeader(<h2>{eventTitle}</h2>);
-    setModalContent(
-      <div>
-        <h3>식단 정보</h3>
-        <p>메뉴: {mealData.eachMeals}</p>
-        <p>총 칼로리: {mealData.totalDailyKcal}</p>
-      </div>
-    );
-    setIsModalOpen(true);
-    // } catch (error) {
-    //   console.error("Error fetching meal:", error);
-    // }
+    fetchDailymeal();
   };
-
   // console.log(dateStr);
   // console.log(eventTitle);
 
@@ -213,3 +229,19 @@ const CustomCalendar = () => {
 };
 
 export default CustomCalendar;
+
+// const eventCreate = ({ date }) => {
+//   const newEvent = {
+//     id: events.length + 1,
+//     start: date,
+//     end: date,
+//   };
+
+//   handleAddEvent(newEvent);
+// };
+
+// const handleAddEvent = (newEvent) => {
+//   setEvents([...events, newEvent]);
+// };
+
+// const [meals, setMeals] = useState([]);
