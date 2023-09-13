@@ -5,7 +5,7 @@ import {styled} from "styled-components";
 
 import style from "../style/style";
 
-const MypageContainer = styled.article`
+const Container = styled.article`
   height: ${style.layout.main.height+style.layout.wideMargin.height}; width: ${style.layout.main.width};
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
   background-color: rgb(242, 242, 242);
@@ -111,7 +111,7 @@ function MyPage() {
    })
   const [imgURL,setImgURL] = useState("https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100")
 
-  function loadProfile(){
+  const loadProfile = ()=> {
     axios.get("http://43.201.194.176:8080/mypage/",{
       headers: {
         Authorization: localStorage.getItem("Authorization")
@@ -119,7 +119,8 @@ function MyPage() {
     })
     .then(res=>setUser(res.data))
     .catch(err=>console.log(err,"서버접속 실패"))
-  }
+  };
+
   useEffect(()=>loadProfile(),[])
 
   function sendUserData(e){
@@ -138,13 +139,14 @@ function MyPage() {
     })
     .then(res=>{
       console.log(res)
-      alert("개인정보 설정이 변경되었습니다.")
+      alert("개인정보 설정이 변경되었습니다.");
     })
-    .catch(err=>console.log(err,"서버와의 소통 실패"))
-  }
-  console.log(user)
+    .catch(err=>console.log(err,"서버와의 소통 실패"));
+  };
+
+  console.log(user);
   return (
-    <MypageContainer>
+    <Container>
       <form>
         <BlockContainer>
           <h2>프로필</h2>
@@ -194,8 +196,8 @@ function MyPage() {
 
       </section>
 
-        
-    </MypageContainer>
+
+    </Container>
   );
 }
 export default MyPage;

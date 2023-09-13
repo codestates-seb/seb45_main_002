@@ -45,9 +45,8 @@ const DropdownButton = styled.button`
 `;
 
 const CustomDot = styled.div`
-  width: 9px;
-  height: 8px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   background-color: #ffc123;
 `;
 
@@ -77,6 +76,8 @@ const customToolbar = (toolbar) => {
 };
 
 const CustomCalendar = () => {
+  // custome hooks;
+  // useParams, useNavigate;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
@@ -89,6 +90,9 @@ const CustomCalendar = () => {
       end: new Date(2023, 8, 12),
     },
   ]);
+
+  // const ref = useRef(null);
+  // const price = useMemo(()=> 12,[]);
 
   useEffect(() => {
     const fetchedMeals = async () => {
