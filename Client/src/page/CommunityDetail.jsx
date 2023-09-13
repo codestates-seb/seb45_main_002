@@ -86,7 +86,7 @@ function CommunityDetail(){
     .catch(err=>console.log(err))
   }
   useEffect(()=>loadDetail(),[])
-  
+  console.log(detail)
   return (
     <WriteFormContainer>
       <TitleContainer>

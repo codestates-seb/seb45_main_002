@@ -26,7 +26,7 @@ const HeaderContainer = styled.header`
   }
   &>:last-child{
     align-items: center;
-    margin-right: ${style.layout.maxWidth/20/3}px;
+    margin-right: ${style.layout.maxWidth/30}px;
     padding: 1% 0;
     >:first-child{
       margin-right: ${style.layout.maxWidth/20/3}px;
