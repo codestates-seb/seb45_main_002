@@ -122,7 +122,7 @@ const DietBtn = styled.label`
   cursor: pointer;
 `;
 
-const SubmitBtn = styled.submit`
+const SubmitBtn = styled.input`
   display: flex;
   width: 60px;
   height: 20px;
@@ -188,7 +188,7 @@ function CommunityWrite(){
       </DietContainer>
       <ContentContainer>
         <textarea placeholder="내용" value={form.communityContent} onChange={e=>{setForm({...form,communityContent: e.target.value})}} />
-        <SubmitBtn>SUBMIT</SubmitBtn>
+        <SubmitBtn type="submit">SUBMIT</SubmitBtn>
       </ContentContainer>
     </WriteFormContainer>
   );
