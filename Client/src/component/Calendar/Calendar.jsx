@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "moment/locale/ko";
 import axios from "axios";
 import useZustand from "../../zustand/Store";
+import style from "../../style/style";
 import { postCalendarData, PostButton } from "./PostMealBtn";
 
 const CalendarContainer = styled.div`
@@ -61,12 +62,12 @@ const customToolbar = (toolbar) => {
     <div className="rbc-toolbar">
       {/* <span className="rbc-btn-group"></span> */}
       <span className="rbc-btn-group">
-        <button type="button" onClick={goToPrev}>
-          &lt; 이전 달
+        <button type="button" onClick={goToPrev} style={{ border: "none" }}>
+          &lt;
         </button>
         <span className="rbc-toolbar-label">{toolbar.label}</span>
-        <button type="button" onClick={goToNext}>
-          다음 달&gt;
+        <button type="button" onClick={goToNext} style={{ border: "none" }}>
+          &gt;
         </button>
       </span>
     </div>
