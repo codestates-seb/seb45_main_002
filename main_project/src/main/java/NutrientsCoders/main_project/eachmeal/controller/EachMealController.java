@@ -53,13 +53,24 @@ public class EachMealController {
     return new ResponseEntity<>(response,HttpStatus.OK);
   }
   
-  //작성한 끼니 전체 조회(본인꺼만)
+  //작성한 끼니 전체 조회(전체)
   @GetMapping
   public ResponseEntity<List<EachMealResponseSimpleDto>> getEachMeals(@RequestHeader("Authorization") String token,
                                                                       @RequestParam int page, @RequestParam int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
     Page<EachMeal> eachMeals = eachMealService.findByEachMeals(memberId, pageable);
+    List<EachMealResponseSimpleDto> simpleDtos = eachMealMapper.eachMealToEachMealResponseSimpleDto(eachMeals.getContent());
+    return new ResponseEntity<>(simpleDtos, HttpStatus.OK);
+  }
+  
+  //작성한 끼니 전체 조회(선호)
+  @GetMapping("/favorite")
+  public ResponseEntity<List<EachMealResponseSimpleDto>> getFavoriteEachMeals(@RequestHeader("Authorization") String token,
+                                                                      @RequestParam int page, @RequestParam int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
+    long memberId = tokenChanger.getMemberId(token);
+    Page<EachMeal> eachMeals = eachMealService.findByfavoriteEachMeals(memberId, pageable);
     List<EachMealResponseSimpleDto> simpleDtos = eachMealMapper.eachMealToEachMealResponseSimpleDto(eachMeals.getContent());
     return new ResponseEntity<>(simpleDtos, HttpStatus.OK);
   }
