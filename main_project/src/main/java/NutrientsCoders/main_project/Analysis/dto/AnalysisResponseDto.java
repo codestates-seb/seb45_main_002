@@ -70,4 +70,6 @@ public class AnalysisResponseDto {
     private Double overPercentProteins;
     private Double overPercentFats;
   }
+  
+  private String purchasePage;
 }

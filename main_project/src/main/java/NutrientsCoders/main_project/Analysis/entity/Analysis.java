@@ -1,11 +1,17 @@
 package NutrientsCoders.main_project.Analysis.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
+import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Setter
@@ -58,6 +64,8 @@ public class Analysis {
   private Double overPercentProteins;
   @Column
   private Double overPercentFats;
+  
+  private String purchasePage;
   public void calculator(Double kacl, Double carbohydrates, Double proteins, Double fats) {
     // 초과, 부족 칼로리 계산(음수는 부족, 양수는 초과)
     overKcal = kacl- idealKacl;
