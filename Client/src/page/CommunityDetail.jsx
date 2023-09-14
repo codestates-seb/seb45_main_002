@@ -105,6 +105,9 @@ const UserProfile = styled.span`
   
 `
 const ExitBtn = styled.div`
+  margin: ${style.layout.narrowMargin.height};
+  color: gray;
+  font-size: small;
   cursor: pointer;
 `
 
@@ -126,7 +129,11 @@ function CommunityDetail(){
   useEffect(()=>loadDetail(),[])
 
   function sendLike(){
-    axios.get("http://43.201.194.176:8080/community/recommendation/"+communityId["*"])
+    axios.get("http://43.201.194.176:8080/community/recommendation/"+communityId["*"],{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
     .then(res=>{
       console.log(res)
       loadDetail()
@@ -151,15 +158,6 @@ function CommunityDetail(){
       <Title>
         {detail.communityTitle}
       </Title>
-      <div>
-        작성자 정보
-      </div>
-      <div>
-        {member.nickname}
-      </div>
-      <div>
-        {member.age} {member.bmi} {member.email}
-      </div>
       <div>
         <DietImageContainer>
           <img

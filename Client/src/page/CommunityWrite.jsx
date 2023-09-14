@@ -5,6 +5,10 @@ import { styled } from "styled-components";
 
 import axios from "axios"
 
+import useZustand from "../zustand/Store";
+
+import FavoriteDiet from "../component/FavoriteDiet";
+
 import style from "../style/style"
 
 const WriteFormContainer = styled.form`
@@ -128,6 +132,21 @@ const ExitBtn = styled(SubmitBtn)`
   background-color: white;
 `
 
+const FavoriteDietListModalContainer = styled.section`
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(127,127,127,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const FavoriteDietListModalBox = styled.ul`
+  list-style: none;
+  background-color: #5cffa3;
+  width: ${style.layout.main.width*4/5};
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
+`
+
 function CommunityWrite(){
 
   const [form,setForm] = useState({
@@ -177,8 +196,11 @@ function CommunityWrite(){
 
   const [onImg,setOnImg] = useState("")
 
-  const navigate = useNavigate()
+  const axiosFavorites = useZustand.useFavorite(state=>state.axiosFavorites)
+  const favorites = useZustand.useFavorite(state=>state.favorites)
 
+  const navigate = useNavigate()
+//////// 캘린더로 식단 불러오기
   function loadDietInDate(){
     axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
       headers: {
@@ -193,7 +215,28 @@ function CommunityWrite(){
       setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
     })
     .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
-    // axios.get("http://43.201.194.176:8080/analysis/"+dietData.dailyMealId)
+  }
+
+//////// 선호 식단 불러오기
+  const [openModal, setOpenModal] = useState(false)
+  function openFavoriteListModal(){
+    axiosFavorites();
+    setOpenModal(!openModal)
+  }
+  function loadDietInFavorite(){
+    axios.get("http://43.201.194.176:8080/dailymeals/"+dietData.dailyMealId,{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>{
+      console.log(res.data)
+      setDietData(res.data)
+      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
+      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
+      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+    })
+    .catch(err=>console.log(err, "갈비탕과 소통에 실패했습니다."))
   }
 
   function sendArticle(e){
@@ -206,7 +249,6 @@ function CommunityWrite(){
     }
     else{
       axios.post("http://43.201.194.176:8080/community",{
-        date: form.communityDietDate,
         dailyMealId: dietData.dailyMealId,
         communityTitle: form.communityTitle,
         communityContent: form.communityContent,
@@ -231,6 +273,7 @@ function CommunityWrite(){
         <DietBtnBox>
           <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
           <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>식단 불러오기</DietBtn>
+          <DietBtn onClick={openFavoriteListModal}>선호식단 불러오기</DietBtn>
         </DietBtnBox>
 
         <DietInfoContainer>
@@ -300,6 +343,15 @@ function CommunityWrite(){
         <ExitBtn type="button" value="EXIT" onClick={()=>navigate("/pageswitch/community")}></ExitBtn>
         <SubmitBtn type="submit" value="SUBMIT" onClick={sendArticle}></SubmitBtn>
       </ExitAndSubmit>
+
+      {openModal?
+        <FavoriteDietListModalContainer onClick={(e)=>{e.preventDefault();setOpenModal(!openModal);}}>
+          <FavoriteDietListModalBox>
+            {favorites.map(favorite=>(<FavoriteDiet favorite={favorite} dietData={dietData} setDietData={setDietData} openModal={openModal} setOpenModal={setOpenModal} loadDietInFavorite={loadDietInFavorite} />))}
+          </FavoriteDietListModalBox>
+        </FavoriteDietListModalContainer>
+        :
+        null}
     </WriteFormContainer>
   );
 };

@@ -46,11 +46,17 @@ const AddImgBtn = styled.label`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  @media(min-width: 769px){
+    width: 50%;
+  }
 `
 const ProfileImg = styled.img`
   width: 100%;
-  max-height: ${style.layout.main.width/2};
+  max-height: ${style.layout.main.width}/4;
   border-radius: 0 0 10px 10px !important;
+  @media(min-width: 769px){
+    width: 50%;
+  }
 `
 const NicknameContainer = styled.div`
   display: flex;
@@ -77,6 +83,35 @@ const BodyDetailContainer = styled.span`
   }
   & label{
     margin: 0 ${style.layout.narrowMargin.width};
+  }
+`
+const ActivityBox =styled.div`
+  border: solid 1px orange;
+  &>:first-child{
+    text-align: center;
+  }
+  &>*{
+    margin: 0 ${style.layout.wideMargin.width};
+  }
+`
+const ActivityRange = styled.input`
+  width: 100%;
+`
+const StepName = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  font-size: xx-small;
+  &>:first-child{
+    text-align: left !important;
+  }
+  &>:nth-child(2){
+    text-align: center !important;
+  }
+  &>:nth-child(3){
+    text-align: center;
+  }
+  &>*{
+    text-align: right;
   }
 `
 const OpenOrClose = styled.span`
@@ -182,6 +217,26 @@ function MyPage() {
             <div><span>키</span><input type="text" value={user.height} onChange={e=>setUser({...user,height: e.target.value})}></input></div>
             <div><span>몸무게</span><input type="text" value={user.weight} onChange={e=>setUser({...user,weight: e.target.value})}></input></div>
           </BodyDetailContainer>
+          <ActivityBox>
+            <div>활동량</div>
+            <div>
+              <ActivityRange
+               type="range"
+               // value={user.activity}
+               onChange={e=>setUser({...user,activity: e.target.value/100})}
+               min="50"
+               step="25"
+               max="150"
+              ></ActivityRange>
+              <StepName>
+                <span>활동량 거의 없음</span>
+                <span>활동량 적음</span>
+                <span>평범함</span>
+                <span>활동량 많음</span>
+                <span>과격한 운동</span>
+              </StepName>
+            </div>
+          </ActivityBox>
           <OpenOrClose>
             <div>다른 사용자들에게 나의 신체정보를 공개하겠습니까?</div>
             <div>
