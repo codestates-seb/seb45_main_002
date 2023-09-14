@@ -82,7 +82,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     // RefreshToken 발급 과정
     private String delegateRefreshToken(Member member) {
-        String subject = member.getNickname();
+        String subject = member.getEmail();
         Date expiration = jwtmaker.getTokenExpiration(jwtmaker.getRefreshExpiration());
         String base64EncodedSecretKey = jwtmaker.encodeBase64SecretKey(jwtmaker.getSecret());
 

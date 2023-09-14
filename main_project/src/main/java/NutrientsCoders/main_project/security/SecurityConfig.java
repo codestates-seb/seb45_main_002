@@ -5,9 +5,11 @@ import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.security.OAuth2.OAuth2SuccessHandler;
 
 import NutrientsCoders.main_project.security.custom.LoginSuccessHandler;
+import NutrientsCoders.main_project.security.custom.MemberFailureHandler;
 import NutrientsCoders.main_project.security.jwt.JwtAuthenticationFilter;
 import NutrientsCoders.main_project.security.jwt.JwtTokenMaker;
 import NutrientsCoders.main_project.security.jwt.JwtVerificationFilter;
+import NutrientsCoders.main_project.security.jwt.MemberEntryPoint;
 import NutrientsCoders.main_project.utils.AuthorityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +34,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
 import java.util.List;
@@ -44,13 +47,16 @@ public class SecurityConfig {
     private final AuthorityUtils authorityUtils; //Custom
 
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     public SecurityConfig(JwtTokenMaker tokenMaker,
                           AuthorityUtils authorityUtils,
-                          @Lazy MemberService memberService) {
+                          @Lazy MemberService memberService,
+                          @Lazy MemberRepository memberRepository) {
         this.tokenMaker = tokenMaker;
         this.authorityUtils = authorityUtils;
         this.memberService = memberService;
+        this.memberRepository=memberRepository;
     }
 
 
@@ -74,6 +80,10 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()//postman 요청 허용
                 .apply(new CustomFilterConfig())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberEntryPoint(tokenMaker,authorityUtils))
+                .accessDeniedHandler(new MemberFailureHandler(tokenMaker,authorityUtils))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.GET, "/main").permitAll()
@@ -135,7 +145,7 @@ public class SecurityConfig {
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new LoginSuccessHandler());
 
             // JwtVerificationFilter의 인스턴스를 생성 및 사용되는 객체들을 생성자로 DI
-             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenMaker, authorityUtils);
+             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(tokenMaker, authorityUtils,memberRepository);
 
             // JwtAuthenticationFilter를 Spring Security Filter Chain에 추가
             builder.addFilter(jwtAuthenticationFilter)
