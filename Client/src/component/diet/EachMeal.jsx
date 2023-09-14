@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { PostEachMeal } from "../../util/Diet";
 import IsEachMeal from "./IsEachMeal";
 import NoEachMeal from "./NoEachMeal";
