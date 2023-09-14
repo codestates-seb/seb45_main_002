@@ -59,7 +59,9 @@ public class Analysis {
   @Column
   private Double overPercentFats;
   
-  private String purchasePage;
+  private String auctionURL;
+  private String naverURL;
+  private String coupangURL;
   public void calculator(Double kacl, Double carbohydrates, Double proteins, Double fats) {
     // 초과, 부족 칼로리 계산(음수는 부족, 양수는 초과)
     overKcal = kacl- idealKacl;

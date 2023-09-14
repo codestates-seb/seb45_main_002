@@ -71,5 +71,7 @@ public class AnalysisResponseDto {
     private Double overPercentFats;
   }
   
-  private String purchasePage;
+  private String auctionURL;
+  private String naverURL;
+  private String coupangURL;
 }

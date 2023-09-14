@@ -35,13 +35,18 @@ public class AnalysisService {
     
     String result = checkResult(analysis); // 분석
     analysis.setResult(result);
+    String URL[] = uriMaker(result);
     
-    String purchasePage = uriMaker(result); // 분석기반 구매 uri 생성
-    analysis.setPurchasePage(purchasePage);
+    String auctionURL = URL[0]; // 분석기반 구매 uri 생성
+    String naverURL = URL[1]; // 분석기반 구매 uri 생성
+    String coupangURL = URL[2]; // 분석기반 구매 uri 생성
+    analysis.setAuctionURL(auctionURL);
+    analysis.setNaverURL(naverURL);
+    analysis.setCoupangURL(coupangURL);
     return analysisRepository.save(analysis);
   }
   
-  public String uriMaker(String result) throws UnsupportedEncodingException {
+  public String[] uriMaker(String result) throws UnsupportedEncodingException {
     String keyword = "";
     if (result.contains("불량") && result.contains("단백질 섭취 비율이 너무 낮습니다.")) {keyword = "고단백";}
     else if (result.contains("불량") && result.contains("지방 섭취 비율이 너무 높습니다.")) {keyword = "저지방";}
@@ -50,9 +55,10 @@ public class AnalysisService {
     
     String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
     String auctionURL = "https://browse.auction.co.kr/search?keyword=" + encodedKeyword;
-//    String naverURL = "https://search.shopping.naver.com/search/all?query=" + encodedKeyword;
-//    String coupangURL = "https://www.coupang.com/np/search?component=&q=" + encodedKeyword;
-    return auctionURL;
+    String naverURL = "https://search.shopping.naver.com/search/all?query=" + encodedKeyword;
+    String coupangURL = "https://www.coupang.com/np/search?component=&q=" + encodedKeyword;
+    String URL[] = {auctionURL, naverURL, coupangURL};
+    return URL;
   }
 
 
