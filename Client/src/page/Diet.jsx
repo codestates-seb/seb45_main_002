@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { useForm, SubmitHandler } from "react-hook-form";
 import { styled } from "styled-components";
-import axios from "axios";
 
 import GetDailyDiet from "../component/diet/GetDailyDiet";
 import EachMeal from "../component/diet/EachMeal";
-import PostNewDailyDiet from "../component/diet/PostNewDailyDiet";
 import GetFoodKeyword from "../component/diet/GetFoodKeyword";
+import Button from "../atom/button";
 
 const StyleDiet = styled.div`
   background-color: #d9d9d9;
@@ -15,12 +13,13 @@ const StyleDiet = styled.div`
 
 function Diet() {
   const { date } = useParams();
-  const [meal, setMeal] = useState(null);
-  const uploadMeal = GetDailyDiet(date);
+  const getmeal = GetDailyDiet(date);
+
+  const [meal, setMeal] = useState();
 
   useEffect(() => {
-    setMeal(uploadMeal);
-  }, [uploadMeal]);
+    setMeal(() => getmeal);
+  }, [getmeal, date]);
 
   const [inputSearchFood, setInputSearchFood] = useState("");
   const [searchFoodList, setSearchFoodList] = useState([]);
@@ -30,7 +29,6 @@ function Diet() {
       const funcasync = async () => {
         const result = await GetFoodKeyword(inputSearchFood);
         await setSearchFoodList(() => result);
-        console.log(searchFoodList);
       };
       funcasync();
     } else {
@@ -73,8 +71,8 @@ function Diet() {
           />
           <ul>
             {Array.isArray(searchFoodList) ? (
-              searchFoodList.map((item) => (
-                <li>
+              searchFoodList.map((item, index) => (
+                <li key={index}>
                   <p>
                     {item.foodName}: {item.kcal}kcal
                   </p>
@@ -89,6 +87,7 @@ function Diet() {
           </ul>
         </div>
         <div>
+          <h3>하루 섭취량</h3>
           <p>칼로리: {meal.totalDailyKcal}</p>
           <p>탄수화물: {meal.totalDailyCarbo}</p>
           <p>단백질: {meal.totalDailyProtein}</p>
@@ -97,7 +96,7 @@ function Diet() {
       </StyleDiet>
     );
   } else {
-    return <>error</>;
+    return <Button>error</Button>;
   }
 }
 

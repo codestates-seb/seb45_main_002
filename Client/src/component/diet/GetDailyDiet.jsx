@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import PostNewDailyDiet from "./PostNewDailyDiet";
 
 const today = new Date();
 let year = today.getFullYear(); // 년도
@@ -12,22 +11,52 @@ const GetDailyDiet = (
     date >= 10 ? date : "0" + date
   }`
 ) => {
+  const url = "http://43.201.194.176:8080/dailymeals";
+  const url1 = `http://43.201.194.176:8080/dailymeals/date/${dateStr}`;
+  console.log(url1);
   const [meal, setMeal] = useState();
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("Authorization");
+
   useEffect(() => {
     axios
-      .get(`http://43.201.194.176:8080/dailymeals/date/${dateStr}`, {
+      .get(url1, {
         headers: { Authorization: token },
       })
       .then((response) => {
         console.log(response);
-        setMeal(response.data);
+        setMeal(() => response.data);
       })
       .catch((error) => {
         console.log(error);
-        setMeal(PostNewDailyDiet(dateStr));
+        //불러오기 실패시 post요청으로 dailymeals 생성
+        if (error.response.data === "DailyMeal not found...") {
+          axios
+            .post(
+              url,
+              {
+                name: "name",
+                date: dateStr,
+                favorite: false,
+                eachMeals: [],
+              },
+              {
+                headers: {
+                  Authorization: token,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              setMeal(() => {
+                setMeal(response.data);
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
       });
-  }, [dateStr, token]);
+  }, [dateStr, token, url, url1]);
 
   return meal;
 };

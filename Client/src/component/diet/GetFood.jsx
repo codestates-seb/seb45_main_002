@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const GetFood = (foodId) => {
   const [food, setFood] = useState();
-  const token = "";
+  const token = localStorage.getItem("Authorization");
   axios
     .get(`http://43.201.194.176:8080/foods/${foodId}`, {
       headers: { Authorization: token },
