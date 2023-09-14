@@ -60,7 +60,7 @@ const Article = ({article}) => {
         <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
         <InfoContainer>
           <LikeViewCreate>
-            좋아요 {article.communitylike}
+            좋아요 {article.communityLike}
           </LikeViewCreate>
           <LikeViewCreate>
             조회수 {article.communityViewCount}
