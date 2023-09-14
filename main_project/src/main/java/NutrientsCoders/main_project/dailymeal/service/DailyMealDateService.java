@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class DailyMealDateService {
     return verifyExistsEachMealByDate(memberId, date);
   }
   
+  
   //전체 식단 조회(날짜)
   public Page<DailyMeal> findAllByDate(long memberId, Pageable pageable) {
     Page<DailyMeal> dailyMeals = dailyMealRepository.findAllDateByMemberId(memberId, pageable);
@@ -38,14 +40,16 @@ public class DailyMealDateService {
   }
   
   //식단 수정
-  public DailyMeal updateDateDailyMeal(long memberId, DailyMeal dailyMeal, LocalDate date, List<EachMeal> eachMeals) throws Exception {
+  @Transactional
+  public DailyMeal updateDateDailyMeal(long memberId, LocalDate date, List<EachMeal> eachMeals) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
-    findDailyMeal.setMember(memberService.findMember(memberId));
+    eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
     return dailyMealRepository.save(findDailyMeal);
   }
   
   //식단 삭제
+  @Transactional
   public void deleteDateDailyMeal(LocalDate date, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
     dailyMealRepository.deleteById(findDailyMeal.getDailyMealId());

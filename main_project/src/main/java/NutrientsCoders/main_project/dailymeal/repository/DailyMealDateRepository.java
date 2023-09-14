@@ -18,6 +18,6 @@ public interface DailyMealDateRepository extends JpaRepository<DailyMeal, Long> 
   Optional<DailyMeal> findDailyMealByDate(@Param("date") LocalDate date, @Param("memberId") long memberId);
   
   //memberId 전체, 선호제외, date 정렬
-  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId AND dm.favorite = false ORDER BY dm.date")
+  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId AND NOT dm.date = null ORDER BY dm.date")
   Page<DailyMeal> findAllDateByMemberId(@Param("memberId") long memberId, Pageable pageable);
 }

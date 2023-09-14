@@ -69,12 +69,11 @@ public class DailyMealDateController {
                                                              @PathVariable("dateStr") String dateStr) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     LocalDate date = LocalDate.parse(dateStr);
-    DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
                                            .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
                                            .collect(Collectors.toList());
     
-    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(memberId, dailyMeal, date, eachMeals);
+    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(memberId, date, eachMeals);
     DailyMealResponseDto response
         = dailyMealMapper.dailyMealToDailyMealResponseDto(updateDailyMeal);
     return new ResponseEntity<>(response, HttpStatus.OK);

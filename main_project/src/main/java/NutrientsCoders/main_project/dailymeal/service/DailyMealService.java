@@ -58,24 +58,21 @@ public class DailyMealService {
         .filter(list -> !list.isEmpty())
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
-  //선택 식단 수정(ID)
+  //선택 식단 수정(ID), 선호 -> 캘린더 사용시 새로운 객체 생성
   @Transactional
   public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) throws Exception {
-    DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
-    if (!findDailyMeal.getFavorite()) {
-      Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(findDailyMeal.getDate(), memberId);
-      existDailyMeal.ifPresent(dm -> {
-        if (!dailyMeal.getFavorite() && !dm.getFavorite()) {
-          throw new LogicException(ExceptionCode.DATE_EXISTS);
-        }
-      });
+    //날짜 입력시
+    if (!(dailyMeal.getDate() == null)){
+    DailyMeal dailyMealWithDate = createDailyMeal(dailyMeal, eachMeals, memberId);
+      return dailyMealRepository.save(dailyMealWithDate);
     }
-    findDailyMeal.setFavorite(dailyMeal.getFavorite());
+    
+    DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
+    eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
-    findDailyMeal.setMember(memberService.findMember(memberId));
+    findDailyMeal.setName(dailyMeal.getName());
     return dailyMealRepository.save(findDailyMeal);
   }
-  
   //선택 식단 삭제(ID)
   @Transactional
   public void deleteDailyMeal(long dailyMealId, long memberId) {
