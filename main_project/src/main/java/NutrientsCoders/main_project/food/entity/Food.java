@@ -35,7 +35,7 @@ public class Food {
   private Long servingSize;
   
   @Column(updatable = false, nullable = false)
-  private Long kcal;
+  private Double kcal;
   
   @Column(updatable = false)
   private Double carbo;

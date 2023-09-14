@@ -8,6 +8,9 @@ import NutrientsCoders.main_project.eachmeal.entity.EachMealFood;
 import NutrientsCoders.main_project.eachmeal.mapper.EachMealMapper;
 import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.utils.TokenChanger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,10 +55,12 @@ public class EachMealController {
   
   //작성한 끼니 전체 조회(본인꺼만)
   @GetMapping
-  public ResponseEntity<List<EachMealResponseSimpleDto>> getEachMeals(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<List<EachMealResponseSimpleDto>> getEachMeals(@RequestHeader("Authorization") String token,
+                                                                      @RequestParam int page, @RequestParam int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
-    List<EachMeal> eachMeals = eachMealService.findByEachMeals(memberId);
-    List<EachMealResponseSimpleDto> simpleDtos = eachMealMapper.eachMealToEachMealResponseSimpleDto(eachMeals);
+    Page<EachMeal> eachMeals = eachMealService.findByEachMeals(memberId, pageable);
+    List<EachMealResponseSimpleDto> simpleDtos = eachMealMapper.eachMealToEachMealResponseSimpleDto(eachMeals.getContent());
     return new ResponseEntity<>(simpleDtos, HttpStatus.OK);
   }
 

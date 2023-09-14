@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
   
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-    String message = "유효하지 않은 값입니다";
+    String message = "Invalid data...";
     return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
   }
   

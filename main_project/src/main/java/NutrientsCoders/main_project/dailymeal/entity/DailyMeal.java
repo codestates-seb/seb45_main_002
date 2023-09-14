@@ -29,7 +29,7 @@ public class DailyMeal {
   @OneToOne(mappedBy = "dailyMeal", cascade = CascadeType.REMOVE)
   private Analysis analysis;
   
-  @Column(unique = true)
+  @Column
   private LocalDate date;
 
   @Column(nullable = false)
@@ -53,6 +53,10 @@ public class DailyMeal {
   @Column
   private Double totalDailyFat;
   
+  private Double totalPercentCarbos;
+  private Double totalPercentProteins;
+  private Double totalPercentFats;
+  
   public void calculateTotal() {
     if (eachMeals != null && !eachMeals.isEmpty()) {
       totalDailyKcal = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachKcal)
@@ -63,11 +67,24 @@ public class DailyMeal {
           .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       totalDailyFat = Math.round(eachMeals.stream().mapToDouble(EachMeal::getTotalEachFat)
           .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
+      
+      // 총 섭취 그램 수 계산
+      Double totalGrams = totalDailyCarbo + totalDailyProtein + totalDailyFat;
+      
+      // 섭취 탄단지 비율 계산
+      totalPercentCarbos = Math.round((totalDailyCarbo / totalGrams)  * 100) / 100.0;
+      totalPercentProteins = Math.round((totalDailyProtein / totalGrams)  * 100) / 100.0;
+      totalPercentFats = Math.round((1.0 - totalDailyCarbo - totalDailyProtein) * 100) / 100.0;
     } else {
       totalDailyKcal = 0.0;
       totalDailyCarbo = 0.0;
       totalDailyProtein = 0.0;
       totalDailyFat = 0.0;
+      
+      totalPercentCarbos = 0.0;
+      totalPercentProteins = 0.0;
+      totalPercentFats = 0.0;
+      
     }
   }
 }

@@ -10,6 +10,9 @@ import NutrientsCoders.main_project.dailymeal.service.DailyMealSuggestService;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
 import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.utils.TokenChanger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -66,14 +69,15 @@ public class DailyMealController {
   
   //식단 전체 조회(선호)
   @GetMapping
-  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByFavorit(@RequestHeader("Authorization") String token) {
+  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByFavorite(@RequestHeader("Authorization") String token,
+                                                                                  @RequestParam int page, @RequestParam int size) {
+    Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
-    List<DailyMeal> dailyMeals = dailyMealService.findByfavoritDailyMeals(memberId);
-    List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals);
-    
-    return new ResponseEntity<>(response,HttpStatus.OK);
-  }
+    Page<DailyMeal> dailyMeals = dailyMealService.findByfavoritDailyMeals(memberId, pageable);
+    List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals.getContent());
 
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
   //작성한 식단 수정
   @PatchMapping("/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
@@ -98,11 +102,11 @@ public class DailyMealController {
   }
   
   //  식단 추천 받기
-  @PostMapping("/suggest/{analysis-id}")
+  @PostMapping("/suggest/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
-                                                                     @PathVariable("analysis-id") long analysisId) throws Exception {
+                                                                     @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealSuggests.suggestDailyMeal(analysisId, memberId);
+    DailyMeal dailyMeal = dailyMealSuggests.suggestDailyMeal(dailyMealId, memberId);
     DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
