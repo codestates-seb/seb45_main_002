@@ -1,6 +1,8 @@
 import Button from "../../atom/button";
+import useZustand from "../../zustand/Store";
 
-const NoEachMeal = ({ meal, timeslot, EachMealAddHandler }) => {
+const NoEachMeal = ({ timeslot, EachMealAddHandler }) => {
+  const { meal } = useZustand.useDailyMeals();
   const timelabel = { 1: "breakfast", 2: "lunch", 3: "dinner" };
 
   return (

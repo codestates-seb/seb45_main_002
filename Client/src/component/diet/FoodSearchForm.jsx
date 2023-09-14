@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { GetFoodKeyword, changeEachMeal } from "../../util/Diet";
+import { GetFoodKeyword } from "../../util/Diet";
 import { useEffect } from "react";
-import Button from "../../atom/button";
+import FoodSearchItem from "./FoodSearchItem";
 
-const FoodSearchForm = ({ eachMeal, timeslot }) => {
+const FoodSearchForm = ({ timeslot }) => {
   const [inputSearchFood, setInputSearchFood] = useState("");
   const [searchFoodList, setSearchFoodList] = useState([]);
 
@@ -30,21 +30,7 @@ const FoodSearchForm = ({ eachMeal, timeslot }) => {
       <ul>
         {Array.isArray(searchFoodList) ? (
           searchFoodList.map((item, index) => (
-            <li key={index}>
-              <p>
-                {item.foodName}: {item.kcal}kcal
-              </p>
-              <Button
-                size={"square"}
-                style={{ width: "20px", height: "20px" }}
-                onClick={() => {
-                  console.log(item);
-                  changeEachMeal(eachMeal, timeslot, item.foodId, 1);
-                }}
-              >
-                +
-              </Button>
-            </li>
+            <FoodSearchItem item={item} key={index} timeslot={timeslot} />
           ))
         ) : (
           <>Err</>
