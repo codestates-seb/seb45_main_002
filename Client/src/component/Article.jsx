@@ -66,7 +66,7 @@ const Article = ({article}) => {
             조회수 {article.communityViewCount}
           </LikeViewCreate>
           <LikeViewCreate>
-            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일_{date.getHours()}:{date.getMinutes()} 
+            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일 
           </LikeViewCreate>
         </InfoContainer>
       </ArticleBox>

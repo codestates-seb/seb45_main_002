@@ -1,6 +1,8 @@
 import { useState,useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 import axios from "axios";
+
 import {styled} from "styled-components";
 
 import style from "../style/style";
@@ -111,6 +113,8 @@ function MyPage() {
    })
   const [imgURL,setImgURL] = useState("https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100")
 
+   const navigate = useNavigate()
+
   function loadProfile(){
     axios.get("http://43.201.194.176:8080/mypage/",{
       headers: {
@@ -118,7 +122,10 @@ function MyPage() {
       }
     })
     .then(res=>setUser(res.data))
-    .catch(err=>console.log(err,"서버접속 실패"))
+    .catch(err=>{
+      console.log(err,"서버접속 실패")
+      navigate("/")
+    })
   }
   useEffect(()=>loadProfile(),[])
 
