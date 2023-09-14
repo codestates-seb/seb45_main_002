@@ -86,8 +86,7 @@ public class CommunityService {
     }
     public Community recommendCommunity(long communityId,long memberId){
         Community findCommunityId = communityRepository.findById(communityId).orElse(null);
-        Member findMemberId = memberRepository.findByMemberId(memberId);
-        if(findMemberId.getCommunityLike() == 0 && findCommunityId.isMemberId(memberId) == false) {
+        if(findCommunityId.isMemberId(memberId) == false) {
             findCommunityId.addMembers(memberId);
             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
             findCommunityId.setCommunityLike(1);
