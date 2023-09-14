@@ -94,6 +94,7 @@ const LoginForm = () => {
         setForm({...form,errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다."})
       })
     }
+    else{errMsg();}
   }
 
 
