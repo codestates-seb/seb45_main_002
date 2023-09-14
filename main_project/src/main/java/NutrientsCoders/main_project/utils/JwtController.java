@@ -21,7 +21,7 @@ public class JwtController {
 
 
     @GetMapping("/refresh")
-    public ResponseEntity<List<String>> refresh(@RequestHeader("Authorization")String access,
+    public ResponseEntity refresh(@RequestHeader("Authorization")String access,
                                              @RequestHeader("Refresh")String refresh){
 
         List<String> tokens = tokenChanger.getRefresh(access, refresh);
@@ -29,6 +29,6 @@ public class JwtController {
         headers.add("Authorization", tokens.get(0));
         headers.add("Refresh", tokens.get(1));
 
-        return ResponseEntity.ok().headers(headers).body(tokens);
+        return ResponseEntity.ok().headers(headers).body("refreshed");
     }
 }
