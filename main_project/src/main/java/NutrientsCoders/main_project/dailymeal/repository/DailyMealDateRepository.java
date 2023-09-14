@@ -14,10 +14,10 @@ import java.util.Optional;
 public interface DailyMealDateRepository extends JpaRepository<DailyMeal, Long> {
   
   //date, memberId 일치, 선호 제외(날짜 조회)
-  @Query("SELECT dm FROM DailyMeal dm LEFT JOIN FETCH dm.eachMeals e WHERE dm.date = :date and dm.member.memberId = :memberId AND dm.favorite = false")
+  @Query("SELECT dm FROM DailyMeal dm LEFT JOIN FETCH dm.eachMeals e WHERE dm.date = :date and dm.member.memberId = :memberId")
   Optional<DailyMeal> findDailyMealByDate(@Param("date") LocalDate date, @Param("memberId") long memberId);
   
   //memberId 전체, 선호제외, date 정렬
-  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId AND NOT dm.date = null ORDER BY dm.date")
+  @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId AND dm.date is not null ORDER BY dm.date")
   Page<DailyMeal> findAllDateByMemberId(@Param("memberId") long memberId, Pageable pageable);
 }

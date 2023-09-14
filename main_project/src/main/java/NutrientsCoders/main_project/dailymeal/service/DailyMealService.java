@@ -30,12 +30,8 @@ public class DailyMealService {
   @Transactional
   public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long memberId) throws Exception {
     Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(dailyMeal.getDate(), memberId);
-    existDailyMeal.ifPresent(dm -> {
-      if (!dailyMeal.getFavorite() && !dm.getFavorite()) {
-        throw new LogicException(ExceptionCode.DATE_EXISTS);
-      }
-    });
-
+    if (existDailyMeal.isPresent()) {throw new LogicException(ExceptionCode.DATE_EXISTS);}
+    
     dailyMeal.setEachMeals(eachMeals);
     eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));

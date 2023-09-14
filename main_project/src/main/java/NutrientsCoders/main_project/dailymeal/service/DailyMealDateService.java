@@ -18,11 +18,9 @@ import java.util.Optional;
 @Service
 public class DailyMealDateService {
   private final DailyMealDateRepository dailyMealRepository;
-  private final MemberService memberService;
   
-  public DailyMealDateService(DailyMealDateRepository dailyMealRepository, MemberService memberService) {
+  public DailyMealDateService(DailyMealDateRepository dailyMealRepository) {
     this.dailyMealRepository = dailyMealRepository;
-    this.memberService = memberService;
   }
   
   //선택 식단 조회(날짜)
