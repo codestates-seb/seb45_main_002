@@ -68,11 +68,31 @@ const SignUpForm = () => {
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
 
   function checkEmailHandler(){
+<<<<<<< HEAD
     axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login/check",{
       email: form.email
     })
     .then(res=>setCheckEmail(true))
     .catch(err=>console.log(err+"실패했습니다."))
+=======
+    if(form.email===""){
+      setForm({...form,errMsg: "이메일을 입력해주시기 바랍니다."})
+    }
+    else{
+      axios.post("http://43.201.194.176:8080/login/check",{
+        email: form.email
+      })
+      .then(res=>{
+        console.log(res)
+        setCheckEmail(true)
+        setForm({...form,errMsg: "[ 중복 확인 ]이 완료되었습니다."})
+      })
+      .catch(err=>{
+        console.log(err+"실패했습니다.")
+        setForm({...form,errMsg: "이미 등록된 계정입니다."})
+      })
+    }
+>>>>>>> devFE
   }
 
   function errMsg(){
@@ -92,12 +112,12 @@ const SignUpForm = () => {
   }
   function createAccount(){
     if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password) && checkEmail){
-      axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login/create",{
+      axios.post("http://43.201.194.176:8080/login/create",{
         nickname: form.email.slice(0,form.email.indexOf("@")),
         email: form.email,
         password: form.password
       })
-      .then(res=>navigate("/pageswitch/mypage"))
+      .then(res=>console.log(res+"회원가입에 성공했습니다."))
       .catch(err=>console.log(err, "회원가입에 실패하였습니다."))
     }
     else{errMsg();}

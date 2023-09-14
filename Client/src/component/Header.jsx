@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import style from "../style/style";
 import Modal from "../atom/GlobalModal";
@@ -26,20 +26,37 @@ const HeaderContainer = styled.header`
   }
   &>:last-child{
     align-items: center;
+<<<<<<< HEAD
     margin-right: ${style.layout.maxWidth/20/3}px;
     padding: 1% 0;
+=======
+    margin-right: ${style.layout.maxWidth/30}px;
+    padding: 1% 0;
+    >:first-child{
+      margin-right: ${style.layout.maxWidth/20/3}px;
+    }
+>>>>>>> devFE
   }
 `
 
 const HambergerI = styled.i`
   cursor: pointer;
+<<<<<<< HEAD
+=======
+  @media(min-width: 769px){
+    display: none;
+  }
+>>>>>>> devFE
 `
 
 const LoginButton = styled.button`
   height: ${style.layout.header.height/2};
   border: none;
   background-color: orange;
+<<<<<<< HEAD
   margin-right: ${style.layout.maxWidth/20/3}px;
+=======
+>>>>>>> devFE
   padding: 0 3%;
   color: white;
   font-size: ${style.layout.header.height/3};
@@ -54,6 +71,17 @@ const SignUpButton = styled(LoginButton)`
 function Header({menu,setMenu}) {
 
   const accessToken = useZustand.useToken(state=>state.accessToken)
+<<<<<<< HEAD
+=======
+  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
+  const refreshToken = useZustand.useToken(state=>state.refreshToken)
+  const setRefreshToken = useZustand.useToken(state=>state.setRefreshToken)
+
+  const navigate = useNavigate()
+
+  localStorage.getItem("Authorization")? setAccessToken(localStorage.getItem("Authorization")) : setAccessToken("")
+  localStorage.getItem("Refresh")? setRefreshToken(localStorage.getItem("Refresh")) : setRefreshToken("")
+>>>>>>> devFE
   
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState(null);
@@ -61,8 +89,14 @@ function Header({menu,setMenu}) {
   const [header, setHeader] = useState(null);
 
   function logoutButton(){
+<<<<<<< HEAD
     localStorage.removeItem("access_token")
     window.location.reload()
+=======
+    localStorage.removeItem("Authorization")
+    localStorage.removeItem("Refresh")
+    navigate("/")
+>>>>>>> devFE
   }
 
   const handleOpenLoginModal = () => {
@@ -94,7 +128,17 @@ function Header({menu,setMenu}) {
       </span>
       {accessToken?
         <span>
+<<<<<<< HEAD
           <img alt="My Page" src="image/profileimage.svg" height={style.layout.header.height-style.layout.narrowMargin.height}></img>
+=======
+          <Link to="/pageswitch/mypage">
+            <img
+             alt="My Page"
+             src="https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100"
+             height={style.layout.wideMargin.height*2}
+            />
+          </Link>
+>>>>>>> devFE
           <SignUpButton onClick={logoutButton}>로그아웃</SignUpButton>
         </span>
         :
@@ -113,6 +157,7 @@ function Header({menu,setMenu}) {
               setIsOpen={setIsOpen}
             />
           </ModalPortal>
+<<<<<<< HEAD
           <ModalPortal>
         <Modal
           isOpen={isOpen}
@@ -125,6 +170,8 @@ function Header({menu,setMenu}) {
           setIsOpen={setIsOpen}
         />
       </ModalPortal>
+=======
+>>>>>>> devFE
         </span>
       }
     </HeaderContainer>
