@@ -54,7 +54,16 @@ function PageSwitch({page}){
 
   const navigate = useNavigate()
 
-  setTimeout(()=>navigate(page,{replace: true}),1000)
+  function isLogin(){
+    if(localStorage.getItem("Authorization")===null && page==="/mypage"){
+      navigate("*",{replace: true})
+    }
+    else{
+      navigate(page,{replace: true})
+    }
+  }
+
+  setTimeout(()=>isLogin(),1000)
 
   return(
     <PageSwitchContainer>

@@ -176,7 +176,7 @@ function MyPage() {
             <div><span>몸무게</span><input type="text" value={user.weight} onChange={e=>setUser({...user,weight: e.target.value})}></input></div>
           </BodyDetailContainer>
           <OpenOrClose>
-            <div>다른 사람들에게 나의 신체정보를 공개하겠습니까?</div>
+            <div>다른 사용자들에게 나의 신체정보를 공개하겠습니까?</div>
             <div>
               <label htmlFor="YES"><input name="YESorNO" type="radio" id="YES" value={true}></input> YES</label>
               <label htmlFor="NO"><input name="YESorNO" type="radio" id="NO" value={false} checked="checked" ></input> NO</label>
