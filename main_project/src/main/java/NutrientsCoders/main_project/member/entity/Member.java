@@ -58,8 +58,6 @@ public class Member {
 
     @Column
     private String imageUrl;
-    @Column
-    private long CommunityLike = 0;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
