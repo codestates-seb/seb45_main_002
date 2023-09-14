@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommunityPostDto {
-    private Long memberId;
+    private Long dailyMealId;
     private String communityTitle;
     private String communityContent;
+    private Long date;
 }

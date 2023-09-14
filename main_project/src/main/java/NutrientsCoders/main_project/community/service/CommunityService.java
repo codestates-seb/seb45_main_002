@@ -1,10 +1,11 @@
 package NutrientsCoders.main_project.community.service;
 
+import NutrientsCoders.main_project.Analysis.service.AnalysisService;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
 
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
-import NutrientsCoders.main_project.member.entity.Member;
+import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
 import NutrientsCoders.main_project.member.repository.MemberRepository;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
@@ -20,19 +21,22 @@ import org.springframework.stereotype.Service;
 public class CommunityService {
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
-    private final DailyMealRepository dailyMealRepository;
+    private final DailyMealService dailyMealService;
+    private final AnalysisService analysisService;
 
-    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealRepository dailyMealRepository) {
+    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealService dailyMealService, AnalysisService analysisService) {
         this.communityRepository = communityRepository;
         this.memberRepository = memberRepository;
-        this.dailyMealRepository = dailyMealRepository;
+        this.dailyMealService = dailyMealService;
+        this.analysisService = analysisService;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
 
-    public Community createCommunity(Community community,long memberId){
+    public Community createCommunity(Community community, long memberId){
         community.setMember(memberRepository.findByMemberId(memberId));
-        community.setDailyMeal(dailyMealRepository.findByMemberId(memberId));
+        // 선택한 식단으로 저장 띄우기
+        community.setDailyMeal(dailyMealService.findByDailyMeal(community.getDailyMeal().getDailyMealId(),memberId));
         return communityRepository.save(community);
     }
 
@@ -86,8 +90,7 @@ public class CommunityService {
     }
     public Community recommendCommunity(long communityId,long memberId){
         Community findCommunityId = communityRepository.findById(communityId).orElse(null);
-        Member findMemberId = memberRepository.findByMemberId(memberId);
-        if(findMemberId.getCommunityLike() == 0 && findCommunityId.isMemberId(memberId) == false) {
+        if(findCommunityId.isMemberId(memberId) == false) {
             findCommunityId.addMembers(memberId);
             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
             findCommunityId.setCommunityLike(1);

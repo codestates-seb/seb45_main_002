@@ -17,6 +17,4 @@ public interface DailyMealRepository extends JpaRepository<DailyMeal, Long> {
   //memberId 전체, 선호만, dailyMealId 정렬
   @Query("SELECT dm FROM DailyMeal dm WHERE dm.member.memberId = :memberId AND dm.favorite = true ORDER BY dm.dailyMealId")
   List<DailyMeal> findAllfavoriteByMemeberId(@Param("memberId") long memberId);
-  @Query("select dm from DailyMeal dm WHERE dm.member.memberId = :memberId")
-  DailyMeal findByMemberId(long memberId);
 }

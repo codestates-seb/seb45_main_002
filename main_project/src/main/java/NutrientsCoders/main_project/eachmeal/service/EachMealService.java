@@ -29,7 +29,6 @@ public class EachMealService {
     this.foodService = foodService;
     this.memberService = memberService;
   }
-  
   //foodId로 food 엔티티를 찾아 끼니 저장
   @Transactional
   public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods, long memberId) throws Exception {
