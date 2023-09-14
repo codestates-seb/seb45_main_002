@@ -140,11 +140,12 @@ const LoginForm = () => {
   return (
     <LoginContainer>
       <LoginFormContainer>
-        <input
+      <input
           type="email"
           placeholder="E-mail"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
+          autoFocus
         />
         <input
           type="password"
