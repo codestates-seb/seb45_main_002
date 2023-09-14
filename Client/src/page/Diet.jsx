@@ -2,14 +2,73 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-import GetDailyDiet from "../component/diet/GetDailyDiet";
+import { GetDailyDiet, GetFoodKeyword } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
-import GetFoodKeyword from "../component/diet/GetFoodKeyword";
-import Button from "../atom/button";
 
-const StyleDiet = styled.div`
-  background-color: #d9d9d9;
-`;
+const StyleDiet = styled.div``;
+
+const dummyMeal = {
+  eachMeals: [
+    {
+      memberId: 1,
+      dailymealId: 12,
+      timeSlots: 1,
+      foods: [
+        {
+          foodId: 5,
+          brand: "전국(대표)",
+          foodName: "더덕구이",
+          foodCategory1: "구이류",
+          foodCategory2: "채소류구이",
+          servingSize: 100,
+          quantity: 1.0,
+          ratioEachKcal: 184.0,
+          ratioEachCarbo: 31.0,
+          ratioEachProtein: 3.0,
+          ratioEachFat: 5.0,
+        },
+      ],
+      totalEachKcal: 1000,
+      totalEachCarbo: 50,
+      totalEachProtein: 50,
+      totalEachFat: 50,
+    },
+    {
+      memberId: 1,
+      dailymealId: 13,
+      timeSlots: 2,
+      foods: [
+        {
+          foodId: 5,
+          brand: "전국(대표)",
+          foodName: "더덕구이",
+          foodCategory1: "구이류",
+          foodCategory2: "채소류구이",
+          servingSize: 100,
+          quantity: 1.7,
+          ratioEachKcal: 184.0,
+          ratioEachCarbo: 31.0,
+          ratioEachProtein: 3.0,
+          ratioEachFat: 5.0,
+        },
+      ],
+      totalEachKcal: 1000,
+      totalEachCarbo: 50,
+      totalEachProtein: 50,
+      totalEachFat: 50,
+    },
+    {
+      memberId: 1,
+      dailymealId: 14,
+      timeSlots: 3,
+      foods: [],
+      totalEachKcal: 1000,
+      totalEachCarbo: 50,
+      totalEachProtein: 50,
+      totalEachFat: 50,
+    },
+  ],
+};
 
 function Diet() {
   const { date } = useParams();
@@ -36,68 +95,56 @@ function Diet() {
     }
   }, [inputSearchFood]);
 
-  if (meal) {
-    return (
-      <StyleDiet>
-        <div className="breakfast"></div>
-        <div className="lunch"></div>
-        <div className="dinner"></div>
-        {Array.isArray(meal) ? (
-          meal.eachMeals.map((eachmeal, index) => {
-            return (
-              <EachMeal
-                key={index}
-                howeach={
-                  eachmeal.timeSlots === 1
-                    ? "breakfast"
-                    : index === 2
-                    ? "lunch"
-                    : index === 3
-                    ? "dinner"
-                    : ""
-                }
-                eachmeal={eachmeal}
-              />
-            );
-          })
-        ) : (
-          <>meal data가 없습니다</>
-        )}
-        <div>
-          <input
-            placeholder="검색할 음식의 이름을 입력하세요"
-            onInput={(e) => setInputSearchFood(e.target.value)}
-            value={inputSearchFood}
-          />
-          <ul>
-            {Array.isArray(searchFoodList) ? (
-              searchFoodList.map((item, index) => (
-                <li key={index}>
-                  <p>
-                    {item.foodName}: {item.kcal}kcal
-                  </p>
-                  {/* <button onClick={() => AddFoodHandler(item.foodName, item.kcal)}>
+  if (!meal) {
+    return <div>error</div>;
+  }
+
+  return (
+    <StyleDiet>
+      {[1, 2, 3].map((timeslot, index) => (
+        <EachMeal
+          key={index}
+          meal={meal}
+          timeslot={timeslot}
+          index={index}
+          setMeal={setMeal}
+        />
+      ))}
+
+      <div>
+        {/* Food 검색 폼 */}
+        <input
+          placeholder="검색할 음식의 이름을 입력하세요"
+          onInput={(e) => setInputSearchFood(e.target.value)}
+          value={inputSearchFood}
+        />
+        <ul>
+          {Array.isArray(searchFoodList) ? (
+            searchFoodList.map((item, index) => (
+              <li key={index}>
+                <p>
+                  {item.foodName}: {item.kcal}kcal
+                </p>
+                {/* <button onClick={() => AddFoodHandler(item.foodName, item.kcal)}>
               +
             </button> */}
-                </li>
-              ))
-            ) : (
-              <>Err</>
-            )}
-          </ul>
-        </div>
-        <div>
-          <h3>하루 섭취량</h3>
-          <p>칼로리: {meal.totalDailyKcal}</p>
-          <p>탄수화물: {meal.totalDailyCarbo}</p>
-          <p>단백질: {meal.totalDailyProtein}</p>
-          <p>지방: {meal.totalDailyFat}</p>
-        </div>
-      </StyleDiet>
-    );
-  } else {
-    return <Button>error</Button>;
-  }
+              </li>
+            ))
+          ) : (
+            <>Err</>
+          )}
+        </ul>
+      </div>
+      <div>
+        {/* 하루 총 평 */}
+        <h3>하루 섭취량</h3>
+        <p>칼로리: {meal?.totalDailyKcal ?? ""}</p>
+        <p>탄수화물: {meal?.totalDailyCarbo ?? ""}</p>
+        <p>단백질: {meal?.totalDailyProtein ?? ""}</p>
+        <p>지방: {meal?.totalDailyFat ?? ""}</p>
+      </div>
+    </StyleDiet>
+  );
 }
 
 export default Diet;
