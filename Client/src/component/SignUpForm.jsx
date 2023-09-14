@@ -68,13 +68,6 @@ const SignUpForm = () => {
   const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
 
   function checkEmailHandler(){
-<<<<<<< HEAD
-    axios.post("https://3dcd-14-37-234-174.ngrok-free.app/login/check",{
-      email: form.email
-    })
-    .then(res=>setCheckEmail(true))
-    .catch(err=>console.log(err+"실패했습니다."))
-=======
     if(form.email===""){
       setForm({...form,errMsg: "이메일을 입력해주시기 바랍니다."})
     }
@@ -92,7 +85,6 @@ const SignUpForm = () => {
         setForm({...form,errMsg: "이미 등록된 계정입니다."})
       })
     }
->>>>>>> devFE
   }
 
   function errMsg(){

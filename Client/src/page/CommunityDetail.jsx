@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-import { useParams } from "react-router-dom";
-
-import { styled } from "styled-components";
-
-import useZustand from "../zustand/Store";
-=======
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
->>>>>>> devFE
 
 const WriteFormContainer = styled.div`
   display: flex;
@@ -84,20 +76,9 @@ const SubmitBtn = styled.div`
 `;
 
 function CommunityDetail(){
-<<<<<<< HEAD
-
-  const communityId = useParams();
-
-  const articles = useZustand.useArticles(state=>state.articles);
-
-  const article = articles.find(
-    (article) => article.communityId === communityId["*"]
-  );
-=======
   const [detail, setDetail] = useState({})
 
   const communityId = useParams();
->>>>>>> devFE
 
   function loadDetail(){
     axios.get("http://43.201.194.176:8080/community/"+communityId["*"])
@@ -134,11 +115,7 @@ function CommunityDetail(){
         </DietInfoContainer>
       </DietContainer>
       <ContentContainer>
-<<<<<<< HEAD
-        <div>{article.content}</div>
-=======
         <div>{detail.communityContent}</div>
->>>>>>> devFE
       </ContentContainer>
     </WriteFormContainer>
   );

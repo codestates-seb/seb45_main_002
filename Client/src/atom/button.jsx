@@ -3,18 +3,6 @@ import { css, styled } from "styled-components";
 const ButtonStyle = styled.button`
   cursor: pointer;
   padding: 5px;
-<<<<<<< HEAD
-  width: ${(props) => (props.width ? props.width : "180px")};
-  height: ${(props) => (props.height ? props.height : "48px")};
-  border-radius: 8px;
-  color: ${(props) => (props.fontColor ? props.fontColor : "#000000")};
-  font-size: ${(props) => (props.fontSize ? props.fontSize : "14px")};
-  ${(props) =>
-    props.primary
-      ? css`
-          background-color: #ffc123;
-          border: 0;
-=======
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,26 +50,16 @@ const ButtonStyle = styled.button`
           &:focus {
             background: #898989;
           }
->>>>>>> devFE
         `
       : css`
           border: 2px solid #ffc123;
           background-color: #ffffff;
-<<<<<<< HEAD
-        `}
-  &:active,
-  &:hover,
-  &:focus {
-    background: #ffa24b;
-  }
-=======
           &:active,
           &:hover,
           &:focus {
             background: #ffc123;
           }
         `};
->>>>>>> devFE
   &:disabled {
     cursor: default;
     ${(props) =>
@@ -98,34 +76,13 @@ const ButtonStyle = styled.button`
   }
 `;
 
-<<<<<<< HEAD
-const Button = ({
-  children,
-  func,
-  disabled,
-  primary,
-  width,
-  height,
-  fontSize,
-  fontColor,
-}) => {
-=======
 const Button = ({ children, onClick, disabled, primary, size }) => {
->>>>>>> devFE
   return (
     <ButtonStyle
       disabled={disabled}
       primary={primary}
-<<<<<<< HEAD
-      width={width}
-      height={height}
-      fontSize={fontSize}
-      fontColor={fontColor}
-      onClick={func}
-=======
       size={size}
       onClick={onClick}
->>>>>>> devFE
     >
       {children}
     </ButtonStyle>

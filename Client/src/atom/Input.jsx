@@ -20,9 +20,6 @@ function Input({type,value,onChange,placeholder,styling}){
     />
   )
 }
-<<<<<<< HEAD
-export default Input;
-=======
 export default Input;
 
 // 샘플 (모든 속성들은 없어도 동작합니다.)
@@ -34,4 +31,3 @@ export default Input;
 // 
 //   styling={"width: 500px; height: 500px;"} // 이곳에 styled component에서 사용되는 css 스타일링 문법을 넣어서 인풋을 스타일링할 수 있습니다.
 // />
->>>>>>> devFE

@@ -36,20 +36,12 @@ const LoginFormContainer = styled.form`
     font-size: xx-small;
     color: rgb(125, 0, 0);
   }
-<<<<<<< HEAD
-  &>button{
-    margin: ${style.layout.narrowMargin.height*3/2} ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
-    background-color: rgb(255, 184, 47);
-    font-weight: bolder;
-    &:active{
-=======
   & > button {
     margin: ${(style.layout.narrowMargin.height * 3) / 2}
       ${style.layout.narrowMargin.width} ${style.layout.narrowMargin.height};
     background-color: rgb(255, 184, 47);
     font-weight: bolder;
     &:active {
->>>>>>> devFE
       background-color: rgb(255, 222, 111);
     }
   }
@@ -57,14 +49,8 @@ const LoginFormContainer = styled.form`
 const LoginForm = () => {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const navigate = useNavigate()
-
-  const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
-=======
   const accessToken = useZustand.useToken((state) => state.accessToken);
   const setAccessToken = useZustand.useToken((state) => state.setAccessToken);
->>>>>>> devFE
 
   const [form, setForm] = useState({
     email: "",
@@ -96,19 +82,6 @@ const LoginForm = () => {
       axios.post("http://43.201.194.176:8080/login",{
         email: form.email,
         password: form.password
-<<<<<<< HEAD
-      },
-      {headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      }}
-      )
-      .then(res=>{
-        window.location.reload()
-        setAccessToken(localStorage.getItem("access_token"))
-        
-=======
->>>>>>> devFE
       })
       .then(res=>{
         localStorage.setItem("Authorization",res.headers.authorization)
