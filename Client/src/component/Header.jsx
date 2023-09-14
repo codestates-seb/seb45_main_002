@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import style from "../style/style";
 import Modal from "../atom/GlobalModal";
@@ -36,6 +36,9 @@ const HeaderContainer = styled.header`
 
 const HambergerI = styled.i`
   cursor: pointer;
+  @media(min-width: 769px){
+    display: none;
+  }
 `
 
 const LoginButton = styled.button`
@@ -53,12 +56,14 @@ const SignUpButton = styled(LoginButton)`
   background-color: green;
 `
 
-function Header({menu,setMenu,setPage}) {
+function Header({menu,setMenu}) {
 
   const accessToken = useZustand.useToken(state=>state.accessToken)
   const setAccessToken = useZustand.useToken(state=>state.setAccessToken)
   const refreshToken = useZustand.useToken(state=>state.refreshToken)
   const setRefreshToken = useZustand.useToken(state=>state.setRefreshToken)
+
+  const navigate = useNavigate()
 
   localStorage.getItem("Authorization")? setAccessToken(localStorage.getItem("Authorization")) : setAccessToken("")
   localStorage.getItem("Refresh")? setRefreshToken(localStorage.getItem("Refresh")) : setRefreshToken("")
@@ -71,7 +76,7 @@ function Header({menu,setMenu,setPage}) {
   function logoutButton(){
     localStorage.removeItem("Authorization")
     localStorage.removeItem("Refresh")
-    window.location.reload()
+    navigate("/")
   }
 
   const handleOpenLoginModal = () => {
@@ -103,7 +108,7 @@ function Header({menu,setMenu,setPage}) {
       </span>
       {accessToken?
         <span>
-          <Link to="/pageswitch" onClick={() => setPage("mypage")}>
+          <Link to="/pageswitch/mypage">
             <img
              alt="My Page"
              src="https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100"
