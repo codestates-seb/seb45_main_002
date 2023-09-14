@@ -54,7 +54,7 @@ public class DailyMealService {
         .filter(list -> !list.isEmpty())
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
-  //선택 식단 수정(ID), 선호 -> 캘린더 사용시 새로운 객체 생성
+  //선택 식단 수정(ID)
   @Transactional
   public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) throws Exception {
     //날짜 입력시
