@@ -143,3 +143,26 @@ export const GetDailyDiet = (
 
   return meal;
 };
+
+export const changeEachMeal = async (eachmeal, timeslot, foodId, quantity) => {
+  axios
+    .patch(
+      `${url}/eachmeals/${eachmeal.eachMealId}`,
+      {
+        timeslot: timeslot,
+        foods: [
+          ...eachmeal.quantityfoods.map((item) => {
+            return { foodId: item.foodId, quantity: quantity };
+          }),
+          { foodId: foodId, quantity: quantity },
+        ],
+      },
+      { headers: { Authorization: token } }
+    )
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
