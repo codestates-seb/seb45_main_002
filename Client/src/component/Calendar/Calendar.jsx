@@ -141,7 +141,6 @@ const CustomCalendar = () => {
       try {
         const response = await axios.get(
           `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
-
           {
             headers: {
               Authorization: token,
