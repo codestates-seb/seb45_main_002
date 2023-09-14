@@ -70,4 +70,8 @@ public class AnalysisResponseDto {
     private Double overPercentProteins;
     private Double overPercentFats;
   }
+  
+  private String auctionURL;
+  private String naverURL;
+  private String coupangURL;
 }

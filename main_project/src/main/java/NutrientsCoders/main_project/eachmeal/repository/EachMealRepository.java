@@ -17,4 +17,7 @@ public interface EachMealRepository extends JpaRepository<EachMeal, Long> {
   
   @Query("SELECT e FROM EachMeal e WHERE e.member.memberId = :memberId")
   Page<EachMeal> findEachMealByMemberId(@Param("memberId") long memberId, Pageable pageable);
+  
+  @Query("SELECT e FROM EachMeal e WHERE e.member.memberId = :memberId AND e.favorite = true")
+  Page<EachMeal> findFavoriteEachMealByMemberId(@Param("memberId") long memberId, Pageable pageable);
 }

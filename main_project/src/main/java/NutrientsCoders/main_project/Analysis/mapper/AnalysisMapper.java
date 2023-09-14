@@ -46,11 +46,13 @@ public interface AnalysisMapper {
             .overMacro(analysisToOverMacro)
             .percentMacro(analysisToPercentMacro)
             .overPercentMacro(analysisToOverPercentMacro)
-            .result(savedanalysis.getResult()).build();
-    
-    analysisResponseDto.setResult( savedanalysis.getResult() );
+            .result(savedanalysis.getResult())
+            .auctionURL(savedanalysis.getAuctionURL())
+            .naverURL(savedanalysis.getNaverURL())
+            .coupangURL(savedanalysis.getCoupangURL()).build();
     
     return analysisResponseDto;
+    
   }
   
   AnalysisResponseDto.DailyMealSimpleResponseDto dailyMealToDailyMealSimpleResponseDto(DailyMeal dailyMeal);

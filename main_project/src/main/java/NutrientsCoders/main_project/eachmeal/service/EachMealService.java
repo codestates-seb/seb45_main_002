@@ -53,6 +53,10 @@ public class EachMealService {
     return eachMealRepository.findEachMealByMemberId(memberId, pageable);
   }
   
+  public Page<EachMeal> findByfavoriteEachMeals(long memberId, Pageable pageable) {
+    return eachMealRepository.findFavoriteEachMealByMemberId(memberId, pageable);
+  }
+  
   //선택 끼니 수정
   @Transactional
   public EachMeal updateEachMeal(long memberId, EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
@@ -61,6 +65,7 @@ public class EachMealService {
     List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
     findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
+    findEachMeal.setFavorite(eachMeal.getFavorite());
     
     return eachMealRepository.save(findEachMeal);
   }

@@ -60,10 +60,20 @@ public class DailyMealService {
   }
   //선택 식단 수정(ID)
   @Transactional
-  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, long dailyMealId, long memberId) {
+  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) throws Exception {
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
-    findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
-    return dailyMealRepository.save(dailyMeal);
+    if (!findDailyMeal.getFavorite()) {
+      Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(findDailyMeal.getDate(), memberId);
+      existDailyMeal.ifPresent(dm -> {
+        if (!dailyMeal.getFavorite() && !dm.getFavorite()) {
+          throw new LogicException(ExceptionCode.DATE_EXISTS);
+        }
+      });
+    }
+    findDailyMeal.setFavorite(dailyMeal.getFavorite());
+    findDailyMeal.setEachMeals(eachMeals);
+    findDailyMeal.setMember(memberService.findMember(memberId));
+    return dailyMealRepository.save(findDailyMeal);
   }
   
   //선택 식단 삭제(ID)

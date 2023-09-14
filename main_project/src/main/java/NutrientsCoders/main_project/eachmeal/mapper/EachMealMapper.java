@@ -16,8 +16,9 @@ import java.util.stream.Collectors;
 public interface EachMealMapper {
   //EachMealPostDto-> EachMeal
   default EachMeal eachMealDtoToEachMeal(EachMealDto eachMealDto){
-    EachMeal eachMeal = new EachMeal(); //dailymealId 추가 사용시 dto로 set말고 파라미터로 넘기기
+    EachMeal eachMeal = new EachMeal();
     eachMeal.setEachMealFoods(eachMealFoodDtosToEachMealFoods(eachMealDto.getFoods()));
+    eachMeal.setFavorite(eachMealDto.getFavorite());
     eachMeal.setTimeSlot(eachMealDto.getTimeSlots());
     
     return eachMeal;

@@ -82,10 +82,14 @@ public class DailyMealController {
   @PatchMapping("/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
                                                              @RequestBody DailyMealDto dailyMealDto,
-                                                             @PathVariable("dailymeal-id") long dailyMealId) {
+                                                             @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
-    DailyMeal updateDailyMeal = dailyMealService.updateDailyMeal(dailyMeal, dailyMealId, memberId);
+    List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
+                                           .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
+                                           .collect(Collectors.toList());
+    
+    DailyMeal updateDailyMeal = dailyMealService.updateDailyMeal(dailyMeal, eachMeals, dailyMealId, memberId);
     DailyMealResponseDto response
         = dailyMealMapper.dailyMealToDailyMealResponseDto(updateDailyMeal);
     return new ResponseEntity<>(response, HttpStatus.OK);
@@ -102,7 +106,7 @@ public class DailyMealController {
   }
   
   //  식단 추천 받기
-  @PostMapping("/suggest/{dailymeal-id}")
+  @PatchMapping("/suggest/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> createSuggestDailyMeal(@RequestHeader("Authorization") String token,
                                                                      @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
