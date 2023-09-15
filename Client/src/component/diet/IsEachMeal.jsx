@@ -67,15 +67,23 @@ const IsEachMeal = ({ timeslot }) => {
       <div className={timelabel[timeslot]}>
         <h2>{timelabel[timeslot]}</h2>
         {eachMeal.quantityfoods?.map((item, index) => {
-          return <IsEachFood item={item} index={index} key={index} />;
+          return (
+            <IsEachFood
+              item={item}
+              timeslot={timeslot}
+              index={index}
+              key={index}
+            />
+          );
         }) ?? null}
         <Button
           onClick={() => {
             setNowTimeSlot(timeslot);
           }}
           disabled={nowTimeSlot === timeslot ? true : null}
+          style={{ fontSize: "14px" }}
         >
-          음식 추가하기
+          끼니 수정하기
         </Button>
       </div>
       {nowTimeSlot === timeslot ? <FoodSearchForm timeslot={timeslot} /> : null}
