@@ -30,20 +30,24 @@ public class DailyMealService {
   @Transactional
   public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long memberId) throws Exception {
     Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(dailyMeal.getDate(), memberId);
-
     if (existDailyMeal.isPresent()) {throw new LogicException(ExceptionCode.DATE_EXISTS);}
-
+    
+    eachMeals.forEach(eachMeal -> {
+      eachMeal.setDailyMeal(dailyMeal);
+      eachMeal.calculateTotal();
+    });
     dailyMeal.setEachMeals(eachMeals);
-    eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
   }
+  
   //선택 식단 조회(ID)
   @Transactional(readOnly = true)
   public DailyMeal findByDailyMeal(long dailyMealId, long memberId) {
     return verifyExistsEachMeal(dailyMealId, memberId);
   }
+  
   //전체 식단 조회(선호)
   @Transactional(readOnly = true)
   public Page<DailyMeal> findByfavoritDailyMeals(long memberId, Pageable pageable) {
@@ -74,6 +78,7 @@ public class DailyMealService {
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
     dailyMealRepository.deleteById(findDailyMeal.getDailyMealId());
   }
+  
   public DailyMeal verifyExistsEachMeal(long dailyMealId, long memberId) {
     Optional<DailyMeal> optionalDailyMeal = dailyMealRepository.findDailyMealById(dailyMealId, memberId);
     return optionalDailyMeal.orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));

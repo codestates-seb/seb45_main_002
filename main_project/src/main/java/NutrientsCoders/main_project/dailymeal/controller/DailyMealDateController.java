@@ -3,6 +3,7 @@ package NutrientsCoders.main_project.dailymeal.controller;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
+import NutrientsCoders.main_project.utils.PagedResponse;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealDateService;
@@ -52,14 +53,19 @@ public class DailyMealDateController {
   
   //식단 전체 조회(캘린더)
   @GetMapping
-  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token,
+  public ResponseEntity<PagedResponse<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token,
                                                                               @RequestParam int page, @RequestParam int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
     Page<DailyMeal> dailyMeals = dailyMealDateService.findAllByDate(memberId, pageable);
     List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals.getContent());
     
-    return new ResponseEntity<>(response,HttpStatus.OK);
+    
+    PagedResponse<DailyMealSimpleResponseDto> pagedResponse = new PagedResponse<>(
+        response, dailyMeals.getTotalElements(), dailyMeals.getTotalPages(), dailyMeals.isLast()
+    );
+    
+    return new ResponseEntity<>(pagedResponse, HttpStatus.OK);
   }
   
   //작성한 식단 수정

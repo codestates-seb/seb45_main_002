@@ -12,6 +12,7 @@ public enum ExceptionCode {
     MEAL_ALREADY_FULL(409, "DailyMeal already full"),
     CALORIE_TOO_LOW(409,"The calorie input is too low"),
     DAILYMEAL_EMPTY(409,"DailyMeal is Empty"),
+    BMI_NOT_FOUND(409,"BMI should be calculated beforehand."),
     POST_NOT_FOUND(404, "Post not found..."),
     FOOD_NOT_FOUND(404, "food not found..."),
     EACHMEAL_NOT_FOUND(404, "EachMeal not found..."),
