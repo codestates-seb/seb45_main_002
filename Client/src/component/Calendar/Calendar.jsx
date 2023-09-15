@@ -10,6 +10,7 @@ import axios from "axios";
 import useZustand from "../../zustand/Store";
 import style from "../../style/style";
 import Button from "../../atom/button";
+import { PostDietAnalyze, GetDietAnalyze } from "../diet/DietAnalyze";
 
 import { postCalendarData, PostButton } from "./PostMealBtn";
 
@@ -81,7 +82,8 @@ const CustomCalendar = () => {
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
   const [modalFooter, setModalFooter] = useState(null);
-
+  const [dailymealId, setDailymealId] = useState(null);
+  // const [mealData, setMealData] = useState(null);
   const [events, setEvents] = useState([
     {
       title: "eventTitle",
@@ -103,6 +105,10 @@ const CustomCalendar = () => {
           }
         );
         const mealData = response.data;
+        console.log(mealData);
+        // console.log(mealData[0].dailyMealId);
+        setDailymealId(mealData[0].dailyMealId);
+
         // console.log(mealData);
         // console.log(mealData[0]);
         ///Object { dailyMealId: 319, date: "2023-09-13", name: "name", favorite: false, totalDailyKcal: 0, totalDailyCarbo: 0, totalDailyProtein: 0, totalDailyFat: 0 }
@@ -132,7 +138,7 @@ const CustomCalendar = () => {
 
     // console.log(event);
     // console.log(event.start);
-    console.log(dateStr);
+    // console.log(dateStr);
 
     const fetchDailymeal = async () => {
       const token = localStorage.getItem("Authorization");
@@ -149,6 +155,7 @@ const CustomCalendar = () => {
           }
         );
         const mealData = response.data;
+        // console.log(mealData);
         // const mealData = {
         //   dailyMealId: 13,
         //   memberId: 1,
@@ -161,11 +168,29 @@ const CustomCalendar = () => {
         //   totalDailyProtein: 1.0,
         //   totalDailyFat: 2.0,
         // };
+        console.log(mealData);
         setModalHeader(<h2>{eventTitle}</h2>);
         setModalContent(
           <div>
             <h3>식단 정보</h3>
-            <p>메뉴: {mealData.eachMeals}</p>
+            {mealData.timeSlots === 0 && (
+              <div>
+                아침
+                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+              </div>
+            )}
+            {mealData.timeSlots === 1 && (
+              <div>
+                점심
+                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+              </div>
+            )}
+            {mealData.timeSlots === 2 && (
+              <div>
+                저녁
+                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+              </div>
+            )}
             <p>총 칼로리: {mealData.totalDailyKcal}</p>
             <Button
               width="80px"
@@ -192,10 +217,12 @@ const CustomCalendar = () => {
 
   moment.locale("ko-KR");
   const localizer = momentLocalizer(moment);
+  // const dailymealId = mealData?.dailymealId;
+  // console.log(dailymealId);
 
   return (
     <div>
-      {/* <PostButton postCalendarData={postCalendarData} /> */}
+      <PostButton dailymealId={dailymealId} />
       <Calendar
         // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
         views={["month"]}
