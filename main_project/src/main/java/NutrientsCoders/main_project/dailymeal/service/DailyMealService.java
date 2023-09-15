@@ -30,11 +30,9 @@ public class DailyMealService {
   @Transactional
   public DailyMeal createDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long memberId) throws Exception {
     Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(dailyMeal.getDate(), memberId);
-    existDailyMeal.ifPresent(dm -> {
-      if (!dailyMeal.getFavorite() && !dm.getFavorite()) {
-        throw new LogicException(ExceptionCode.DATE_EXISTS);
-      }
-    });
+
+    if (existDailyMeal.isPresent()) {throw new LogicException(ExceptionCode.DATE_EXISTS);}
+
     dailyMeal.setEachMeals(eachMeals);
     eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));
@@ -57,10 +55,18 @@ public class DailyMealService {
   }
   //선택 식단 수정(ID)
   @Transactional
-  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, long dailyMealId, long memberId) {
+  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) throws Exception {
+    //날짜 입력시
+    if (!(dailyMeal.getDate() == null)){
+    DailyMeal dailyMealWithDate = createDailyMeal(dailyMeal, eachMeals, memberId);
+      return dailyMealRepository.save(dailyMealWithDate);
+    }
+    
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
-    findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
-    return dailyMealRepository.save(dailyMeal);
+    eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
+    findDailyMeal.setEachMeals(eachMeals);
+    findDailyMeal.setName(dailyMeal.getName());
+    return dailyMealRepository.save(findDailyMeal);
   }
   //선택 식단 삭제(ID)
   @Transactional

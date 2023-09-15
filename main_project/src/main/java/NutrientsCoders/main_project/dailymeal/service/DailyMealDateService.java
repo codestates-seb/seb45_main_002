@@ -2,13 +2,17 @@ package NutrientsCoders.main_project.dailymeal.service;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealDateRepository;
+import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +28,7 @@ public class DailyMealDateService {
     return verifyExistsEachMealByDate(memberId, date);
   }
   
+  
   //전체 식단 조회(날짜)
   public Page<DailyMeal> findAllByDate(long memberId, Pageable pageable) {
     Page<DailyMeal> dailyMeals = dailyMealRepository.findAllDateByMemberId(memberId, pageable);
@@ -33,13 +38,16 @@ public class DailyMealDateService {
   }
   
   //식단 수정
-  public DailyMeal updateDateDailyMeal(long memberId, DailyMeal dailyMeal, LocalDate date) {
+  @Transactional
+  public DailyMeal updateDateDailyMeal(long memberId, LocalDate date, List<EachMeal> eachMeals) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
-    findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
-    return dailyMealRepository.save(dailyMeal);
+    eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
+    findDailyMeal.setEachMeals(eachMeals);
+    return dailyMealRepository.save(findDailyMeal);
   }
   
   //식단 삭제
+  @Transactional
   public void deleteDateDailyMeal(LocalDate date, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
     dailyMealRepository.deleteById(findDailyMeal.getDailyMealId());
