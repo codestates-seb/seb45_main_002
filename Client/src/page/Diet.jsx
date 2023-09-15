@@ -9,11 +9,23 @@ import useZustand from "../zustand/Store";
 
 const StyleDiet = styled.div`
   width: 100%;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+`;
+
+const DivButton = styled.div`
+  width: calc(50% - 10px);
+  margin: 10px 5px 0 5px;
+  display: flex;
+  gap: 10px;
+  button {
+    width: calc(50% - 5px);
+  }
 `;
 
 const DivTotal = styled.div`
   width: calc(100%-10px);
-  margin: 10px 5px 0 5px;
+  margin: 20px 5px 40px 5px;
   padding: 10px 20px;
   height: 180px;
   background-color: white;
@@ -42,7 +54,7 @@ const DivTotal = styled.div`
 
 const StyleNewDiet = styled.div`
   width: 100%;
-  margin: calc(50vh - 120px) 0;
+  margin: calc(50vh - 120px) 0 0 0;
   display: flex;
   justify-content: center;
   h3 {
@@ -99,14 +111,15 @@ const Diet = () => {
       {[1, 2, 3].map((timeslot, index) => (
         <EachMeal key={index} timeslot={timeslot} index={index} />
       ))}
+      <DivButton>
+        <Button>선호식단 저장하기</Button>
+        <Button primary={true}>자세히 분석하기</Button>
+      </DivButton>
 
       <DivTotal>
         {/* 하루 총 평 */}
         <div>
           <h3>하루 섭취량</h3>
-          <Button primary={true} size={"small"}>
-            자세히 분석하기
-          </Button>
         </div>
         <div>
           <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
