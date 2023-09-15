@@ -52,6 +52,18 @@ const CustomDot = styled.div`
   background-color: #ffc123;
 `;
 
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+
+const ItemContainer = styled.div`
+  width: 80%;
+  height: 30%;
+`;
+
 const customToolbar = (toolbar) => {
   const goToPrev = () => {
     toolbar.onNavigate("PREV");
@@ -147,7 +159,7 @@ const CustomCalendar = () => {
       try {
         console.log(dateStr);
         const response = await axios.get(
-          `http://43.201.194.176:8080/dailymeals/date/2023-09-20`,
+          `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
           console.log(token),
           {
             headers: {
@@ -172,11 +184,11 @@ const CustomCalendar = () => {
         console.log(mealData);
         setModalHeader(<h2>{eventTitle}</h2>);
         setModalContent(
-          <div>
+          <ModalContainer>
             <h3>식단 정보</h3>
 
             {mealData.eachMeals.map((meal, index) => (
-              <div key={index}>
+              <ItemContainer key={index}>
                 {meal.timeSlots === 1 && (
                   <div>
                     <h4>아침</h4>
@@ -188,11 +200,11 @@ const CustomCalendar = () => {
                     </p>
                   </div>
                 )}
-              </div>
+              </ItemContainer>
             ))}
 
             {mealData.eachMeals.map((meal, index) => (
-              <div key={index}>
+              <ItemContainer key={index}>
                 {meal.timeSlots === 2 && (
                   <div>
                     <h4>점심</h4>
@@ -204,10 +216,10 @@ const CustomCalendar = () => {
                     </p>
                   </div>
                 )}
-              </div>
+              </ItemContainer>
             ))}
             {mealData.eachMeals.map((meal, index) => (
-              <div key={index}>
+              <ItemContainer key={index}>
                 {meal.timeSlots === 3 && (
                   <div>
                     <h4>저녁</h4>
@@ -219,7 +231,7 @@ const CustomCalendar = () => {
                     </p>
                   </div>
                 )}
-              </div>
+              </ItemContainer>
             ))}
             <p>총 칼로리: {mealData.totalDailyKcal}</p>
             <Button
@@ -231,7 +243,7 @@ const CustomCalendar = () => {
               backgroundColor="#ffc123"
               children="식단 수정"
             ></Button>
-          </div>
+          </ModalContainer>
         );
         console.log(mealData.eachMeals[0].quantityfoods);
         setIsModalOpen(true);
