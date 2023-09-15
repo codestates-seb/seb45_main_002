@@ -14,6 +14,10 @@ const StyleEachMeal = styled.div`
   justify-content: center;
   align-items: center;
   gap: 5px;
+
+  @media (max-width: 800px) {
+    width: calc(100% - 10px);
+  }
 `;
 
 const NoEachMeal = ({ timeslot, EachMealAddHandler }) => {
