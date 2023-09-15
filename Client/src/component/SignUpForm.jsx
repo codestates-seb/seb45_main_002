@@ -76,12 +76,11 @@ const SignUpForm = () => {
         email: form.email
       })
       .then(res=>{
-        console.log(res)
         setCheckEmail(true)
         setForm({...form,errMsg: "[ 중복 확인 ]이 완료되었습니다."})
       })
       .catch(err=>{
-        console.log(err+"실패했습니다.")
+        console.log(err, "계정등록을 실패했습니다.")
         setForm({...form,errMsg: "이미 등록된 계정입니다."})
       })
     }

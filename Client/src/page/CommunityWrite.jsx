@@ -127,6 +127,7 @@ const SubmitBtn = styled.input`
   justify-content: center;
   align-items: center;
   font-size: 12px;
+  cursor: pointer;
 `;
 const ExitBtn = styled(SubmitBtn)`
   background-color: white;
@@ -282,9 +283,9 @@ function CommunityWrite(){
               <Info>
                 <div><span>식단명</span><span>: {mealMorning[0].foodName}</span></div>
                 <div><span>칼로리</span><span>: {mealMorning[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealMorning[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealMorning[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealMorning[0].ratioEachCarbo} mg</span></div>
+                <div><span>지방</span><span>: {mealMorning[0].ratioEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealMorning[0].ratioEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealMorning[0].ratioEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
@@ -292,9 +293,9 @@ function CommunityWrite(){
               <Info>
                 <div><span>식단명</span><span>: {mealLunch[0].foodName}</span></div>
                 <div><span>칼로리</span><span>: {mealLunch[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealLunch[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealLunch[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealLunch[0].ratioEachCarbo} mg</span></div>
+                <div><span>지방</span><span>: {mealLunch[0].ratioEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealLunch[0].ratioEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealLunch[0].ratioEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
@@ -302,9 +303,9 @@ function CommunityWrite(){
               <Info>
                 <div><span>식단명</span><span>: {mealDinner[0].foodName}</span></div>
                 <div><span>칼로리</span><span>: {mealDinner[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealDinner[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealDinner[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealDinner[0].ratioEachCarbo} mg</span></div>
+                <div><span>지방</span><span>: {mealDinner[0].ratioEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealDinner[0].ratioEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealDinner[0].ratioEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
@@ -312,9 +313,9 @@ function CommunityWrite(){
               <Info>
                 {/* <div><span>식단명</span><span>: {dietData.foodName}</span></div> */}
                 <div><span>칼로리</span><span>: {dietData.totalDailyKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {dietData.totalDailyFat} mg</span></div>
-                <div><span>단백질</span><span>: {dietData.totalDailyProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} mg</span></div>
+                <div><span>지방</span><span>: {dietData.totalDailyFat} g</span></div>
+                <div><span>단백질</span><span>: {dietData.totalDailyProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} g</span></div>
               </Info>
             </div>
         </DietInfoContainer>

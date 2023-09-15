@@ -46,7 +46,7 @@ const useZustand = {
           },
         })
         .then((res) => set({ articles: res.data.data }))
-        .catch((err) => console.log(err + "글 목록 불러오기를 실패했습니다."));
+        .catch((err) => console.log(err, "글 목록 불러오기를 실패했습니다."));
     },
   })),
 

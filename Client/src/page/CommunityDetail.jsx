@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import { styled } from "styled-components";
 import axios from "axios";
+
+import Comments from "../component/Comments";
 
 import style from "../style/style"
 
@@ -92,7 +95,7 @@ const CommentsAndUserProfile = styled.div`
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
   border: solid 1px orange;
 `
-const Comments = styled.span`
+const CommentsOpener = styled.span`
   &>:first-child{
     margin-right: ${style.layout.wideMargin.width};
     cursor: pointer;
@@ -104,6 +107,29 @@ const Comments = styled.span`
 const UserProfile = styled.span`
   
 `
+const CommentsBox = styled.section`
+  padding: 0 ${style.layout.wideMargin.width};
+  margin-bottom: ${style.layout.wideMargin.height};
+  ${props=>props.className==="false"? "display: none;" : ""}
+`
+const CommentsWriteBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>input{
+    width: ${style.layout.main.width-style.layout.wideMargin.width*8};
+  }
+  &>button{
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    background-color: orange;
+    cursor: pointer;
+  }
+`
+const CommentsListBox = styled.ul`
+  list-style: none;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+`
+
 const ExitBtn = styled.div`
   margin: ${style.layout.narrowMargin.height};
   color: gray;
@@ -116,11 +142,17 @@ const DeleteButton = styled.input`
   justify-content: center;
   align-items: center;
   font-size: 12px;
+  cursor: pointer;
 `
 
 function CommunityDetail(){
   const [detail, setDetail] = useState({})
   const [member, setMember] = useState({})
+  const [comment, setComment] = useState({
+    newComment: "",
+    commentList: []
+  })
+  const [hide,setHide] = useState(false)
 
   const communityId = useParams();
   const navigate = useNavigate()
@@ -128,6 +160,8 @@ function CommunityDetail(){
   function loadDetail(){
     axios.get("http://43.201.194.176:8080/community/"+communityId["*"])
     .then(res=>{
+      console.log(res)
+      setComment({...comment,commentList: res.data.communityCommentList})
       setDetail(res.data)
       setMember(res.data.member)
     })
@@ -142,19 +176,35 @@ function CommunityDetail(){
       }
     })
     .then(res=>{
-      console.log(res, "좋아요 변경을 성공했습니다.")
       loadDetail()
     })
     .catch(err=>console.log(err, "좋아요 변경 실패"))
   }
 
+  function sendComment(){
+    axios.post("http://43.201.194.176:8080/communitycomment",{
+      communityId: communityId["*"],
+      communityCommentContent: comment.newComment
+    },{
+        headers:{
+          Authorization: localStorage.getItem("Authorization")
+        }
+      }
+    )
+    .then(res=>console.log(res, "댓글등록 성공"))
+    .catch(err=>console.log(err, "댓글등록 실패"))
+  }
+
   function articleDelete(){
-    axios.delete("http://43.201.194.176:8080/communitypost/"+communityId["*"],{
+    axios.delete("http://43.201.194.176:8080/community/"+communityId["*"],{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>console.log(res, "게시글 삭제 성공했습니다."))
+    .then(res=>{
+      console.log(res, "게시글 삭제 성공했습니다.");
+      navigate("/pageswitch/community")
+    })
     .catch(err=>console.log(err, "게시글 삭제 실패했습니다."))
   }
 
@@ -265,10 +315,10 @@ function CommunityDetail(){
                 <div>지방</div>
               </InfoName>
               <FoodInfo>
-                <div>{data1.totalDailyKcal}</div>
-                <div>{data1.totalDailyProtein}</div>
-                <div>{data1.totalDailyCarbo}</div>
-                <div>{data1.totalDailyFat}</div>
+                {/* <div>{detail.dailyMeal.totalDailyKcal}</div>
+                <div>{detail.dailyMeal.totalDailyProtein}</div>
+                <div>{detail.dailyMeal.totalDailyCarbo}</div>
+                <div>{detail.dailyMeal.totalDailyFat}</div> */}
               </FoodInfo>
               <span>
                   <div>kcal</div>
@@ -284,20 +334,31 @@ function CommunityDetail(){
         {detail.communityContent}
       </Content>
       <CommentsAndUserProfile>
-        <Comments>
+        <CommentsOpener>
           <span onClick={sendLike}>
             <i className="fa-solid fa-heart"></i>좋아요 {detail.recommendationCount}
             {/* <i className="fa-thin fa-heart"></i> */}
           </span>
-          <span>
-            <i className="fa-solid fa-comment"></i>댓글보기<i className="fa-solid fa-caret-down"></i>
-            {/* <i className="fa-solid fa-caret-up"></i> */}
+          <span onClick={()=>setHide(!hide)}>
+            <i className="fa-solid fa-comment"></i>댓글보기
+            {hide? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
           </span>
-        </Comments>
+        </CommentsOpener>
         <UserProfile>
           작성자 : {member.nickname}
         </UserProfile>
       </CommentsAndUserProfile>
+        <CommentsBox className={String(hide)}>
+          <CommentsWriteBox>
+            <input type="text" value={comment.newComment} onChange={e=>setComment({...comment,newComment: e.target.value})}></input>
+            <button onClick={sendComment}>등록</button>
+          </CommentsWriteBox>
+          <CommentsListBox>
+            {comment.commentList.map(comment=>(
+              <Comments comment={comment} />
+            ))}
+          </CommentsListBox>
+        </CommentsBox>
       <ExitBtn onClick={()=>navigate("/pageswitch/community")}>목록으로 돌아가기</ExitBtn>
       <DeleteButton type="button" value="게시글 삭제하기" onClick={articleDelete}></DeleteButton>
     </Container>
