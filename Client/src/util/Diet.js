@@ -15,6 +15,9 @@ export const GetFoodKeyword = async (value) => {
     .then((response) => {
       console.log(response.data);
       return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
     });
 };
 
@@ -36,34 +39,40 @@ export const PostEachMeal = async (meal, timeslot) => {
     .then(async (response) => {
       // 성공한 경우 실행
       console.log(response);
-
-      return axios
-        .patch(
-          `${url}/dailymeals/date/${meal.date}`,
-          {
-            name: "name",
-            eachMeals: [
-              ...meal.eachMeals.map((item) => item.eachMealId),
-              response.data.eachMealId,
-            ],
-          },
-          {
-            headers: {
-              Authorization: token,
-              // "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          return response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const result = [
+        ...meal.eachMeals.map((item) => item.eachMealId),
+        response.data.eachMealId,
+      ];
+      console.log(meal);
+      console.log(result);
+      return PatchDailyMeal(meal, result);
     })
     .catch((error) => {
       // 에러인 경우 실행
+      console.log(error);
+    });
+};
+
+export const PatchDailyMeal = async (meal, eachmeal = null) => {
+  const eachMealIDs = meal.eachMeals.map((item) => item.eachMealId);
+  return axios
+    .patch(
+      `${url}/dailymeals/date/${meal.date}`,
+      {
+        name: "name",
+        eachMeals: eachmeal !== null ? eachmeal : eachMealIDs,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -101,20 +110,26 @@ export const GetDailyDiet = async (
       console.log(error);
       //불러오기 실패시 post요청으로 dailymeals 생성
       if (error.response.data === "DailyMeal not found...") {
+        return error.response.data;
+        // } else if (error.response.data.error === "Bad Request") {
+        //   return error.response.data.error;
+      } else {
         return null;
       }
     });
 };
 
-export const PostDailyMeal = async (dateStr) => {
-  const url1 = `${url}/dailymeals`;
+export const PostDailyMeal = async (
+  dateStr = `${year}-${month >= 10 ? month : "0" + month}-${
+    date >= 10 ? date : "0" + date
+  }`
+) => {
   return axios
     .post(
-      url1,
+      `${url}/dailymeals`,
       {
-        name: "name",
         date: dateStr,
-        favorite: false,
+        name: "name",
         eachMeals: [],
       },
       {
@@ -132,37 +147,20 @@ export const PostDailyMeal = async (dateStr) => {
     });
 };
 
-export const changeEachMeal = async (
-  dailymealId,
-  eachmeal,
-  timeslot,
-  foodId,
-  quantity
-) => {
-  let quantityfoods = [];
-  if (eachmeal.quantityfoods) {
-    if (Array.isArray(eachmeal.quantityfoods)) {
-      quantityfoods = eachmeal.quantityfoods.map((item) => {
-        return { foodId: item.foodId, quantity: item.quantity };
-      });
-    }
-  }
-  console.log(eachmeal);
-  console.log(eachmeal.eachMealId);
-
+export const changeEachMeal = async (meal, eachMealId, timeslot, patchFood) => {
   return axios
     .patch(
-      `${url}/eachmeals/${eachmeal.eachMealId}`,
+      `${url}/eachmeals/${eachMealId}`,
       {
-        dailymealId: dailymealId,
+        dailymealId: meal.dailymealId,
         timeSlots: timeslot,
-        foods: [...quantityfoods, { foodId: foodId, quantity: quantity }],
+        foods: patchFood,
       },
       { headers: { Authorization: token } }
     )
     .then((response) => {
       console.log(response);
-      return response.data;
+      return PatchDailyMeal(meal);
     })
     .catch((error) => {
       console.log(error);
