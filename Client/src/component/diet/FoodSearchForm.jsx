@@ -14,11 +14,26 @@ const FormDiv = styled.div`
     width: calc(100% - 10px);
   }
 
-  & > input {
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    height: 48px;
-    border-radius: 8px;
-    border: 2px solid #d9d9d9;
+    font-size: 14px;
+
+    & > input {
+      width: calc(100% - 60px);
+      height: 36px;
+      border-radius: 8px;
+      border: 2px solid #d9d9d9;
+      padding: 10px;
+    }
+  }
+
+  & > p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #898989;
   }
 
   ul {
@@ -45,11 +60,14 @@ const FoodSearchForm = ({ timeslot }) => {
   return (
     <FormDiv>
       {/* Food 검색 폼 */}
-      <input
-        placeholder="검색할 음식의 이름을 입력하세요"
-        onInput={(e) => setInputSearchFood(e.target.value)}
-        value={inputSearchFood}
-      />
+      <div>
+        <p>음식 검색: </p>
+        <input
+          placeholder="검색할 음식의 이름을 입력하세요"
+          onInput={(e) => setInputSearchFood(e.target.value)}
+          value={inputSearchFood}
+        />
+      </div>
       <ul>
         {Array.isArray(searchFoodList) ? (
           searchFoodList.map((item, index) => (
@@ -59,6 +77,7 @@ const FoodSearchForm = ({ timeslot }) => {
           <>Error</>
         )}
       </ul>
+      <p>최대 5개까지 표시됩니다.</p>
     </FormDiv>
   );
 };
