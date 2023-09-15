@@ -42,7 +42,7 @@ const DivTotal = styled.div`
 
 const StyleNewDiet = styled.div`
   width: 100%;
-  margin: calc(100% - 50vh - 90px) 0;
+  margin: calc(50vh - 120px) 0;
   display: flex;
   justify-content: center;
   h3 {
@@ -69,6 +69,7 @@ const Diet = () => {
       setMeal(await GetDailyDiet(date));
     };
     asyncfunc();
+    console.log(meal);
   }, [date]);
 
   const AddDailyMealOnClickHandler = async () => {
@@ -76,6 +77,10 @@ const Diet = () => {
   };
 
   if (meal === null) {
+    return <div>로그인 후 이용해주세요</div>;
+  }
+
+  if (meal === "DailyMeal not found...") {
     return (
       <StyleNewDiet>
         <div>

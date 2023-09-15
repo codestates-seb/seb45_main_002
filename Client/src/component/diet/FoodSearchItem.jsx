@@ -1,23 +1,33 @@
+import { useState } from "react";
+
 import useZustand from "../../zustand/Store";
 import Button from "../../atom/button";
 import { changeEachMeal } from "../../util/Diet";
-import { useState } from "react";
 
 const FoodSearchItem = ({ item, timeslot }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
   const [quantity, setQuantity] = useState(1);
 
-  console.log(eachMeal);
   const addFoodOnClickHandler = async () => {
+    let quantityfoods = [];
+    if (eachMeal.quantityfoods) {
+      if (Array.isArray(eachMeal.quantityfoods)) {
+        quantityfoods = eachMeal.quantityfoods.map((item) => {
+          return { foodId: item.foodId, quantity: item.quantity };
+        });
+      }
+    }
+    const patchFood = [
+      ...quantityfoods,
+      { foodId: item.foodId, quantity: quantity },
+    ];
     const result = await changeEachMeal(
+      eachMeal.eachMealId,
       meal.dailyMealId,
-      eachMeal,
       timeslot,
-      item.foodId,
-      quantity
+      patchFood
     );
-    console.log(result);
     const food = result.quantityfoods.find(
       (food) => food.foodId === item.foodId
     );

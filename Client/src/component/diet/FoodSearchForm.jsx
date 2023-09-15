@@ -33,7 +33,7 @@ const FoodSearchForm = ({ timeslot }) => {
             <FoodSearchItem item={item} key={index} timeslot={timeslot} />
           ))
         ) : (
-          <>Err</>
+          <>Error</>
         )}
       </ul>
     </div>

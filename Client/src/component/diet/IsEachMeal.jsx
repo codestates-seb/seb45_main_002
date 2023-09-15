@@ -67,7 +67,14 @@ const IsEachMeal = ({ timeslot }) => {
       <div className={timelabel[timeslot]}>
         <h2>{timelabel[timeslot]}</h2>
         {eachMeal.quantityfoods?.map((item, index) => {
-          return <IsEachFood item={item} index={index} key={index} />;
+          return (
+            <IsEachFood
+              item={item}
+              timeslot={timeslot}
+              index={index}
+              key={index}
+            />
+          );
         }) ?? null}
         <Button
           onClick={() => {
