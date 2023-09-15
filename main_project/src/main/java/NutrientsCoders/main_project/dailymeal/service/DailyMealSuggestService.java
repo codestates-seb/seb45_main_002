@@ -16,9 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 public class DailyMealSuggestService {
@@ -205,7 +205,22 @@ public class DailyMealSuggestService {
       orderbyDsce = findOrderType(eachMeal, baseMacrosPercent);
       remainKcal -= eachMeal.getTotalEachKcal();
     }
-
+    
+    //칼로리 보정(단백질 위주)
+    while (eachMeal.getTotalEachKcal() < baseRemainKcal - 100){
+      eachMeal.getEachMealFoods().stream().forEach(eachMealFood -> {
+        eachMealFood.setQuantity(eachMealFood.getQuantity() + 0.02);
+      });
+      EachMealFood highestProteinFood =
+          eachMeal.getEachMealFoods().stream()
+                  .max(Comparator.comparingDouble(EachMealFood::getRateProtein))
+                  .orElse(null);
+      
+      highestProteinFood.setQuantity(highestProteinFood.getQuantity() + 0.3);
+      highestProteinFood.calculateRate();
+      
+      eachMeal.calculateTotal();
+    }
 
     return eachMeal;
   }
