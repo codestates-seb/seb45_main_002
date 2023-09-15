@@ -110,6 +110,13 @@ const ExitBtn = styled.div`
   font-size: small;
   cursor: pointer;
 `
+const DeleteButton = styled.input`
+  background-color: red;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+`
 
 function CommunityDetail(){
   const [detail, setDetail] = useState({})
@@ -135,10 +142,20 @@ function CommunityDetail(){
       }
     })
     .then(res=>{
-      console.log(res)
+      console.log(res, "좋아요 변경을 성공했습니다.")
       loadDetail()
     })
-    .catch(err=>console.log(err))
+    .catch(err=>console.log(err, "좋아요 변경 실패"))
+  }
+
+  function articleDelete(){
+    axios.delete("http://43.201.194.176:8080/communitypost/"+communityId["*"],{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>console.log(res, "게시글 삭제 성공했습니다."))
+    .catch(err=>console.log(err, "게시글 삭제 실패했습니다."))
   }
 
   const data1 = {
@@ -282,6 +299,7 @@ function CommunityDetail(){
         </UserProfile>
       </CommentsAndUserProfile>
       <ExitBtn onClick={()=>navigate("/pageswitch/community")}>목록으로 돌아가기</ExitBtn>
+      <DeleteButton type="button" value="게시글 삭제하기" onClick={articleDelete}></DeleteButton>
     </Container>
   );
 };
