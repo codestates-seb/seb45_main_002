@@ -43,6 +43,7 @@ public class DailyMealDateService {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
+    findDailyMeal.calculateTotal();
     return dailyMealRepository.save(findDailyMeal);
   }
   
