@@ -49,18 +49,7 @@ const useZustand = {
   })),
 
   useDailyMeals: create((set) => ({
-    meal: {
-      dailyMealId: 365,
-      memberId: 18,
-      date: "2023-09-14",
-      name: "name",
-      favorite: false,
-      eachMeals: [],
-      totalDailyKcal: 0.0,
-      totalDailyCarbo: 0.0,
-      totalDailyProtein: 0.0,
-      totalDailyFat: 0.0,
-    },
+    meal: null,
     setMeal: (value) => set({ meal: value }),
     setEachMeal: (value) => set({ meal: value }),
   })),
