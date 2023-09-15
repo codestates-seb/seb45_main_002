@@ -47,59 +47,42 @@ const useZustand = {
         .catch((err) => console.log(err + "글 목록 불러오기를 실패했습니다."));
     },
   })),
+
   useDailyMeals: create((set) => ({
-    meal: null,
+    meal: {
+      dailyMealId: 365,
+      memberId: 18,
+      date: "2023-09-14",
+      name: "name",
+      favorite: false,
+      eachMeals: [],
+      totalDailyKcal: 0.0,
+      totalDailyCarbo: 0.0,
+      totalDailyProtein: 0.0,
+      totalDailyFat: 0.0,
+    },
     setMeal: (value) => set({ meal: value }),
-    setEachMeal: (food, quantity, timeslot) =>
-      set((prevState) => {
-        console.log(prevState);
-        return {
-          meal: {
-            ...prevState.meal,
-            eachMeals: [
-              ...prevState.meal.eachMeals.map((eachMeal) => {
-                if (eachMeal.timeSlots === timeslot) {
-                  return {
-                    ...eachMeal,
-                    quantityfoods: [...eachMeal.quantityfoods, food],
-                  };
-                } else {
-                  return eachMeal;
-                }
-              }),
-            ],
-            totalDailyCarbo:
-              prevState.meal.totalDailyCarbo + food.ratioEachCarbo * quantity,
-            totalDailyFat:
-              prevState.meal.totalDailyFat + food.ratioEachFat * quantity,
-            totalDailyKcal:
-              prevState.meal.totalDailyKcal + food.ratioEachKcal * quantity,
-            totalDailyProtein:
-              prevState.meal.totalDailyProtein +
-              food.ratioEachProtein * quantity,
-          },
-        };
-      }),
+    setEachMeal: (value) => set({ meal: value }),
   })),
 
   useNowTimeSlot: create((set) => ({
     nowTimeSlot: 0,
     setNowTimeSlot: (value) => set({ nowTimeSlot: value }),
   })),
-    
-  useFavorite:
-    create((set)=>({
-      favorites: [{},{}],
-      setFavorites: (newFavorite)=>set({favorites: newFavorite}),
-      axiosFavorites: ()=>{
-        axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100",{
+
+  useFavorite: create((set) => ({
+    favorites: [{}, {}],
+    setFavorites: (newFavorite) => set({ favorites: newFavorite }),
+    axiosFavorites: () => {
+      axios
+        .get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
           headers: {
-            Authorization: localStorage.getItem("Authorization")
+            Authorization: localStorage.getItem("Authorization"),
           },
         })
-        .then(res=>set({favorites: res.data}))
-        .catch(err=>console.log(err, "서버와 소통에 실패했습니다."));
-      }
-    }))
+        .then((res) => set({ favorites: res.data }))
+        .catch((err) => console.log(err, "서버와 소통에 실패했습니다."));
+    },
+  })),
 };
 export default useZustand;

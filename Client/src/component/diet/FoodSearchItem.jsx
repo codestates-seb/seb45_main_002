@@ -21,8 +21,29 @@ const FoodSearchItem = ({ item, timeslot }) => {
     const food = result.quantityfoods.find(
       (food) => food.foodId === item.foodId
     );
-    console.log(food);
-    setEachMeal(food, quantity, timeslot);
+
+    const resultEachMeal = {
+      ...meal,
+      eachMeals: [
+        ...meal.eachMeals.map((eachMeal) => {
+          if (eachMeal.timeSlots === timeslot) {
+            return {
+              ...eachMeal,
+              quantityfoods: [...eachMeal.quantityfoods, food],
+            };
+          } else {
+            return eachMeal;
+          }
+        }),
+      ],
+      totalDailyCarbo: meal.totalDailyCarbo + food.ratioEachCarbo * quantity,
+      totalDailyFat: meal.totalDailyFat + food.ratioEachFat * quantity,
+      totalDailyKcal: meal.totalDailyKcal + food.ratioEachKcal * quantity,
+      totalDailyProtein:
+        meal.totalDailyProtein + food.ratioEachProtein * quantity,
+    };
+
+    setEachMeal(resultEachMeal);
   };
 
   return (

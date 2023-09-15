@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { GetDailyDiet, GetFoodKeyword, PostDailyMeal } from "../util/Diet";
+import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
 import Button from "../atom/button";
 import useZustand from "../zustand/Store";
