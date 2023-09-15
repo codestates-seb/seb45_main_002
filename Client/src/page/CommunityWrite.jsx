@@ -1,7 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { styled } from "styled-components";
 
 import axios from "axios"
+
+import useZustand from "../zustand/Store";
+
+import FavoriteDiet from "../component/FavoriteDiet";
 
 import style from "../style/style"
 
@@ -56,6 +62,9 @@ const DietInfoContainer = styled.div`
     border-right: solid 1px orange;
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
+  &>:last-child{
+    font-weight: bolder;
+  }
 `;
 const Info = styled.span`
   width: 100%;
@@ -103,8 +112,13 @@ const ContentContainer = styled.div`
     vertical-align: top;
   }
 `;
-const SubmitBtn = styled.input`
+
+const ExitAndSubmit = styled.div`
   display: flex;
+  justify-content: space-between;
+  margin: 0 ${style.layout.wideMargin.width};
+`
+const SubmitBtn = styled.input`
   width: 60px;
   height: 20px;
   background-color: #ffc123;
@@ -114,6 +128,24 @@ const SubmitBtn = styled.input`
   align-items: center;
   font-size: 12px;
 `;
+const ExitBtn = styled(SubmitBtn)`
+  background-color: white;
+`
+
+const FavoriteDietListModalContainer = styled.section`
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(127,127,127,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const FavoriteDietListModalBox = styled.ul`
+  list-style: none;
+  background-color: #5cffa3;
+  width: ${style.layout.main.width*4/5};
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
+`
 
 function CommunityWrite(){
 
@@ -123,26 +155,88 @@ function CommunityWrite(){
     communityContent: "",
     communityDietDate: Date()
   })
+  const [dietData, setDietData] = useState({
+    dailyMealId: "",
+    date: "",
+    favorite: null,
+    memberId: "",
+    name: "",
+    totalDailyCarbo: "",
+    totalDailyFat: "",
+    totalDailyKcal: "",
+    totalDailyProtein: ""
+  })
+  const [mealMorning, setMealMorning] = useState([{
+    eachMealId: "",
+    favorite: null,
+    timeSlots: "",
+    totalEachCarbo: "",
+    totalEachFat: "",
+    totalEachKcal: "",
+    totalEachProtein: ""
+  }])
+  const [mealLunch, setMealLunch] = useState([{
+    eachMealId: "",
+    favorite: null,
+    timeSlots: "",
+    totalEachCarbo: "",
+    totalEachFat: "",
+    totalEachKcal: "",
+    totalEachProtein: ""
+  }])
+  const [mealDinner, setMealDinner] = useState([{
+    eachMealId: "",
+    favorite: null,
+    timeSlots: "",
+    totalEachCarbo: "",
+    totalEachFat: "",
+    totalEachKcal: "",
+    totalEachProtein: ""
+  }])
 
   const [onImg,setOnImg] = useState("")
 
-  const data1 = {
-    dailyMealId: 320,
-    memberId: 21,
-    date: "2023-09-13",
-    name: "yongmins",
-    favorite: false,
-    eachMeals: [11],
-    totalDailyKcal: 184.0,
-    totalDailyCarbo: 31.0,
-    totalDailyProtein: 3.0,
-    totalDailyFat: 5.0
-}
+  const axiosFavorites = useZustand.useFavorite(state=>state.axiosFavorites)
+  const favorites = useZustand.useFavorite(state=>state.favorites)
 
+  const navigate = useNavigate()
+//////// 캘린더로 식단 불러오기
   function loadDietInDate(){
-    axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate)
-    .then(res=>console.log(res))
-    .catch(err=>console.log(err))
+    axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>{
+      console.log(res.data.eachMeals[0].quantityfoods)
+      setDietData(res.data)
+      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
+      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
+      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+    })
+    .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
+  }
+
+//////// 선호 식단 불러오기
+  const [openModal, setOpenModal] = useState(false)
+  function openFavoriteListModal(){
+    axiosFavorites();
+    setOpenModal(!openModal)
+  }
+  function loadDietInFavorite(){
+    axios.get("http://43.201.194.176:8080/dailymeals/"+dietData.dailyMealId,{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>{
+      console.log(res.data)
+      setDietData(res.data)
+      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
+      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
+      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+    })
+    .catch(err=>console.log(err, "갈비탕과 소통에 실패했습니다."))
   }
 
   function sendArticle(e){
@@ -155,16 +249,16 @@ function CommunityWrite(){
     }
     else{
       axios.post("http://43.201.194.176:8080/community",{
-        date: form.communityDietDate,
+        dailyMealId: dietData.dailyMealId,
         communityTitle: form.communityTitle,
         communityContent: form.communityContent,
-        imgURL: form.communityImg,
-        eachMealsM: 11,
-        eachMealsL: 24,
-        eachMealsD: 5
+      },{
+        headers: {
+          Authorization: localStorage.getItem("Authorization")
+        }
       })
-      .then(res=>console.log(res))
-      .catch(err=>console.log(err))
+      .then(res=>console.log(res, "서버 소통에 성공하였습니다."))
+      .catch(err=>console.log(err, "서버 소통에 실패했습니다."))
       }
     }
 
@@ -177,49 +271,50 @@ function CommunityWrite(){
 
       <DietBtnContainer>
         <DietBtnBox>
-          <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: e.target.value})}></input>
+          <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
           <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>식단 불러오기</DietBtn>
+          <DietBtn onClick={openFavoriteListModal}>선호식단 불러오기</DietBtn>
         </DietBtnBox>
 
         <DietInfoContainer>
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {data1.eachMeals}</span></div>
-                <div><span>칼로리</span><span>: {data1.totalDailyKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {data1.totalDailyFat} mg</span></div>
-                <div><span>단백질</span><span>: {data1.totalDailyProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {data1.totalDailyCarbo} mg</span></div>
+                <div><span>식단명</span><span>: {mealMorning[0].foodName}</span></div>
+                <div><span>칼로리</span><span>: {mealMorning[0].ratioEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealMorning[0].ratioEachFat} mg</span></div>
+                <div><span>단백질</span><span>: {mealMorning[0].ratioEachProtein} mg</span></div>
+                <div><span>탄수화물</span><span>: {mealMorning[0].ratioEachCarbo} mg</span></div>
               </Info>
             </div>
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: </span></div>
-                <div><span>칼로리</span><span>: </span></div>
-                <div><span>지방</span><span>: </span></div>
-                <div><span>단백질</span><span>: </span></div>
-                <div><span>탄수화물</span><span>: </span></div>
+                <div><span>식단명</span><span>: {mealLunch[0].foodName}</span></div>
+                <div><span>칼로리</span><span>: {mealLunch[0].ratioEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealLunch[0].ratioEachFat} mg</span></div>
+                <div><span>단백질</span><span>: {mealLunch[0].ratioEachProtein} mg</span></div>
+                <div><span>탄수화물</span><span>: {mealLunch[0].ratioEachCarbo} mg</span></div>
               </Info>
             </div>
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: </span></div>
-                <div><span>칼로리</span><span>: </span></div>
-                <div><span>지방</span><span>: </span></div>
-                <div><span>단백질</span><span>: </span></div>
-                <div><span>탄수화물</span><span>: </span></div>
+                <div><span>식단명</span><span>: {mealDinner[0].foodName}</span></div>
+                <div><span>칼로리</span><span>: {mealDinner[0].ratioEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealDinner[0].ratioEachFat} mg</span></div>
+                <div><span>단백질</span><span>: {mealDinner[0].ratioEachProtein} mg</span></div>
+                <div><span>탄수화물</span><span>: {mealDinner[0].ratioEachCarbo} mg</span></div>
               </Info>
             </div>
             <div>
               <span>총 평가</span>
               <Info>
-                <div><span>식단명</span><span>: </span></div>
-                <div><span>칼로리</span><span>: </span></div>
-                <div><span>지방</span><span>: </span></div>
-                <div><span>단백질</span><span>: </span></div>
-                <div><span>탄수화물</span><span>: </span></div>
+                {/* <div><span>식단명</span><span>: {dietData.foodName}</span></div> */}
+                <div><span>칼로리</span><span>: {dietData.totalDailyKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {dietData.totalDailyFat} mg</span></div>
+                <div><span>단백질</span><span>: {dietData.totalDailyProtein} mg</span></div>
+                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} mg</span></div>
               </Info>
             </div>
         </DietInfoContainer>
@@ -244,7 +339,19 @@ function CommunityWrite(){
         <textarea placeholder="내용" value={form.communityContent} onChange={e=>{setForm({...form,communityContent: e.target.value})}} />
       </ContentContainer>
 
-      <SubmitBtn type="submit" value="SUBMIT" onClick={sendArticle}></SubmitBtn>
+      <ExitAndSubmit>
+        <ExitBtn type="button" value="EXIT" onClick={()=>navigate("/pageswitch/community")}></ExitBtn>
+        <SubmitBtn type="submit" value="SUBMIT" onClick={sendArticle}></SubmitBtn>
+      </ExitAndSubmit>
+
+      {openModal?
+        <FavoriteDietListModalContainer onClick={(e)=>{e.preventDefault();setOpenModal(!openModal);}}>
+          <FavoriteDietListModalBox>
+            {favorites.map(favorite=>(<FavoriteDiet favorite={favorite} dietData={dietData} setDietData={setDietData} openModal={openModal} setOpenModal={setOpenModal} loadDietInFavorite={loadDietInFavorite} />))}
+          </FavoriteDietListModalBox>
+        </FavoriteDietListModalContainer>
+        :
+        null}
     </WriteFormContainer>
   );
 };

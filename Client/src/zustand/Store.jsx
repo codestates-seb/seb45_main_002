@@ -86,5 +86,20 @@ const useZustand = {
     nowTimeSlot: 0,
     setNowTimeSlot: (value) => set({ nowTimeSlot: value }),
   })),
+    
+  useFavorite:
+    create((set)=>({
+      favorites: [{},{}],
+      setFavorites: (newFavorite)=>set({favorites: newFavorite}),
+      axiosFavorites: ()=>{
+        axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100",{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          },
+        })
+        .then(res=>set({favorites: res.data}))
+        .catch(err=>console.log(err, "서버와 소통에 실패했습니다."));
+      }
+    }))
 };
 export default useZustand;

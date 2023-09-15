@@ -54,6 +54,7 @@ const CommunityList = () => {
 
   // // zustand에서 바로 axios 실행하기 - 성공
   const axiosArticles = useZustand.useArticles(state=>state.axiosArticlesList);
+
   useEffect(()=>axiosArticles(),[])
 
   const articles = useZustand.useArticles(state=>state.articles)

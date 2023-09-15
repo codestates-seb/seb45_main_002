@@ -60,13 +60,13 @@ const Article = ({article}) => {
         <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
         <InfoContainer>
           <LikeViewCreate>
-            좋아요 {article.communitylike}
+            좋아요 {article.communityLike}
           </LikeViewCreate>
           <LikeViewCreate>
             조회수 {article.communityViewCount}
           </LikeViewCreate>
           <LikeViewCreate>
-            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일_{date.getHours()}:{date.getMinutes()} 
+            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일 
           </LikeViewCreate>
         </InfoContainer>
       </ArticleBox>
