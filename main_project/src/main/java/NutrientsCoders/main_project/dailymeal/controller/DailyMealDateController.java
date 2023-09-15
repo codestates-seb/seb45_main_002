@@ -53,19 +53,14 @@ public class DailyMealDateController {
   
   //식단 전체 조회(캘린더)
   @GetMapping
-  public ResponseEntity<PagedResponse<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token,
+  public ResponseEntity<List<DailyMealSimpleResponseDto>> getDailyMealsByDate(@RequestHeader("Authorization") String token,
                                                                               @RequestParam int page, @RequestParam int size) {
     Pageable pageable = PageRequest.of(page - 1, size);
     long memberId = tokenChanger.getMemberId(token);
     Page<DailyMeal> dailyMeals = dailyMealDateService.findAllByDate(memberId, pageable);
     List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals.getContent());
     
-    
-    PagedResponse<DailyMealSimpleResponseDto> pagedResponse = new PagedResponse<>(
-        response, dailyMeals.getTotalElements(), dailyMeals.getTotalPages(), dailyMeals.isLast()
-    );
-    
-    return new ResponseEntity<>(pagedResponse, HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
   
   //작성한 식단 수정
