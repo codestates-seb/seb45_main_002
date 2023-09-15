@@ -28,8 +28,8 @@ export const PostDietAnalyze = async (daliymealId, setAnalyzedData) => {
 
   try {
     const response = await axios.post(
-      "http://43.201.194.176:8080/analysis/374",
-      // ${daliymealId},
+      `http://43.201.194.176:8080/analysis/${daliymealId},`,
+
       {
         headers: {
           Authorization: token,
@@ -47,7 +47,7 @@ export const PostDietAnalyze = async (daliymealId, setAnalyzedData) => {
 
 export const GetDietAnalyze = async (analyzedData) => {
   const token = localStorage.getItem("Authorization");
-  const analysisId = 333333333;
+  const analysisId = 1;
   // analyzedData.analysisId;
   try {
     const response = await axios.get(

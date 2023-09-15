@@ -18,10 +18,9 @@ const postDailymealData = async () => {
     const response = await axios.post(
       "http://43.201.194.176:8080/dailymeals",
       {
-        date: "2023-09-21",
-        name: "name",
-        favorite: false,
-        eachMeals: [72],
+        date: "2023-09-20",
+        name: "test",
+        eachMeals: [24],
       },
       {
         headers: {
@@ -44,8 +43,8 @@ const postMealData = async () => {
       {
         timeSlots: 3,
         foods: [
-          { foodId: 7, quantity: 0.5 },
-          { foodId: 2, quantity: 0.5 },
+          { foodId: 6, quantity: 0.5 },
+          { foodId: 23, quantity: 0.5 },
         ],
       },
 

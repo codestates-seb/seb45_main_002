@@ -145,9 +145,10 @@ const CustomCalendar = () => {
       // console.log(localStorage.getItem("Authorization"));
 
       try {
+        console.log(dateStr);
         const response = await axios.get(
-          `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
-
+          `http://43.201.194.176:8080/dailymeals/date/2023-09-20`,
+          console.log(token),
           {
             headers: {
               Authorization: token,
@@ -173,24 +174,53 @@ const CustomCalendar = () => {
         setModalContent(
           <div>
             <h3>식단 정보</h3>
-            {mealData.timeSlots === 0 && (
-              <div>
-                아침
-                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+
+            {mealData.eachMeals.map((meal, index) => (
+              <div key={index}>
+                {meal.timeSlots === 1 && (
+                  <div>
+                    <h4>아침</h4>
+                    <p>
+                      메뉴:{" "}
+                      {meal.quantityfoods
+                        .map((food) => food.foodName)
+                        .join(", ")}
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
-            {mealData.timeSlots === 1 && (
-              <div>
-                점심
-                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+            ))}
+
+            {mealData.eachMeals.map((meal, index) => (
+              <div key={index}>
+                {meal.timeSlots === 2 && (
+                  <div>
+                    <h4>점심</h4>
+                    <p>
+                      메뉴:{" "}
+                      {meal.quantityfoods
+                        .map((food) => food.foodName)
+                        .join(", ")}
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
-            {mealData.timeSlots === 2 && (
-              <div>
-                저녁
-                <p>메뉴: {mealData.eachMeals[0].eachMealId}</p>
+            ))}
+            {mealData.eachMeals.map((meal, index) => (
+              <div key={index}>
+                {meal.timeSlots === 3 && (
+                  <div>
+                    <h4>저녁</h4>
+                    <p>
+                      메뉴:{" "}
+                      {meal.quantityfoods
+                        .map((food) => food.foodName)
+                        .join(", ")}
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
+            ))}
             <p>총 칼로리: {mealData.totalDailyKcal}</p>
             <Button
               width="80px"
@@ -203,6 +233,7 @@ const CustomCalendar = () => {
             ></Button>
           </div>
         );
+        console.log(mealData.eachMeals[0].quantityfoods);
         setIsModalOpen(true);
       } catch (error) {
         console.error("Error fetching meal:");
