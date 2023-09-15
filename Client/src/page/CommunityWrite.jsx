@@ -249,9 +249,9 @@ function CommunityWrite(){
     }
     else{
       axios.post("http://43.201.194.176:8080/community",{
-        dailyMealId: dietData.dailyMealId,
         communityTitle: form.communityTitle,
         communityContent: form.communityContent,
+        dailyMealId: dietData.dailyMealId
       },{
         headers: {
           Authorization: localStorage.getItem("Authorization")

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { Link } from "react-router-dom";
 
 import axios from "axios";
@@ -34,30 +34,47 @@ const WriteBtn = styled.div`
   border-radius: 10px;
 `
 
+const Pagenation = styled.ul`
+  list-style: none;
+  display: flex;
+  &>span{
+    
+    font-weight: bolder;
+    color: rgb(0,0,0) !important;
+    text-decoration: underline;
+  }
+`
+const PageButton = styled.li`
+  margin: ${style.layout.wideMargin.width};
+  cursor: pointer;
+  ${props=>props.className===props.nowPage? "color: rgb(0,0,0); text-decoration: underline;" : "color: rgb(50, 50, 50);"}
+`
+
 const CommunityList = () => {
 
-  // // 페이지에서 axios 하여 zustand 에 넣기 - 실패
-  // const setArticles = useZustand.useArticles(state=>state.setArticles);
-  // function loadArticlesList(){
-  //   axios.get("https://57b4-59-9-144-107.ngrok-free.app/community?page=1&size=",{
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'ngrok-skip-browser-warning': '69420',
-  //       }
-  //     })
-  //     .then(res=>setArticles({articles: res.data.data}))
-  //     .catch(err=>console.log(err+"글 목록 불러오기를 실패했습니다."))
-  // }
-  // useEffect(()=>{
-  //   loadArticlesList()
-  // },[])
+  const [nowPage, setNowPage] = useState(1)
+  const [articles, setArticles] = useState([
+    {communityTitle: "게시물 제목 1", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 2", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
+    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333}
+  ])
+  function loadArticlesList(){
+    axios.get("http://43.201.194.176:8080/community?page="+nowPage+"&size=5")
+    .then(res=>{
+      console.log(res, "글 목록 불러오기를 성공했습니다.")
+      setArticles(res.data.data)
+    })
+    .catch(err=>console.log(err,"글 목록 불러오기를 실패했습니다."))
+  }
+  useEffect(loadArticlesList,[nowPage])
 
-  // // zustand에서 바로 axios 실행하기 - 성공
-  const axiosArticles = useZustand.useArticles(state=>state.axiosArticlesList);
-
-  useEffect(()=>axiosArticles(),[])
-
-  const articles = useZustand.useArticles(state=>state.articles)
+  function pagenation(e){
+    setNowPage(e.target.innerText)
+  }
 
   return (
     <CommunityContainer>
@@ -69,6 +86,15 @@ const CommunityList = () => {
           article={article}
         />
       ))}
+      <Pagenation>
+        <PageButton onClick={()=>setNowPage(1)}>⇠</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 1 : Number(nowPage)-2} onClick={pagenation}>{nowPage<3? 1 : Number(nowPage)-2}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 2 : Number(nowPage)-1} onClick={pagenation}>{nowPage<3? 2 : Number(nowPage)-1}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 3 : Number(nowPage)} onClick={pagenation}>{nowPage<3? 3 : Number(nowPage)}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 4 : Number(nowPage)+1} onClick={pagenation}>{nowPage<3? 4 : Number(nowPage)+1}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 5 : Number(nowPage)+2} onClick={pagenation}>{nowPage<3? 5 : Number(nowPage)+2}</PageButton>
+        <PageButton onClick={()=>setNowPage(1)}>⇢</PageButton>
+      </Pagenation>
       <SearchForm />
     </CommunityContainer>
   );

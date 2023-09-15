@@ -26,6 +26,16 @@ const useZustand = {
           content: "blahblahblah..."
         },
         {communityId: "2", communityTitle: "게시물 제목 2", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "3", communityTitle: "게시물 제목 3", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "4", communityTitle: "게시물 제목 4", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "5", communityTitle: "게시물 제목 5", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "6", communityTitle: "게시물 제목 6", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "7", communityTitle: "게시물 제목 7", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "8", communityTitle: "게시물 제목 8", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "9", communityTitle: "게시물 제목 9", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "10", communityTitle: "게시물 제목 10", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "11", communityTitle: "게시물 제목 11", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
+        {communityId: "12", communityTitle: "게시물 제목 12", communityContent: "게시물 내용 2", countLike: 525, community_createdAt: "2023-08-29", updated_at: "2023-08-29", communityViewCount: 333, content: "blahblahblah..."},
       ],
       setArticles: (newArticle)=>set({articles: newArticle}),
       axiosArticlesList: () => {
