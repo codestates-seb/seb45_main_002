@@ -39,34 +39,40 @@ export const PostEachMeal = async (meal, timeslot) => {
     .then(async (response) => {
       // 성공한 경우 실행
       console.log(response);
-
-      return axios
-        .patch(
-          `${url}/dailymeals/date/${meal.date}`,
-          {
-            name: "name",
-            eachMeals: [
-              ...meal.eachMeals.map((item) => item.eachMealId),
-              response.data.eachMealId,
-            ],
-          },
-          {
-            headers: {
-              Authorization: token,
-              // "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          return response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      const result = [
+        ...meal.eachMeals.map((item) => item.eachMealId),
+        response.data.eachMealId,
+      ];
+      console.log(meal);
+      console.log(result);
+      return PatchDailyMeal(meal, result);
     })
     .catch((error) => {
       // 에러인 경우 실행
+      console.log(error);
+    });
+};
+
+export const PatchDailyMeal = async (meal, eachmeal = null) => {
+  const eachMealIDs = meal.eachMeals.map((item) => item.eachMealId);
+  return axios
+    .patch(
+      `${url}/dailymeals/date/${meal.date}`,
+      {
+        name: "name",
+        eachMeals: eachmeal !== null ? eachmeal : eachMealIDs,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -141,17 +147,12 @@ export const PostDailyMeal = async (
     });
 };
 
-export const changeEachMeal = async (
-  eachMealId,
-  dailymealId,
-  timeslot,
-  patchFood
-) => {
+export const changeEachMeal = async (meal, eachMealId, timeslot, patchFood) => {
   return axios
     .patch(
       `${url}/eachmeals/${eachMealId}`,
       {
-        dailymealId: dailymealId,
+        dailymealId: meal.dailymealId,
         timeSlots: timeslot,
         foods: patchFood,
       },
@@ -159,7 +160,7 @@ export const changeEachMeal = async (
     )
     .then((response) => {
       console.log(response);
-      return response.data;
+      return PatchDailyMeal(meal);
     })
     .catch((error) => {
       console.log(error);

@@ -81,8 +81,9 @@ const IsEachMeal = ({ timeslot }) => {
             setNowTimeSlot(timeslot);
           }}
           disabled={nowTimeSlot === timeslot ? true : null}
+          style={{ fontSize: "14px" }}
         >
-          음식 추가하기
+          끼니 수정하기
         </Button>
       </div>
       {nowTimeSlot === timeslot ? <FoodSearchForm timeslot={timeslot} /> : null}

@@ -22,84 +22,83 @@ const StyleFood = styled.div`
 
   & > p:first-child {
     width: calc(100% - 20px - 80px);
+    font-weight: 600;
   }
 `;
 
 const IsEachFood = ({ item, timeslot, index }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
+  const { nowTimeSlot } = useZustand.useNowTimeSlot();
   const [quantity, setQuantity] = useState(item.quantity);
 
-  const changeQuantityHandler = (event) => {
-    setQuantity(event.target.value);
-  };
-
-  const deleteOnClickHandler = async () => {
+  const changeQuantityOnBlurHandler = async () => {
+    //food 수정
     const quantityfoods = eachMeal.quantityfoods.map((food) => {
       return { foodId: food.foodId, quantity: food.quantity };
     });
 
-    const patchFood = quantityfoods.filter(
-      (food) => food.foodId !== item.foodId
+    const patchFood = quantityfoods.map((food) =>
+      food.foodId === item.foodId
+        ? { foodId: food.foodId, quantity: quantity }
+        : food
     );
-
-    await changeEachMeal(
+    const result = await changeEachMeal(
+      meal,
       eachMeal.eachMealId,
-      meal.dailyMealId,
       timeslot,
       patchFood
     );
+    setEachMeal(result);
+  };
 
-    const resultEachMeal = {
-      ...meal,
-      eachMeals: [
-        ...meal.eachMeals.map((eachMeal) => {
-          if (eachMeal.timeSlots === timeslot) {
-            return {
-              ...eachMeal,
-              quantityfoods: [
-                ...eachMeal.quantityfoods.filter(
-                  (food) => food.foodId !== item.foodId
-                ),
-              ],
-            };
-          } else {
-            return eachMeal;
-          }
-        }),
-      ],
-      totalDailyCarbo:
-        meal.totalDailyCarbo - item.ratioEachCarbo * item.quantity,
-      totalDailyFat: meal.totalDailyFat - item.ratioEachFat * item.quantity,
-      totalDailyKcal: meal.totalDailyKcal - item.ratioEachKcal * item.quantity,
-      totalDailyProtein:
-        meal.totalDailyProtein - item.ratioEachProtein * item.quantity,
-    };
-
-    setEachMeal(resultEachMeal);
+  const deleteOnClickHandler = async () => {
+    //food 삭제
+    const quantityfoods = eachMeal.quantityfoods.map((food) => {
+      return { foodId: food.foodId, quantity: food.quantity };
+    });
+    const patchFood = quantityfoods.filter(
+      (food) => food.foodId !== item.foodId
+    );
+    const result = await changeEachMeal(
+      meal,
+      eachMeal.eachMealId,
+      timeslot,
+      patchFood
+    );
+    setEachMeal(result);
   };
 
   return (
     <StyleFood>
       <p>{item.foodName}</p>
       <p>
-        <input
-          type="number"
-          value={quantity}
-          onChange={changeQuantityHandler}
-        />
+        {nowTimeSlot === timeslot ? (
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) =>
+              setQuantity(e.target.value >= 0 ? e.target.value : 0)
+            }
+            onBlur={changeQuantityOnBlurHandler}
+          />
+        ) : (
+          quantity
+        )}
         인분
       </p>
-      <Button
-        style={{
-          width: "28px",
-          height: "28px",
-          borderRadius: "50%",
-        }}
-        onClick={deleteOnClickHandler}
-      >
-        ❌
-      </Button>
+      {nowTimeSlot === timeslot ? (
+        <Button
+          style={{
+            width: "28px",
+            height: "28px",
+            borderRadius: "50%",
+          }}
+          onClick={deleteOnClickHandler}
+        >
+          ❌
+        </Button>
+      ) : null}
     </StyleFood>
   );
 };
