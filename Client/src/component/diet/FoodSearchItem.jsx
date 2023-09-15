@@ -3,6 +3,29 @@ import { useState } from "react";
 import useZustand from "../../zustand/Store";
 import Button from "../../atom/button";
 import { changeEachMeal } from "../../util/Diet";
+import { styled } from "styled-components";
+
+const ListStyle = styled.li`
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & input {
+    width: 40px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+  }
+`;
 
 const FoodSearchItem = ({ item, timeslot }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
@@ -38,23 +61,28 @@ const FoodSearchItem = ({ item, timeslot }) => {
   };
 
   return (
-    <li>
+    <ListStyle>
       <p>
-        {item.foodName}: {item.kcal}kcal
+        {item.foodName} ({item.kcal}kcal)
       </p>
-      <input
-        type="number"
-        value={quantity}
-        onChange={(event) => setQuantity(event.target.value)}
-      />
-      <Button
-        size={"square"}
-        style={{ width: "20px", height: "20px" }}
-        onClick={addFoodOnClickHandler}
-      >
-        +
-      </Button>
-    </li>
+      <div>
+        <span>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(event) => setQuantity(event.target.value)}
+          />
+          <p>인분</p>
+        </span>
+        <Button
+          size={"square"}
+          style={{ width: "20px", height: "20px" }}
+          onClick={addFoodOnClickHandler}
+        >
+          +
+        </Button>
+      </div>
+    </ListStyle>
   );
 };
 

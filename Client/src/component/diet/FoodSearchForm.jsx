@@ -14,11 +14,16 @@ const FormDiv = styled.div`
     width: calc(100% - 10px);
   }
 
-  input {
+  & > input {
     width: 100%;
     height: 48px;
     border-radius: 8px;
     border: 2px solid #d9d9d9;
+  }
+
+  ul {
+    list-style-type: none;
+    gap: 5px;
   }
 `;
 
