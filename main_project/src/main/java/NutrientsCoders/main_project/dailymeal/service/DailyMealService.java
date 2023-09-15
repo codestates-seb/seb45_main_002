@@ -32,8 +32,11 @@ public class DailyMealService {
     Optional<DailyMeal> existDailyMeal = dailyMealDateService.findDailyMealByDate(dailyMeal.getDate(), memberId);
     if (existDailyMeal.isPresent()) {throw new LogicException(ExceptionCode.DATE_EXISTS);}
     
+    eachMeals.forEach(eachMeal -> {
+      eachMeal.setDailyMeal(dailyMeal);
+      eachMeal.calculateTotal();
+    });
     dailyMeal.setEachMeals(eachMeals);
-    eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
