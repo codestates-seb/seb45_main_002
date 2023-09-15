@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import Button from "../../atom/button";
+import { deleteDailyMealId } from "../../util/Diet";
 
 const DivItemStyle = styled.div`
   position: relative;
@@ -27,14 +28,15 @@ const DivItemStyle = styled.div`
   }
 `;
 
-const FavoriteDailyItem = ({ item, setIsDetailPage }) => {
+const FavoriteDailyItem = ({ item, setIsDetailPage, setPage }) => {
   const loadFavoriteMealOnClickHandler = async () => {
     setIsDetailPage(item.dailyMealId);
   };
 
   const deleteFavoriteMealOnClickHandler = async () => {
-    console.log("deleteFavoriteMealOnClickHandler!");
-    return null;
+    await deleteDailyMealId(item.dailyMealId).then(async () => {
+      await setPage(null);
+    });
   };
 
   return (

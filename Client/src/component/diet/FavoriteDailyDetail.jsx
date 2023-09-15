@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import Button from "../../atom/button";
 import useZustand from "../../zustand/Store";
 import { useEffect, useState } from "react";
-import { getDailyMealId } from "../../util/FavoriteDaily";
+import { getDailyMealId } from "../../util/Diet";
 
 const DivDetailStyle = styled.div`
   display: flex;
@@ -67,8 +67,6 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage }) => {
   };
 
   const loadFavoriteMealOnClickHandler = async () => {
-    // setMeal()
-    console.log("loadFavoriteMealOnClickHandler!");
     return null;
   };
 

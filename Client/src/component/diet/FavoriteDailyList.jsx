@@ -39,10 +39,15 @@ const FavoriteDailyList = () => {
 
   useEffect(() => {
     const asyncfunc = async () => {
-      const result = await getFavoriteDailyMeal(page);
-      console.log(result);
-      setFavoriteDaily(result.content);
-      maxPage.current = result.totalPages;
+      if (page) {
+        const result = await getFavoriteDailyMeal(page);
+        console.log(result);
+        setFavoriteDaily(result.content);
+        maxPage.current = result.totalPages;
+      } else {
+        setFavoriteDaily(null);
+        setPage(1);
+      }
     };
     asyncfunc();
   }, [page]);
@@ -71,6 +76,7 @@ const FavoriteDailyList = () => {
               <FavoriteDailyItem
                 item={item}
                 setIsDetailPage={setIsDetailPage}
+                setPage={setPage}
                 key={index}
               />
             ))

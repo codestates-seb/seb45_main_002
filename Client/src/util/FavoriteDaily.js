@@ -1,4 +1,6 @@
 import axios from "axios";
+import { deleteDailyMealId } from "./Diet";
+
 const token = localStorage.getItem("Authorization");
 const url = "http://43.201.194.176:8080";
 
@@ -64,18 +66,6 @@ export const getFavoriteDailyMeal = async (page = 1) => {
     .get(`${url}/dailymeals?page=${page}&size=6`, {
       headers: { Authorization: token },
     })
-    .then((response) => {
-      console.log(response);
-      return response.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
-
-export const getDailyMealId = async (id) => {
-  return await axios
-    .get(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
     .then((response) => {
       console.log(response);
       return response.data;
