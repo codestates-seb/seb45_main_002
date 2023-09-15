@@ -1,4 +1,4 @@
-package NutrientsCoders.main_project.dailymeal.dto;
+package NutrientsCoders.main_project.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

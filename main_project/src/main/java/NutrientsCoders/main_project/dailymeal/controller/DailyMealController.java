@@ -3,7 +3,7 @@ package NutrientsCoders.main_project.dailymeal.controller;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
-import NutrientsCoders.main_project.dailymeal.dto.PagedResponse;
+import NutrientsCoders.main_project.utils.PagedResponse;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;

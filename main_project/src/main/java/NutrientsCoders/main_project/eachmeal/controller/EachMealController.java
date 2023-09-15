@@ -1,6 +1,6 @@
 package NutrientsCoders.main_project.eachmeal.controller;
 
-import NutrientsCoders.main_project.dailymeal.dto.PagedResponse;
+import NutrientsCoders.main_project.utils.PagedResponse;
 import NutrientsCoders.main_project.eachmeal.dto.EachMealDto;
 import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseDto;
 import NutrientsCoders.main_project.eachmeal.dto.EachMealResponseSimpleDto;
