@@ -1,47 +1,55 @@
+import { styled } from "styled-components";
 import Button from "../../atom/button";
-import useZustand from "../../zustand/Store";
 
-const FavoriteDailyItem = (item) => {
-  const { setMeal } = useZustand.useDailyMeals();
+const DivItemStyle = styled.div`
+  position: relative;
+  width: 200px;
+  height: 200px;
+  gap: 5px;
 
+  & > button:first-child {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 20px 40px 20px;
+  }
+
+  & > button:last-child {
+    position: absolute;
+    left: calc(100px - 10px);
+    bottom: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 14px;
+  }
+`;
+
+const FavoriteDailyItem = ({ item, setIsDetailPage }) => {
   const loadFavoriteMealOnClickHandler = async () => {
-    // setMeal()
-    return null;
+    setIsDetailPage(item.dailyMealId);
   };
 
   const deleteFavoriteMealOnClickHandler = async () => {
+    console.log("deleteFavoriteMealOnClickHandler!");
     return null;
   };
 
   return (
-    <Button
-      onClick={loadFavoriteMealOnClickHandler}
-      style={{
-        width: "200px",
-        height: "200px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "5px",
-      }}
-    >
-      <h3>{item.item.name}</h3>
-      <p> 칼로리: {item.item.totalDailyKcal}kcal</p>
-      <p> 탄수화물: {item.item.totalDailyCarbo}g</p>
-      <p> 단백질: {item.item.totalDailyProtein}g</p>
-      <p> 지방: {item.item.totalDailyFat}g</p>
-      <Button
-        onClick={deleteFavoriteMealOnClickHandler}
-        primary={false}
-        style={{
-          width: "20px",
-          height: "20px",
-          borderRadius: "50%",
-          fontSize: "14px",
-        }}
-      >
+    <DivItemStyle>
+      <Button onClick={loadFavoriteMealOnClickHandler}>
+        <h3>{item.name}</h3>
+        <p> 칼로리: {item.totalDailyKcal}kcal</p>
+        <p> 탄수화물: {item.totalDailyCarbo}g</p>
+        <p> 단백질: {item.totalDailyProtein}g</p>
+        <p> 지방: {item.totalDailyFat}g</p>
+      </Button>
+      <Button onClick={deleteFavoriteMealOnClickHandler} primary={false}>
         X
       </Button>
-    </Button>
+    </DivItemStyle>
   );
 };
 export default FavoriteDailyItem;

@@ -3,6 +3,7 @@ import { getFavoriteDailyMeal } from "../../util/FavoriteDaily";
 import FavoriteDailyItem from "./FavoriteDailyItem";
 import { styled } from "styled-components";
 import Button from "../../atom/button";
+import FavoriteDailyDetail from "./FavoriteDailyDetail";
 
 const DivStyle = styled.div`
   display: flex;
@@ -34,6 +35,7 @@ const FavoriteDailyList = () => {
   const [page, setPage] = useState(1);
   const [FavoriteDaily, setFavoriteDaily] = useState(null);
   const maxPage = useRef(0);
+  const [isDetailPage, setIsDetailPage] = useState(null);
 
   useEffect(() => {
     const asyncfunc = async () => {
@@ -52,11 +54,26 @@ const FavoriteDailyList = () => {
     });
   };
 
+  if (isDetailPage) {
+    return (
+      <FavoriteDailyDetail
+        id={isDetailPage}
+        setIsDetailPage={setIsDetailPage}
+      />
+    );
+  }
+
   return (
     <DivStyle>
       <div>
         {Array.isArray(FavoriteDaily)
-          ? FavoriteDaily.map((item) => <FavoriteDailyItem item={item} />)
+          ? FavoriteDaily.map((item, index) => (
+              <FavoriteDailyItem
+                item={item}
+                setIsDetailPage={setIsDetailPage}
+                key={index}
+              />
+            ))
           : null}
       </div>
       <div>

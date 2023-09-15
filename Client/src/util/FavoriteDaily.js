@@ -2,10 +2,16 @@ import axios from "axios";
 const token = localStorage.getItem("Authorization");
 const url = "http://43.201.194.176:8080";
 
-export const postFavoriteDailyMeal = async (eachMeals, name = "") => {
-  //De=ailyMeaal
+export const postFavoriteDailyMeal = async (
+  eachMeals,
+  name = "",
+  date = ""
+) => {
+  //date가 ""일 경우 Daily에서 FavoriteDaily생성
+  //date가 날짜일 경우 FavoriteDaily에서 Daily생성
   const newEachMealID = [];
   for (let eachMeal of eachMeals) {
+    //끼니 복사
     newEachMealID.push(
       await axios
         .post(
@@ -33,13 +39,13 @@ export const postFavoriteDailyMeal = async (eachMeals, name = "") => {
         })
     );
   }
-
+  //복사된 끼니를 포함하여 FavoriteDaily 추가
   axios
     .post(
       `${url}/dailymeals`,
       {
         name: name,
-        date: null,
+        date: date ? date : null,
         eachMeals: newEachMealID,
       },
       { headers: { Authorization: token } }
@@ -53,10 +59,23 @@ export const postFavoriteDailyMeal = async (eachMeals, name = "") => {
 };
 
 export const getFavoriteDailyMeal = async (page = 1) => {
+  //FavoriteDailyList Get요청
   return axios
     .get(`${url}/dailymeals?page=${page}&size=6`, {
       headers: { Authorization: token },
     })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getDailyMealId = async (id) => {
+  return await axios
+    .get(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
     .then((response) => {
       console.log(response);
       return response.data;
