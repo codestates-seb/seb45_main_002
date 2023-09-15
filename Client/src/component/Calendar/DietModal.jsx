@@ -19,10 +19,7 @@ const DietForm = (content) => {
   return (
     <>
       <DietContainer>
-        <DietContent>
-          {content}
-          dietcontent 입니다
-        </DietContent>
+        <DietContent>{content}</DietContent>
       </DietContainer>
     </>
   );
