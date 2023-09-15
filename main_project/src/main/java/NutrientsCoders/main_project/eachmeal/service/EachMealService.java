@@ -61,8 +61,8 @@ public class EachMealService {
   public EachMeal updateEachMeal(long memberId, EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId, memberId);
     eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
-    List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
-    findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
+    List<EachMealFood> findFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
+    findEachMeal.setEachMealFoods(findFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
     findEachMeal.setFavorite(eachMeal.getFavorite());
     findEachMeal.calculateTotal();

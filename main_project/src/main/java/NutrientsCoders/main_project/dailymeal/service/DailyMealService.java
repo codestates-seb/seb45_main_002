@@ -70,6 +70,7 @@ public class DailyMealService {
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
     findDailyMeal.setName(dailyMeal.getName());
+    findDailyMeal.calculateTotal();
     return dailyMealRepository.save(findDailyMeal);
   }
   //선택 식단 삭제(ID)
