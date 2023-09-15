@@ -89,14 +89,17 @@ const IsEachFood = ({ item, timeslot, index }) => {
       </p>
       {nowTimeSlot === timeslot ? (
         <Button
+          primary={true}
           style={{
-            width: "28px",
-            height: "28px",
+            width: "20px",
+            height: "20px",
             borderRadius: "50%",
+            fontSize: "14px",
+            fontWeight: "800",
           }}
           onClick={deleteOnClickHandler}
         >
-          ❌
+          X
         </Button>
       ) : null}
     </StyleFood>

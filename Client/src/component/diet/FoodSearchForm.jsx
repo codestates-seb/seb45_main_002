@@ -23,7 +23,6 @@ const FormDiv = styled.div`
 
   ul {
     list-style-type: none;
-    gap: 5px;
   }
 `;
 
