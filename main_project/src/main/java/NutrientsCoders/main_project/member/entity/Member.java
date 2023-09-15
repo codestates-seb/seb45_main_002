@@ -52,13 +52,8 @@ public class Member {
 
     @Column
     private Float bmi;
-
-    //@OneToMany(mappedBy = "food")
-    //private List<food> avoid = new ArrayList<>();
-
     @Column
     private String imageUrl;
-
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

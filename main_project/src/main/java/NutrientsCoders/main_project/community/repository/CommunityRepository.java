@@ -14,5 +14,4 @@ public interface CommunityRepository extends JpaRepository<Community,Long> {
     Page<Community> findByCommunityTitle(@Param("keyword")String keyword, Pageable pageable);
     @Query("SELECT c from Community c where c.communityId = :communityId")
     Community findByCommunityId(long communityId);
-
 }
