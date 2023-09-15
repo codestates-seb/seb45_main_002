@@ -2,6 +2,7 @@ package NutrientsCoders.main_project.eachmeal.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class EachMeal {
   @OneToMany(mappedBy = "eachMeal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<EachMealFood> eachMealFoods;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "DAILYMEAL_ID")
   private DailyMeal dailyMeal;

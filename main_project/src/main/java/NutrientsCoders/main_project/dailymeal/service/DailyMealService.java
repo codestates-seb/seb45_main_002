@@ -54,8 +54,8 @@ public class DailyMealService {
     Page<DailyMeal> dailyMeals = dailyMealRepository.findAllfavoriteByMemeberId(memberId, pageable);
     
     return Optional.of(dailyMeals)
-        .filter(list -> !list.isEmpty())
-        .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
+            .filter(list -> !list.isEmpty())
+            .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
   //선택 식단 수정(ID)
   @Transactional
