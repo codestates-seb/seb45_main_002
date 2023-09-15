@@ -21,6 +21,10 @@ const DivButton = styled.div`
   button {
     width: calc(50% - 5px);
   }
+
+  @media (max-width: 800px) {
+    width: calc(100% - 10px);
+  }
 `;
 
 const DivTotal = styled.div`
