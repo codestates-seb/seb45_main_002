@@ -5,14 +5,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@TableGenerator(name = "generator", initialValue = 10000)
 @Getter
 @Setter
 @Entity
 public class Food {
   
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE, generator = "generator")
   @Column(name = "FOOD_ID")
   private Long foodId;
   
