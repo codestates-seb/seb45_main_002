@@ -172,7 +172,7 @@ function MyPage() {
       weight : user.weight,
       gender : user.gender,
       age : user.age,
-      activity : 0
+      activity : user.activity
     },{
       headers:{
         Authorization: localStorage.getItem("Authorization")

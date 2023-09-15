@@ -5,7 +5,6 @@ import axios from "axios";
 import { styled } from "styled-components";
 
 import Article from "../component/Article";
-import SearchForm from "../component/SearchForm";
 
 import useZustand from "../zustand/Store";
 
@@ -47,12 +46,13 @@ const Pagenation = styled.ul`
 const PageButton = styled.li`
   margin: ${style.layout.wideMargin.width};
   cursor: pointer;
-  ${props=>props.className===props.nowPage? "color: rgb(0,0,0); text-decoration: underline;" : "color: rgb(50, 50, 50);"}
+  ${props=>props.className===Number(props.nowPage)? "color: rgb(0,0,0); font-weight: bolder; text-decoration: underline;" : "color: rgb(100, 100, 100);"}
 `
 
 const CommunityList = () => {
 
   const [nowPage, setNowPage] = useState(1)
+  const [pageInfo, setPageInfo] = useState({})
   const [articles, setArticles] = useState([
     {communityTitle: "게시물 제목 1", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
     {communityTitle: "게시물 제목 2", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
@@ -62,13 +62,26 @@ const CommunityList = () => {
     {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
     {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333}
   ])
+  const [searchTerm, setSearchTerm] = useState("");
+console.log(pageInfo)
   function loadArticlesList(){
-    axios.get("http://43.201.194.176:8080/community?page="+nowPage+"&size=5")
-    .then(res=>{
-      console.log(res, "글 목록 불러오기를 성공했습니다.")
-      setArticles(res.data.data)
-    })
-    .catch(err=>console.log(err,"글 목록 불러오기를 실패했습니다."))
+    // const matches = searchTerm.match(/[가-힣A-Za-z0-9]+/g);
+    // if(searchTerm&&matches){
+      axios.get("http://43.201.194.176:8080/community/title-search?keyword="+searchTerm+"&page="+nowPage+"&size=5")
+      .then(res=>{
+        setPageInfo(res.data.pageInfo)
+        setArticles(res.data.data)
+      })
+      .catch(err=>console.log(err, "검색기능 실패"))
+    // }
+    // else{
+      // axios.get("http://43.201.194.176:8080/community?page="+nowPage+"&size=5")
+    //   .then(res=>{
+    //     console.log(res, "글 목록 불러오기를 성공했습니다.")
+    //     setArticles(res.data.data)
+    //   })
+    //   .catch(err=>console.log(err,"글 목록 불러오기를 실패했습니다."))
+    // }
   }
   useEffect(loadArticlesList,[nowPage])
 
@@ -88,14 +101,31 @@ const CommunityList = () => {
       ))}
       <Pagenation>
         <PageButton onClick={()=>setNowPage(1)}>⇠</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 1 : Number(nowPage)-2} onClick={pagenation}>{nowPage<3? 1 : Number(nowPage)-2}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 2 : Number(nowPage)-1} onClick={pagenation}>{nowPage<3? 2 : Number(nowPage)-1}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 3 : Number(nowPage)} onClick={pagenation}>{nowPage<3? 3 : Number(nowPage)}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 4 : Number(nowPage)+1} onClick={pagenation}>{nowPage<3? 4 : Number(nowPage)+1}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 5 : Number(nowPage)+2} onClick={pagenation}>{nowPage<3? 5 : Number(nowPage)+2}</PageButton>
-        <PageButton onClick={()=>setNowPage(1)}>⇢</PageButton>
+        <PageButton
+         nowPage={nowPage}
+         className={
+          nowPage<3? 1 :
+            (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-4 : Number(nowPage)-2)
+         }
+         onClick={pagenation}>
+          {
+            nowPage<3? 1 :
+              (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-4 : Number(nowPage)-2)
+          }
+        </PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 2 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-3 : Number(nowPage)-1)} onClick={pagenation}>{nowPage<3? 2 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-3 : Number(nowPage)-1)}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 3 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-2 : Number(nowPage))} onClick={pagenation}>{nowPage<3? 3 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-2 : Number(nowPage))}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 4 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-1 : Number(nowPage)+1)} onClick={pagenation}>{nowPage<3? 4 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-1 : Number(nowPage)+1)}</PageButton>
+        <PageButton nowPage={nowPage} className={nowPage<3? 5 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages) : Number(nowPage)+2)} onClick={pagenation}>{nowPage<3? 5 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages) : Number(nowPage)+2)}</PageButton>
+        <PageButton onClick={()=>setNowPage(Number(pageInfo.totalPages))}>⇢</PageButton>
       </Pagenation>
-      <SearchForm />
+      <input
+        type="text"
+        placeholder="Enter로 검색"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyUp={e=>e.key==="Enter"? (searchTerm? loadArticlesList() : alert("검색어를 입력해주세요.")) : null}
+      />
     </CommunityContainer>
   );
 };
