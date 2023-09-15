@@ -4,6 +4,7 @@ import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,12 +32,11 @@ public class Community extends CommunityBaseTime {
     private long communityViewCount = 0L;
     @Column
     private int communityLike = 0;
-    @Column
-    private long date;
     @ElementCollection
     @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
     @Column(name = "LIKE_MEMBERS",insertable = false)
     private List<Long> likeMembers;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DAILYMEAL_ID", nullable = true)
     private DailyMeal dailyMeal;

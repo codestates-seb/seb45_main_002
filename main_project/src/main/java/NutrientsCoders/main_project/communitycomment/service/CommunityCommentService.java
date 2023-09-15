@@ -18,12 +18,10 @@ import java.util.Optional;
 public class CommunityCommentService {
     private final CommunityCommentRepository communityCommentRepository;
     private final CommunityRepository communityRepository;
-    private final MemberRepository memberRepository;
 
-    public CommunityCommentService(CommunityCommentRepository communityCommentRepository, CommunityRepository communityRepository, MemberRepository memberRepository) {
+    public CommunityCommentService(CommunityCommentRepository communityCommentRepository, CommunityRepository communityRepository) {
         this.communityCommentRepository = communityCommentRepository;
         this.communityRepository = communityRepository;
-        this.memberRepository = memberRepository;
     }
 
     /** 댓글 생성 메서드 **/
@@ -35,6 +33,7 @@ public class CommunityCommentService {
         comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
         return communityCommentRepository.save(comment);
     }
+
 
     /** 댓글 수정 메서드 **/
     public CommunityComment updateCommunityComment(CommunityComment communityComment,long memberId){
@@ -57,7 +56,7 @@ public class CommunityCommentService {
             Optional<CommunityComment> optionalCommunity = communityCommentRepository.findById(communityCommentId);
             optionalCommunity.orElseThrow(()->
                     new LogicException(ExceptionCode.COMMENT_NOT_FOUND));
-            if(optionalCommunity.get().getMemberId() == memberId){
+            if(optionalCommunity.get().getMemberId().equals(memberId)){
                 communityCommentRepository.deleteById(communityCommentId);}
         } catch (NullPointerException e){
             log.warn("null occurred somewhere",e.getCause());

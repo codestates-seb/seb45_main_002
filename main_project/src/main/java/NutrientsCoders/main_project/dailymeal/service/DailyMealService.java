@@ -35,14 +35,12 @@ public class DailyMealService {
         throw new LogicException(ExceptionCode.DATE_EXISTS);
       }
     });
-
     dailyMeal.setEachMeals(eachMeals);
     eachMeals.forEach(e->e.setDailyMeal(dailyMeal));
     dailyMeal.setMember(memberService.findMember(memberId));
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
   }
-  
   //선택 식단 조회(ID)
   @Transactional(readOnly = true)
   public DailyMeal findByDailyMeal(long dailyMealId, long memberId) {
@@ -64,7 +62,6 @@ public class DailyMealService {
     findDailyMeal.setEachMeals(dailyMeal.getEachMeals());
     return dailyMealRepository.save(dailyMeal);
   }
-
   //선택 식단 삭제(ID)
   @Transactional
   public void deleteDailyMeal(long dailyMealId, long memberId) {

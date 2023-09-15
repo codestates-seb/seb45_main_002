@@ -1,10 +1,9 @@
 package NutrientsCoders.main_project.community.service;
 
-import NutrientsCoders.main_project.Analysis.service.AnalysisService;
+
+import NutrientsCoders.main_project.community.dto.CommunityPostDto;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
-
-import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
 import NutrientsCoders.main_project.member.repository.MemberRepository;
 import NutrientsCoders.main_project.utils.exception.LogicException;
@@ -22,21 +21,27 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
     private final DailyMealService dailyMealService;
-    private final AnalysisService analysisService;
 
-    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealService dailyMealService, AnalysisService analysisService) {
+    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealService dailyMealService) {
         this.communityRepository = communityRepository;
         this.memberRepository = memberRepository;
         this.dailyMealService = dailyMealService;
-        this.analysisService = analysisService;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
 
-    public Community createCommunity(Community community, long memberId){
+//    public Community createCommunity(Community community, long memberId){
+//        community.setMember(memberRepository.findByMemberId(memberId));
+//        community.setDailyMeal(dailyMealService.findByDailyMeal(community.getDailyMeal().getDailyMealId(),memberId));
+//        return communityRepository.save(community);
+//    }
+
+    public Community createCommunity(CommunityPostDto communityPostDto, long memberId){
+        Community community = new Community();
         community.setMember(memberRepository.findByMemberId(memberId));
-        // 선택한 식단으로 저장 띄우기
-        community.setDailyMeal(dailyMealService.findByDailyMeal(community.getDailyMeal().getDailyMealId(),memberId));
+        community.setCommunityTitle(communityPostDto.getCommunityTitle());
+        community.setCommunityContent(communityPostDto.getCommunityContent());
+        community.setDailyMeal(dailyMealService.findByDailyMeal(communityPostDto.getDailyMealId(),memberId));
         return communityRepository.save(community);
     }
 
@@ -88,6 +93,7 @@ public class CommunityService {
         Pageable pageable = PageRequest.of(page, size);
         return communityRepository.findByCommunityTitle(keyword,pageable);
     }
+    /** 게시글 추천 **/
     public Community recommendCommunity(long communityId,long memberId){
         Community findCommunityId = communityRepository.findById(communityId).orElse(null);
         if(findCommunityId.isMemberId(memberId) == false) {

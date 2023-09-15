@@ -8,7 +8,6 @@ import java.util.List;
 
 @Getter
 public class DailyMealDto {
-  
   @NotNull
   private LocalDate date;
   
