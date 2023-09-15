@@ -39,20 +39,30 @@ const StyleEachMeal = styled.div`
     justify-content: right;
     align-items: center;
   }
+`;
 
-  & > div > button {
-    width: 100%;
-    border-top: 0 !important;
-    border-radius: 0;
+const DivSummary = styled.div`
+  width: 100%;
+  height: 48px;
+  background-color: white;
+  border: 2px solid #ffc123;
+  border-top: 0 !important;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
-    &:last-child {
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-    }
+  p {
+    font-size: 12px;
+  }
 
-    &:disabled {
-      border-color: #ffc123;
-    }
+  & > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    gap: 5px;
   }
 `;
 
@@ -76,15 +86,26 @@ const IsEachMeal = ({ timeslot }) => {
             />
           );
         }) ?? null}
-        <Button
-          onClick={() => {
-            setNowTimeSlot(timeslot);
-          }}
-          disabled={nowTimeSlot === timeslot ? true : null}
-          style={{ fontSize: "14px" }}
-        >
-          끼니 수정하기
-        </Button>
+        <DivSummary>
+          <div>
+            <p>칼로리: {eachMeal.totalEachKcal}kcal</p>
+            <p>단백질: {eachMeal.totalEachProtein}g</p>
+          </div>
+          <div>
+            <p>탄수화물: {eachMeal.totalEachCarbo}g</p>
+            <p>지방: {eachMeal.totalEachFat}g</p>
+          </div>
+          <Button
+            onClick={() => {
+              setNowTimeSlot(timeslot);
+            }}
+            disabled={nowTimeSlot === timeslot ? true : null}
+            size={"small"}
+            style={{ fontSize: "14px" }}
+          >
+            끼니 수정하기
+          </Button>
+        </DivSummary>
       </div>
       {nowTimeSlot === timeslot ? <FoodSearchForm timeslot={timeslot} /> : null}
     </StyleEachMeal>
