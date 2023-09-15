@@ -1,103 +1,124 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-import GetDailyDiet from "../component/diet/GetDailyDiet";
+import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
-import GetFoodKeyword from "../component/diet/GetFoodKeyword";
 import Button from "../atom/button";
+import useZustand from "../zustand/Store";
 
 const StyleDiet = styled.div`
-  background-color: #d9d9d9;
+  width: 100%;
 `;
 
-function Diet() {
-  const { date } = useParams();
-  const getmeal = GetDailyDiet(date);
+const DivTotal = styled.div`
+  width: calc(100%-10px);
+  margin: 10px 5px 0 5px;
+  padding: 10px 20px;
+  height: 180px;
+  background-color: white;
+  border-radius: 8px;
+  font-size: 14px;
 
-  const [meal, setMeal] = useState();
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 
-  useEffect(() => {
-    setMeal(() => getmeal);
-  }, [getmeal, date]);
+  h3 {
+    font-size: 18px;
+    margin-right: 10px;
+  }
 
-  const [inputSearchFood, setInputSearchFood] = useState("");
-  const [searchFoodList, setSearchFoodList] = useState([]);
+  & > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
 
-  useEffect(() => {
-    if (inputSearchFood) {
-      const funcasync = async () => {
-        const result = await GetFoodKeyword(inputSearchFood);
-        await setSearchFoodList(() => result);
-      };
-      funcasync();
-    } else {
-      setSearchFoodList(() => []);
+    p {
+      width: 50%;
     }
-  }, [inputSearchFood]);
+  }
+`;
 
-  if (meal) {
+const StyleNewDiet = styled.div`
+  width: 100%;
+  margin: calc(50vh - 120px) 0;
+  display: flex;
+  justify-content: center;
+  h3 {
+    font-size: 16px;
+  }
+  div {
+    width: 240px;
+    height: 180px;
+    background-color: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+`;
+
+const Diet = () => {
+  const { date } = useParams();
+  const { meal, setMeal } = useZustand.useDailyMeals();
+  useEffect(() => {
+    const asyncfunc = async () => {
+      setMeal(await GetDailyDiet(date));
+    };
+    asyncfunc();
+    console.log(meal);
+  }, [date]);
+
+  const AddDailyMealOnClickHandler = async () => {
+    setMeal(await PostDailyMeal(date));
+  };
+
+  if (meal === null) {
+    return <div>로그인 후 이용해주세요</div>;
+  }
+
+  if (meal === "DailyMeal not found...") {
     return (
-      <StyleDiet>
-        <div className="breakfast"></div>
-        <div className="lunch"></div>
-        <div className="dinner"></div>
-        {Array.isArray(meal) ? (
-          meal.eachMeals.map((eachmeal, index) => {
-            return (
-              <EachMeal
-                key={index}
-                howeach={
-                  eachmeal.timeSlots === 1
-                    ? "breakfast"
-                    : index === 2
-                    ? "lunch"
-                    : index === 3
-                    ? "dinner"
-                    : ""
-                }
-                eachmeal={eachmeal}
-              />
-            );
-          })
-        ) : (
-          <>meal data가 없습니다</>
-        )}
+      <StyleNewDiet>
         <div>
-          <input
-            placeholder="검색할 음식의 이름을 입력하세요"
-            onInput={(e) => setInputSearchFood(e.target.value)}
-            value={inputSearchFood}
-          />
-          <ul>
-            {Array.isArray(searchFoodList) ? (
-              searchFoodList.map((item, index) => (
-                <li key={index}>
-                  <p>
-                    {item.foodName}: {item.kcal}kcal
-                  </p>
-                  {/* <button onClick={() => AddFoodHandler(item.foodName, item.kcal)}>
-              +
-            </button> */}
-                </li>
-              ))
-            ) : (
-              <>Err</>
-            )}
-          </ul>
+          <h3>저장된 식단이 아직 없습니다.</h3>
+          <Button primary={true} onClick={AddDailyMealOnClickHandler}>
+            커스텀 식단 만들기
+          </Button>
+          <Button>저장해둔 식단 불러오기</Button>
         </div>
+      </StyleNewDiet>
+    );
+  }
+
+  return (
+    <StyleDiet>
+      {[1, 2, 3].map((timeslot, index) => (
+        <EachMeal key={index} timeslot={timeslot} index={index} />
+      ))}
+
+      <DivTotal>
+        {/* 하루 총 평 */}
         <div>
           <h3>하루 섭취량</h3>
-          <p>칼로리: {meal.totalDailyKcal}</p>
-          <p>탄수화물: {meal.totalDailyCarbo}</p>
-          <p>단백질: {meal.totalDailyProtein}</p>
-          <p>지방: {meal.totalDailyFat}</p>
+          <Button primary={true} size={"small"}>
+            자세히 분석하기
+          </Button>
         </div>
-      </StyleDiet>
-    );
-  } else {
-    return <Button>error</Button>;
-  }
-}
+        <div>
+          <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
+          <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
+        </div>
+        <div>
+          <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
+          <p>지방: {meal?.totalDailyFat ?? ""}g</p>
+        </div>
+      </DivTotal>
+    </StyleDiet>
+  );
+};
 
 export default Diet;
