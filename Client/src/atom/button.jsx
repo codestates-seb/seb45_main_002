@@ -76,13 +76,14 @@ const ButtonStyle = styled.button`
   }
 `;
 
-const Button = ({ children, onClick, disabled, primary, size }) => {
+const Button = ({ children, onClick, disabled, primary, size, style }) => {
   return (
     <ButtonStyle
       disabled={disabled}
       primary={primary}
       size={size}
       onClick={onClick}
+      style={{ ...style }}
     >
       {children}
     </ButtonStyle>

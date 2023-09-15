@@ -1,8 +1,11 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-
 const token = localStorage.getItem("Authorization");
 const url = "http://43.201.194.176:8080";
+
+const today = new Date();
+let year = today.getFullYear(); // 년도
+let month = today.getMonth() + 1; // 월
+let date = today.getDate(); //일
 
 export const GetFoodKeyword = async (value) => {
   return axios
@@ -66,80 +69,102 @@ export const PostEachMeal = async (meal, timeslot) => {
 };
 
 export const GetFood = (foodId) => {
-  const [food, setFood] = useState();
-  axios
+  return axios
     .get(`${url}/foods/${foodId}`, {
       headers: { Authorization: token },
     })
     .then((response) => {
       // 성공한 경우 실행
       console.log(response);
-      setFood(() => {
-        return response.data;
-      });
+      return response.data;
     })
     .catch((error) => {
       // 에러인 경우 실행
       console.log(error);
     });
-  return food;
 };
 
-const today = new Date();
-let year = today.getFullYear(); // 년도
-let month = today.getMonth() + 1; // 월
-let date = today.getDate(); //일
-
-export const GetDailyDiet = (
+export const GetDailyDiet = async (
   dateStr = `${year}-${month >= 10 ? month : "0" + month}-${
     date >= 10 ? date : "0" + date
   }`
 ) => {
+  return axios
+    .get(`${url}/dailymeals/date/${dateStr}`, {
+      headers: { Authorization: token },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      //불러오기 실패시 post요청으로 dailymeals 생성
+      if (error.response.data === "DailyMeal not found...") {
+        return null;
+      }
+    });
+};
+
+export const PostDailyMeal = async (dateStr) => {
   const url1 = `${url}/dailymeals`;
-  const url2 = `${url}/dailymeals/date/${dateStr}`;
-  console.log(url2);
-  const [meal, setMeal] = useState();
+  return axios
+    .post(
+      url1,
+      {
+        name: "name",
+        date: dateStr,
+        favorite: false,
+        eachMeals: [],
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-  useEffect(() => {
-    axios
-      .get(url2, {
-        headers: { Authorization: token },
-      })
-      .then((response) => {
-        console.log(response);
-        setMeal(() => response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        //불러오기 실패시 post요청으로 dailymeals 생성
-        if (error.response.data === "DailyMeal not found...") {
-          axios
-            .post(
-              url1,
-              {
-                name: "name",
-                date: dateStr,
-                favorite: false,
-                eachMeals: [],
-              },
-              {
-                headers: {
-                  Authorization: token,
-                },
-              }
-            )
-            .then((response) => {
-              console.log(response);
-              setMeal(() => {
-                setMeal(response.data);
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        }
+export const changeEachMeal = async (
+  dailymealId,
+  eachmeal,
+  timeslot,
+  foodId,
+  quantity
+) => {
+  let quantityfoods = [];
+  if (eachmeal.quantityfoods) {
+    if (Array.isArray(eachmeal.quantityfoods)) {
+      quantityfoods = eachmeal.quantityfoods.map((item) => {
+        return { foodId: item.foodId, quantity: item.quantity };
       });
-  }, [dateStr, url1, url2]);
+    }
+  }
+  console.log(eachmeal);
+  console.log(eachmeal.eachMealId);
 
-  return meal;
+  return axios
+    .patch(
+      `${url}/eachmeals/${eachmeal.eachMealId}`,
+      {
+        dailymealId: dailymealId,
+        timeSlots: timeslot,
+        foods: [...quantityfoods, { foodId: foodId, quantity: quantity }],
+      },
+      { headers: { Authorization: token } }
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
