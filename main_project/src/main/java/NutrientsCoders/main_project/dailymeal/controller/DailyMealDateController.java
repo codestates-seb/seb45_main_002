@@ -1,9 +1,8 @@
 package NutrientsCoders.main_project.dailymeal.controller;
 
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
-import NutrientsCoders.main_project.utils.PagedResponse;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealDateService;
@@ -70,11 +69,12 @@ public class DailyMealDateController {
                                                              @PathVariable("dateStr") String dateStr) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     LocalDate date = LocalDate.parse(dateStr);
+    DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
                                            .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
                                            .collect(Collectors.toList());
     
-    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(memberId, date, eachMeals);
+    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(dailyMeal, memberId, date, eachMeals);
     DailyMealResponseDto response
         = dailyMealMapper.dailyMealToDailyMealResponseDto(updateDailyMeal);
     return new ResponseEntity<>(response, HttpStatus.OK);

@@ -4,6 +4,7 @@ import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealDateRepository;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
@@ -19,10 +20,13 @@ import java.util.Optional;
 public class DailyMealService {
   private final DailyMealRepository dailyMealRepository;
   private final DailyMealDateRepository dailyMealDateService;
+  private final EachMealService eachMealService;
   private final MemberService memberService;
-  public DailyMealService(DailyMealRepository dailyMealRepository, DailyMealDateRepository dailyMealDateService, MemberService memberService) {
+  
+  public DailyMealService(DailyMealRepository dailyMealRepository, DailyMealDateRepository dailyMealDateService, EachMealService eachMealService, MemberService memberService) {
     this.dailyMealRepository = dailyMealRepository;
     this.dailyMealDateService = dailyMealDateService;
+    this.eachMealService = eachMealService;
     this.memberService = memberService;
   }
   
@@ -48,7 +52,7 @@ public class DailyMealService {
     return verifyExistsEachMeal(dailyMealId, memberId);
   }
   
-  //전체 식단 조회(선호)
+  //전체 식단 조회(not null)
   @Transactional(readOnly = true)
   public Page<DailyMeal> findByfavoritDailyMeals(long memberId, Pageable pageable) {
     Page<DailyMeal> dailyMeals = dailyMealRepository.findAllfavoriteByMemeberId(memberId, pageable);
@@ -59,14 +63,9 @@ public class DailyMealService {
   }
   //선택 식단 수정(ID)
   @Transactional
-  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) throws Exception {
-    //날짜 입력시
-    if (!(dailyMeal.getDate() == null)){
-    DailyMeal dailyMealWithDate = createDailyMeal(dailyMeal, eachMeals, memberId);
-      return dailyMealRepository.save(dailyMealWithDate);
-    }
-    
+  public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
+    eachMealService.deleteEachMeals(dailyMealId);
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
     findDailyMeal.setName(dailyMeal.getName());

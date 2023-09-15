@@ -76,6 +76,12 @@ public class EachMealService {
     eachMealRepository.delete(verifyExistsEachMeal(eachMealId, memberId));
   }
   
+  @Transactional
+  public void deleteEachMeals(long dailyMealId) {
+    List<EachMeal> findEachMeal = eachMealRepository.findByDailyMeal_DailyMealId(dailyMealId);
+    eachMealRepository.deleteAll(findEachMeal);
+  }
+  
   //전체 eachMealFood 목록 삭제
   private EachMeal verifyExistsEachMeal(long eachMealId, long memberId) {
     Optional<EachMeal> optionalEachMeal = eachMealRepository.findByEachMealId(eachMealId, memberId);

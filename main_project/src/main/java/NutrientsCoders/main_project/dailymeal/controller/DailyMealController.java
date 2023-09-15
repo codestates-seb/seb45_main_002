@@ -64,7 +64,7 @@ public class DailyMealController {
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
   
-  //저장한 끼니(선호 끼니)를 불러와 식단 저장
+  //식단 저장시 끼니 객체 복사(선호 끼니 용)
   @PostMapping("/favorite")
   public ResponseEntity<DailyMealResponseDto> createDailyMealByFavorite(@RequestHeader("Authorization") String token,
                                                            @RequestBody DailyMealDto dailyMealDto) throws Exception {

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 @Getter
 public class EachMealDto {
-  private long dailymealId;
   private Integer timeSlots;
   private Boolean favorite;
   private List<EachMealFoodDto> foods;

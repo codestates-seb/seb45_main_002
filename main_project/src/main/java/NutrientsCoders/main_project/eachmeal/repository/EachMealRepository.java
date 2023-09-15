@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EachMealRepository extends JpaRepository<EachMeal, Long> {
@@ -20,4 +21,6 @@ public interface EachMealRepository extends JpaRepository<EachMeal, Long> {
   
   @Query("SELECT e FROM EachMeal e WHERE e.member.memberId = :memberId AND e.favorite = true")
   Page<EachMeal> findFavoriteEachMealByMemberId(@Param("memberId") long memberId, Pageable pageable);
+  
+  List<EachMeal> findByDailyMeal_DailyMealId(long dailyMealId);
 }
