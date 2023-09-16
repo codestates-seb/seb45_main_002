@@ -168,7 +168,7 @@ function CommunityDetail(){
     setCommunityId(params["*"])
     axios.get("http://43.201.194.176:8080/community/"+params["*"])
     .then(res=>{
-      console.log(res)
+      console.log(res.data)
       setComment({...comment,commentList: res.data.communityCommentList})
       setDetail(res.data)
       setMember(res.data.member)
@@ -344,8 +344,7 @@ function CommunityDetail(){
       <CommentsAndUserProfile>
         <CommentsOpener>
           <span onClick={sendLike}>
-            <i className="fa-solid fa-heart"></i>좋아요 {detail.recommendationCount}
-            {/* <i className="fa-thin fa-heart"></i> */}
+            {detail.communityLike? <i className="fa-solid fa-heart"></i> : <i class="fa-regular fa-heart"></i>}좋아요 {detail.recommendationCount}
           </span>
           <span onClick={()=>setHide(!hide)}>
             <i className="fa-solid fa-comment"></i>댓글보기

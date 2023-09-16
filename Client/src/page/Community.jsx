@@ -67,30 +67,19 @@ const CommunityList = () => {
 
   function loadArticlesList(){
     setCommunityId("")
-    // const matches = searchTerm.match(/[가-힣A-Za-z0-9]+/g);
-    // if(searchTerm&&matches){
-      axios.get("http://43.201.194.176:8080/community/title-search?keyword="+searchTerm+"&page="+nowPage+"&size=5")
-      .then(res=>{
-        setPageInfo(res.data.pageInfo)
-        setArticles(res.data.data)
-      })
-      .catch(err=>console.log(err, "검색기능 실패"))
-    // }
-    // else{
-      // axios.get("http://43.201.194.176:8080/community?page="+nowPage+"&size=5")
-    //   .then(res=>{
-    //     console.log(res, "글 목록 불러오기를 성공했습니다.")
-    //     setArticles(res.data.data)
-    //   })
-    //   .catch(err=>console.log(err,"글 목록 불러오기를 실패했습니다."))
-    // }
+    axios.get("http://43.201.194.176:8080/community/title-search?keyword="+searchTerm+"&page="+nowPage+"&size=5")
+    .then(res=>{
+      setPageInfo(res.data.pageInfo)
+      setArticles(res.data.data)
+    })
+    .catch(err=>console.log(err, "검색기능 실패"))
   }
   useEffect(loadArticlesList,[nowPage])
 
   function pagenation(e){
     setNowPage(e.target.innerText)
   }
-console.log(articles)
+
   return (
     <CommunityContainer>
       <BtnContainer>
@@ -123,10 +112,10 @@ console.log(articles)
       </Pagenation>
       <input
         type="text"
-        placeholder="Enter로 검색"
+        placeholder="제목을 검색하세요."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyUp={e=>e.key==="Enter"? (searchTerm? loadArticlesList() : alert("검색어를 입력해주세요.")) : null}
+        onChange={e=>setSearchTerm(e.target.value)}
+        onKeyUp={loadArticlesList}
       />
     </CommunityContainer>
   );

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { styled } from "styled-components";
 
@@ -17,16 +17,15 @@ const ArticleContainer = styled.ul`
 `
 
 const ArticleBox = styled.li`
-`
-
-const TitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  border-bottom: 1px solid #ffc1237b;
-  cursor: pointer;
-  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>a{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255, 193, 35, 0.5);
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    font-weight: bold;
+  }
 `
 
 const InfoContainer = styled.div`
@@ -40,31 +39,29 @@ const LikeViewCreate = styled.span`
   border-left: solid 3px orange;
   padding-left: 5px;
   margin-right: ${style.layout.narrowMargin.width};
+  font-size: small;
 `
 
 const Article = ({article}) => {
-
-  const navigate = useNavigate()
-
-  async function openArticle(){
-    navigate(`/pageswitch/community/detail/${article.communityId}`)
-  }
 
   const date = new Date(article.community_createdAt)
 
   return (
     <ArticleContainer>
       <ArticleBox>
-        <TitleContainer onClick={openArticle}>{article.communityTitle}</TitleContainer>
+        <Link to={"/pageswitch/community/detail/"+article.communityId}>{article.communityTitle}</Link>
         <InfoContainer>
+          <LikeViewCreate>
+            {date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 
+          </LikeViewCreate>
           <LikeViewCreate>
             좋아요 {article.recommendationCount}
           </LikeViewCreate>
           <LikeViewCreate>
-            조회수 {article.communityViewCount}
+            댓글 {article.communityCommentContent}
           </LikeViewCreate>
           <LikeViewCreate>
-            {date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 
+            조회수 {article.communityViewCount}
           </LikeViewCreate>
         </InfoContainer>
       </ArticleBox>
