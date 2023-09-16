@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { styled } from "styled-components";
 
-import Article from "../component/Article";
-
 import useZustand from "../zustand/Store";
+
+import Article from "../component/Article";
 
 import style from "../style/style"
 
@@ -63,8 +63,10 @@ const CommunityList = () => {
     {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333}
   ])
   const [searchTerm, setSearchTerm] = useState("");
-console.log(pageInfo)
+  const setCommunityId = useZustand.useCommunityId(state=>state.setCommunityId)
+
   function loadArticlesList(){
+    setCommunityId("")
     // const matches = searchTerm.match(/[가-힣A-Za-z0-9]+/g);
     // if(searchTerm&&matches){
       axios.get("http://43.201.194.176:8080/community/title-search?keyword="+searchTerm+"&page="+nowPage+"&size=5")
@@ -88,7 +90,7 @@ console.log(pageInfo)
   function pagenation(e){
     setNowPage(e.target.innerText)
   }
-
+console.log(articles)
   return (
     <CommunityContainer>
       <BtnContainer>

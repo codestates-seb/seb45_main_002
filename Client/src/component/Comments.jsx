@@ -38,6 +38,7 @@ function Comments({comment}){
         <span>
           {comment.answerComment_createdAt.slice(0,4)}년 {comment.answerComment_createdAt.slice(5,7)}월 {comment.answerComment_createdAt.slice(8,10)}일
         </span>
+        {console.log(comment)}
       </Createed>
     </CommentListBox>
   )

@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 import { styled } from "styled-components";
 
-import useZustand from "../zustand/Store";
-
 import style from "../style/style";
 
 const ArticleContainer = styled.ul`
@@ -48,7 +46,7 @@ const Article = ({article}) => {
 
   const navigate = useNavigate()
 
-  function openArticle(){
+  async function openArticle(){
     navigate(`/pageswitch/community/detail/${article.communityId}`)
   }
 
@@ -66,7 +64,7 @@ const Article = ({article}) => {
             조회수 {article.communityViewCount}
           </LikeViewCreate>
           <LikeViewCreate>
-            {date.getFullYear()}년 {date.getMonth()}월 {date.getDate()}일 
+            {date.getFullYear()}년 {date.getMonth()+1}월 {date.getDate()}일 
           </LikeViewCreate>
         </InfoContainer>
       </ArticleBox>
