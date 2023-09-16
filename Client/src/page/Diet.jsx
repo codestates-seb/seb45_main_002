@@ -9,11 +9,27 @@ import useZustand from "../zustand/Store";
 import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
 import InputAddFavorite from "../component/diet/InputAddFavorite";
+import DeleteModal from "../component/diet/DeleteModal";
 
 const StyleDiet = styled.div`
   width: 100%;
   height: calc(100vh - 60px);
   overflow-y: auto;
+
+  & > p {
+    font-size: 14px;
+    color: #898989;
+    text-align: right;
+    margin-right: 10px;
+    margin-bottom: 40px;
+    cursor: pointer;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: red;
+    }
+  }
 `;
 
 const DivButton = styled.div`
@@ -32,7 +48,7 @@ const DivButton = styled.div`
 
 const DivTotal = styled.div`
   width: calc(100%-10px);
-  margin: 20px 5px 40px 5px;
+  margin: 10px 5px 5px 5px;
   padding: 10px 20px;
   height: 180px;
   background-color: white;
@@ -103,6 +119,13 @@ const Diet = () => {
     setMeal(await PostDailyMeal(date));
   };
 
+  const deleteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <DeleteModal dailyMealId={meal.dailyMealId} setIsModal={setIsModal} />
+    ));
+  };
+
   const addFavoriteDailyOnClickHandler = () => {
     setIsModal(true);
     setModalContents(() => (
@@ -156,7 +179,7 @@ const Diet = () => {
     <>
       {isModal ? (
         <Modal
-          style={{ width: "240px", height: "240px" }}
+          style={{ width: "240px", height: "180px" }}
           isOpen={isModal}
           content={modalContents}
           setIsOpen={setIsModal}
@@ -190,6 +213,7 @@ const Diet = () => {
             <p>지방: {meal?.totalDailyFat ?? ""}g</p>
           </div>
         </DivTotal>
+        <p onClick={deleteDailyOnClickHandler}>식단 삭제하기</p>
       </StyleDiet>
     </>
   );
