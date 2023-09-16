@@ -13,6 +13,7 @@ public class CommunityResponseDto {
     private String communityTitle;
     private String communityContent;
     private Long communityLike;
+    private long communityViewCount;
     private long recommendationCount;
     private long communityCommentCount;
     private LocalDateTime community_createdAt;
