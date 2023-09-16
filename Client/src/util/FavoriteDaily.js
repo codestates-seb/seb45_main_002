@@ -42,7 +42,7 @@ export const postFavoriteDailyMeal = async (
     );
   }
   //복사된 끼니를 포함하여 FavoriteDaily 추가
-  axios
+  return axios
     .post(
       `${url}/dailymeals`,
       {
@@ -54,6 +54,7 @@ export const postFavoriteDailyMeal = async (
     )
     .then((response) => {
       console.log(response);
+      return response.data;
     })
     .catch((error) => {
       console.log(error);

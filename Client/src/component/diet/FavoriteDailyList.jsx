@@ -31,7 +31,7 @@ const DivStyle = styled.div`
   }
 `;
 
-const FavoriteDailyList = () => {
+const FavoriteDailyList = ({ date, setIsModal }) => {
   const [page, setPage] = useState(1);
   const [FavoriteDaily, setFavoriteDaily] = useState(null);
   const maxPage = useRef(0);
@@ -41,9 +41,10 @@ const FavoriteDailyList = () => {
     const asyncfunc = async () => {
       if (page) {
         const result = await getFavoriteDailyMeal(page);
-        console.log(result);
-        setFavoriteDaily(result.content);
-        maxPage.current = result.totalPages;
+        if (result) {
+          setFavoriteDaily(result.content);
+          maxPage.current = result.totalPages;
+        }
       } else {
         setFavoriteDaily(null);
         setPage(1);
@@ -59,11 +60,17 @@ const FavoriteDailyList = () => {
     });
   };
 
+  if (!FavoriteDaily) {
+    return <>불러올 수 있는 식단이 없습니다.</>;
+  }
+
   if (isDetailPage) {
     return (
       <FavoriteDailyDetail
         id={isDetailPage}
         setIsDetailPage={setIsDetailPage}
+        date={date}
+        setIsModal={setIsModal}
       />
     );
   }

@@ -109,7 +109,9 @@ const Diet = () => {
 
   const loadFavoriteDailyOnclickHandler = () => {
     setIsModal(true);
-    setModalContents(() => <FavoriteDailyList />);
+    setModalContents(() => (
+      <FavoriteDailyList date={date} setIsModal={setIsModal} />
+    ));
   };
 
   if (meal === null) {

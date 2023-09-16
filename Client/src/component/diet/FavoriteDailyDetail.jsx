@@ -3,11 +3,14 @@ import Button from "../../atom/button";
 import useZustand from "../../zustand/Store";
 import { useEffect, useState } from "react";
 import { getDailyMealId } from "../../util/Diet";
+import { postFavoriteDailyMeal } from "../../util/FavoriteDaily";
 
 const DivDetailStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  overflow-y: auto;
 
   & > h3 {
     font-size: 22px;
@@ -17,11 +20,14 @@ const DivDetailStyle = styled.div`
   & > div.total {
     margin: 20px 0;
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
   }
 
   & > div:last-child {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
   }
 `;
@@ -47,7 +53,7 @@ const DivEachMealStyle = styled.div`
   }
 `;
 
-const FavoriteDailyDetail = ({ id, setIsDetailPage }) => {
+const FavoriteDailyDetail = ({ id, setIsDetailPage, date, setIsModal }) => {
   const { setMeal } = useZustand.useDailyMeals();
   const [DailyMeal, setDailyMeal] = useState();
 
@@ -63,11 +69,15 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage }) => {
   };
 
   const copyFavoriteMealOnClickHandler = async () => {
-    return null;
-  };
-
-  const loadFavoriteMealOnClickHandler = async () => {
-    return null;
+    console.log(date);
+    const result = await postFavoriteDailyMeal(
+      DailyMeal.eachMeals,
+      "name",
+      date
+    );
+    console.log(result);
+    setMeal(result);
+    setIsModal(false);
   };
 
   if (!DailyMeal) {
