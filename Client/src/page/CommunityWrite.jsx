@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { styled } from "styled-components";
 
@@ -198,7 +198,6 @@ function CommunityWrite(){
   const [onImg,setOnImg] = useState("")
   const [favorites, setFavorites] = useState([])
 
-  const navigate = useNavigate()
 //////// 캘린더로 식단 불러오기
   function loadDietInDate(){
     axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{

@@ -83,7 +83,17 @@ const CommunityList = () => {
   return (
     <CommunityContainer>
       <BtnContainer>
-        <Link to="/pageswitch/community/write"><WriteBtn>글쓰기</WriteBtn></Link>
+        <Link
+          to={
+            localStorage.getItem("Authorization")?
+            "/pageswitch/community/write" : "/pageswitch/community"
+          }
+          onClick={e=>{
+            localStorage.getItem("Authorization")? console.log("") : alert("로그인 후 이용해주시기 바랍니다.")
+          }}
+        >
+          <WriteBtn>글쓰기</WriteBtn>
+        </Link>
       </BtnContainer>
       {articles.map(article => (
         <Article

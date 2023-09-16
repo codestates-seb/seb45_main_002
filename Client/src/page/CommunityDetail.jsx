@@ -368,7 +368,17 @@ function CommunityDetail(){
         </CommentsBox>
       <ExitAndModify>
         <Link to="/pageswitch/community">목록으로 돌아가기</Link>
-        <Link to="/pageswitch/community/write">게시글 수정하기</Link>
+        <Link
+          to={
+            localStorage.getItem("Authorization")?
+            "/pageswitch/community/write" : "/pageswitch/community/"+params["*"]
+          }
+          onClick={e=>{
+            localStorage.getItem("Authorization")? console.log("") : alert("본인이 작성한 게시물만 수정할 수 있습니다.")
+          }}
+        >
+          게시글 수정하기
+        </Link>
       </ExitAndModify>
       <DeleteButton type="button" value="게시글 삭제하기" onClick={articleDelete}></DeleteButton>
     </Container>

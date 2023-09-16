@@ -159,6 +159,7 @@ function MyPage() {
     .then(res=>setUser(res.data))
     .catch(err=>{
       console.log(err,"서버접속 실패")
+      alert("로그인 후 이용해주시기 바랍니다.")
       navigate("/")
     })
   }
