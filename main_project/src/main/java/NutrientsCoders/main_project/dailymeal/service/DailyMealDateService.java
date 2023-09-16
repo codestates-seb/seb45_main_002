@@ -3,7 +3,7 @@ package NutrientsCoders.main_project.dailymeal.service;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.repository.DailyMealDateRepository;
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
-import NutrientsCoders.main_project.member.service.MemberService;
+import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
@@ -12,15 +12,19 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DailyMealDateService {
   private final DailyMealDateRepository dailyMealRepository;
+  private final EachMealService eachMealService;
   
-  public DailyMealDateService(DailyMealDateRepository dailyMealRepository) {
+  public DailyMealDateService(DailyMealDateRepository dailyMealRepository, EachMealService eachMealService) {
     this.dailyMealRepository = dailyMealRepository;
+    this.eachMealService = eachMealService;
   }
   
   //선택 식단 조회(날짜)
@@ -37,12 +41,19 @@ public class DailyMealDateService {
         .orElseThrow(() -> new LogicException(ExceptionCode.DAILYMEAL_NOT_FOUND));
   }
   
-  //식단 수정
+  //식단 수정(날짜)
   @Transactional
-  public DailyMeal updateDateDailyMeal(long memberId, LocalDate date, List<EachMeal> eachMeals) {
+  public DailyMeal updateDateDailyMeal(DailyMeal dailyMeal, long memberId, LocalDate date, List<EachMeal> eachMeals) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
+    List<EachMeal> mealsToRemove = findDailyMeal.getEachMeals().stream()
+                                                .filter(existingMeal -> !eachMeals.contains(existingMeal))
+                                                .collect(Collectors.toList());
+    eachMealService.deleteEachMeals(mealsToRemove);
+    
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
+    findDailyMeal.setName(dailyMeal.getName());
+    findDailyMeal.calculateTotal();
     return dailyMealRepository.save(findDailyMeal);
   }
   

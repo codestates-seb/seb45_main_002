@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface EachMealMapper {
-  //EachMealPostDto-> EachMeal
+  //EachMealDto-> EachMeal
   default EachMeal eachMealDtoToEachMeal(EachMealDto eachMealDto){
     EachMeal eachMeal = new EachMeal();
     eachMeal.setEachMealFoods(eachMealFoodDtosToEachMealFoods(eachMealDto.getFoods()));

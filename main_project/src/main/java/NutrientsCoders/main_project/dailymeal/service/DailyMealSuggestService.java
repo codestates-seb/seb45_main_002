@@ -46,6 +46,7 @@ public class DailyMealSuggestService {
     dailyMeal.setMember(member);
     
     List<EachMeal> eachMeals = createSuggestEachMeals(remainKcal, dailyMeal);
+    dailyMeal.setName("당신을 위한 추천 식단");
     dailyMeal.setEachMeals(eachMealRepository.saveAll(eachMeals));
     dailyMeal.calculateTotal();
     return dailyMealRepository.save(dailyMeal);
@@ -210,6 +211,7 @@ public class DailyMealSuggestService {
     while (eachMeal.getTotalEachKcal() < baseRemainKcal - 100){
       eachMeal.getEachMealFoods().stream().forEach(eachMealFood -> {
         eachMealFood.setQuantity(eachMealFood.getQuantity() + 0.02);
+        eachMealFood.calculateRate();
       });
       EachMealFood highestProteinFood =
           eachMeal.getEachMealFoods().stream()
@@ -221,7 +223,7 @@ public class DailyMealSuggestService {
       
       eachMeal.calculateTotal();
     }
-
+    
     return eachMeal;
   }
 
@@ -240,10 +242,8 @@ public class DailyMealSuggestService {
       case "+fat":
         return foodRepository.findInCategoryOrderByFatAsc(category, pageable);
       default:
-
         return foodRepository.findInCategoryOrderByCarboDesc(category, pageable);
     }
-
   }
 
   private Page<Food> changeOrderByBreakfast(String category,String timeslot, String orderByDesc, PageRequest pageable){

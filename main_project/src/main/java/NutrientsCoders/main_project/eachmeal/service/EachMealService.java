@@ -61,11 +61,11 @@ public class EachMealService {
   public EachMeal updateEachMeal(long memberId, EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId, memberId);
     eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
-    List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
-    findEachMeal.calculateTotal();
-    findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
+    List<EachMealFood> findFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
+    findEachMeal.setEachMealFoods(findFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
     findEachMeal.setFavorite(eachMeal.getFavorite());
+    findEachMeal.calculateTotal();
     
     return eachMealRepository.save(findEachMeal);
   }
@@ -74,6 +74,11 @@ public class EachMealService {
   @Transactional
   public void deleteEachMeal(long eachMealId, long memberId) {
     eachMealRepository.delete(verifyExistsEachMeal(eachMealId, memberId));
+  }
+  
+  @Transactional
+  public void deleteEachMeals(List<EachMeal> eachMeals) {
+    eachMealRepository.deleteAll(eachMeals);
   }
   
   //전체 eachMealFood 목록 삭제
