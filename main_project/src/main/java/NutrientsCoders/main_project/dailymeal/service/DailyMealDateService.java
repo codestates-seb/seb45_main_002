@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DailyMealDateService {
@@ -43,7 +45,11 @@ public class DailyMealDateService {
   @Transactional
   public DailyMeal updateDateDailyMeal(DailyMeal dailyMeal, long memberId, LocalDate date, List<EachMeal> eachMeals) {
     DailyMeal findDailyMeal = verifyExistsEachMealByDate(memberId, date);
-    eachMealService.deleteEachMeals(findDailyMeal.getDailyMealId());
+    List<EachMeal> mealsToRemove = findDailyMeal.getEachMeals().stream()
+                                                .filter(existingMeal -> !eachMeals.contains(existingMeal))
+                                                .collect(Collectors.toList());
+    eachMealService.deleteEachMeals(mealsToRemove);
+    
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
     findDailyMeal.setName(dailyMeal.getName());

@@ -13,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DailyMealService {
@@ -65,11 +67,16 @@ public class DailyMealService {
   @Transactional
   public DailyMeal updateDailyMeal(DailyMeal dailyMeal, List<EachMeal> eachMeals, long dailyMealId, long memberId) {
     DailyMeal findDailyMeal = verifyExistsEachMeal(dailyMealId, memberId);
-    eachMealService.deleteEachMeals(dailyMealId);
+    List<EachMeal> mealsToRemove = findDailyMeal.getEachMeals().stream()
+                                                .filter(existingMeal -> !eachMeals.contains(existingMeal))
+                                                .collect(Collectors.toList());
+    eachMealService.deleteEachMeals(mealsToRemove);
+    
     eachMeals.forEach(eachMeal -> eachMeal.setDailyMeal(findDailyMeal));
     findDailyMeal.setEachMeals(eachMeals);
     findDailyMeal.setName(dailyMeal.getName());
     findDailyMeal.calculateTotal();
+    
     return dailyMealRepository.save(findDailyMeal);
   }
   //선택 식단 삭제(ID)

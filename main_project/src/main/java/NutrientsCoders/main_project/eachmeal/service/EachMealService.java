@@ -77,9 +77,8 @@ public class EachMealService {
   }
   
   @Transactional
-  public void deleteEachMeals(long dailyMealId) {
-    List<EachMeal> findEachMeal = eachMealRepository.findByDailyMeal_DailyMealId(dailyMealId);
-    eachMealRepository.deleteAll(findEachMeal);
+  public void deleteEachMeals(List<EachMeal> eachMeals) {
+    eachMealRepository.deleteAll(eachMeals);
   }
   
   //전체 eachMealFood 목록 삭제
