@@ -23,7 +23,7 @@
 
 | [임영호(BE)]() | [정리나(BE)]() | [최병국(BE)]() | [성열홍(FE)]() | [윤은소(FE)]() |[장용민(FE)](https://github.com/poiuy4004) | 
 |---------------------------|--------------------------|--------------|--------------------|--------------------------------|------------------------------------------|
-|<img src="https://file.notion.so/f/s/ded40920-eae0-4dac-8eb9-f7c19163df2a/Untitled.png?id=9cb99cb6-7cda-413e-b10a-5450f1bf4589&table=block&spaceId=82d63a72-8254-4cde-bf1e-b2597b7c099c&expirationTimestamp=1694908800000&signature=YOW_9uCCC3Q_YS4INq-vDMiJJzWnjqsCZkHmAPGOVIc&downloadName=Untitled.png" width=150px ></img>|<img src="" width=150px ></img>| <img src="" width=150px ></img>|<img src="" width=150px ></img>|<img src="width=525&height=525" width=150 ></img>|<img src="" width=150px ></img>|<img src="" width=150px ></img>|
+|<img src="" width=150px ></img>|<img src="" width=150px ></img>| <img src="" width=150px ></img>|<img src="" width=150px ></img>|<img src="width=525&height=525" width=150 ></img>|<img src="" width=150px ></img>|<img src="https://media.discordapp.net/attachments/483947972380327936/1144245243550638090/NutritionCoders-1.png?width=1498&height=1002" width=150px ></img>|
 |- <br/>- <br/>- <br/>- |-|-<br/>-<br/>-|-  <br/>- <br/>-  |-<br/>- <br/>- <br/>-|-  <br/>-<br/>- <br/>-|-  <br/>-<br/>- <br/>-<br/>-|
 
 
