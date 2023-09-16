@@ -12,8 +12,9 @@ public class CommunityResponseDto {
     private Long memberId;
     private String communityTitle;
     private String communityContent;
+    private Long communityLike;
     private long recommendationCount;
-    private long communityViewCount;
+    private long communityCommentCount;
     private LocalDateTime community_createdAt;
     private LocalDateTime community_modifiedAt;
 }

@@ -19,6 +19,8 @@ public class CommunityComment extends CommunityCommentBaseTime{
     private Long communityCommentId;
     @Column
     private Long memberId;
+    @Column
+    private String nickname;
     @Column(columnDefinition = "text")
     @NotNull
     private String communityCommentContent;
@@ -33,4 +35,5 @@ public class CommunityComment extends CommunityCommentBaseTime{
     public void setCommunity(Community community){
         this.community = community;
     }
+    
 }

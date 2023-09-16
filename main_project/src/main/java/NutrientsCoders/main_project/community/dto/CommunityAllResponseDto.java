@@ -17,6 +17,8 @@ import java.util.List;
         private String communityContent;
         private long recommendationCount;
         private long communityViewCount;
+        private long communityLike;
+        private long communityCommentCount;
         private LocalDateTime community_createdAt;
         private LocalDateTime community_modifiedAt;
         private List<CommunityComment> communityCommentList;

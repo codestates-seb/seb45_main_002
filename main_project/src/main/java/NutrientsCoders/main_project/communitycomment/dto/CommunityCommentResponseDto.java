@@ -13,5 +13,6 @@ public class CommunityCommentResponseDto {
     private String communityCommentContent;
     private LocalDateTime answerComment_createdAt;
     private LocalDateTime answerComment_modifiedAt;
+    private String nickname;
 }
 
