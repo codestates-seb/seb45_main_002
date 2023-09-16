@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { styled } from "styled-components";
 import axios from "axios";
 
 import Comments from "../component/Comments";
+
+import useZustand from "../zustand/Store";
 
 import style from "../style/style"
 
@@ -130,12 +132,16 @@ const CommentsListBox = styled.ul`
   margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
 `
 
-const ExitBtn = styled.div`
-  margin: ${style.layout.narrowMargin.height};
-  color: gray;
-  font-size: small;
-  cursor: pointer;
+const ExitAndModify = styled.div`
+  display: flex;
+  justify-content: space-between;
+  &>a{
+    margin: ${style.layout.narrowMargin.height};
+    color: gray;
+    font-size: small;
+  }
 `
+
 const DeleteButton = styled.input`
   background-color: red;
   border-radius: 10px;
@@ -153,24 +159,26 @@ function CommunityDetail(){
     commentList: []
   })
   const [hide,setHide] = useState(false)
+  const params = useParams();
+  const setCommunityId = useZustand.useCommunityId(state=>state.setCommunityId)
 
-  const communityId = useParams();
   const navigate = useNavigate()
 
   function loadDetail(){
-    axios.get("http://43.201.194.176:8080/community/"+communityId["*"])
+    setCommunityId(params["*"])
+    axios.get("http://43.201.194.176:8080/community/"+params["*"])
     .then(res=>{
       console.log(res)
       setComment({...comment,commentList: res.data.communityCommentList})
       setDetail(res.data)
       setMember(res.data.member)
     })
-    .catch(err=>console.log(err))
+    .catch(err=>console.log(err, "게시글 데이터를 불러오지 못했습니다."))
   }
   useEffect(()=>loadDetail(),[])
 
   function sendLike(){
-    axios.get("http://43.201.194.176:8080/community/recommendation/"+communityId["*"],{
+    axios.get("http://43.201.194.176:8080/community/recommendation/"+params["*"],{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
@@ -183,7 +191,7 @@ function CommunityDetail(){
 
   function sendComment(){
     axios.post("http://43.201.194.176:8080/communitycomment",{
-      communityId: communityId["*"],
+      communityId: params["*"],
       communityCommentContent: comment.newComment
     },{
         headers:{
@@ -191,12 +199,12 @@ function CommunityDetail(){
         }
       }
     )
-    .then(res=>console.log(res, "댓글등록 성공"))
+    .then(res=>window.location.reload())
     .catch(err=>console.log(err, "댓글등록 실패"))
   }
 
   function articleDelete(){
-    axios.delete("http://43.201.194.176:8080/community/"+communityId["*"],{
+    axios.delete("http://43.201.194.176:8080/community/"+params["*"],{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
@@ -359,7 +367,10 @@ function CommunityDetail(){
             ))}
           </CommentsListBox>
         </CommentsBox>
-      <ExitBtn onClick={()=>navigate("/pageswitch/community")}>목록으로 돌아가기</ExitBtn>
+      <ExitAndModify>
+        <Link to="/pageswitch/community">목록으로 돌아가기</Link>
+        <Link to="/pageswitch/community/write">게시글 수정하기</Link>
+      </ExitAndModify>
       <DeleteButton type="button" value="게시글 삭제하기" onClick={articleDelete}></DeleteButton>
     </Container>
   );
