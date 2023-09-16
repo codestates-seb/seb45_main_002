@@ -55,10 +55,13 @@ function Comments({comment}){
         window.location.reload()
         setModifyOpen(!modifyOpen)
       })
-      .catch(err=>console.log(err,"댓글수정실패",comment.communityCommentId))
+      .catch(err=>{
+        alert("본인이 작성한 댓글만 수정할 수 있습니다.")
+        console.log(err,"댓글수정실패",comment.communityCommentId)
+      })
     }
     else{
-      setModifyOpen(!modifyOpen)
+      localStorage.getItem("Authorization")? setModifyOpen(!modifyOpen) : alert("로그인 후 이용해주시기 바랍니다.")
     }
   }
 
@@ -69,7 +72,10 @@ function Comments({comment}){
       }
     })
     .then(res=>window.location.reload())
-    .catch(err=>console.log(err,"댓글삭제 실패"))
+    .catch(err=>{
+      alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
+      console.log(err,"댓글삭제 실패")
+    })
   }
 console.log(comment)
   return(
