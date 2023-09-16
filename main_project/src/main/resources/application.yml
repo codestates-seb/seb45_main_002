@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://database-mainproj.ce3ctn9df6gn.ap-northeast-2.rds.amazonaws.com:13306/mainproj
-    username: admin
-    password: ${RDS_SECRET}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mainproject?serverTimezone=Asia/Seoul
+    username: ${mysql_Id}
+    password: ${mysql_password}
   jpa:
     hibernate:
       ddl-auto: update
