@@ -1,11 +1,13 @@
 package NutrientsCoders.main_project.dailymeal.controller;
 
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealDateService;
+import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import NutrientsCoders.main_project.eachmeal.service.EachMealService;
 import NutrientsCoders.main_project.utils.TokenChanger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
@@ -25,11 +28,13 @@ public class DailyMealDateController {
   private final DailyMealDateService dailyMealDateService;
   private final DailyMealMapper dailyMealMapper;
   private final TokenChanger tokenChanger;
+  private final EachMealService eachMealService;
   
-  public DailyMealDateController(DailyMealDateService dailyMealDateService, DailyMealMapper dailyMealMapper, TokenChanger tokenChanger) {
+  public DailyMealDateController(DailyMealDateService dailyMealDateService, DailyMealMapper dailyMealMapper, TokenChanger tokenChanger, EachMealService eachMealService) {
     this.dailyMealDateService = dailyMealDateService;
     this.dailyMealMapper = dailyMealMapper;
     this.tokenChanger = tokenChanger;
+    this.eachMealService = eachMealService;
   }
   
     //작성한 식단 조회(날짜)
@@ -54,18 +59,22 @@ public class DailyMealDateController {
     Page<DailyMeal> dailyMeals = dailyMealDateService.findAllByDate(memberId, pageable);
     List<DailyMealSimpleResponseDto> response = dailyMealMapper.dailyMealsToDailyMealResponseDtos(dailyMeals.getContent());
     
-    return new ResponseEntity<>(response,HttpStatus.OK);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
   
   //작성한 식단 수정
   @PatchMapping("/{dateStr}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
                                                              @RequestBody DailyMealDto dailyMealDto,
-                                                             @PathVariable("dateStr") String dateStr) {
+                                                             @PathVariable("dateStr") String dateStr) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     LocalDate date = LocalDate.parse(dateStr);
     DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
-    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(memberId, dailyMeal, date);
+    List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
+                                           .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
+                                           .collect(Collectors.toList());
+    
+    DailyMeal updateDailyMeal = dailyMealDateService.updateDateDailyMeal(dailyMeal, memberId, date, eachMeals);
     DailyMealResponseDto response
         = dailyMealMapper.dailyMealToDailyMealResponseDto(updateDailyMeal);
     return new ResponseEntity<>(response, HttpStatus.OK);
