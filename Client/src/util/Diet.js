@@ -166,3 +166,26 @@ export const changeEachMeal = async (meal, eachMealId, timeslot, patchFood) => {
       console.log(error);
     });
 };
+
+export const getDailyMealId = async (id) => {
+  return await axios
+    .get(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const deleteDailyMealId = async (id) => {
+  return await axios
+    .delete(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

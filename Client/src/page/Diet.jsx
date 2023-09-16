@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
@@ -6,11 +6,30 @@ import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
 import Button from "../atom/button";
 import useZustand from "../zustand/Store";
+import FavoriteDailyList from "../component/diet/FavoriteDailyList";
+import Modal from "../atom/GlobalModal";
+import InputAddFavorite from "../component/diet/InputAddFavorite";
+import DeleteModal from "../component/diet/DeleteModal";
 
 const StyleDiet = styled.div`
   width: 100%;
   height: calc(100vh - 60px);
   overflow-y: auto;
+
+  & > p {
+    font-size: 14px;
+    color: #898989;
+    text-align: right;
+    margin-right: 10px;
+    margin-bottom: 40px;
+    cursor: pointer;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: red;
+    }
+  }
 `;
 
 const DivButton = styled.div`
@@ -29,7 +48,7 @@ const DivButton = styled.div`
 
 const DivTotal = styled.div`
   width: calc(100%-10px);
-  margin: 20px 5px 40px 5px;
+  margin: 10px 5px 5px 5px;
   padding: 10px 20px;
   height: 180px;
   background-color: white;
@@ -79,6 +98,8 @@ const StyleNewDiet = styled.div`
 
 const Diet = () => {
   const { date } = useParams();
+  const [modalContents, setModalContents] = useState(null);
+  const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
   useEffect(() => {
     const asyncfunc = async () => {
@@ -88,8 +109,35 @@ const Diet = () => {
     console.log(meal);
   }, [date]);
 
-  const AddDailyMealOnClickHandler = async () => {
+  useEffect(() => {
+    if (modalContents) {
+      setIsModal(true);
+    }
+  }, [modalContents]);
+
+  const addDailyMealOnClickHandler = async () => {
     setMeal(await PostDailyMeal(date));
+  };
+
+  const deleteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <DeleteModal dailyMealId={meal.dailyMealId} setIsModal={setIsModal} />
+    ));
+  };
+
+  const addFavoriteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <InputAddFavorite meal={meal} setIsModal={setIsModal} />
+    ));
+  };
+
+  const loadFavoriteDailyOnclickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <FavoriteDailyList date={date} setIsModal={setIsModal} />
+    ));
   };
 
   if (meal === null) {
@@ -97,44 +145,77 @@ const Diet = () => {
   }
 
   if (meal === "DailyMeal not found...") {
+    // 해당 날짜 저장된 식단이 없는 경우
     return (
-      <StyleNewDiet>
-        <div>
-          <h3>저장된 식단이 아직 없습니다.</h3>
-          <Button primary={true} onClick={AddDailyMealOnClickHandler}>
-            커스텀 식단 만들기
-          </Button>
-          <Button>저장해둔 식단 불러오기</Button>
-        </div>
-      </StyleNewDiet>
+      <>
+        {isModal ? (
+          <Modal
+            style={{ maxWidth: "680px", width: "90vw", maxHeight: "80vh" }}
+            isOpen={isModal}
+            content={modalContents}
+            setIsOpen={setIsModal}
+            setContent={setModalContents}
+            setHeader={() => {}}
+            setFooter={() => {}}
+          />
+        ) : null}
+        <StyleNewDiet>
+          <div>
+            <h3>저장된 식단이 아직 없습니다.</h3>
+            <Button primary={true} onClick={addDailyMealOnClickHandler}>
+              커스텀 식단 만들기
+            </Button>
+            <Button onClick={loadFavoriteDailyOnclickHandler}>
+              저장해둔 식단 불러오기
+            </Button>
+          </div>
+        </StyleNewDiet>
+      </>
     );
   }
 
   return (
-    <StyleDiet>
-      {[1, 2, 3].map((timeslot, index) => (
-        <EachMeal key={index} timeslot={timeslot} index={index} />
-      ))}
-      <DivButton>
-        <Button>선호식단 저장하기</Button>
-        <Button primary={true}>자세히 분석하기</Button>
-      </DivButton>
+    // 식단 출력
+    <>
+      {isModal ? (
+        <Modal
+          style={{ width: "240px", height: "180px" }}
+          isOpen={isModal}
+          content={modalContents}
+          setIsOpen={setIsModal}
+          setContent={setModalContents}
+          setHeader={() => {}}
+          setFooter={() => {}}
+        />
+      ) : null}
+      <StyleDiet>
+        {[1, 2, 3].map((timeslot, index) => (
+          <EachMeal key={index} timeslot={timeslot} index={index} />
+        ))}
+        <DivButton>
+          <Button onClick={addFavoriteDailyOnClickHandler}>
+            선호식단 저장하기
+          </Button>
+          <Button primary={true}>자세히 분석하기</Button>
+        </DivButton>
 
-      <DivTotal>
-        {/* 하루 총 평 */}
-        <div>
-          <h3>하루 섭취량</h3>
-        </div>
-        <div>
-          <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
-          <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
-        </div>
-        <div>
-          <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
-          <p>지방: {meal?.totalDailyFat ?? ""}g</p>
-        </div>
-      </DivTotal>
-    </StyleDiet>
+        <DivTotal>
+          {/* 하루 총 평 */}
+          <div>
+            <h3>하루 섭취량</h3>
+          </div>
+          <div>
+            <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
+            <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
+          </div>
+          <div>
+            <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
+            <p>지방: {meal?.totalDailyFat ?? ""}g</p>
+          </div>
+        </DivTotal>
+        <p onClick={deleteDailyOnClickHandler}>식단 삭제하기</p>
+      </StyleDiet>
+    </>
   );
 };
 

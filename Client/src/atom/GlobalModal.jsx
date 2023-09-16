@@ -17,7 +17,7 @@ const ModalContainer = styled.div`
 `;
 
 export const ModalBackdrop = styled.div`
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,6 +85,7 @@ const Modal = ({
   setContent,
   setHeader,
   setFooter,
+  style,
 }) => {
   const handleCloseModal = () => {
     setContent(null);
@@ -96,7 +97,10 @@ const Modal = ({
   return (
     <ModalContainer $isOpen={isOpen}>
       <ModalBackdrop onClick={handleCloseModal}>
-        <ContentContainer onClick={(e) => e.stopPropagation()}>
+        <ContentContainer
+          onClick={(e) => e.stopPropagation()}
+          style={{ ...style }}
+        >
           <HeaderContainer>{header}</HeaderContainer>
           {content}
           <FooterContainer>{footer}</FooterContainer>

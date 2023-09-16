@@ -21,9 +21,10 @@ const FormDiv = styled.div`
     align-items: center;
     width: 100%;
     font-size: 14px;
+    position: relative;
 
     & > img {
-      margin-left: 10px;
+      left: 10px;
       width: 20px;
       position: absolute;
     }
