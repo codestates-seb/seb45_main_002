@@ -8,7 +8,7 @@ import Button from "../atom/button";
 import useZustand from "../zustand/Store";
 import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
-import { postFavoriteDailyMeal } from "../util/FavoriteDaily";
+import InputAddFavorite from "../component/diet/InputAddFavorite";
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -103,8 +103,11 @@ const Diet = () => {
     setMeal(await PostDailyMeal(date));
   };
 
-  const addFavoriteDailyOnClickHandler = async () => {
-    postFavoriteDailyMeal(meal.eachMeals, "name");
+  const addFavoriteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <InputAddFavorite meal={meal} setIsModal={setIsModal} />
+    ));
   };
 
   const loadFavoriteDailyOnclickHandler = () => {
@@ -150,32 +153,45 @@ const Diet = () => {
 
   return (
     // 식단 출력
-    <StyleDiet>
-      {[1, 2, 3].map((timeslot, index) => (
-        <EachMeal key={index} timeslot={timeslot} index={index} />
-      ))}
-      <DivButton>
-        <Button onClick={addFavoriteDailyOnClickHandler}>
-          선호식단 저장하기
-        </Button>
-        <Button primary={true}>자세히 분석하기</Button>
-      </DivButton>
+    <>
+      {isModal ? (
+        <Modal
+          style={{ width: "240px", height: "240px" }}
+          isOpen={isModal}
+          content={modalContents}
+          setIsOpen={setIsModal}
+          setContent={setModalContents}
+          setHeader={() => {}}
+          setFooter={() => {}}
+        />
+      ) : null}
+      <StyleDiet>
+        {[1, 2, 3].map((timeslot, index) => (
+          <EachMeal key={index} timeslot={timeslot} index={index} />
+        ))}
+        <DivButton>
+          <Button onClick={addFavoriteDailyOnClickHandler}>
+            선호식단 저장하기
+          </Button>
+          <Button primary={true}>자세히 분석하기</Button>
+        </DivButton>
 
-      <DivTotal>
-        {/* 하루 총 평 */}
-        <div>
-          <h3>하루 섭취량</h3>
-        </div>
-        <div>
-          <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
-          <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
-        </div>
-        <div>
-          <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
-          <p>지방: {meal?.totalDailyFat ?? ""}g</p>
-        </div>
-      </DivTotal>
-    </StyleDiet>
+        <DivTotal>
+          {/* 하루 총 평 */}
+          <div>
+            <h3>하루 섭취량</h3>
+          </div>
+          <div>
+            <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
+            <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
+          </div>
+          <div>
+            <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
+            <p>지방: {meal?.totalDailyFat ?? ""}g</p>
+          </div>
+        </DivTotal>
+      </StyleDiet>
+    </>
   );
 };
 
