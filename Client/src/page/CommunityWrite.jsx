@@ -28,14 +28,17 @@ const TitleContainer = styled.h1`
 const DietBtnContainer = styled.div`
 `;
 const DietBtnBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &>input{
-    border: none;
-    border-radius: 10px;
-    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
-    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  padding: 0 ${style.layout.main.width/4};
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >input{
+      border: none;
+      border-radius: 10px;
+      margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+      padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    }
   }
 `
 const DietBtn = styled.label`
@@ -155,44 +158,18 @@ function CommunityWrite(){
     communityContent: "",
     communityDietDate: Date()
   })
-  const [dietData, setDietData] = useState({
-    dailyMealId: "",
-    date: "",
-    favorite: null,
-    memberId: "",
-    name: "",
-    totalDailyCarbo: "",
-    totalDailyFat: "",
-    totalDailyKcal: "",
-    totalDailyProtein: ""
-  })
-  const [mealMorning, setMealMorning] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
-  const [mealLunch, setMealLunch] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
-  const [mealDinner, setMealDinner] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
+  const [dietData, setDietData] = useState({})
+
+  const [mealMorning, setMealMorning] = useState({})
+  const [morningMenu, setMorningMenu] = useState([])
+
+  const [mealLunch, setMealLunch] = useState({})
+  const [lunchMenu,setLunchMenu] = useState([])
+
+  const [mealDinner, setMealDinner] = useState({})
+  const [dinnerMenu,setDinnerMenu] = useState([])
+
+
   const communityId = useZustand.useCommunityId(state=>state.communityId)
 
   const [onImg,setOnImg] = useState("")
@@ -206,11 +183,19 @@ function CommunityWrite(){
       }
     })
     .then(res=>{
-      console.log(res.data.eachMeals[0].quantityfoods)
+      console.log(res.data) // 하루(데일리) 총 식단에 대한 정보
       setDietData(res.data)
-      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
-      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
-      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+
+      console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
+      console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
+      setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
+      setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+
+      setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
+      setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      
+      setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
+      setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
     })
     .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
   }
@@ -236,13 +221,13 @@ function CommunityWrite(){
     .then(res=>{
       console.log(res.data)
       setDietData(res.data)
-      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
-      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
-      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning1,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[1].quantityfoods[0]])// [...mealMorning2,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[2].quantityfoods[0]])// [...mealMorning3,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
     })
     .catch(err=>console.log(err, "갈비탕과 소통에 실패했습니다."))
   }
-console.log(communityId)
+
   function sendArticle(e){
     if(form.communityTitle===""){
       alert("제목을 입력해주시기 바랍니다.")
@@ -289,40 +274,42 @@ console.log(communityId)
 
       <DietBtnContainer>
         <DietBtnBox>
-          <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
-          <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>불러오기</DietBtn>
-          <DietBtn onClick={openFavoriteListModal}>선호식단</DietBtn>
+          <div>
+            <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
+            <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>불러오기</DietBtn>
+          </div>
+          <DietBtn onClick={openFavoriteListModal}>내 선호식단<br />리스트에서 불러오기</DietBtn>
         </DietBtnBox>
 
         <DietInfoContainer>
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {mealMorning[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealMorning[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealMorning[0].ratioEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealMorning[0].ratioEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealMorning[0].ratioEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealMorning.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: {mealLunch[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealLunch[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealLunch[0].ratioEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealLunch[0].ratioEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealLunch[0].ratioEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealLunch.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: {mealDinner[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealDinner[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealDinner[0].ratioEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealDinner[0].ratioEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealDinner[0].ratioEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealDinner.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>

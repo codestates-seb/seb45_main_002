@@ -152,8 +152,15 @@ const DeleteButton = styled.input`
 `
 
 function CommunityDetail(){
-  const [detail, setDetail] = useState({})
   const [member, setMember] = useState({})
+  const [detail, setDetail] = useState({})
+
+  const [dailyMeals, setDailyMeals] = useState({})
+  const [morning, setMorning] = useState({
+    info: {},
+    menu: []
+  })
+
   const [comment, setComment] = useState({
     newComment: "",
     commentList: []
@@ -168,10 +175,19 @@ function CommunityDetail(){
     setCommunityId(params["*"])
     axios.get("http://43.201.194.176:8080/community/"+params["*"])
     .then(res=>{
+      setMember(res.data.member) // 게시글 작성자에 대한 정보(닉네임 등)
+
       console.log(res.data)
-      setComment({...comment,commentList: res.data.communityCommentList})
-      setDetail(res.data)
-      setMember(res.data.member)
+      setDetail(res.data) // 게시글에 대한 정보(제목, 본문, 댓글 등)
+
+      setComment({...comment,commentList: res.data.communityCommentList}) // 작성되어있던 댓글들
+      
+      console.log(res.data.dailyMeal)
+      setDailyMeals(res.data.dailyMeal) // 하루 식단 정보
+
+      console.log(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1))
+      setMorning({...morning,info: {...res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1)}}) // 아침 식사 정보
+      setMorning({...morning,menu: [res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[0], res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[1],res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[2]]}) // 아침 식사 메뉴 이름
     })
     .catch(err=>console.log(err, "게시글 데이터를 불러오지 못했습니다."))
   }
@@ -216,18 +232,6 @@ function CommunityDetail(){
     .catch(err=>console.log(err, "게시글 삭제 실패했습니다."))
   }
 
-  const data1 = {
-    dailyMealId: 320,
-    memberId: 21,
-    date: "2023-09-13",
-    name: "yongmins",
-    favorite: false,
-    eachMeals: [11],
-    totalDailyKcal: 184.0,
-    totalDailyCarbo: 31.0,
-    totalDailyProtein: 3.0,
-    totalDailyFat: 5.0
-  }
   return (
     <Container>
       <Title>
@@ -247,18 +251,21 @@ function CommunityDetail(){
               <div>아침</div>
               <div>
                 <InfoName>
+                  <div>메뉴명</div>
                   <div>칼로리</div>
                   <div>단백질</div>
                   <div>탄수화물</div>
                   <div>지방</div>
                 </InfoName>
                 <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
+                  <div></div>
+                  <div>{morning.info.totalEachKcal}</div>
+                  <div>{morning.info.totalEachProtein}</div>
+                  <div>{morning.info.totalEachCarbo}</div>
+                  <div>{morning.info.totalEachFat}</div>
                 </FoodInfo>
                 <span>
+                  <div></div>
                   <div>kcal</div>
                   <div>g</div>
                   <div>g</div>
@@ -276,10 +283,10 @@ function CommunityDetail(){
                   <div>지방</div>
                 </InfoName>
                 <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
+                  <div>{morning.info.totalDailyKcal}</div>
+                  <div>{morning.info.totalDailyProtein}</div>
+                  <div>{morning.info.totalDailyCarbo}</div>
+                  <div>{morning.info.totalDailyFat}</div>
                 </FoodInfo>
                 <span>
                   <div>kcal</div>
@@ -299,10 +306,10 @@ function CommunityDetail(){
                   <div>지방</div>
                 </InfoName>
                 <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
+                  <div>{morning.info.totalDailyKcal}</div>
+                  <div>{morning.info.totalDailyProtein}</div>
+                  <div>{morning.info.totalDailyCarbo}</div>
+                  <div>{morning.info.totalDailyFat}</div>
                 </FoodInfo>
                 <span>
                   <div>kcal</div>
@@ -329,10 +336,10 @@ function CommunityDetail(){
                 <div>{detail.dailyMeal.totalDailyFat}</div> */}
               </FoodInfo>
               <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
+                  <div>{dailyMeals.totalDailyKcal} kcal</div>
+                  <div>{dailyMeals.totalDailyProtein} g</div>
+                  <div>{dailyMeals.totalPercentCarbos} g</div>
+                  <div>{dailyMeals.totalDailyFat} g</div>
               </span>
             </div>
           </TotalBox>
@@ -344,7 +351,7 @@ function CommunityDetail(){
       <CommentsAndUserProfile>
         <CommentsOpener>
           <span onClick={sendLike}>
-            {detail.communityLike? <i className="fa-solid fa-heart"></i> : <i class="fa-regular fa-heart"></i>}좋아요 {detail.recommendationCount}
+            {detail.communityLike? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}좋아요 {detail.recommendationCount}
           </span>
           <span onClick={()=>setHide(!hide)}>
             <i className="fa-solid fa-comment"></i>댓글보기
