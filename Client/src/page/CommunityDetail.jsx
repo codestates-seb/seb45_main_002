@@ -53,20 +53,16 @@ const TimeBox = styled.div`
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
   &>:last-child{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
 `
-const InfoName = styled.div`
-  text-align: center;
+const OneLine = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
-const FoodInfo = styled.div`
-  text-align: right;
-  &>*{
-    padding: 0 ${style.layout.narrowMargin.width};
-  }
-`;
+
 const TotalBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -156,10 +152,15 @@ function CommunityDetail(){
   const [detail, setDetail] = useState({})
 
   const [dailyMeals, setDailyMeals] = useState({})
-  const [morning, setMorning] = useState({
-    info: {},
-    menu: []
-  })
+
+  const [morningInfo, setMorningInfo] = useState({})
+  const [morningMenu, setMorningMenu] = useState([])
+
+  const [lunchInfo, setLunchInfo] = useState({})
+  const [lunchMenu, setLunchMenu] = useState([])
+
+  const [dinnerInfo, setDinnerInfo] = useState({})
+  const [dinnerMenu, setDinnerMenu] = useState([])
 
   const [comment, setComment] = useState({
     newComment: "",
@@ -186,13 +187,17 @@ function CommunityDetail(){
       setDailyMeals(res.data.dailyMeal) // 하루 식단 정보
 
       console.log(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1))
-      setMorning({...morning,info: {...res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1)}}) // 아침 식사 정보
-      setMorning({...morning,menu: [res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[0], res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[1],res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[2]]}) // 아침 식사 메뉴 이름
+      setMorningInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1)) // 아침 식사 정보
+      setMorningMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[2].food.foodName]) // 아침 식사 메뉴 이름
+      setLunchInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2)) // 점심 식사 정보
+      setLunchMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[2].food.foodName]) // 점심 식사 메뉴 이름
+      setDinnerInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3)) // 저녁 식사 정보
+      setDinnerMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[2].food.foodName]) // 저녁 식사 메뉴 이름
     })
     .catch(err=>console.log(err, "게시글 데이터를 불러오지 못했습니다."))
   }
   useEffect(()=>loadDetail(),[])
-
+console.log(morningMenu)
   function sendLike(){
     axios.get("http://43.201.194.176:8080/community/recommendation/"+params["*"],{
       headers: {
@@ -250,91 +255,124 @@ function CommunityDetail(){
             <TimeBox>
               <div>아침</div>
               <div>
-                <InfoName>
-                  <div>메뉴명</div>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div></div>
-                  <div>{morning.info.totalEachKcal}</div>
-                  <div>{morning.info.totalEachProtein}</div>
-                  <div>{morning.info.totalEachCarbo}</div>
-                  <div>{morning.info.totalEachFat}</div>
-                </FoodInfo>
-                <span>
-                  <div></div>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{morningInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{morningInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{morningInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{morningInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
             <TimeBox>
               <div>점심</div>
               <div>
-                <InfoName>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div>{morning.info.totalDailyKcal}</div>
-                  <div>{morning.info.totalDailyProtein}</div>
-                  <div>{morning.info.totalDailyCarbo}</div>
-                  <div>{morning.info.totalDailyFat}</div>
-                </FoodInfo>
-                <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{lunchInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{lunchInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{lunchInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{lunchInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
             <TimeBox>
-              <div>저녁</div>
+              <div>아침</div>
               <div>
-                <InfoName>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div>{morning.info.totalDailyKcal}</div>
-                  <div>{morning.info.totalDailyProtein}</div>
-                  <div>{morning.info.totalDailyCarbo}</div>
-                  <div>{morning.info.totalDailyFat}</div>
-                </FoodInfo>
-                <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
           </TimeContainer>
           <TotalBox>
             <TotalTitle>총</TotalTitle>
             <div>
-              <InfoName>
+              <div>
                 <div>칼로리</div>
                 <div>단백질</div>
                 <div>탄수화물</div>
                 <div>지방</div>
-              </InfoName>
-              <FoodInfo>
+              </div>
+              <div>
                 {/* <div>{detail.dailyMeal.totalDailyKcal}</div>
                 <div>{detail.dailyMeal.totalDailyProtein}</div>
                 <div>{detail.dailyMeal.totalDailyCarbo}</div>
                 <div>{detail.dailyMeal.totalDailyFat}</div> */}
-              </FoodInfo>
+              </div>
               <span>
                   <div>{dailyMeals.totalDailyKcal} kcal</div>
                   <div>{dailyMeals.totalDailyProtein} g</div>
