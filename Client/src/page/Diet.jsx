@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
@@ -6,17 +6,50 @@ import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
 import Button from "../atom/button";
 import useZustand from "../zustand/Store";
-import AnalyzedDiet from "../component/diet/DietAnalyze";
-import { useState } from "react";
+import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
+import InputAddFavorite from "../component/diet/InputAddFavorite";
+import DeleteModal from "../component/diet/DeleteModal";
+import AnalyzedDiet from "../component/diet/DietAnalyze";
 
 const StyleDiet = styled.div`
   width: 100%;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+
+  & > p {
+    font-size: 14px;
+    color: #898989;
+    text-align: right;
+    margin-right: 10px;
+    margin-bottom: 40px;
+    cursor: pointer;
+
+    &:active,
+    &:hover,
+    &:focus {
+      color: red;
+    }
+  }
+`;
+
+const DivButton = styled.div`
+  width: calc(50% - 10px);
+  margin: 10px 5px 0 5px;
+  display: flex;
+  gap: 10px;
+  button {
+    width: calc(50% - 5px);
+  }
+
+  @media (max-width: 800px) {
+    width: calc(100% - 10px);
+  }
 `;
 
 const DivTotal = styled.div`
   width: calc(100%-10px);
-  margin: 10px 5px 0 5px;
+  margin: 10px 5px 5px 5px;
   padding: 10px 20px;
   height: 180px;
   background-color: white;
@@ -45,7 +78,7 @@ const DivTotal = styled.div`
 
 const StyleNewDiet = styled.div`
   width: 100%;
-  margin: calc(50vh - 120px) 0;
+  margin: calc(50vh - 120px) 0 0 0;
   display: flex;
   justify-content: center;
   h3 {
@@ -88,14 +121,24 @@ const FlexContainer = styled.div`
 `;
 
 const ItemContainer = styled.div`
+  display: flex;
+  padding: 5px;
   align-items: center;
   justify-content: center;
+  text-align: center;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 10%;
+  height: 25%;
   max-height: 20vh;
   border: 1px solid green;
+
+  & > div {
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const CustomSpan = styled.span`
@@ -109,6 +152,8 @@ const Diet = () => {
   const [modalFooter, setModalFooter] = useState(null);
   const [analyzedData, setAnalyzedData] = useState(null);
   const { date } = useParams();
+  const [modalContents, setModalContents] = useState(null);
+  const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
   console.log(meal);
   useEffect(() => {
@@ -118,8 +163,35 @@ const Diet = () => {
     asyncfunc();
   }, [date]);
 
-  const AddDailyMealOnClickHandler = async () => {
+  useEffect(() => {
+    if (modalContents) {
+      setIsModal(true);
+    }
+  }, [modalContents]);
+
+  const addDailyMealOnClickHandler = async () => {
     setMeal(await PostDailyMeal(date));
+  };
+
+  const deleteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <DeleteModal dailyMealId={meal.dailyMealId} setIsModal={setIsModal} />
+    ));
+  };
+
+  const addFavoriteDailyOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <InputAddFavorite meal={meal} setIsModal={setIsModal} />
+    ));
+  };
+
+  const loadFavoriteDailyOnclickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => (
+      <FavoriteDailyList date={date} setIsModal={setIsModal} />
+    ));
   };
 
   const handleAnalyzeDiet = async (dailymealId, analysisId) => {
@@ -129,66 +201,112 @@ const Diet = () => {
       const analyzedData = await AnalyzedDiet(dailymealId);
       setAnalyzedData();
       setIsModalOpen(true);
-      setModalHeader("");
+      setModalHeader("분석 결과");
       setModalFooter(" footer입니다");
       setModalContent(
         <div>
           <Container>
             <FlexContainer>
-              <h2>Daily Meal</h2>
               <ItemContainer>
-                <p>Daily Meal ID: {analyzedData.dailyMeal.dailyMealId}</p>
-                <p>Date: {analyzedData.dailyMeal.date}</p>
-                <p>Name: {analyzedData.dailyMeal.name}</p>
+                <div>
+                  총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}
+                </div>
+                <div>권장하는 칼로리 : {analyzedData.idealKacl}</div>
+                <div>초과된 칼로리 : {analyzedData.overKcal}</div>
               </ItemContainer>
               <ItemContainer>
-                <p>총 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}</p>
-                <p>부족 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}</p>
-                <p>초과 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}</p>
-              </ItemContainer>
-              <ItemContainer>
-                <p>총 탄수화물 : {analyzedData.dailyMeal.totalDailyCarbo}</p>
-                {analyzedData.idealMacro.idealCarbohydrates > 0 && (
-                  <p style={{ color: "orange" }}>
-                    초과 탄수화물: {analyzedData.idealMacro.idealCarbohydrates}
-                  </p>
+                <div>
+                  총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}
+                </div>
+                <div>
+                  권장하는 탄수화물:{" "}
+                  {analyzedData.idealMacro.idealCarbohydrates}
+                </div>
+                {analyzedData.idealMacro.idealCarbohydrates * 0.1 <
+                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overCarbohydrates < 0
+                          ? "orange"
+                          : "red",
+                    }}
+                  >
+                    {analyzedData.overMacro.overCarbohydrates < 0
+                      ? `부족한 탄수화물: ${Math.abs(
+                          analyzedData.overMacro.overCarbohydrates
+                        )}`
+                      : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}`}
+                  </div>
                 )}
-                {/* {analyzedData.overMacro.overCarbohydrates > 0 && (
-                  <p style={{ color: "red" }}>
-                     지방: {analyzedData.overMacro.overFats}
-                  </p>
-                )} */}
+                {analyzedData.idealMacro.idealCarbohydrates * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
               </ItemContainer>
               <ItemContainer>
-                <p>총 단백질: {analyzedData.dailyMeal.totalDailyProtein}</p>
-                {analyzedData.idealMacro.idealProteins > 0 && (
-                  <p style={{ color: "red" }}>
-                    초과 단백질: {analyzedData.idealMacro.idealProteins}g
-                  </p>
+                <div>
+                  총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}
+                </div>
+                <div>
+                  권장하는 단백질: {analyzedData.idealMacro.idealProteins}
+                </div>
+                {analyzedData.idealMacro.idealProteins * 0.1 <
+                  Math.abs(analyzedData.overMacro.overProteins) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overProteins < 0
+                          ? "red"
+                          : "orange",
+                    }}
+                  >
+                    {analyzedData.overMacro.overProteins < 0
+                      ? `부족한 단백질: ${Math.abs(
+                          analyzedData.overMacro.overProteins
+                        )}`
+                      : `초과 단백질: ${analyzedData.overMacro.overProteins}`}
+                  </div>
                 )}
-                {/* {analyzedData.overMacro.overProteins > 0 && (
-                  <p style={{ color: "red" }}>
-                    초과 단백질: {analyzedData.overMacro.overProteins}
-                  </p>
-                )} */}
+                {analyzedData.idealMacro.idealProteins * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overProteins) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
               </ItemContainer>
               <ItemContainer>
-                <p>총 지방: {analyzedData.dailyMeal.totalDailyFat}</p>
-                {analyzedData.idealMacro.idealFats > 0 && (
-                  <p style={{ color: "red" }}>
-                    초과 지방: {analyzedData.idealMacro.idealFats}g
-                  </p>
+                <div>총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}</div>
+                <div>권장하는 지방: {analyzedData.idealMacro.idealFats}</div>
+                {analyzedData.idealMacro.idealFats * 0.1 <
+                  Math.abs(analyzedData.overMacro.overFats) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overFats < 0 ? "orange" : "red",
+                    }}
+                  >
+                    {analyzedData.overMacro.overFats < 0
+                      ? `부족한 지방: ${Math.abs(
+                          analyzedData.overMacro.overFats
+                        )}`
+                      : `초과 지방: ${analyzedData.overMacro.overFats}`}
+                  </div>
                 )}
-                {/* {analyzedData.overMacro.overFats > 0 && (
-                  <p style={{ color: "red" }}>
-                    지방: {analyzedData.overMacro.overFats}g
-                  </p>
-                )} */}
+                {analyzedData.idealMacro.idealFats * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overFats) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
               </ItemContainer>
 
               <ItemContainer>
-                <div>결과</div>
-                <div> {analyzedData.result}</div>
+                <div style={{ fontSize: "20px", fontWeight: "bold" }}>결과</div>
+                <div>
+                  {analyzedData.result.split("\n").map((line, index) => (
+                    <div key={index}>
+                      {line}
+                      <br />
+                    </div>
+                  ))}
+                </div>
               </ItemContainer>
               <ItemContainer></ItemContainer>
             </FlexContainer>
@@ -205,32 +323,65 @@ const Diet = () => {
   }
 
   if (meal === "DailyMeal not found...") {
+    // 해당 날짜 저장된 식단이 없는 경우
     return (
-      <StyleNewDiet>
-        <div>
-          <h3>저장된 식단이 아직 없습니다.</h3>
-          <Button primary={true} onClick={AddDailyMealOnClickHandler}>
-            커스텀 식단 만들기
-          </Button>
-          <Button>저장해둔 식단 불러오기</Button>
-        </div>
-      </StyleNewDiet>
+      <>
+        {isModal ? (
+          <Modal
+            style={{ maxWidth: "680px", width: "90vw", maxHeight: "80vh" }}
+            isOpen={isModal}
+            content={modalContents}
+            setIsOpen={setIsModal}
+            setContent={setModalContents}
+            setHeader={() => {}}
+            setFooter={() => {}}
+          />
+        ) : null}
+        <StyleNewDiet>
+          <div>
+            <h3>저장된 식단이 아직 없습니다.</h3>
+            <Button primary={true} onClick={addDailyMealOnClickHandler}>
+              커스텀 식단 만들기
+            </Button>
+            <Button onClick={loadFavoriteDailyOnclickHandler}>
+              저장해둔 식단 불러오기
+            </Button>
+          </div>
+        </StyleNewDiet>
+      </>
     );
   }
 
   return (
-    <StyleDiet>
-      {[1, 2, 3].map((timeslot, index) => (
-        <EachMeal key={index} timeslot={timeslot} index={index} />
-      ))}
-
-      <DivTotal>
-        {/* 하루 총 평 */}
-        <div>
-          <h3>하루 섭취량</h3>
+    // 식단 출력
+    <>
+      {isModal ? (
+        <Modal
+          style={{ width: "240px", height: "180px" }}
+          isOpen={isModal}
+          content={modalContents}
+          setIsOpen={setIsModal}
+          setContent={setModalContents}
+          setHeader={() => {}}
+          setFooter={() => {}}
+        />
+      ) : null}
+      <StyleDiet>
+        {[1, 2, 3].map((timeslot, index) => (
+          <EachMeal key={index} timeslot={timeslot} index={index} />
+        ))}
+        <DivButton>
+          <Button onClick={addFavoriteDailyOnClickHandler}>
+            선호식단 저장하기
+          </Button>
           <Button dailymealId={meal?.dailyMealId} onClick={handleAnalyzeDiet}>
             자세히 분석하기{" "}
           </Button>
+        </DivButton>
+
+        <DivTotal>
+          {/* 하루 총 평 */}
+
           <Modal
             isOpen={isModalOpen}
             content={modalContent}
@@ -241,17 +392,21 @@ const Diet = () => {
             setHeader={setModalHeader}
             setFooter={setModalFooter}
           />
-        </div>
-        <div>
-          <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
-          <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
-        </div>
-        <div>
-          <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
-          <p>지방: {meal?.totalDailyFat ?? ""}g</p>
-        </div>
-      </DivTotal>
-    </StyleDiet>
+          <div>
+            <h3>하루 섭취량</h3>
+          </div>
+          <div>
+            <p>칼로리: {meal?.totalDailyKcal ?? ""}kcal</p>
+            <p>탄수화물: {meal?.totalDailyCarbo ?? ""}g</p>
+          </div>
+          <div>
+            <p>단백질: {meal?.totalDailyProtein ?? ""}g</p>
+            <p>지방: {meal?.totalDailyFat ?? ""}g</p>
+          </div>
+        </DivTotal>
+        <p onClick={deleteDailyOnClickHandler}>식단 삭제하기</p>
+      </StyleDiet>
+    </>
   );
 };
 

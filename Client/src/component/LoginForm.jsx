@@ -90,7 +90,7 @@ const LoginForm = () => {
         window.location.reload()
       })
       .catch(err=>{
-        console.log(err+"실패했습니다.")
+        console.log(err, "로그인을 실패했습니다.")
         setForm({...form,errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다."})
       })
     }
@@ -110,7 +110,8 @@ const LoginForm = () => {
     // return parsedHash
   }
   async function googleLoginButton(e){
-    getGoogleToken()
+    window.location.href = "http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/";
+  };
 
     // for(let el of new URLSearchParams(window.location.hash.substring(1))){
     //   console.log(el)
@@ -118,7 +119,7 @@ const LoginForm = () => {
     // }
 
     // localStorage.setItem("google_access_token",await getGoogleToken())
-  }
+  // }
 
   function sendBackend() {
     window.location.href =
