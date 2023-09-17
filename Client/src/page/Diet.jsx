@@ -103,7 +103,7 @@ const Container = styled.div`
   max-width: 768px;
   width: 70vw;
   height: 70vh;
-  border: 1px solid orange;
+  /* border: 1px solid orange; */
   justify-content: center;
   align-items: center;
 `;
@@ -114,7 +114,7 @@ const FlexContainer = styled.div`
   max-width: 768px;
   width: 100%;
   height: 100%;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   justify-content: center;
   align-items: space-between;
   gap: 10px;
@@ -122,7 +122,7 @@ const FlexContainer = styled.div`
 
 const ItemContainer = styled.div`
   display: flex;
-  padding: 5px;
+  padding: 10px;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -131,7 +131,7 @@ const ItemContainer = styled.div`
   width: 100%;
   height: 25%;
   max-height: 20vh;
-  border: 1px solid green;
+  border-bottom: 1px solid black;
 
   & > div {
     margin: 0 auto;
@@ -209,18 +209,31 @@ const Diet = () => {
             <FlexContainer>
               <ItemContainer>
                 <div>
-                  총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}
+                  총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}Kcal
                 </div>
-                <div>권장하는 칼로리 : {analyzedData.idealKacl}</div>
-                <div>초과된 칼로리 : {analyzedData.overKcal}</div>
+                <div>권장 칼로리: {Math.floor(analyzedData.idealKacl)}Kcal</div>
+                {Math.floor(analyzedData.idealKacl * 0.1) <
+                  Math.abs(analyzedData.overKcal) && (
+                  <div
+                    style={{
+                      color: analyzedData.overKcal < 0 ? "orange" : "red",
+                    }}
+                  >
+                    {analyzedData.overKcal < 0
+                      ? `부족한 칼로리: ${Math.floor(
+                          Math.abs(analyzedData.overKcal)
+                        )}Kcal`
+                      : `초과 칼로리: ${Math.floor(analyzedData.overKcal)}Kcal`}
+                  </div>
+                )}
               </ItemContainer>
               <ItemContainer>
                 <div>
-                  총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}
+                  총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}g
                 </div>
                 <div>
                   권장하는 탄수화물:{" "}
-                  {analyzedData.idealMacro.idealCarbohydrates}
+                  {analyzedData.idealMacro.idealCarbohydrates}g
                 </div>
                 {analyzedData.idealMacro.idealCarbohydrates * 0.1 <
                   Math.abs(analyzedData.overMacro.overCarbohydrates) && (
@@ -235,8 +248,8 @@ const Diet = () => {
                     {analyzedData.overMacro.overCarbohydrates < 0
                       ? `부족한 탄수화물: ${Math.abs(
                           analyzedData.overMacro.overCarbohydrates
-                        )}`
-                      : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}`}
+                        )}g`
+                      : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}g`}
                   </div>
                 )}
                 {analyzedData.idealMacro.idealCarbohydrates * 0.1 >=
@@ -246,10 +259,10 @@ const Diet = () => {
               </ItemContainer>
               <ItemContainer>
                 <div>
-                  총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}
+                  총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}g
                 </div>
                 <div>
-                  권장하는 단백질: {analyzedData.idealMacro.idealProteins}
+                  권장하는 단백질: {analyzedData.idealMacro.idealProteins}g
                 </div>
                 {analyzedData.idealMacro.idealProteins * 0.1 <
                   Math.abs(analyzedData.overMacro.overProteins) && (
@@ -264,8 +277,8 @@ const Diet = () => {
                     {analyzedData.overMacro.overProteins < 0
                       ? `부족한 단백질: ${Math.abs(
                           analyzedData.overMacro.overProteins
-                        )}`
-                      : `초과 단백질: ${analyzedData.overMacro.overProteins}`}
+                        )}g`
+                      : `초과 단백질: ${analyzedData.overMacro.overProteins}g`}
                   </div>
                 )}
                 {analyzedData.idealMacro.idealProteins * 0.1 >=
@@ -274,8 +287,8 @@ const Diet = () => {
                 )}
               </ItemContainer>
               <ItemContainer>
-                <div>총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}</div>
-                <div>권장하는 지방: {analyzedData.idealMacro.idealFats}</div>
+                <div>총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}g</div>
+                <div>권장하는 지방: {analyzedData.idealMacro.idealFats}g</div>
                 {analyzedData.idealMacro.idealFats * 0.1 <
                   Math.abs(analyzedData.overMacro.overFats) && (
                   <div
@@ -287,8 +300,8 @@ const Diet = () => {
                     {analyzedData.overMacro.overFats < 0
                       ? `부족한 지방: ${Math.abs(
                           analyzedData.overMacro.overFats
-                        )}`
-                      : `초과 지방: ${analyzedData.overMacro.overFats}`}
+                        )}g`
+                      : `초과 지방: ${analyzedData.overMacro.overFats}g`}
                   </div>
                 )}
                 {analyzedData.idealMacro.idealFats * 0.1 >=
@@ -300,15 +313,24 @@ const Diet = () => {
               <ItemContainer>
                 <div style={{ fontSize: "20px", fontWeight: "bold" }}>결과</div>
                 <div>
-                  {analyzedData.result.split("\n").map((line, index) => (
-                    <div key={index}>
-                      {line}
-                      <br />
-                    </div>
-                  ))}
+                  {analyzedData.result.split("\n").map((line, index) => {
+                    let style = {};
+
+                    if (line.includes("불량")) {
+                      style.color = "red";
+                    } else if (line.includes("양호")) {
+                      style.color = "blue";
+                    }
+
+                    return (
+                      <div key={index} style={style}>
+                        {line}
+                        <br />
+                      </div>
+                    );
+                  })}
                 </div>
               </ItemContainer>
-              <ItemContainer></ItemContainer>
             </FlexContainer>
           </Container>
         </div>
