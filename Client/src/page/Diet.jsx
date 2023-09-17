@@ -10,6 +10,7 @@ import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
 import InputAddFavorite from "../component/diet/InputAddFavorite";
 import DeleteModal from "../component/diet/DeleteModal";
+import AnalyzedDiet from "../component/diet/DietAnalyze";
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -96,17 +97,70 @@ const StyleNewDiet = styled.div`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 768px;
+  width: 70vw;
+  height: 70vh;
+  /* border: 1px solid orange; */
+  justify-content: center;
+  align-items: center;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 768px;
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid red; */
+  justify-content: center;
+  align-items: space-between;
+  gap: 10px;
+`;
+
+const ItemContainer = styled.div`
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 25%;
+  max-height: 20vh;
+  border-bottom: 1px solid black;
+
+  & > div {
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+const CustomSpan = styled.span`
+  color: black;
+`;
+
 const Diet = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalHeader, setModalHeader] = useState(null);
+  const [modalFooter, setModalFooter] = useState(null);
+  const [analyzedData, setAnalyzedData] = useState(null);
   const { date } = useParams();
   const [modalContents, setModalContents] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
+  console.log(meal);
   useEffect(() => {
     const asyncfunc = async () => {
       setMeal(await GetDailyDiet(date));
     };
     asyncfunc();
-    console.log(meal);
   }, [date]);
 
   useEffect(() => {
@@ -138,6 +192,152 @@ const Diet = () => {
     setModalContents(() => (
       <FavoriteDailyList date={date} setIsModal={setIsModal} />
     ));
+  };
+
+  const handleAnalyzeDiet = async (dailymealId, analysisId) => {
+    try {
+      console.log(meal);
+      dailymealId = meal.dailyMealId;
+      const analyzedData = await AnalyzedDiet(dailymealId);
+      setAnalyzedData();
+      setIsModalOpen(true);
+      setModalHeader("분석 결과");
+      setModalFooter(" footer입니다");
+      setModalContent(
+        <div>
+          <Container>
+            <FlexContainer>
+              <ItemContainer>
+                <div>
+                  총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}Kcal
+                </div>
+                <div>권장 칼로리: {Math.floor(analyzedData.idealKacl)}Kcal</div>
+                {Math.floor(analyzedData.idealKacl * 0.1) <
+                  Math.abs(analyzedData.overKcal) && (
+                  <div
+                    style={{
+                      color: analyzedData.overKcal < 0 ? "orange" : "red",
+                    }}
+                  >
+                    {analyzedData.overKcal < 0
+                      ? `부족한 칼로리: ${Math.floor(
+                          Math.abs(analyzedData.overKcal)
+                        )}Kcal`
+                      : `초과 칼로리: ${Math.floor(analyzedData.overKcal)}Kcal`}
+                  </div>
+                )}
+              </ItemContainer>
+              <ItemContainer>
+                <div>
+                  총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}g
+                </div>
+                <div>
+                  권장하는 탄수화물:{" "}
+                  {analyzedData.idealMacro.idealCarbohydrates}g
+                </div>
+                {analyzedData.idealMacro.idealCarbohydrates * 0.1 <
+                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overCarbohydrates < 0
+                          ? "orange"
+                          : "red",
+                    }}
+                  >
+                    {analyzedData.overMacro.overCarbohydrates < 0
+                      ? `부족한 탄수화물: ${Math.abs(
+                          analyzedData.overMacro.overCarbohydrates
+                        )}g`
+                      : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}g`}
+                  </div>
+                )}
+                {analyzedData.idealMacro.idealCarbohydrates * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
+              </ItemContainer>
+              <ItemContainer>
+                <div>
+                  총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}g
+                </div>
+                <div>
+                  권장하는 단백질: {analyzedData.idealMacro.idealProteins}g
+                </div>
+                {analyzedData.idealMacro.idealProteins * 0.1 <
+                  Math.abs(analyzedData.overMacro.overProteins) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overProteins < 0
+                          ? "red"
+                          : "orange",
+                    }}
+                  >
+                    {analyzedData.overMacro.overProteins < 0
+                      ? `부족한 단백질: ${Math.abs(
+                          analyzedData.overMacro.overProteins
+                        )}g`
+                      : `초과 단백질: ${analyzedData.overMacro.overProteins}g`}
+                  </div>
+                )}
+                {analyzedData.idealMacro.idealProteins * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overProteins) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
+              </ItemContainer>
+              <ItemContainer>
+                <div>총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}g</div>
+                <div>권장하는 지방: {analyzedData.idealMacro.idealFats}g</div>
+                {analyzedData.idealMacro.idealFats * 0.1 <
+                  Math.abs(analyzedData.overMacro.overFats) && (
+                  <div
+                    style={{
+                      color:
+                        analyzedData.overMacro.overFats < 0 ? "orange" : "red",
+                    }}
+                  >
+                    {analyzedData.overMacro.overFats < 0
+                      ? `부족한 지방: ${Math.abs(
+                          analyzedData.overMacro.overFats
+                        )}g`
+                      : `초과 지방: ${analyzedData.overMacro.overFats}g`}
+                  </div>
+                )}
+                {analyzedData.idealMacro.idealFats * 0.1 >=
+                  Math.abs(analyzedData.overMacro.overFats) && (
+                  <div style={{ color: "blue" }}>적절해요 !</div>
+                )}
+              </ItemContainer>
+
+              <ItemContainer>
+                <div style={{ fontSize: "20px", fontWeight: "bold" }}>결과</div>
+                <div>
+                  {analyzedData.result.split("\n").map((line, index) => {
+                    let style = {};
+
+                    if (line.includes("불량")) {
+                      style.color = "red";
+                    } else if (line.includes("양호")) {
+                      style.color = "blue";
+                    }
+
+                    return (
+                      <div key={index} style={style}>
+                        {line}
+                        <br />
+                      </div>
+                    );
+                  })}
+                </div>
+              </ItemContainer>
+            </FlexContainer>
+          </Container>
+        </div>
+      );
+    } catch (error) {
+      console.error("Error analyzing diet", error);
+    }
   };
 
   if (meal === null) {
@@ -196,11 +396,24 @@ const Diet = () => {
           <Button onClick={addFavoriteDailyOnClickHandler}>
             선호식단 저장하기
           </Button>
-          <Button primary={true}>자세히 분석하기</Button>
+          <Button dailymealId={meal?.dailyMealId} onClick={handleAnalyzeDiet}>
+            자세히 분석하기{" "}
+          </Button>
         </DivButton>
 
         <DivTotal>
           {/* 하루 총 평 */}
+
+          <Modal
+            isOpen={isModalOpen}
+            content={modalContent}
+            header={modalHeader}
+            footer={modalFooter}
+            setIsOpen={setIsModalOpen}
+            setContent={setModalContent}
+            setHeader={setModalHeader}
+            setFooter={setModalFooter}
+          />
           <div>
             <h3>하루 섭취량</h3>
           </div>
