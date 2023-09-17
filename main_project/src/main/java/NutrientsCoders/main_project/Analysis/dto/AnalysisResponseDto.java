@@ -14,7 +14,7 @@ public class AnalysisResponseDto {
   
   private DailyMealSimpleResponseDto dailyMeal;
   
-  private Double idealKacl;
+  private Double idealKcal;
   private Double overKcal;
   
   private Double totalGrams;

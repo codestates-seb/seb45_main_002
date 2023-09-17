@@ -40,7 +40,7 @@ public interface AnalysisMapper {
         AnalysisResponseDto.builder()
             .analysisId(savedanalysis.getAnalysisId())
             .dailyMeal(dailyMealToDailyMealSimpleResponseDto(savedanalysis.getDailyMeal()))
-            .idealKacl(savedanalysis.getIdealKacl())
+            .idealKcal(savedanalysis.getIdealKcal())
             .overKcal(savedanalysis.getOverKcal())
             .idealMacro(analysisToidealMacro)
             .overMacro(analysisToOverMacro)
