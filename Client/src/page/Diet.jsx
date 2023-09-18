@@ -12,6 +12,7 @@ import InputAddFavorite from "../component/diet/InputAddFavorite";
 import DeleteModal from "../component/diet/DeleteModal";
 import { postFavoriteEachMeal } from "../util/FavoriteDaily";
 import AnalyzedDiet from "../component/diet/DietAnalyze";
+import style from "../style/style";
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -142,6 +143,14 @@ const ItemContainer = styled.div`
   }
 `;
 
+const LinkContainer = styled.div`
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid red;
+`;
+
 const CustomSpan = styled.span`
   color: black;
 `;
@@ -216,140 +225,170 @@ const Diet = () => {
       const analyzedData = await AnalyzedDiet(dailymealId);
       setAnalyzedData();
       setIsModalOpen(true);
-      setModalHeader("분석 결과");
-      setModalFooter(" footer입니다");
-      setModalContent(
-        <div>
-          <Container>
-            <FlexContainer>
-              <ItemContainer>
-                <div>
-                  총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}Kcal
-                </div>
-                <div>권장 칼로리: {Math.floor(analyzedData.idealKacl)}Kcal</div>
-                {Math.floor(analyzedData.idealKacl * 0.1) <
-                  Math.abs(analyzedData.overKcal) && (
-                  <div
-                    style={{
-                      color: analyzedData.overKcal < 0 ? "orange" : "red",
-                    }}
-                  >
-                    {analyzedData.overKcal < 0
-                      ? `부족한 칼로리: ${Math.floor(
-                          Math.abs(analyzedData.overKcal)
-                        )}Kcal`
-                      : `초과 칼로리: ${Math.floor(analyzedData.overKcal)}Kcal`}
-                  </div>
-                )}
-              </ItemContainer>
-              <ItemContainer>
-                <div>
-                  총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}g
-                </div>
-                <div>
-                  권장하는 탄수화물:{" "}
-                  {analyzedData.idealMacro.idealCarbohydrates}g
-                </div>
-                {analyzedData.idealMacro.idealCarbohydrates * 0.1 <
-                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
-                  <div
-                    style={{
-                      color:
-                        analyzedData.overMacro.overCarbohydrates < 0
-                          ? "orange"
-                          : "red",
-                    }}
-                  >
-                    {analyzedData.overMacro.overCarbohydrates < 0
-                      ? `부족한 탄수화물: ${Math.abs(
-                          analyzedData.overMacro.overCarbohydrates
-                        )}g`
-                      : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}g`}
-                  </div>
-                )}
-                {analyzedData.idealMacro.idealCarbohydrates * 0.1 >=
-                  Math.abs(analyzedData.overMacro.overCarbohydrates) && (
-                  <div style={{ color: "blue" }}>적절해요 !</div>
-                )}
-              </ItemContainer>
-              <ItemContainer>
-                <div>
-                  총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}g
-                </div>
-                <div>
-                  권장하는 단백질: {analyzedData.idealMacro.idealProteins}g
-                </div>
-                {analyzedData.idealMacro.idealProteins * 0.1 <
-                  Math.abs(analyzedData.overMacro.overProteins) && (
-                  <div
-                    style={{
-                      color:
-                        analyzedData.overMacro.overProteins < 0
-                          ? "red"
-                          : "orange",
-                    }}
-                  >
-                    {analyzedData.overMacro.overProteins < 0
-                      ? `부족한 단백질: ${Math.abs(
-                          analyzedData.overMacro.overProteins
-                        )}g`
-                      : `초과 단백질: ${analyzedData.overMacro.overProteins}g`}
-                  </div>
-                )}
-                {analyzedData.idealMacro.idealProteins * 0.1 >=
-                  Math.abs(analyzedData.overMacro.overProteins) && (
-                  <div style={{ color: "blue" }}>적절해요 !</div>
-                )}
-              </ItemContainer>
-              <ItemContainer>
-                <div>총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}g</div>
-                <div>권장하는 지방: {analyzedData.idealMacro.idealFats}g</div>
-                {analyzedData.idealMacro.idealFats * 0.1 <
-                  Math.abs(analyzedData.overMacro.overFats) && (
-                  <div
-                    style={{
-                      color:
-                        analyzedData.overMacro.overFats < 0 ? "orange" : "red",
-                    }}
-                  >
-                    {analyzedData.overMacro.overFats < 0
-                      ? `부족한 지방: ${Math.abs(
-                          analyzedData.overMacro.overFats
-                        )}g`
-                      : `초과 지방: ${analyzedData.overMacro.overFats}g`}
-                  </div>
-                )}
-                {analyzedData.idealMacro.idealFats * 0.1 >=
-                  Math.abs(analyzedData.overMacro.overFats) && (
-                  <div style={{ color: "blue" }}>적절해요 !</div>
-                )}
-              </ItemContainer>
+      setModalHeader(<h2>분석 결과</h2>);
+      setModalFooter();
+      console.log(analyzedData);
+      if (analyzedData === undefined) {
+        setModalHeader(<h2>오류</h2>);
+        setModalContent(
+          <FlexContainer>
+            식단 정보가 없거나 <br />
+            통신이 불안정해요!
+          </FlexContainer>
+        );
+      }
 
-              <ItemContainer>
-                <div style={{ fontSize: "20px", fontWeight: "bold" }}>결과</div>
-                <div>
-                  {analyzedData.result.split("\n").map((line, index) => {
-                    let style = {};
+      if (analyzedData.dailyMeal.totalDailyKcal <= 0) {
+        setModalHeader(<h2>오류</h2>);
+        setModalContent(
+          <FlexContainer>
+            식단을 채워주세요! <br />
+          </FlexContainer>
+        );
+      } else
+        setModalContent(
+          <div>
+            <Container>
+              <FlexContainer>
+                <ItemContainer>
+                  <div>
+                    총 섭취 칼로리 : {analyzedData.dailyMeal.totalDailyKcal}Kcal
+                  </div>
+                  <div>
+                    권장 칼로리: {Math.floor(analyzedData.idealKcal)}Kcal
+                  </div>
+                  {Math.floor(analyzedData.idealKcal * 0.1) <
+                    Math.abs(analyzedData.overKcal) && (
+                    <div
+                      style={{
+                        color: analyzedData.overKcal < 0 ? "orange" : "red",
+                      }}
+                    >
+                      {analyzedData.overKcal < 0
+                        ? `부족한 칼로리: ${Math.floor(
+                            Math.abs(analyzedData.overKcal)
+                          )}Kcal`
+                        : `초과 칼로리: ${Math.floor(
+                            analyzedData.overKcal
+                          )}Kcal`}
+                    </div>
+                  )}
+                </ItemContainer>
+                <ItemContainer>
+                  <div>
+                    총 섭취 탄수화물: {analyzedData.dailyMeal.totalDailyCarbo}g
+                  </div>
+                  <div>
+                    권장하는 탄수화물:{" "}
+                    {analyzedData.idealMacro.idealCarbohydrates}g
+                  </div>
+                  {analyzedData.idealMacro.idealCarbohydrates * 0.1 <
+                    Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                    <div
+                      style={{
+                        color:
+                          analyzedData.overMacro.overCarbohydrates < 0
+                            ? "orange"
+                            : "red",
+                      }}
+                    >
+                      {analyzedData.overMacro.overCarbohydrates < 0
+                        ? `부족한 탄수화물: ${Math.abs(
+                            analyzedData.overMacro.overCarbohydrates
+                          )}g`
+                        : `초과 탄수화물: ${analyzedData.overMacro.overCarbohydrates}g`}
+                    </div>
+                  )}
+                  {analyzedData.idealMacro.idealCarbohydrates * 0.1 >=
+                    Math.abs(analyzedData.overMacro.overCarbohydrates) && (
+                    <div style={{ color: "2A7625" }}>적절해요 !</div>
+                  )}
+                </ItemContainer>
+                <ItemContainer>
+                  <div>
+                    총 섭취 단백질: {analyzedData.dailyMeal.totalDailyProtein}g
+                  </div>
+                  <div>
+                    권장하는 단백질: {analyzedData.idealMacro.idealProteins}g
+                  </div>
+                  {analyzedData.idealMacro.idealProteins * 0.1 <
+                    Math.abs(analyzedData.overMacro.overProteins) && (
+                    <div
+                      style={{
+                        color:
+                          analyzedData.overMacro.overProteins < 0
+                            ? "red"
+                            : "EABA34",
+                      }}
+                    >
+                      {analyzedData.overMacro.overProteins < 0
+                        ? `부족한 단백질: ${Math.abs(
+                            analyzedData.overMacro.overProteins
+                          )}g`
+                        : `초과 단백질: ${analyzedData.overMacro.overProteins}g`}
+                    </div>
+                  )}
+                  {analyzedData.idealMacro.idealProteins * 0.1 >=
+                    Math.abs(analyzedData.overMacro.overProteins) && (
+                    <div style={{ color: "2A7625" }}>적절해요 !</div>
+                  )}
+                </ItemContainer>
+                <ItemContainer>
+                  <div>
+                    총 섭취 지방: {analyzedData.dailyMeal.totalDailyFat}g
+                  </div>
+                  <div>권장하는 지방: {analyzedData.idealMacro.idealFats}g</div>
+                  {analyzedData.idealMacro.idealFats * 0.1 <
+                    Math.abs(analyzedData.overMacro.overFats) && (
+                    <div
+                      style={{
+                        color:
+                          analyzedData.overMacro.overFats < 0
+                            ? "F4D787"
+                            : "red",
+                      }}
+                    >
+                      {analyzedData.overMacro.overFats < 0
+                        ? `부족한 지방: ${Math.abs(
+                            analyzedData.overMacro.overFats
+                          )}g`
+                        : `초과 지방: ${analyzedData.overMacro.overFats}g`}
+                    </div>
+                  )}
+                  {analyzedData.idealMacro.idealFats * 0.1 >=
+                    Math.abs(analyzedData.overMacro.overFats) && (
+                    <div style={{ color: "2A7625" }}>적절해요 !</div>
+                  )}
+                </ItemContainer>
 
-                    if (line.includes("불량")) {
-                      style.color = "red";
-                    } else if (line.includes("양호")) {
-                      style.color = "blue";
-                    }
+                <ItemContainer>
+                  <div style={{ fontSize: "20px", fontWeight: "bold" }}>
+                    결과
+                  </div>
+                  <div>
+                    {analyzedData.result.split("\n").map((line, index) => {
+                      let style = {};
 
-                    return (
-                      <div key={index} style={style}>
-                        {line}
-                        <br />
-                      </div>
-                    );
-                  })}
-                </div>
-              </ItemContainer>
-            </FlexContainer>
-          </Container>
-        </div>
-      );
+                      if (line.includes("불량")) {
+                        style.color = "red";
+                      } else if (line.includes("양호")) {
+                        style.color = "2A7625";
+                      }
+
+                      return (
+                        <div key={index} style={style}>
+                          {line}
+                          <br />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </ItemContainer>
+                {/* <ItemContainer></ItemContainer> //TEMP*/}
+              </FlexContainer>
+            </Container>
+          </div>
+        );
     } catch (error) {
       console.error("Error analyzing diet", error);
     }
