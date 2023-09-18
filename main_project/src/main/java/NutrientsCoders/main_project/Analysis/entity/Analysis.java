@@ -25,7 +25,7 @@ public class Analysis {
   private String result;
   
   @Column
-  private Double idealKacl;
+  private Double idealKcal;
   @Column
   private Double overKcal;
   @Column
@@ -62,9 +62,9 @@ public class Analysis {
   private String auctionURL;
   private String naverURL;
   private String coupangURL;
-  public void calculator(Double kacl, Double carbohydrates, Double proteins, Double fats) {
+  public void calculator(Double kcal, Double carbohydrates, Double proteins, Double fats) {
     // 초과, 부족 칼로리 계산(음수는 부족, 양수는 초과)
-    overKcal = kacl- idealKacl;
+    overKcal = kcal- idealKcal;
     
     // 총 섭취 그램 수 계산
     totalGrams = carbohydrates + proteins + fats;
@@ -75,16 +75,16 @@ public class Analysis {
     percentFats = Math.round((1.0 - percentCarbos - percentProteins) * 100) / 100.0;
 
     // 적정 그람수 계산(초과분 계산용)
-    idealCarbohydrates = Math.round(totalGrams * (3.0 / 10.0) * 100) / 100.0;
-    idealProteins = Math.round(totalGrams * (5.0 / 10.0) * 100) / 100.0;
+    idealCarbohydrates = Math.round(totalGrams * (5.0 / 10.0) * 100) / 100.0;
+    idealProteins = Math.round(totalGrams * (3.0 / 10.0) * 100) / 100.0;
     idealFats = Math.round(totalGrams * (2.0 / 10.0) * 100) / 100.0;
     // 초과 그람수 계산
     overCarbohydrates = Math.round((carbohydrates - idealCarbohydrates) * 100) / 100.0;
     overProteins = Math.round((proteins - idealProteins) * 100) / 100.0;
     overFats = Math.round((fats - idealFats) * 100) / 100.0;
     // 초과 비율 계산
-    overPercentCarbos = Math.round((percentCarbos - 0.3)  * 100) / 100.0;
-    overPercentProteins = Math.round((percentProteins - 0.5) * 100) / 100.0;
+    overPercentCarbos = Math.round((percentCarbos - 0.5)  * 100) / 100.0;
+    overPercentProteins = Math.round((percentProteins - 0.3) * 100) / 100.0;
     overPercentFats = Math.round((percentFats - 0.2) * 100) / 100.0;
   }
 
