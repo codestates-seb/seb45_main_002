@@ -26,6 +26,7 @@ const DietImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   & > img {
     border: 1px solid black;
     border-radius: 15px;
@@ -336,7 +337,7 @@ console.log(morningMenu)
             </TimeBox>
           </TimeContainer>
           <TotalBox>
-            <div>총</div>
+            <div>일일 섭취량</div>
             <div>
               <OneLine>
                 <span>칼로리</span>

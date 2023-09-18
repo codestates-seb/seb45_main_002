@@ -12,11 +12,19 @@ const CommentListBox = styled.li`
   margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
 `
-const Comment = styled.input`
+const Comment = styled.textarea`
   margin: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height} 0;
   width: 95%;
+  height: auto;
   border: solid 1px rgb(200,200,200);
+  &.modifyClose{
+    border: none;
+    &:focus{
+      outline: none;
+
+    }
+  }
 `
 const Createed = styled.div`
   display: flex;
@@ -81,8 +89,10 @@ console.log(comment)
   return(
     <CommentListBox>
       <Comment
+       className={modifyOpen? "modifyOpen" : "modifyClose"}
        value={newComment}
        onChange={e=>modifyOpen? setNewComment(e.target.value) : console.log("수정버튼을 눌러주세요.")}
+       readOnly={modifyOpen? false : true}
       >
       </Comment>
       <Createed>
