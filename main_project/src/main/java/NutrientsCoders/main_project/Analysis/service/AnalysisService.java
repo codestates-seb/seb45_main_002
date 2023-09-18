@@ -106,12 +106,12 @@ public class AnalysisService {
     else if (overSum < 1.5) resultText += majorText[1];
     else resultText += majorText[2];
     
-    if (overCarbos > 1.0 ) resultText += addText[0];
-    if (overProteins > 1.0 ) resultText += addText[1];
-    if (overFats > 1.0 ) resultText += addText[2];
-    if (overCarbos < -1.0 ) resultText += addText[3];
-    if (overProteins < -1.0 ) resultText += addText[4];
-    if (overFats < -1.0 ) resultText += addText[5];
+    if (overCarbos > 0.5 ) resultText += addText[0];
+    if (overProteins > 0.5 ) resultText += addText[1];
+    if (overFats > 0.5 ) resultText += addText[2];
+    if (overCarbos < -0.5 ) resultText += addText[3];
+    if (overProteins < -0.5 ) resultText += addText[4];
+    if (overFats < -0.5 ) resultText += addText[5];
     
   return resultText;
   }
