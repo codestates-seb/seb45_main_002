@@ -399,7 +399,7 @@ const Diet = () => {
   }
 
   if (meal === "DailyMeal not found...") {
-    // 해당 날짜 저장된 식단이 없는 경우
+    /// 해당 날짜 저장된 식단이 없는 경우
     return (
       <>
         {isModal ? (
