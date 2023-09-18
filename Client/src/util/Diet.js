@@ -59,7 +59,7 @@ export const PatchDailyMeal = async (meal, eachmeal = null) => {
     .patch(
       `${url}/dailymeals/date/${meal.date}`,
       {
-        name: "name",
+        name: "",
         eachMeals: eachmeal !== null ? eachmeal : eachMealIDs,
       },
       {
@@ -129,7 +129,7 @@ export const PostDailyMeal = async (
       `${url}/dailymeals`,
       {
         date: dateStr,
-        name: "name",
+        name: "",
         eachMeals: [],
       },
       {

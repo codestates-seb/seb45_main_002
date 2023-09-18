@@ -57,6 +57,8 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage, date, setIsModal }) => {
   const { setMeal } = useZustand.useDailyMeals();
   const [DailyMeal, setDailyMeal] = useState();
 
+  console.log(date);
+
   useEffect(() => {
     const asyncfunc = async () => {
       setDailyMeal(await getDailyMealId(id));
