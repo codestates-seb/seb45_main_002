@@ -207,6 +207,7 @@ const Diet = () => {
         />
       );
     });
+  };
 
   const handleAnalyzeDiet = async (dailymealId, analysisId) => {
     try {
@@ -352,7 +353,6 @@ const Diet = () => {
     } catch (error) {
       console.error("Error analyzing diet", error);
     }
-    
   };
 
   if (meal === null) {

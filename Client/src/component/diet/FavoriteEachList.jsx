@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
-import { getEachMeal, getFavoriteEachMeal } from "../../util/FavoriteDaily";
+import { getEachMeal } from "../../util/Diet";
+import { getFavoriteEachMeal } from "../../util/FavoriteDaily";
 import FavoriteEachItem from "./FavoriteEachItem";
 import Button from "../../atom/button";
-import FavoriteEachDetail from "./FavoriteEachDetail";
 
 const DivStyle = styled.div`
   display: flex;
@@ -31,17 +31,11 @@ const DivStyle = styled.div`
   }
 `;
 
-const FavoriteEachList = ({
-  date,
-  timeslot,
-  setIsModal,
-  EachMealAddHandler,
-}) => {
+const FavoriteEachList = ({ timeslot, setIsModal }) => {
   const [page, setPage] = useState(1);
   const [FavoriteEach, setFavoriteEach] = useState(null);
   const [EachDetail, setEachDetail] = useState(null);
   const maxPage = useRef(0);
-  const [isDetailPage, setIsDetailPage] = useState(null);
 
   useEffect(() => {
     const asyncfunc = async () => {
@@ -50,7 +44,6 @@ const FavoriteEachList = ({
         if (result) {
           setFavoriteEach(result.content);
           maxPage.current = result.totalPages;
-          await details();
         }
       } else {
         setFavoriteEach(null);
@@ -60,16 +53,21 @@ const FavoriteEachList = ({
     asyncfunc();
   }, [page]);
 
-  const details = async () => {
-    if (FavoriteEach) {
-      const eachMealsId = FavoriteEach.map((item) => item.eachMealId);
-      let eachMeals = [];
-      for (let eachMealId of eachMealsId) {
-        eachMeals = [...eachMeals, await getEachMeal(eachMealId)];
+  useEffect(() => {
+    const asuncfunc = async () => {
+      if (FavoriteEach) {
+        const eachMealsId = FavoriteEach.map((item) => item.eachMealId);
+        let eachMeals = [];
+        for (let eachMealId of eachMealsId) {
+          eachMeals = [...eachMeals, await getEachMeal(eachMealId)];
+        }
+        console.log("eachMeals!!");
+        console.log(eachMeals);
+        setEachDetail(await eachMeals);
       }
-      setEachDetail(await eachMeals);
-    }
-  };
+    };
+    asuncfunc();
+  }, [FavoriteEach]);
 
   const PageOnclickHandler = (howPage) => {
     setPage((prevState) => {
@@ -82,18 +80,6 @@ const FavoriteEachList = ({
     return <>불러올 수 있는 끼니가 없습니다.</>;
   }
 
-  if (isDetailPage) {
-    return (
-      <FavoriteEachDetail
-        id={isDetailPage}
-        setIsDetailPage={setIsDetailPage}
-        date={date}
-        timeslot={timeslot}
-        setIsModal={setIsModal}
-      />
-    );
-  }
-
   return (
     <DivStyle>
       <div>
@@ -102,7 +88,9 @@ const FavoriteEachList = ({
               <FavoriteEachItem
                 item={item}
                 setPage={setPage}
+                setIsModal={setIsModal}
                 key={index}
+                timeslot={timeslot}
                 detail={EachDetail !== null ? EachDetail[index] : null}
               />
             ))
