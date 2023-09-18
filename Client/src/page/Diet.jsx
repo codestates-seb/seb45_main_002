@@ -10,6 +10,7 @@ import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
 import InputAddFavorite from "../component/diet/InputAddFavorite";
 import DeleteModal from "../component/diet/DeleteModal";
+import { postFavoriteEachMeal } from "../util/FavoriteDaily";
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -140,6 +141,20 @@ const Diet = () => {
     ));
   };
 
+  const addEachMealOnClickHandler = (eachMeal) => {
+    setIsModal(true);
+    setModalContents(() => {
+      postFavoriteEachMeal(eachMeal);
+      return (
+        <InputAddFavorite
+          meal={meal}
+          setIsModal={setIsModal}
+          defaultResult={true}
+        />
+      );
+    });
+  };
+
   if (meal === null) {
     return <div>로그인 후 이용해주세요</div>;
   }
@@ -179,7 +194,12 @@ const Diet = () => {
     <>
       {isModal ? (
         <Modal
-          style={{ width: "240px", height: "180px" }}
+          style={{
+            minWidth: "240px",
+            maxWidth: "90vw",
+            minHeight: "180px",
+            maxHeight: "80vh",
+          }}
           isOpen={isModal}
           content={modalContents}
           setIsOpen={setIsModal}
@@ -190,7 +210,14 @@ const Diet = () => {
       ) : null}
       <StyleDiet>
         {[1, 2, 3].map((timeslot, index) => (
-          <EachMeal key={index} timeslot={timeslot} index={index} />
+          <EachMeal
+            key={index}
+            date={date}
+            timeslot={timeslot}
+            addEachMealOnClickHandler={addEachMealOnClickHandler}
+            setIsModal={setIsModal}
+            setModalContents={setModalContents}
+          />
         ))}
         <DivButton>
           <Button onClick={addFavoriteDailyOnClickHandler}>
