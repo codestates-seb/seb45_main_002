@@ -49,7 +49,7 @@ const FormDiv = styled.div`
   }
 `;
 
-const FoodSearchForm = ({ timeslot }) => {
+const FoodSearchForm = ({ timeslot, foodDetailOnClickHandler }) => {
   const [inputSearchFood, setInputSearchFood] = useState("");
   const [searchFoodList, setSearchFoodList] = useState([]);
 
@@ -79,7 +79,12 @@ const FoodSearchForm = ({ timeslot }) => {
       <ul>
         {Array.isArray(searchFoodList) ? (
           searchFoodList.map((item, index) => (
-            <FoodSearchItem item={item} key={index} timeslot={timeslot} />
+            <FoodSearchItem
+              item={item}
+              key={index}
+              timeslot={timeslot}
+              foodDetailOnClickHandler={foodDetailOnClickHandler}
+            />
           ))
         ) : (
           <>Error</>

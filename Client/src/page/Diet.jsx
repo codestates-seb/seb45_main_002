@@ -431,7 +431,7 @@ const Diet = () => {
               커스텀 식단 만들기
             </Button>
             <Button onClick={loadFavoriteDailyOnclickHandler}>
-              저장해둔 식단 불러오기
+              저장한 식단 불러오기
             </Button>
           </div>
         </StyleNewDiet>
@@ -474,7 +474,7 @@ const Diet = () => {
             선호식단 저장하기
           </Button>
           <Button dailymealId={meal?.dailyMealId} onClick={handleAnalyzeDiet}>
-            자세히 분석하기{" "}
+            자세히 분석하기
           </Button>
         </DivButton>
 

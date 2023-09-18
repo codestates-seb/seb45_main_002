@@ -27,7 +27,14 @@ const ListStyle = styled.li`
   }
 `;
 
-const FoodSearchItem = ({ item, timeslot }) => {
+const FoodDetailButton = styled.p`
+  cursor: pointer;
+  &:hover {
+    color: #898989;
+  }
+`;
+
+const FoodSearchItem = ({ item, timeslot, foodDetailOnClickHandler }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((food) => food.timeSlots === timeslot);
   const [quantity, setQuantity] = useState(1);
@@ -62,9 +69,13 @@ const FoodSearchItem = ({ item, timeslot }) => {
 
   return (
     <ListStyle>
-      <p>
+      <FoodDetailButton
+        onClick={() => {
+          foodDetailOnClickHandler(item.foodId);
+        }}
+      >
         {item.foodName} ({item.kcal}kcal)
-      </p>
+      </FoodDetailButton>
       <div>
         <span>
           <input
