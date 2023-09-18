@@ -30,7 +30,6 @@ const EachMeal = ({
         date={date}
         timeslot={timeslot}
         setIsModal={setIsModal}
-        EachMealAddHandler={EachMealAddHandler}
       />
     ));
   };

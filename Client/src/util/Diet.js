@@ -189,3 +189,31 @@ export const deleteDailyMealId = async (id) => {
       console.log(error);
     });
 };
+
+export const getEachMeal = async (eachMealId) => {
+  return await axios
+    .get(`${url}/eachmeals/${eachMealId}`, {
+      headers: { Authorization: token },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const deleteEachMeal = async (eachMealId) => {
+  return await axios
+    .delete(`${url}/eachmeals/${eachMealId}`, {
+      headers: { Authorization: token },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};

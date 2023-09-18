@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 import Button from "../../atom/button";
-import { deleteDailyMealId } from "../../util/Diet";
+import { deleteEachMeal } from "../../util/Diet";
+import { CopyEachMeal } from "../../util/FavoriteDaily";
+import useZustand from "../../zustand/Store";
 
 const DivItemStyle = styled.div`
   position: relative;
@@ -33,22 +35,23 @@ const DivItemStyle = styled.div`
   }
 `;
 
-const FavoriteEachItem = ({ item, setIsDetailPage, setPage, detail }) => {
-  const loadFavoriteMealOnClickHandler = async () => {
-    setIsDetailPage(item.dailyMealId);
+const FavoriteEachItem = ({ item, setPage, setIsModal, timeslot, detail }) => {
+  const { meal, setMeal } = useZustand.useDailyMeals();
+  console.log(detail);
+  const copyFavoriteMealOnClickHandler = async () => {
+    setMeal(await CopyEachMeal(meal, detail, timeslot));
+    setIsModal(false);
   };
 
   const deleteFavoriteMealOnClickHandler = async () => {
-    await deleteDailyMealId(item.dailyMealId).then(async () => {
+    await deleteEachMeal(item.eachMealId).then(async () => {
       await setPage(null);
     });
   };
 
-  console.log(detail);
-
   return (
     <DivItemStyle>
-      <Button onClick={loadFavoriteMealOnClickHandler}>
+      <Button onClick={copyFavoriteMealOnClickHandler}>
         <p>
           {detail
             ? detail.quantityfoods.map((food) => `${food.foodName}, `)

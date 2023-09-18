@@ -1,4 +1,5 @@
 import axios from "axios";
+import { PatchDailyMeal } from "./Diet";
 
 const token = localStorage.getItem("Authorization");
 const url = "http://43.201.194.176:8080";
@@ -119,16 +120,33 @@ export const getFavoriteEachMeal = async (page = 1) => {
     });
 };
 
-export const getEachMeal = async (eachMealId) => {
-  return await axios
-    .get(`${url}/eachmeals/${eachMealId}`, {
-      headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-      return response.data;
+export const CopyEachMeal = async (meal, eachMeal, timeslot) => {
+  const foods = eachMeal.quantityfoods.map((food) => {
+    return { foodId: food.foodId, quantity: food.quantity };
+  });
+  return axios
+    .post(
+      `${url}/eachmeals`,
+      {
+        timeSlots: timeslot,
+        foods: foods,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    )
+    .then(async (response) => {
+      // 성공한 경우 실행
+      const result = [
+        ...meal.eachMeals.map((item) => item.eachMealId),
+        response.data.eachMealId,
+      ];
+      return PatchDailyMeal(meal, result);
     })
     .catch((error) => {
+      // 에러인 경우 실행
       console.log(error);
     });
 };
