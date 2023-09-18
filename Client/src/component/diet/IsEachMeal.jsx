@@ -71,7 +71,11 @@ const DivSummary = styled.div`
   }
 `;
 
-const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
+const IsEachMeal = ({
+  timeslot,
+  addEachMealOnClickHandler,
+  foodDetailOnClickHandler,
+}) => {
   const { meal, setMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
   const { nowTimeSlot, setNowTimeSlot } = useZustand.useNowTimeSlot();
@@ -111,7 +115,7 @@ const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
             <IsEachFood
               item={item}
               timeslot={timeslot}
-              index={index}
+              foodDetailOnClickHandler={foodDetailOnClickHandler}
               key={index}
             />
           );
@@ -146,7 +150,12 @@ const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
           )}
         </DivSummary>
       </div>
-      {nowTimeSlot === timeslot ? <FoodSearchForm timeslot={timeslot} /> : null}
+      {nowTimeSlot === timeslot ? (
+        <FoodSearchForm
+          timeslot={timeslot}
+          foodDetailOnClickHandler={foodDetailOnClickHandler}
+        />
+      ) : null}
     </StyleEachMeal>
   );
 };

@@ -3,6 +3,7 @@ import IsEachMeal from "./IsEachMeal";
 import NoEachMeal from "./NoEachMeal";
 import useZustand from "../../zustand/Store";
 import FavoriteEachList from "./FavoriteEachList";
+import FoodModal from "./FoodModal";
 
 const EachMeal = ({
   date,
@@ -34,6 +35,13 @@ const EachMeal = ({
     ));
   };
 
+  const foodDetailOnClickHandler = (foodId) => {
+    setIsModal(true);
+    setModalContents(() => (
+      <FoodModal foodId={foodId} setIsModal={setIsModal} />
+    ));
+  };
+
   // 1: 아침, 2: 점심, 3: 저녁
 
   for (let eachMeal of meal.eachMeals) {
@@ -42,6 +50,7 @@ const EachMeal = ({
       return (
         <IsEachMeal
           timeslot={timeslot}
+          foodDetailOnClickHandler={foodDetailOnClickHandler}
           addEachMealOnClickHandler={addEachMealOnClickHandler}
         />
       );

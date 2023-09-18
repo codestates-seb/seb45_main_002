@@ -40,7 +40,7 @@ const NoEachMeal = ({
         끼니 새로 만들기
       </Button>
       <Button onClick={loadFavoriteEachOnclickHandler}>
-        저장해둔 끼니 불러오기
+        저장한 끼니 불러오기
       </Button>
       <Button>끼니 추천받기</Button>
     </StyleEachMeal>

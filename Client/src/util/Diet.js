@@ -207,3 +207,15 @@ export const deleteEachMeal = async (eachMealId) => {
       console.log(error);
     });
 };
+
+export const getFoodDetail = async (id) => {
+  return await axios
+    .get(`${url}/foods/${id}`)
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
