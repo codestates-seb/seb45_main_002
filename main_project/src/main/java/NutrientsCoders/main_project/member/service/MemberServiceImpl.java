@@ -196,13 +196,15 @@ public class MemberServiceImpl implements MemberService {
 
         return new MemberResponseDto.bmi(bmi,kcal);
     }
-
-
     private int genderCalculate(String gender){
         if (gender.equals("M")){
             return 10;
         } else if (gender.equals("F")) {
             return -150;
         } else return -80;
+    }
+    public String findNickname(Long memberId){
+        String nickname = memberRepository.findByMemberId(memberId).getNickname();
+        return nickname;
     }
 }

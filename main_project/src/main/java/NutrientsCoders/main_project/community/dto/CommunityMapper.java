@@ -9,8 +9,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CommunityMapper {
     Community communityPostDtoToCommunity(CommunityPostDto communityPostDto);
+
     Community communityPatchDtoToCommunity(CommunityPatchDto communityPatchDto);
+
     CommunityResponseDto communityToCommunityResponseDto(Community community);
+
     CommunityAllResponseDto communityToCommunityAllResponseDto(Community community);
+
     List<Community> communityToCommunityResponseDtos(List<Community> community);
 }

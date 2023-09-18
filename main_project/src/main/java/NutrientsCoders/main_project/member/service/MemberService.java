@@ -18,6 +18,6 @@ public interface MemberService {
     void deleteMember(Long meberId) throws Exception;
 
     MemberResponseDto.bmi checkBmi(Long memberId);
-
     Member createOAuth2Member(Member member);
+    String findNickname(Long memberId);
 }

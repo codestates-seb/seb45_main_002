@@ -29,22 +29,15 @@ public class CommunityService {
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
-
-//    public Community createCommunity(Community community, long memberId){
-//        community.setMember(memberRepository.findByMemberId(memberId));
-//        community.setDailyMeal(dailyMealService.findByDailyMeal(community.getDailyMeal().getDailyMealId(),memberId));
-//        return communityRepository.save(community);
-//    }
-
     public Community createCommunity(CommunityPostDto communityPostDto, long memberId){
         Community community = new Community();
         community.setMember(memberRepository.findByMemberId(memberId));
         community.setCommunityTitle(communityPostDto.getCommunityTitle());
         community.setCommunityContent(communityPostDto.getCommunityContent());
+        community.setCommunityLike(community.getCommunityLike());
         community.setDailyMeal(dailyMealService.findByDailyMeal(communityPostDto.getDailyMealId(),memberId));
         return communityRepository.save(community);
     }
-
     /** 리포지토리에 수정한 데이터를 저장하는 메서드 **/
     public Community updateCommunity(Community community,long memberId){
         try {
@@ -71,6 +64,8 @@ public class CommunityService {
         Community findIdCommunity = communityRepository.findById(communityId).orElse(null);
         findIdCommunity.setMember(memberRepository.findByMemberId(findIdCommunity.getMember().getMemberId()));
         findIdCommunity.setCommunityViewCount(findIdCommunity.incrementViewCount());
+        findIdCommunity.setCommunityLike(findIdCommunity.getCommunityLike());
+        findIdCommunity.setCommunityCommentCount(findIdCommunity.getCommunityCommentList().size());
         return communityRepository.save(findIdCommunity);
     }
     /** 리포지토리에서 게시글을 지우는 메서드 **/
