@@ -10,6 +10,7 @@ import FavoriteDailyList from "../component/diet/FavoriteDailyList";
 import Modal from "../atom/GlobalModal";
 import InputAddFavorite from "../component/diet/InputAddFavorite";
 import DeleteModal from "../component/diet/DeleteModal";
+import { postFavoriteEachMeal } from "../util/FavoriteDaily";
 import AnalyzedDiet from "../component/diet/DietAnalyze";
 
 const StyleDiet = styled.div`
@@ -194,6 +195,19 @@ const Diet = () => {
     ));
   };
 
+  const addEachMealOnClickHandler = (eachMeal) => {
+    setIsModal(true);
+    setModalContents(() => {
+      postFavoriteEachMeal(eachMeal);
+      return (
+        <InputAddFavorite
+          meal={meal}
+          setIsModal={setIsModal}
+          defaultResult={true}
+        />
+      );
+    });
+
   const handleAnalyzeDiet = async (dailymealId, analysisId) => {
     try {
       console.log(meal);
@@ -338,6 +352,7 @@ const Diet = () => {
     } catch (error) {
       console.error("Error analyzing diet", error);
     }
+    
   };
 
   if (meal === null) {
@@ -379,7 +394,12 @@ const Diet = () => {
     <>
       {isModal ? (
         <Modal
-          style={{ width: "240px", height: "180px" }}
+          style={{
+            minWidth: "240px",
+            maxWidth: "90vw",
+            minHeight: "180px",
+            maxHeight: "80vh",
+          }}
           isOpen={isModal}
           content={modalContents}
           setIsOpen={setIsModal}
@@ -390,7 +410,14 @@ const Diet = () => {
       ) : null}
       <StyleDiet>
         {[1, 2, 3].map((timeslot, index) => (
-          <EachMeal key={index} timeslot={timeslot} index={index} />
+          <EachMeal
+            key={index}
+            date={date}
+            timeslot={timeslot}
+            addEachMealOnClickHandler={addEachMealOnClickHandler}
+            setIsModal={setIsModal}
+            setModalContents={setModalContents}
+          />
         ))}
         <DivButton>
           <Button onClick={addFavoriteDailyOnClickHandler}>

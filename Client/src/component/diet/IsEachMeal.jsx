@@ -66,7 +66,7 @@ const DivSummary = styled.div`
   }
 `;
 
-const IsEachMeal = ({ timeslot }) => {
+const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
   const { meal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
   const { nowTimeSlot, setNowTimeSlot } = useZustand.useNowTimeSlot();
@@ -95,16 +95,25 @@ const IsEachMeal = ({ timeslot }) => {
             <p>탄수화물: {eachMeal.totalEachCarbo}g</p>
             <p>지방: {eachMeal.totalEachFat}g</p>
           </div>
-          <Button
-            onClick={() => {
-              setNowTimeSlot(timeslot);
-            }}
-            disabled={nowTimeSlot === timeslot ? true : null}
-            size={"small"}
-            style={{ fontSize: "14px" }}
-          >
-            끼니 수정하기
-          </Button>
+          {nowTimeSlot === timeslot ? (
+            <Button
+              onClick={() => addEachMealOnClickHandler(eachMeal)}
+              size={"small"}
+              style={{ fontSize: "14px" }}
+            >
+              선호 끼니 저장하기
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setNowTimeSlot(timeslot);
+              }}
+              size={"small"}
+              style={{ fontSize: "14px" }}
+            >
+              끼니 수정하기
+            </Button>
+          )}
         </DivSummary>
       </div>
       {nowTimeSlot === timeslot ? <FoodSearchForm timeslot={timeslot} /> : null}

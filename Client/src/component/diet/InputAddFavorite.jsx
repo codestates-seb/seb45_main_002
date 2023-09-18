@@ -21,14 +21,27 @@ const DivFormStyle = styled.div`
   }
 `;
 
-const InputAddFavorite = ({ meal, setIsModal }) => {
+const InputAddFavorite = ({ meal, setIsModal, defaultResult = false }) => {
   const [input, setInput] = useState("");
+  const [result, setResult] = useState(defaultResult);
 
   const OnClickHandler = () => {
     postFavoriteDailyMeal(meal.eachMeals, input);
-    setIsModal(false);
+    setResult(true);
   };
-  return (
+  return result ? (
+    <DivFormStyle>
+      <p>완료되었습니다.</p>
+      <Button
+        size={"small"}
+        onClick={() => {
+          setIsModal(false);
+        }}
+      >
+        닫기
+      </Button>
+    </DivFormStyle>
+  ) : (
     <DivFormStyle>
       <p>저장할 식단의 이름을 입력해주세요</p>
       <input value={input} onInput={(event) => setInput(event.target.value)} />
