@@ -23,13 +23,13 @@ function FavoriteDiet({favorite,dietData,setDietData,openModal,setOpenModal,load
 
   useEffect(()=>putData(),[dietData])
 
-  function load(){
+  function loadFavoriteData(){
     setOpenModal(!openModal)
     loadDietInFavorite()
   }
 console.log(dietData)
   return(
-    <FavoriteDietList onClick={load}>
+    <FavoriteDietList onClick={loadFavoriteData}>
         <span>{favorite.name}</span>
         <span>{favorite.totalDailyKcal} kcal</span>
         <span>{favorite.totalDailyProtein} g</span>

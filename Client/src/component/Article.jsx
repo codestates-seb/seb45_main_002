@@ -58,7 +58,7 @@ const Article = ({article}) => {
             좋아요 {article.recommendationCount}
           </LikeViewCreate>
           <LikeViewCreate>
-            댓글 {article.communityCommentContent}
+            댓글 {article.communityCommentCount}
           </LikeViewCreate>
           <LikeViewCreate>
             조회수 {article.communityViewCount}

@@ -12,11 +12,18 @@ const CommentListBox = styled.li`
   margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
 `
-const Comment = styled.input`
+const Comment = styled.textarea`
   margin: ${style.layout.narrowMargin.height/2} ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height} 0;
   width: 95%;
+  height: auto;
   border: solid 1px rgb(200,200,200);
+  &.modifyClose{
+    border: none;
+  }
+  &.modifyClose:focus{
+    outline: none;
+  }
 `
 const Createed = styled.div`
   display: flex;
@@ -66,23 +73,30 @@ function Comments({comment}){
   }
 
   function commentDelete(){
-    axios.delete("http://43.201.194.176:8080/communitycomment/"+comment.communityCommentId,{
-      headers: {
-        Authorization: localStorage.getItem("Authorization")
-      }
-    })
-    .then(res=>window.location.reload())
-    .catch(err=>{
-      alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
-      console.log(err,"댓글삭제 실패")
-    })
+    if(modifyOpen){
+      setModifyOpen(!modifyOpen)
+    }
+    else{
+      axios.delete("http://43.201.194.176:8080/communitycomment/"+comment.communityCommentId,{
+        headers: {
+          Authorization: localStorage.getItem("Authorization")
+        }
+      })
+      .then(res=>window.location.reload())
+      .catch(err=>{
+        alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
+        console.log(err,"댓글삭제 실패")
+      })
+    }
   }
-console.log(comment)
+
   return(
     <CommentListBox>
       <Comment
+       className={modifyOpen? "modifyOpen" : "modifyClose"}
        value={newComment}
        onChange={e=>modifyOpen? setNewComment(e.target.value) : console.log("수정버튼을 눌러주세요.")}
+       readOnly={modifyOpen? false : true}
       >
       </Comment>
       <Createed>
@@ -96,7 +110,7 @@ console.log(comment)
       </Createed>
       <EditBox>
         <button onClick={commentModify}>{modifyOpen? "완료" : "수정"}</button>
-        <button onClick={commentDelete}>{modifyOpen? "" : "삭제"}</button>
+        <button onClick={commentDelete}>{modifyOpen? "취소" : "삭제"}</button>
       </EditBox>
     </CommentListBox>
   )
