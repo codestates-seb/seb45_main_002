@@ -28,7 +28,7 @@ const TitleContainer = styled.h1`
 const DietBtnContainer = styled.div`
 `;
 const DietBtnBox = styled.div`
-  padding: 0 ${style.layout.main.width/4};
+  padding: 0 ${style.layout.main.width/10};
   &>div{
     display: flex;
     align-items: center;
@@ -123,7 +123,7 @@ const ExitAndSubmit = styled.div`
   &>*{
     width: 60px;
     height: 20px;
-    background-color: #ffc123;
+    background-color: white;
     border-radius: 10px;
     margin-top: 10px;
     justify-content: center;
@@ -131,7 +131,7 @@ const ExitAndSubmit = styled.div`
     font-size: 12px;
   }
   &>:last-child{
-    background-color: white;
+    background-color: #ffc123;
   }
 `
 
@@ -158,6 +158,7 @@ function CommunityWrite(){
     communityContent: "",
     communityDietDate: Date()
   })
+  
   const [dietData, setDietData] = useState({})
 
   const [mealMorning, setMealMorning] = useState({})
@@ -169,15 +170,53 @@ function CommunityWrite(){
   const [mealDinner, setMealDinner] = useState({})
   const [dinnerMenu,setDinnerMenu] = useState([])
 
-
-  const communityId = useZustand.useCommunityId(state=>state.communityId)
-
   const [onImg,setOnImg] = useState("")
   const [favorites, setFavorites] = useState([])
 
 //////// 캘린더로 식단 불러오기
   function loadDietInDate(){
-    axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
+    if(form.communityDietDate){
+      axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
+        headers: {
+          Authorization: localStorage.getItem("Authorization")
+        }
+      })
+      .then(res=>{
+        console.log(res.data) // 하루(데일리) 총 식단에 대한 정보
+        setDietData(res.data)
+
+        console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
+        console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
+        setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
+        setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+  
+        setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
+        setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+        
+        setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
+        setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      })
+      .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
+    }
+    else{
+      alert("날짜를 선택해주시기 바랍니다.")
+    }
+  }
+
+//////// 선호 식단 불러오기
+  const [openModal, setOpenModal] = useState(false)
+  function openFavoriteListModal(){
+    axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      }
+    })
+    .then(res=>setFavorites(res.data.content))
+    .catch(err=>console.log(err, "선호식단리스트 불러오기를 실패했습니다."));
+    setOpenModal(!openModal)
+  }
+  function loadDietInFavorite(){
+    axios.get("http://43.201.194.176:8080/dailymeals/"+dietData.dailyMealId,{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
@@ -197,38 +236,11 @@ function CommunityWrite(){
       setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
       setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
     })
-    .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
+    .catch(err=>console.log(err, "선택된 선호데이터 불러오기를 실패했습니다."))
   }
 
-//////// 선호 식단 불러오기
-  const [openModal, setOpenModal] = useState(false)
-  function openFavoriteListModal(){
-    axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
-      headers: {
-        Authorization: localStorage.getItem("Authorization"),
-      }
-    })
-    .then(res => setFavorites(res.data))
-    .catch(err => console.log(err, "서버와 소통에 실패했습니다."));
-    setOpenModal(!openModal)
-  }
-  function loadDietInFavorite(){
-    axios.get("http://43.201.194.176:8080/dailymeals/"+dietData.dailyMealId,{
-      headers: {
-        Authorization: localStorage.getItem("Authorization")
-      }
-    })
-    .then(res=>{
-      console.log(res.data)
-      setDietData(res.data)
-      // setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning1,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
-      // setMealMorning([res.data.eachMeals[1].quantityfoods[0]])// [...mealMorning2,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
-      // setMealMorning([res.data.eachMeals[2].quantityfoods[0]])// [...mealMorning3,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
-    })
-    .catch(err=>console.log(err, "갈비탕과 소통에 실패했습니다."))
-  }
-
-  function sendArticle(e){
+  async function sendArticle(e){
+    const communityId = await useZustand.useCommunityId(state=>state.communityId)
     if(form.communityTitle===""){
       alert("제목을 입력해주시기 바랍니다.")
     }
@@ -246,7 +258,7 @@ function CommunityWrite(){
             Authorization: localStorage.getItem("Authorization")
           }
         })
-        .then(res=>console.log(res,"communityId로 게시글 수정 성공"))
+        .then(res=>window.location.reload())
         .catch(err=>console.log(err))
       }
       else{
@@ -259,7 +271,7 @@ function CommunityWrite(){
             Authorization: localStorage.getItem("Authorization")
           }
         })
-        .then(res=>console.log(res,"신규 게시물 등록 성공"))
+        .then(res=>window.location.reload())
         .catch(err=>console.log(err, "게시물 등록에 실패했습니다."))
       }
     }
@@ -269,14 +281,14 @@ function CommunityWrite(){
     <WriteFormContainer>
 
       <TitleContainer>
-        <input placeholder="제목" value={form.communityTitle} onChange={e=>setForm({...form,communityTitle: e.target.value})}/>
+        <input placeholder="제목" value={form.communityTitle} onChange={e=>setForm({...form,communityTitle: e.target.value})} autoFocus/>
       </TitleContainer>
 
       <DietBtnContainer>
         <DietBtnBox>
           <div>
             <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
-            <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>불러오기</DietBtn>
+            <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>캘린더에서<br />불러오기</DietBtn>
           </div>
           <DietBtn onClick={openFavoriteListModal}>내 선호식단<br />리스트에서 불러오기</DietBtn>
         </DietBtnBox>
@@ -352,7 +364,9 @@ function CommunityWrite(){
       {openModal?
         <FavoriteDietListModalContainer onClick={(e)=>{e.preventDefault();setOpenModal(!openModal);}}>
           <FavoriteDietListModalBox>
-            {favorites.map(favorite=>(<FavoriteDiet favorite={favorite} dietData={dietData} setDietData={setDietData} openModal={openModal} setOpenModal={setOpenModal} loadDietInFavorite={loadDietInFavorite} />))}
+            {favorites.map(favorite=>(
+              <FavoriteDiet favorite={favorite} dietData={dietData} setDietData={setDietData} openModal={openModal} setOpenModal={setOpenModal} loadDietInFavorite={loadDietInFavorite} />
+            ))}
           </FavoriteDietListModalBox>
         </FavoriteDietListModalContainer>
         :

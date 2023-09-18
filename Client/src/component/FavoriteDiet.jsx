@@ -1,4 +1,4 @@
-
+import { useEffect } from "react";
 import { styled } from "styled-components";
 
 import style from "../style/style";
@@ -16,13 +16,20 @@ const FavoriteDietList = styled.li`
   }
 `
 
-function FavoriteDiet({favorite,dietData,setDietData,openModal,setOpenModal,loadDietInFavorite}){
+function FavoriteDiet({favorite,dietData,setDietData,openModal,setOpenModal,loadDietInFavorite}){ 
+  function putData(){
+    setDietData(favorite)
+  }
+
+  useEffect(()=>putData(),[dietData])
+
+  function load(){
+    setOpenModal(!openModal)
+    loadDietInFavorite()
+  }
+console.log(dietData)
   return(
-    <FavoriteDietList onClick={()=>{
-      setDietData({...dietData,dailyMealId: favorite.dailyMealId})
-      setOpenModal(!openModal)
-      loadDietInFavorite()
-    }}>
+    <FavoriteDietList onClick={load}>
         <span>{favorite.name}</span>
         <span>{favorite.totalDailyKcal} kcal</span>
         <span>{favorite.totalDailyProtein} g</span>

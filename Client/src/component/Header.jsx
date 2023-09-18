@@ -10,6 +10,7 @@ import { useState } from "react";
 import useZustand from "../zustand/Store";
 
 const HeaderContainer = styled.header`
+  background-color: antiquewhite;
   display: flex;
   position: fixed;
   top: 0;

@@ -53,15 +53,7 @@ const CommunityList = () => {
 
   const [nowPage, setNowPage] = useState(1)
   const [pageInfo, setPageInfo] = useState({})
-  const [articles, setArticles] = useState([
-    {communityTitle: "게시물 제목 1", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 2", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333},
-    {communityTitle: "게시물 제목 3", communityLike: 525, community_createdAt: "2023-08-29", communityViewCount: 333}
-  ])
+  const [articles, setArticles] = useState([])
   const [searchTerm, setSearchTerm] = useState("");
   const setCommunityId = useZustand.useCommunityId(state=>state.setCommunityId)
 
@@ -88,9 +80,7 @@ const CommunityList = () => {
             localStorage.getItem("Authorization")?
             "/pageswitch/community/write" : "/pageswitch/community"
           }
-          onClick={e=>{
-            localStorage.getItem("Authorization")? console.log("") : alert("로그인 후 이용해주시기 바랍니다.")
-          }}
+          onClick={e=>localStorage.getItem("Authorization")? null : alert("로그인 후 이용해주시기 바랍니다.")}
         >
           <WriteBtn>글쓰기</WriteBtn>
         </Link>
