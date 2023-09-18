@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { GetFoodKeyword } from "../../util/Diet";
 import FoodSearchItem from "./FoodSearchItem";
 import { styled } from "styled-components";
-import searchIcon from "../../asset/searchIcon.svg";
+import searchIcon from "../../asset/searchIcon.png";
 
 const FormDiv = styled.div`
   width: calc(50% - 10px);
@@ -85,7 +85,7 @@ const FoodSearchForm = ({ timeslot }) => {
           <>Error</>
         )}
       </ul>
-      <p>최대 5개까지 표시됩니다.</p>
+      <p>최대 5개까지 표시됩니다. 수정 내역은 자동 저장됩니다.</p>
     </FormDiv>
   );
 };
