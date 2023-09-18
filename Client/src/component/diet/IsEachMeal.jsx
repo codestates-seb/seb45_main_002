@@ -4,6 +4,7 @@ import Button from "../../atom/button";
 import useZustand from "../../zustand/Store";
 import FoodSearchForm from "./FoodSearchForm";
 import IsEachFood from "./IsEachFood";
+import { deleteEachMeal } from "../../util/Diet";
 
 const StyleEachMeal = styled.div`
   margin: 5px;
@@ -38,6 +39,10 @@ const StyleEachMeal = styled.div`
     display: flex;
     justify-content: right;
     align-items: center;
+
+    span {
+      font-size: 12px;
+    }
   }
 `;
 
@@ -67,7 +72,7 @@ const DivSummary = styled.div`
 `;
 
 const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
-  const { meal } = useZustand.useDailyMeals();
+  const { meal, setMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
   const { nowTimeSlot, setNowTimeSlot } = useZustand.useNowTimeSlot();
   const timelabel = { 1: "breakfast", 2: "lunch", 3: "dinner" };
@@ -75,7 +80,32 @@ const IsEachMeal = ({ timeslot, addEachMealOnClickHandler }) => {
   return (
     <StyleEachMeal>
       <div className={timelabel[timeslot]}>
-        <h2>{timelabel[timeslot]}</h2>
+        <h2>
+          <p>{timelabel[timeslot]}</p>
+          {nowTimeSlot === timeslot ? (
+            <Button
+              onClick={() => {
+                deleteEachMeal(eachMeal.eachMealId);
+                setMeal({
+                  ...meal,
+                  eachMeals: meal.eachMeals.filter(
+                    (item) => item.eachMealId !== eachMeal.eachMealId
+                  ),
+                });
+              }}
+              style={{
+                width: "20px",
+                height: "20px",
+                borderRadius: "50%",
+                fontSize: "14px",
+                fontWeight: "800",
+                marginLeft: "5px",
+              }}
+            >
+              ✕
+            </Button>
+          ) : null}
+        </h2>
         {eachMeal.quantityfoods?.map((item, index) => {
           return (
             <IsEachFood

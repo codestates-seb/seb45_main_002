@@ -37,7 +37,6 @@ const DivItemStyle = styled.div`
 
 const FavoriteEachItem = ({ item, setPage, setIsModal, timeslot, detail }) => {
   const { meal, setMeal } = useZustand.useDailyMeals();
-  console.log(detail);
   const copyFavoriteMealOnClickHandler = async () => {
     setMeal(await CopyEachMeal(meal, detail, timeslot));
     setIsModal(false);

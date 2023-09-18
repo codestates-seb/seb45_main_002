@@ -32,7 +32,6 @@ export const postFavoriteDailyMeal = async (
         )
         .then(async (response) => {
           // 성공한 경우 실행
-          console.log(response);
           return response.data.eachMealId;
         })
         .catch((error) => {
@@ -53,7 +52,6 @@ export const postFavoriteDailyMeal = async (
       { headers: { Authorization: token } }
     )
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -82,7 +80,6 @@ export const postFavoriteEachMeal = async (eachMeal) => {
     )
     .then(async (response) => {
       // 성공한 경우 실행
-      console.log(response);
       return response.data.eachMealId;
     })
     .catch((error) => {
@@ -98,7 +95,6 @@ export const getFavoriteDailyMeal = async (page = 1) => {
       headers: { Authorization: token },
     })
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {

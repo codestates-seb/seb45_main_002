@@ -61,8 +61,6 @@ const FavoriteEachList = ({ timeslot, setIsModal }) => {
         for (let eachMealId of eachMealsId) {
           eachMeals = [...eachMeals, await getEachMeal(eachMealId)];
         }
-        console.log("eachMeals!!");
-        console.log(eachMeals);
         setEachDetail(await eachMeals);
       }
     };

@@ -155,17 +155,28 @@ const CustomSpan = styled.span`
   color: black;
 `;
 
+const today = new Date();
+let year = today.getFullYear(); // 년도
+let month = today.getMonth() + 1; // 월
+let day = today.getDate(); //일
+
 const Diet = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
   const [modalFooter, setModalFooter] = useState(null);
   const [analyzedData, setAnalyzedData] = useState(null);
-  const { date } = useParams();
+  const param = useParams();
+  const [date, setDate] = useState(
+    "date" in param
+      ? param.date
+      : `${year}-${month >= 10 ? month : "0" + month}-${
+          day >= 10 ? day : "0" + day
+        }`
+  );
   const [modalContents, setModalContents] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
-  console.log(meal);
   useEffect(() => {
     const asyncfunc = async () => {
       setMeal(await GetDailyDiet(date));
