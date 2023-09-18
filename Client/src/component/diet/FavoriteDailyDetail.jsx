@@ -57,8 +57,6 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage, date, setIsModal }) => {
   const { setMeal } = useZustand.useDailyMeals();
   const [DailyMeal, setDailyMeal] = useState();
 
-  console.log(date);
-
   useEffect(() => {
     const asyncfunc = async () => {
       setDailyMeal(await getDailyMealId(id));
@@ -71,13 +69,11 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage, date, setIsModal }) => {
   };
 
   const copyFavoriteMealOnClickHandler = async () => {
-    console.log(date);
     const result = await postFavoriteDailyMeal(
       DailyMeal.eachMeals,
       "name",
       date
     );
-    console.log(result);
     setMeal(result);
     setIsModal(false);
   };

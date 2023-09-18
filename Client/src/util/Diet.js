@@ -13,7 +13,6 @@ export const GetFoodKeyword = async (value) => {
       headers: { Authorization: token },
     })
     .then((response) => {
-      console.log(response.data);
       return response.data;
     })
     .catch((error) => {
@@ -38,13 +37,10 @@ export const PostEachMeal = async (meal, timeslot) => {
     )
     .then(async (response) => {
       // 성공한 경우 실행
-      console.log(response);
       const result = [
         ...meal.eachMeals.map((item) => item.eachMealId),
         response.data.eachMealId,
       ];
-      console.log(meal);
-      console.log(result);
       return PatchDailyMeal(meal, result);
     })
     .catch((error) => {
@@ -69,7 +65,6 @@ export const PatchDailyMeal = async (meal, eachmeal = null) => {
       }
     )
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -84,7 +79,6 @@ export const GetFood = (foodId) => {
     })
     .then((response) => {
       // 성공한 경우 실행
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -103,7 +97,6 @@ export const GetDailyDiet = async (
       headers: { Authorization: token },
     })
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -111,8 +104,6 @@ export const GetDailyDiet = async (
       //불러오기 실패시 post요청으로 dailymeals 생성
       if (error.response.data === "DailyMeal not found...") {
         return error.response.data;
-        // } else if (error.response.data.error === "Bad Request") {
-        //   return error.response.data.error;
       } else {
         return null;
       }
@@ -139,7 +130,6 @@ export const PostDailyMeal = async (
       }
     )
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((err) => {
@@ -159,7 +149,6 @@ export const changeEachMeal = async (meal, eachMealId, timeslot, patchFood) => {
       { headers: { Authorization: token } }
     )
     .then((response) => {
-      console.log(response);
       return PatchDailyMeal(meal);
     })
     .catch((error) => {
@@ -171,7 +160,6 @@ export const getDailyMealId = async (id) => {
   return await axios
     .get(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -182,11 +170,15 @@ export const getDailyMealId = async (id) => {
 export const deleteDailyMealId = async (id) => {
   return await axios
     .delete(`${url}/dailymeals/${id}`, { headers: { Authorization: token } })
-    .then((response) => {
-      console.log(response);
-    })
+    .then((response) => {})
     .catch((error) => {
       console.log(error);
+
+      if (error.response.data === "Invalid data...") {
+        alert(
+          "삭제에 실패했습니다.\n해당 식단으로 작성된 커뮤니티 게시글이 있는지 확인해주세요."
+        );
+      }
     });
 };
 
@@ -196,7 +188,6 @@ export const getEachMeal = async (eachMealId) => {
       headers: { Authorization: token },
     })
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {
@@ -210,7 +201,6 @@ export const deleteEachMeal = async (eachMealId) => {
       headers: { Authorization: token },
     })
     .then((response) => {
-      console.log(response);
       return response.data;
     })
     .catch((error) => {

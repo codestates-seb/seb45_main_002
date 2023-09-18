@@ -174,11 +174,9 @@ const Diet = () => {
           day >= 10 ? day : "0" + day
         }`
   );
-  console.log(date);
   const [modalContents, setModalContents] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
-  console.log(meal);
   useEffect(() => {
     const asyncfunc = async () => {
       setMeal(await GetDailyDiet(date));

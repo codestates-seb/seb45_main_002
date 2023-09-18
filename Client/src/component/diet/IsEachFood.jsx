@@ -99,7 +99,7 @@ const IsEachFood = ({ item, timeslot, index }) => {
           }}
           onClick={deleteOnClickHandler}
         >
-          X
+          ✕
         </Button>
       ) : null}
     </StyleFood>
