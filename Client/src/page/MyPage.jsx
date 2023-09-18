@@ -179,13 +179,10 @@ function MyPage() {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>{
-      console.log(res)
-      alert("개인정보 설정이 변경되었습니다.")
-    })
+    .then(res=>alert("개인정보 설정이 변경되었습니다."))
     .catch(err=>console.log(err,"서버와의 소통 실패"))
   }
-  console.log(user)
+
   return (
     <MypageContainer>
       <form>

@@ -47,10 +47,10 @@ const TimeBox = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 1px orange;
+  font-size: small;
   &>:first-child{
     text-align: center;
-    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
-    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width} 0;
   }
   &>:last-child{
     display: flex;
@@ -58,27 +58,28 @@ const TimeBox = styled.div`
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
 `
-const OneLine = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 const TotalBox = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 1px orange;
   font-weight: bolder;
+  &>:first-child{
+    text-align: center;
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width} 0;
+  }
   &>:last-child{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     align-self: center;
     width: 50%;
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
 `
-const TotalTitle = styled.div`
-  text-align: center;
-  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+
+const OneLine = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 const Content = styled.div`
@@ -256,34 +257,26 @@ console.log(morningMenu)
               <div>아침</div>
               <div>
                 <OneLine>
-                  <span>메뉴명</span>
-                  <div>
-                    <span>{morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span>
-                  </div>
+                  <span>메뉴</span>
+                  <span>
+                    <div>{morningMenu[0]},</div><div>{morningMenu[1]},</div><div>{morningMenu[2]}</div>
+                  </span>
                 </OneLine>
                 <OneLine>
                   <span>칼로리</span>
-                  <div>
-                    <span>{morningInfo.totalEachKcal}</span><span>kcal</span>
-                  </div>
+                  <span>{morningInfo.totalEachKcal} kcal</span>
                 </OneLine>
                 <OneLine>
                   <span>단백질</span>
-                  <div>
-                    <span>{morningInfo.totalEachProtein}</span><span>g</span>
-                  </div>
+                  <span>{morningInfo.totalEachProtein} g</span>
                 </OneLine>
                 <OneLine>
                   <span>탄수화물</span>
-                  <div>
-                    <span>{morningInfo.totalEachCarbo}</span><span>g</span>
-                  </div>
+                  <span>{morningInfo.totalEachCarbo} g</span>
                 </OneLine>
                 <OneLine>
                   <span>지방</span>
-                  <div>
-                    <span>{morningInfo.totalEachFat}</span><span>g</span>
-                  </div>
+                  <span>{morningInfo.totalEachFat} g</span>
                 </OneLine>
               </div>
             </TimeBox>
@@ -291,94 +284,76 @@ console.log(morningMenu)
               <div>점심</div>
               <div>
                 <OneLine>
-                  <span>메뉴명</span>
-                  <div>
-                    <span>{lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span>
-                  </div>
+                  <span>메뉴</span>
+                  <span>
+                    <div>{lunchMenu[0]},</div><div>{lunchMenu[1]},</div><div>{lunchMenu[2]}</div>
+                  </span>
                 </OneLine>
                 <OneLine>
                   <span>칼로리</span>
-                  <div>
-                    <span>{lunchInfo.totalEachKcal}</span><span>kcal</span>
-                  </div>
+                  <span>{lunchInfo.totalEachKcal} kcal</span>
                 </OneLine>
                 <OneLine>
                   <span>단백질</span>
-                  <div>
-                    <span>{lunchInfo.totalEachProtein}</span><span>g</span>
-                  </div>
+                  <span>{lunchInfo.totalEachProtein} g</span>
                 </OneLine>
                 <OneLine>
                   <span>탄수화물</span>
-                  <div>
-                    <span>{lunchInfo.totalEachCarbo}</span><span>g</span>
-                  </div>
+                  <span>{lunchInfo.totalEachCarbo} g</span>
                 </OneLine>
                 <OneLine>
                   <span>지방</span>
-                  <div>
-                    <span>{lunchInfo.totalEachFat}</span><span>g</span>
-                  </div>
+                  <span>{lunchInfo.totalEachFat} g</span>
                 </OneLine>
               </div>
             </TimeBox>
             <TimeBox>
-              <div>아침</div>
+              <div>저녁</div>
               <div>
                 <OneLine>
-                  <span>메뉴명</span>
-                  <div>
-                    <span>{dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span>
-                  </div>
+                  <span>메뉴</span>
+                  <span>
+                    <div>{dinnerMenu[0]},</div><div>{dinnerMenu[1]},</div><div>{dinnerMenu[2]}</div>
+                  </span>
                 </OneLine>
                 <OneLine>
                   <span>칼로리</span>
-                  <div>
-                    <span>{dinnerInfo.totalEachKcal}</span><span>kcal</span>
-                  </div>
+                  <span>{dinnerInfo.totalEachKcal} kcal</span>
                 </OneLine>
                 <OneLine>
                   <span>단백질</span>
-                  <div>
-                    <span>{dinnerInfo.totalEachProtein}</span><span>g</span>
-                  </div>
+                  <span>{dinnerInfo.totalEachProtein} g</span>
                 </OneLine>
                 <OneLine>
                   <span>탄수화물</span>
-                  <div>
-                    <span>{dinnerInfo.totalEachCarbo}</span><span>g</span>
-                  </div>
+                  <span>{dinnerInfo.totalEachCarbo} g</span>
                 </OneLine>
                 <OneLine>
                   <span>지방</span>
-                  <div>
-                    <span>{dinnerInfo.totalEachFat}</span><span>g</span>
-                  </div>
+                  <span>{dinnerInfo.totalEachFat} g</span>
                 </OneLine>
               </div>
             </TimeBox>
           </TimeContainer>
           <TotalBox>
-            <TotalTitle>총</TotalTitle>
+            <div>총</div>
             <div>
-              <div>
-                <div>칼로리</div>
-                <div>단백질</div>
-                <div>탄수화물</div>
-                <div>지방</div>
-              </div>
-              <div>
-                {/* <div>{detail.dailyMeal.totalDailyKcal}</div>
-                <div>{detail.dailyMeal.totalDailyProtein}</div>
-                <div>{detail.dailyMeal.totalDailyCarbo}</div>
-                <div>{detail.dailyMeal.totalDailyFat}</div> */}
-              </div>
-              <span>
-                  <div>{dailyMeals.totalDailyKcal} kcal</div>
-                  <div>{dailyMeals.totalDailyProtein} g</div>
-                  <div>{dailyMeals.totalPercentCarbos} g</div>
-                  <div>{dailyMeals.totalDailyFat} g</div>
-              </span>
+              <OneLine>
+                <span>칼로리</span>
+                <span>{dailyMeals.totalDailyKcal} kcal</span>
+              </OneLine>
+              <OneLine>
+                <span>단백질</span>
+                <span>{dailyMeals.totalDailyProtein} g</span>
+              </OneLine>
+              <OneLine>
+                <span>탄수화물</span>
+                <span>{dailyMeals.totalPercentCarbos} g</span>
+              </OneLine>
+              <OneLine>
+                <span>지방</span>
+                <span>{dailyMeals.totalDailyFat} g</span>
+              </OneLine>
             </div>
           </TotalBox>
         </DietInfoContainer>
