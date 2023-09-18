@@ -4,8 +4,7 @@ import NutrientsCoders.main_project.community.repository.CommunityRepository;
 import NutrientsCoders.main_project.communitycomment.dto.CommunityCommentPostDto;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
 import NutrientsCoders.main_project.communitycomment.repository.CommunityCommentRepository;
-import NutrientsCoders.main_project.member.entity.Member;
-import NutrientsCoders.main_project.member.repository.MemberRepository;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
@@ -18,23 +17,23 @@ import java.util.Optional;
 public class CommunityCommentService {
     private final CommunityCommentRepository communityCommentRepository;
     private final CommunityRepository communityRepository;
+    private final MemberService memberService;
 
-    public CommunityCommentService(CommunityCommentRepository communityCommentRepository, CommunityRepository communityRepository) {
+    public CommunityCommentService(CommunityCommentRepository communityCommentRepository, CommunityRepository communityRepository, MemberService memberService) {
         this.communityCommentRepository = communityCommentRepository;
         this.communityRepository = communityRepository;
+        this.memberService = memberService;
     }
 
     /** 댓글 생성 메서드 **/
     public CommunityComment createCommunityComment(CommunityCommentPostDto communityCommentPostDto,Long memberId){
         CommunityComment comment = new CommunityComment();
-//        comment.setMember(memberRepository.findByMemberId(memberId));
         comment.setMemberId(memberId);
+        comment.setNickname(memberService.findNickname(memberId));
         comment.setCommunityCommentContent(communityCommentPostDto.getCommunityCommentContent());
         comment.setCommunity(communityRepository.findByCommunityId(communityCommentPostDto.getCommunityId()));
         return communityCommentRepository.save(comment);
     }
-
-
     /** 댓글 수정 메서드 **/
     public CommunityComment updateCommunityComment(CommunityComment communityComment,long memberId){
         try {

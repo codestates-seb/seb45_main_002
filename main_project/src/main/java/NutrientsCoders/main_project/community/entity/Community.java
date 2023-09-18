@@ -1,6 +1,5 @@
 package NutrientsCoders.main_project.community.entity;
 
-import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
@@ -32,6 +31,8 @@ public class Community extends CommunityBaseTime {
     private long communityViewCount = 0L;
     @Column
     private int communityLike = 0;
+    @Column
+    private Integer communityCommentCount;
     @ElementCollection
     @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
     @Column(name = "LIKE_MEMBERS",insertable = false)
@@ -40,9 +41,9 @@ public class Community extends CommunityBaseTime {
     @ManyToOne
     @JoinColumn(name = "DAILYMEAL_ID", nullable = true)
     private DailyMeal dailyMeal;
-    @ManyToOne
-    @JoinColumn(name = "ANALYSIS_ID")
-    private Analysis analysis;
+//    @ManyToOne
+//    @JoinColumn(name = "ANALYSIS_ID")
+//    private Analysis analysis;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID",nullable = false)
     private Member member;

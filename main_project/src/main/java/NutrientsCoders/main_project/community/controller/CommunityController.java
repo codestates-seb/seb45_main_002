@@ -37,9 +37,6 @@ public class CommunityController {
         response.setMemberId(tokenChanger.getMemberId(token));
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
-
-
-
     /** 게시글 수정 **/
     @PatchMapping("/{community-id}")
     public ResponseEntity<CommunityResponseDto> patchCommunity(@PathVariable("community-id") @Positive long communityId,
