@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.Analysis.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Analysis {
   @Column(name = "ANALYSIS_ID")
   private long analysisId;
   
+  @JsonIgnore
   @JoinColumn(name = "DailyMeal_ID")
   @OneToOne
   private DailyMeal dailyMeal;
