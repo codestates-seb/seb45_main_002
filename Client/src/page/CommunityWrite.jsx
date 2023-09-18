@@ -173,6 +173,8 @@ function CommunityWrite(){
   const [onImg,setOnImg] = useState("")
   const [favorites, setFavorites] = useState([])
 
+  const communityId = useZustand.useCommunityId(state=>state.communityId)
+
 //////// 캘린더로 식단 불러오기
   function loadDietInDate(){
     if(form.communityDietDate){
@@ -228,19 +230,19 @@ function CommunityWrite(){
       console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
       console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
       setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
-      setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
-
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods.forEach(menu=>setMorningMenu(prev=>[...prev, menu])) // prev는 렌더링이 너무 자주 일어난다. 다른 방법으로는 배열 하나를 만들어서 push 하는 방법이 있을 것 같다.
+      
       setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
-      setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods.forEach(menu=>setLunchMenu(prev=>[...prev, menu]))
       
       setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
-      setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods.forEach(menu=>setDinnerMenu(prev=>[...prev, menu]))
     })
     .catch(err=>console.log(err, "선택된 선호데이터 불러오기를 실패했습니다."))
   }
 
-  async function sendArticle(e){
-    const communityId = await useZustand.useCommunityId(state=>state.communityId)
+  // 게시글 등록하기
+  function sendArticle(e){
     if(form.communityTitle===""){
       alert("제목을 입력해주시기 바랍니다.")
     }
@@ -297,7 +299,7 @@ function CommunityWrite(){
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span></div>
+                <div><span>식단명</span><span>: {morningMenu.map(menu=>menu.foodName+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
@@ -307,7 +309,7 @@ function CommunityWrite(){
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: {lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span></div>
+                <div><span>식단명</span><span>: {lunchMenu.map(menu=>menu.foodName+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
@@ -317,7 +319,7 @@ function CommunityWrite(){
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: {dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span></div>
+                <div><span>식단명</span><span>: {dinnerMenu.map(menu=>menu.foodName+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>

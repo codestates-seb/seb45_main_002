@@ -20,10 +20,9 @@ const Comment = styled.textarea`
   border: solid 1px rgb(200,200,200);
   &.modifyClose{
     border: none;
-    &:focus{
-      outline: none;
-
-    }
+  }
+  &.modifyClose:focus{
+    outline: none;
   }
 `
 const Createed = styled.div`
@@ -74,18 +73,23 @@ function Comments({comment}){
   }
 
   function commentDelete(){
-    axios.delete("http://43.201.194.176:8080/communitycomment/"+comment.communityCommentId,{
-      headers: {
-        Authorization: localStorage.getItem("Authorization")
-      }
-    })
-    .then(res=>window.location.reload())
-    .catch(err=>{
-      alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
-      console.log(err,"댓글삭제 실패")
-    })
+    if(modifyOpen){
+      setModifyOpen(!modifyOpen)
+    }
+    else{
+      axios.delete("http://43.201.194.176:8080/communitycomment/"+comment.communityCommentId,{
+        headers: {
+          Authorization: localStorage.getItem("Authorization")
+        }
+      })
+      .then(res=>window.location.reload())
+      .catch(err=>{
+        alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
+        console.log(err,"댓글삭제 실패")
+      })
+    }
   }
-console.log(comment)
+
   return(
     <CommentListBox>
       <Comment
@@ -106,7 +110,7 @@ console.log(comment)
       </Createed>
       <EditBox>
         <button onClick={commentModify}>{modifyOpen? "완료" : "수정"}</button>
-        <button onClick={commentDelete}>{modifyOpen? "" : "삭제"}</button>
+        <button onClick={commentDelete}>{modifyOpen? "취소" : "삭제"}</button>
       </EditBox>
     </CommentListBox>
   )
