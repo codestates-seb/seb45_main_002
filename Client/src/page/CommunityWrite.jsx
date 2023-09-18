@@ -204,7 +204,7 @@ function CommunityWrite(){
       alert("날짜를 선택해주시기 바랍니다.")
     }
   }
-
+console.log(morningMenu)
 //////// 선호 식단 불러오기
   const [openModal, setOpenModal] = useState(false)
   function openFavoriteListModal(){
@@ -299,7 +299,7 @@ function CommunityWrite(){
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {morningMenu.map(menu=>menu.foodName+" ")}</span></div>
+                <div><span>식단명</span><span>: {morningMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
@@ -309,7 +309,7 @@ function CommunityWrite(){
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: {lunchMenu.map(menu=>menu.foodName+" ")}</span></div>
+                <div><span>식단명</span><span>: {lunchMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
@@ -319,7 +319,7 @@ function CommunityWrite(){
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: {dinnerMenu.map(menu=>menu.foodName+" ")}</span></div>
+                <div><span>식단명</span><span>: {dinnerMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
                 <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
                 <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
                 <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>
