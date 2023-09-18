@@ -10,9 +10,9 @@ import axios from "axios";
 import useZustand from "../../zustand/Store";
 import style from "../../style/style";
 import Button from "../../atom/button";
-import { PostDietAnalyze, GetDietAnalyze } from "../diet/DietAnalyze";
-
-import { postCalendarData, PostButton } from "./PostMealBtn";
+// import AnalizedDiet from "../diet/DietAnalyze";
+// import { postCalendarData, PostButton, PostAnalyze } from "./PostMealBtn";
+import { useNavigate } from "react-router-dom";
 
 const CalendarContainer = styled.div`
   max-width: 768px;
@@ -95,25 +95,26 @@ const CustomCalendar = () => {
   const [modalHeader, setModalHeader] = useState(null);
   const [modalFooter, setModalFooter] = useState(null);
   const [dailymealId, setDailymealId] = useState(null);
+  const navigate = useNavigate();
   // const [mealData, setMealData] = useState(null);
   const [events, setEvents] = useState([
     {
       title: "eventTitle",
-      start: new Date(2023, 8, 12),
-      end: new Date(2023, 8, 12),
+      start: "",
+      end: "",
     },
   ]);
 
   useEffect(() => {
     const fetchedMeals = async () => {
-      const token = localStorage.getItem("Authorization");
-      // console.log(localStorage.getItem("Authorization"));
+      // const token = localStorage.getItem("Authorization");
+      console.log(localStorage.getItem("Authorization"));
 
       try {
         const response = await axios.get(
           "http://43.201.194.176:8080/dailymeals/date?page=1&size=5",
           {
-            headers: { Authorization: token },
+            headers: { Authorization: localStorage.getItem("Authorization") },
           }
         );
         const mealData = response.data;
@@ -143,115 +144,11 @@ const CustomCalendar = () => {
   }, []);
 
   const handleEventClick = (event) => {
-    const eventTitle = event.title;
     const startDate = new Date(event.start);
     startDate.setDate(startDate.getDate() + 1);
     const dateStr = startDate.toISOString().split("T")[0];
 
-    // console.log(event);
-    // console.log(event.start);
-    // console.log(dateStr);
-
-    const fetchDailymeal = async () => {
-      const token = localStorage.getItem("Authorization");
-      // console.log(localStorage.getItem("Authorization"));
-
-      try {
-        console.log(dateStr);
-        const response = await axios.get(
-          `http://43.201.194.176:8080/dailymeals/date/${dateStr}`,
-          console.log(token),
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        const mealData = response.data;
-        // console.log(mealData);
-        // const mealData = {
-        //   dailyMealId: 13,
-        //   memberId: 1,
-        //   date: "2023-09-15",
-        //   name: "name",
-        //   favorite: false,
-        //   eachMeals: ["밥,고기,김치"],
-        //   totalDailyKcal: 51.0,
-        //   totalDailyCarbo: 7.0,
-        //   totalDailyProtein: 1.0,
-        //   totalDailyFat: 2.0,
-        // };
-        console.log(mealData);
-        setModalHeader(<h2>{eventTitle}</h2>);
-        setModalContent(
-          <ModalContainer>
-            <h3>식단 정보</h3>
-
-            {mealData.eachMeals.map((meal, index) => (
-              <ItemContainer key={index}>
-                {meal.timeSlots === 1 && (
-                  <div>
-                    <h4>아침</h4>
-                    <p>
-                      메뉴:{" "}
-                      {meal.quantityfoods
-                        .map((food) => food.foodName)
-                        .join(", ")}
-                    </p>
-                  </div>
-                )}
-              </ItemContainer>
-            ))}
-
-            {mealData.eachMeals.map((meal, index) => (
-              <ItemContainer key={index}>
-                {meal.timeSlots === 2 && (
-                  <div>
-                    <h4>점심</h4>
-                    <p>
-                      메뉴:{" "}
-                      {meal.quantityfoods
-                        .map((food) => food.foodName)
-                        .join(", ")}
-                    </p>
-                  </div>
-                )}
-              </ItemContainer>
-            ))}
-            {mealData.eachMeals.map((meal, index) => (
-              <ItemContainer key={index}>
-                {meal.timeSlots === 3 && (
-                  <div>
-                    <h4>저녁</h4>
-                    <p>
-                      메뉴:{" "}
-                      {meal.quantityfoods
-                        .map((food) => food.foodName)
-                        .join(", ")}
-                    </p>
-                  </div>
-                )}
-              </ItemContainer>
-            ))}
-            <p>총 칼로리: {mealData.totalDailyKcal}</p>
-            <Button
-              width="80px"
-              height="20px"
-              // onClick={func}
-              fontSize="10px"
-              size="small"
-              backgroundColor="#ffc123"
-              children="식단 수정"
-            ></Button>
-          </ModalContainer>
-        );
-        console.log(mealData.eachMeals[0].quantityfoods);
-        setIsModalOpen(true);
-      } catch (error) {
-        console.error("Error fetching meal:");
-      }
-    };
-    fetchDailymeal();
+    navigate(`pageswitch/diet/${dateStr}`);
   };
   // console.log(dateStr);
   // console.log(eventTitle);
@@ -265,7 +162,7 @@ const CustomCalendar = () => {
 
   return (
     <div>
-      <PostButton dailymealId={dailymealId} />
+      {/* <AnalizedDiet dailymealId={dailymealId} /> */}
       <Calendar
         // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
         views={["month"]}
@@ -275,6 +172,7 @@ const CustomCalendar = () => {
         // endAccessor="end"
         handleEventClick={handleEventClick}
         onSelectEvent={handleEventClick}
+        onSelectSlot={handleEventClick}
         components={{
           event: ({ event }) => (event ? <CustomDot /> : null),
           toolbar: customToolbar,

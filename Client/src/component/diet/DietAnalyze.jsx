@@ -1,74 +1,94 @@
 import { styled } from "styled-components";
 import axios from "axios";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 768px;
-  width: 80%;
-  height: 100vh;
+import Button from "../../atom/button";
+import { ErrorResponse } from "@remix-run/router";
+
+const Postbtn = styled.button`
+  width: 100px;
+  height: 20px;
+  background-color: royalBlue;
+  color: white;
+  margin-right: 10px; /* 예시로 간격 추가 */
 `;
 
-const FlexContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 768px;
-  width: 100%;
-`;
-
-const ItemContainer = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-export const PostDietAnalyze = async (daliymealId, setAnalyzedData) => {
-  const token = localStorage.getItem("Authorization");
-
+export const AnalyzedDiet = async (dailymealId) => {
   try {
-    const response = await axios.post(
-      `http://43.201.194.176:8080/analysis/${daliymealId},`,
-
+    const analyzeResponse = await axios.post(
+      `http://43.201.194.176:8080/analysis/${dailymealId}`,
+      null,
       {
         headers: {
-          Authorization: token,
+          Authorization: localStorage.getItem("Authorization"),
         },
       }
     );
-    console.log("postDietAnalyze COMPLETE");
-    console.log(response.data);
-    setAnalyzedData(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error posting DietAnalyze");
-  }
-};
+    console.log(analyzeResponse.data);
+    const analysisId = analyzeResponse.data.analysisId;
 
-export const GetDietAnalyze = async (analyzedData) => {
-  const token = localStorage.getItem("Authorization");
-  const analysisId = 1;
-  // analyzedData.analysisId;
-  try {
-    const response = await axios.get(
+    const getResponse = await axios.get(
       `http://43.201.194.176:8080/analysis/${analysisId}`,
       {
         headers: {
-          Authorization: token,
+          Authorization: localStorage.getItem("Authorization"),
         },
       }
     );
-    console.log("getDietAnalyze COMPLETE", response.data);
-    console.log(response.data);
-    return response.data;
+
+    return getResponse.data;
   } catch (error) {
-    console.error("Error getting DietAnalyze");
+    console.error("Error analyzing diet");
   }
-  return (
-    <Container>
-      <FlexContainer>
-        <ItemContainer></ItemContainer>
-      </FlexContainer>
-    </Container>
-  );
 };
+
+export default AnalyzedDiet;
+
+// const postDailymealData = async () => {
+//   const token = localStorage.getItem("Authorization");
+//   console.log(token);
+//   try {
+//     const response = await axios.post(
+//       "http://43.201.194.176:8080/dailymeals",
+//       {
+//         date: "2023-09-20",
+//         name: "test",
+//         eachMeals: [59],
+//       },
+//       {
+//         headers: {
+//           Authorization: token,
+//         },
+//       }
+//     );
+//     console.log("Calendar Data Posted:", response.data);
+//   } catch (error) {
+//     console.error("Error posting calendar data:");
+//   }
+// };
+
+// const postMealData = async () => {
+//   const token = localStorage.getItem("Authorization");
+//   console.log(token);
+//   try {
+//     const response = await axios.post(
+//       "http://43.201.194.176:8080/eachmeals",
+//       {
+//         timeSlots: 3,
+//         foods: [
+//           { foodId: 6, quantity: 0.5 },
+//           { foodId: 23, quantity: 0.5 },
+//         ],
+//       },
+
+//       {
+//         headers: {
+//           Authorization: token,
+//         },
+//       }
+//     );
+//     console.log("Calendar Data Posted:", response.data);
+//   } catch (error) {
+//     console.error("Error posting Meal data:");
+//   }
+// };

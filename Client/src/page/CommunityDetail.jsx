@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+
 import { styled } from "styled-components";
 import axios from "axios";
+
+import Comments from "../component/Comments";
+
+import useZustand from "../zustand/Store";
 
 import style from "../style/style"
 
@@ -48,20 +53,16 @@ const TimeBox = styled.div`
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
   &>:last-child{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
 `
-const InfoName = styled.div`
-  text-align: center;
+const OneLine = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
-const FoodInfo = styled.div`
-  text-align: right;
-  &>*{
-    padding: 0 ${style.layout.narrowMargin.width};
-  }
-`;
+
 const TotalBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -92,7 +93,7 @@ const CommentsAndUserProfile = styled.div`
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
   border: solid 1px orange;
 `
-const Comments = styled.span`
+const CommentsOpener = styled.span`
   &>:first-child{
     margin-right: ${style.layout.wideMargin.width};
     cursor: pointer;
@@ -104,72 +105,138 @@ const Comments = styled.span`
 const UserProfile = styled.span`
   
 `
-const ExitBtn = styled.div`
-  margin: ${style.layout.narrowMargin.height};
-  color: gray;
-  font-size: small;
-  cursor: pointer;
+const CommentsBox = styled.section`
+  padding: 0 ${style.layout.wideMargin.width};
+  margin-bottom: ${style.layout.wideMargin.height};
+  ${props=>props.className==="false"? "display: none;" : ""}
 `
+const CommentsWriteBox = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>input{
+    width: ${style.layout.main.width-style.layout.wideMargin.width*8};
+  }
+  &>button{
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    background-color: orange;
+    cursor: pointer;
+  }
+`
+const CommentsListBox = styled.ul`
+  list-style: none;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+`
+
+const ExitAndModify = styled.div`
+  display: flex;
+  justify-content: space-between;
+  &>a{
+    margin: ${style.layout.narrowMargin.height};
+    color: gray;
+    font-size: small;
+  }
+`
+
 const DeleteButton = styled.input`
   background-color: red;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
   font-size: 12px;
+  cursor: pointer;
 `
 
 function CommunityDetail(){
-  const [detail, setDetail] = useState({})
   const [member, setMember] = useState({})
+  const [detail, setDetail] = useState({})
 
-  const communityId = useParams();
+  const [dailyMeals, setDailyMeals] = useState({})
+
+  const [morningInfo, setMorningInfo] = useState({})
+  const [morningMenu, setMorningMenu] = useState([])
+
+  const [lunchInfo, setLunchInfo] = useState({})
+  const [lunchMenu, setLunchMenu] = useState([])
+
+  const [dinnerInfo, setDinnerInfo] = useState({})
+  const [dinnerMenu, setDinnerMenu] = useState([])
+
+  const [comment, setComment] = useState({
+    newComment: "",
+    commentList: []
+  })
+  const [hide,setHide] = useState(false)
+  const params = useParams();
+  const setCommunityId = useZustand.useCommunityId(state=>state.setCommunityId)
+
   const navigate = useNavigate()
 
   function loadDetail(){
-    axios.get("http://43.201.194.176:8080/community/"+communityId["*"])
+    setCommunityId(params["*"])
+    axios.get("http://43.201.194.176:8080/community/"+params["*"])
     .then(res=>{
-      setDetail(res.data)
-      setMember(res.data.member)
+      setMember(res.data.member) // 게시글 작성자에 대한 정보(닉네임 등)
+
+      console.log(res.data)
+      setDetail(res.data) // 게시글에 대한 정보(제목, 본문, 댓글 등)
+
+      setComment({...comment,commentList: res.data.communityCommentList}) // 작성되어있던 댓글들
+      
+      console.log(res.data.dailyMeal)
+      setDailyMeals(res.data.dailyMeal) // 하루 식단 정보
+
+      console.log(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1))
+      setMorningInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1)) // 아침 식사 정보
+      setMorningMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===1).eachMealFoods[2].food.foodName]) // 아침 식사 메뉴 이름
+      setLunchInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2)) // 점심 식사 정보
+      setLunchMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===2).eachMealFoods[2].food.foodName]) // 점심 식사 메뉴 이름
+      setDinnerInfo(res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3)) // 저녁 식사 정보
+      setDinnerMenu([res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[0].food.foodName, res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[1].food.foodName,res.data.dailyMeal.eachMeals.find(eachMeal=>eachMeal.timeSlot===3).eachMealFoods[2].food.foodName]) // 저녁 식사 메뉴 이름
     })
-    .catch(err=>console.log(err))
+    .catch(err=>console.log(err, "게시글 데이터를 불러오지 못했습니다."))
   }
   useEffect(()=>loadDetail(),[])
-
+console.log(morningMenu)
   function sendLike(){
-    axios.get("http://43.201.194.176:8080/community/recommendation/"+communityId["*"],{
+    axios.get("http://43.201.194.176:8080/community/recommendation/"+params["*"],{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
     })
     .then(res=>{
-      console.log(res, "좋아요 변경을 성공했습니다.")
       loadDetail()
     })
     .catch(err=>console.log(err, "좋아요 변경 실패"))
   }
 
+  function sendComment(){
+    axios.post("http://43.201.194.176:8080/communitycomment",{
+      communityId: params["*"],
+      communityCommentContent: comment.newComment
+    },{
+        headers:{
+          Authorization: localStorage.getItem("Authorization")
+        }
+      }
+    )
+    .then(res=>window.location.reload())
+    .catch(err=>console.log(err, "댓글등록 실패"))
+  }
+
   function articleDelete(){
-    axios.delete("http://43.201.194.176:8080/communitypost/"+communityId["*"],{
+    axios.delete("http://43.201.194.176:8080/community/"+params["*"],{
       headers: {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>console.log(res, "게시글 삭제 성공했습니다."))
+    .then(res=>{
+      console.log(res, "게시글 삭제 성공했습니다.");
+      navigate("/pageswitch/community")
+    })
     .catch(err=>console.log(err, "게시글 삭제 실패했습니다."))
   }
 
-  const data1 = {
-    dailyMealId: 320,
-    memberId: 21,
-    date: "2023-09-13",
-    name: "yongmins",
-    favorite: false,
-    eachMeals: [11],
-    totalDailyKcal: 184.0,
-    totalDailyCarbo: 31.0,
-    totalDailyProtein: 3.0,
-    totalDailyFat: 5.0
-  }
   return (
     <Container>
       <Title>
@@ -188,93 +255,129 @@ function CommunityDetail(){
             <TimeBox>
               <div>아침</div>
               <div>
-                <InfoName>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
-                </FoodInfo>
-                <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{morningInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{morningInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{morningInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{morningInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
             <TimeBox>
               <div>점심</div>
               <div>
-                <InfoName>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
-                </FoodInfo>
-                <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{lunchInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{lunchInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{lunchInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{lunchInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
             <TimeBox>
-              <div>저녁</div>
+              <div>아침</div>
               <div>
-                <InfoName>
-                  <div>칼로리</div>
-                  <div>단백질</div>
-                  <div>탄수화물</div>
-                  <div>지방</div>
-                </InfoName>
-                <FoodInfo>
-                  <div>{data1.totalDailyKcal}</div>
-                  <div>{data1.totalDailyProtein}</div>
-                  <div>{data1.totalDailyCarbo}</div>
-                  <div>{data1.totalDailyFat}</div>
-                </FoodInfo>
-                <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
-                </span>
+                <OneLine>
+                  <span>메뉴명</span>
+                  <div>
+                    <span>{dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>칼로리</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachKcal}</span><span>kcal</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>단백질</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachProtein}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>탄수화물</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachCarbo}</span><span>g</span>
+                  </div>
+                </OneLine>
+                <OneLine>
+                  <span>지방</span>
+                  <div>
+                    <span>{dinnerInfo.totalEachFat}</span><span>g</span>
+                  </div>
+                </OneLine>
               </div>
             </TimeBox>
           </TimeContainer>
           <TotalBox>
             <TotalTitle>총</TotalTitle>
             <div>
-              <InfoName>
+              <div>
                 <div>칼로리</div>
                 <div>단백질</div>
                 <div>탄수화물</div>
                 <div>지방</div>
-              </InfoName>
-              <FoodInfo>
-                <div>{data1.totalDailyKcal}</div>
-                <div>{data1.totalDailyProtein}</div>
-                <div>{data1.totalDailyCarbo}</div>
-                <div>{data1.totalDailyFat}</div>
-              </FoodInfo>
+              </div>
+              <div>
+                {/* <div>{detail.dailyMeal.totalDailyKcal}</div>
+                <div>{detail.dailyMeal.totalDailyProtein}</div>
+                <div>{detail.dailyMeal.totalDailyCarbo}</div>
+                <div>{detail.dailyMeal.totalDailyFat}</div> */}
+              </div>
               <span>
-                  <div>kcal</div>
-                  <div>g</div>
-                  <div>g</div>
-                  <div>g</div>
+                  <div>{dailyMeals.totalDailyKcal} kcal</div>
+                  <div>{dailyMeals.totalDailyProtein} g</div>
+                  <div>{dailyMeals.totalPercentCarbos} g</div>
+                  <div>{dailyMeals.totalDailyFat} g</div>
               </span>
             </div>
           </TotalBox>
@@ -284,21 +387,44 @@ function CommunityDetail(){
         {detail.communityContent}
       </Content>
       <CommentsAndUserProfile>
-        <Comments>
+        <CommentsOpener>
           <span onClick={sendLike}>
-            <i className="fa-solid fa-heart"></i>좋아요 {detail.recommendationCount}
-            {/* <i className="fa-thin fa-heart"></i> */}
+            {detail.communityLike? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}좋아요 {detail.recommendationCount}
           </span>
-          <span>
-            <i className="fa-solid fa-comment"></i>댓글보기<i className="fa-solid fa-caret-down"></i>
-            {/* <i className="fa-solid fa-caret-up"></i> */}
+          <span onClick={()=>setHide(!hide)}>
+            <i className="fa-solid fa-comment"></i>댓글보기
+            {hide? <i className="fa-solid fa-caret-up"></i> : <i className="fa-solid fa-caret-down"></i>}
           </span>
-        </Comments>
+        </CommentsOpener>
         <UserProfile>
           작성자 : {member.nickname}
         </UserProfile>
       </CommentsAndUserProfile>
-      <ExitBtn onClick={()=>navigate("/pageswitch/community")}>목록으로 돌아가기</ExitBtn>
+        <CommentsBox className={String(hide)}>
+          <CommentsWriteBox>
+            <input type="text" value={comment.newComment} onChange={e=>setComment({...comment,newComment: e.target.value})}></input>
+            <button onClick={sendComment}>등록</button>
+          </CommentsWriteBox>
+          <CommentsListBox>
+            {comment.commentList.map(comment=>(
+              <Comments comment={comment} />
+            ))}
+          </CommentsListBox>
+        </CommentsBox>
+      <ExitAndModify>
+        <Link to="/pageswitch/community">목록으로 돌아가기</Link>
+        <Link
+          to={
+            localStorage.getItem("Authorization")?
+            "/pageswitch/community/write" : "/pageswitch/community/"+params["*"]
+          }
+          onClick={e=>{
+            localStorage.getItem("Authorization")? console.log("") : alert("본인이 작성한 게시물만 수정할 수 있습니다.")
+          }}
+        >
+          게시글 수정하기
+        </Link>
+      </ExitAndModify>
       <DeleteButton type="button" value="게시글 삭제하기" onClick={articleDelete}></DeleteButton>
     </Container>
   );

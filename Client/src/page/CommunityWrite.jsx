@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { styled } from "styled-components";
 
@@ -28,14 +28,17 @@ const TitleContainer = styled.h1`
 const DietBtnContainer = styled.div`
 `;
 const DietBtnBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &>input{
-    border: none;
-    border-radius: 10px;
-    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
-    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  padding: 0 ${style.layout.main.width/4};
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >input{
+      border: none;
+      border-radius: 10px;
+      margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+      padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    }
   }
 `
 const DietBtn = styled.label`
@@ -117,19 +120,19 @@ const ExitAndSubmit = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 ${style.layout.wideMargin.width};
-`
-const SubmitBtn = styled.input`
-  width: 60px;
-  height: 20px;
-  background-color: #ffc123;
-  border-radius: 10px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-`;
-const ExitBtn = styled(SubmitBtn)`
-  background-color: white;
+  &>*{
+    width: 60px;
+    height: 20px;
+    background-color: #ffc123;
+    border-radius: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+  }
+  &>:last-child{
+    background-color: white;
+  }
 `
 
 const FavoriteDietListModalContainer = styled.section`
@@ -155,51 +158,23 @@ function CommunityWrite(){
     communityContent: "",
     communityDietDate: Date()
   })
-  const [dietData, setDietData] = useState({
-    dailyMealId: "",
-    date: "",
-    favorite: null,
-    memberId: "",
-    name: "",
-    totalDailyCarbo: "",
-    totalDailyFat: "",
-    totalDailyKcal: "",
-    totalDailyProtein: ""
-  })
-  const [mealMorning, setMealMorning] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
-  const [mealLunch, setMealLunch] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
-  const [mealDinner, setMealDinner] = useState([{
-    eachMealId: "",
-    favorite: null,
-    timeSlots: "",
-    totalEachCarbo: "",
-    totalEachFat: "",
-    totalEachKcal: "",
-    totalEachProtein: ""
-  }])
+  const [dietData, setDietData] = useState({})
+
+  const [mealMorning, setMealMorning] = useState({})
+  const [morningMenu, setMorningMenu] = useState([])
+
+  const [mealLunch, setMealLunch] = useState({})
+  const [lunchMenu,setLunchMenu] = useState([])
+
+  const [mealDinner, setMealDinner] = useState({})
+  const [dinnerMenu,setDinnerMenu] = useState([])
+
+
+  const communityId = useZustand.useCommunityId(state=>state.communityId)
 
   const [onImg,setOnImg] = useState("")
+  const [favorites, setFavorites] = useState([])
 
-  const axiosFavorites = useZustand.useFavorite(state=>state.axiosFavorites)
-  const favorites = useZustand.useFavorite(state=>state.favorites)
-
-  const navigate = useNavigate()
 //////// 캘린더로 식단 불러오기
   function loadDietInDate(){
     axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
@@ -208,11 +183,19 @@ function CommunityWrite(){
       }
     })
     .then(res=>{
-      console.log(res.data.eachMeals[0].quantityfoods)
+      console.log(res.data) // 하루(데일리) 총 식단에 대한 정보
       setDietData(res.data)
-      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
-      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
-      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+
+      console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
+      console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
+      setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
+      setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+
+      setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
+      setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      
+      setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
+      setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
     })
     .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
   }
@@ -220,7 +203,13 @@ function CommunityWrite(){
 //////// 선호 식단 불러오기
   const [openModal, setOpenModal] = useState(false)
   function openFavoriteListModal(){
-    axiosFavorites();
+    axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      }
+    })
+    .then(res => setFavorites(res.data))
+    .catch(err => console.log(err, "서버와 소통에 실패했습니다."));
     setOpenModal(!openModal)
   }
   function loadDietInFavorite(){
@@ -232,15 +221,14 @@ function CommunityWrite(){
     .then(res=>{
       console.log(res.data)
       setDietData(res.data)
-      setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
-      setMealLunch([res.data.eachMeals[1].quantityfoods[0]])// [...mealLunch,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
-      setMealDinner([res.data.eachMeals[2].quantityfoods[0]])// [...mealDinner,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[0].quantityfoods[0]])// [...mealMorning1,res.data.eachMeals[0].quantityfoods[0],res.data.eachMeals[0].quantityfoods[1],res.data.eachMeals[0].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[1].quantityfoods[0]])// [...mealMorning2,res.data.eachMeals[1].quantityfoods[0],res.data.eachMeals[1].quantityfoods[1],res.data.eachMeals[1].quantityfoods[2]])
+      // setMealMorning([res.data.eachMeals[2].quantityfoods[0]])// [...mealMorning3,res.data.eachMeals[2].quantityfoods[0],res.data.eachMeals[2].quantityfoods[1],res.data.eachMeals[2].quantityfoods[2]])
     })
     .catch(err=>console.log(err, "갈비탕과 소통에 실패했습니다."))
   }
 
   function sendArticle(e){
-    e.preventDefault()
     if(form.communityTitle===""){
       alert("제목을 입력해주시기 바랍니다.")
     }
@@ -248,19 +236,34 @@ function CommunityWrite(){
       alert("본문 내용을 입력해주시기 바랍니다.")
     }
     else{
-      axios.post("http://43.201.194.176:8080/community",{
-        communityTitle: form.communityTitle,
-        communityContent: form.communityContent,
-        dailyMealId: dietData.dailyMealId
-      },{
-        headers: {
-          Authorization: localStorage.getItem("Authorization")
-        }
-      })
-      .then(res=>console.log(res, "서버 소통에 성공하였습니다."))
-      .catch(err=>console.log(err, "서버 소통에 실패했습니다."))
+      if(communityId){
+        axios.patch("http://43.201.194.176:8080/community/"+communityId,{
+          communityTitle: form.communityTitle,
+          communityContent: form.communityContent,
+          dailyMealId: dietData.dailyMealId
+        },{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          }
+        })
+        .then(res=>console.log(res,"communityId로 게시글 수정 성공"))
+        .catch(err=>console.log(err))
+      }
+      else{
+        axios.post("http://43.201.194.176:8080/community",{
+          communityTitle: form.communityTitle,
+          communityContent: form.communityContent,
+          dailyMealId: dietData.dailyMealId
+        },{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          }
+        })
+        .then(res=>console.log(res,"신규 게시물 등록 성공"))
+        .catch(err=>console.log(err, "게시물 등록에 실패했습니다."))
       }
     }
+  }
 
   return(
     <WriteFormContainer>
@@ -271,40 +274,42 @@ function CommunityWrite(){
 
       <DietBtnContainer>
         <DietBtnBox>
-          <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
-          <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>식단 불러오기</DietBtn>
-          <DietBtn onClick={openFavoriteListModal}>선호식단 불러오기</DietBtn>
+          <div>
+            <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
+            <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>불러오기</DietBtn>
+          </div>
+          <DietBtn onClick={openFavoriteListModal}>내 선호식단<br />리스트에서 불러오기</DietBtn>
         </DietBtnBox>
 
         <DietInfoContainer>
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {mealMorning[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealMorning[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealMorning[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealMorning[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealMorning[0].ratioEachCarbo} mg</span></div>
+                <div><span>식단명</span><span>: {morningMenu[0]},{morningMenu[1]},{morningMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealMorning.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: {mealLunch[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealLunch[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealLunch[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealLunch[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealLunch[0].ratioEachCarbo} mg</span></div>
+                <div><span>식단명</span><span>: {lunchMenu[0]},{lunchMenu[1]},{lunchMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealLunch.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: {mealDinner[0].foodName}</span></div>
-                <div><span>칼로리</span><span>: {mealDinner[0].ratioEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealDinner[0].ratioEachFat} mg</span></div>
-                <div><span>단백질</span><span>: {mealDinner[0].ratioEachProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {mealDinner[0].ratioEachCarbo} mg</span></div>
+                <div><span>식단명</span><span>: {dinnerMenu[0]},{dinnerMenu[1]},{dinnerMenu[2]}</span></div>
+                <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealDinner.totalEachCarbo} g</span></div>
               </Info>
             </div>
             <div>
@@ -312,9 +317,9 @@ function CommunityWrite(){
               <Info>
                 {/* <div><span>식단명</span><span>: {dietData.foodName}</span></div> */}
                 <div><span>칼로리</span><span>: {dietData.totalDailyKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {dietData.totalDailyFat} mg</span></div>
-                <div><span>단백질</span><span>: {dietData.totalDailyProtein} mg</span></div>
-                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} mg</span></div>
+                <div><span>지방</span><span>: {dietData.totalDailyFat} g</span></div>
+                <div><span>단백질</span><span>: {dietData.totalDailyProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} g</span></div>
               </Info>
             </div>
         </DietInfoContainer>
@@ -340,8 +345,8 @@ function CommunityWrite(){
       </ContentContainer>
 
       <ExitAndSubmit>
-        <ExitBtn type="button" value="EXIT" onClick={()=>navigate("/pageswitch/community")}></ExitBtn>
-        <SubmitBtn type="submit" value="SUBMIT" onClick={sendArticle}></SubmitBtn>
+        <Link to="/pageswitch/community">Exit</Link>
+        <Link to="/pageswitch/community" onClick={sendArticle}>Submit</Link>
       </ExitAndSubmit>
 
       {openModal?
