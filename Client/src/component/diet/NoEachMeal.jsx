@@ -20,7 +20,11 @@ const StyleEachMeal = styled.div`
   }
 `;
 
-const NoEachMeal = ({ timeslot, EachMealAddHandler }) => {
+const NoEachMeal = ({
+  timeslot,
+  EachMealAddHandler,
+  loadFavoriteEachOnclickHandler,
+}) => {
   const { meal } = useZustand.useDailyMeals();
   const timelabel = { 1: "breakfast", 2: "lunch", 3: "dinner" };
 
@@ -35,7 +39,9 @@ const NoEachMeal = ({ timeslot, EachMealAddHandler }) => {
       >
         끼니 새로 만들기
       </Button>
-      <Button>저장해둔 끼니 불러오기</Button>
+      <Button onClick={loadFavoriteEachOnclickHandler}>
+        저장해둔 끼니 불러오기
+      </Button>
       <Button>끼니 추천받기</Button>
     </StyleEachMeal>
   );
