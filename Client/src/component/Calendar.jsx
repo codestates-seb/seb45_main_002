@@ -14,10 +14,10 @@ const StyleCalendar = styled.div`
   padding: 10px;
 `;
 
-const Calendar = () => {
+const Calendar = ({ nowDate, setNowDate }) => {
   return (
     <StyleCalendar>
-      <CustomCalendar />
+      <CustomCalendar nowDate={nowDate} setNowDate={setNowDate} />
     </StyleCalendar>
   );
 };
