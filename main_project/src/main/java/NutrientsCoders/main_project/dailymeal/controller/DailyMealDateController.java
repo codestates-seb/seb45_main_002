@@ -1,6 +1,6 @@
 package NutrientsCoders.main_project.dailymeal.controller;
 
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealPatchDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
@@ -65,11 +65,11 @@ public class DailyMealDateController {
   //작성한 식단 수정
   @PatchMapping("/{dateStr}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
-                                                             @RequestBody DailyMealDto dailyMealDto,
-                                                             @PathVariable("dateStr") String dateStr) throws Exception {
+                                                             @RequestBody DailyMealPatchDto dailyMealDto,
+                                                             @PathVariable("dateStr") String dateStr) {
     long memberId = tokenChanger.getMemberId(token);
     LocalDate date = LocalDate.parse(dateStr);
-    DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
+    DailyMeal dailyMeal = dailyMealMapper.dailyMealPatchDtoToDailyMeal(dailyMealDto);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
                                            .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
                                            .collect(Collectors.toList());

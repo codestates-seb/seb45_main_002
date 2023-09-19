@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-public class DailyMealDto {
+public class DailyMealPostDto {
   @NotNull
   private LocalDate date;
   

@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.dailymeal.controller;
 
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealPostDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealPatchDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.utils.PagedResponse;
@@ -52,14 +53,14 @@ public class DailyMealController {
   //작성한 식단 저장
   @PostMapping
   public ResponseEntity<DailyMealResponseDto> createDailyMeal(@RequestHeader("Authorization") String token,
-                                                              @RequestBody DailyMealDto dailyMealDto) throws Exception {
+                                                              @RequestBody DailyMealPostDto dailyMealPostDto) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
-    List<EachMeal> findeachMeals = dailyMealDto.getEachMeals().stream()
-                                               .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
-                                               .collect(Collectors.toList());
+    List<EachMeal> findeachMeals = dailyMealPostDto.getEachMeals().stream()
+                                                   .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
+                                                   .collect(Collectors.toList());
     
     DailyMeal dailyMeal = dailyMealService.createDailyMeal(
-        dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto), findeachMeals, memberId);
+        dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealPostDto), findeachMeals, memberId);
     DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
@@ -67,12 +68,12 @@ public class DailyMealController {
   //식단 저장시 끼니 객체 복사(선호 끼니 용)
   @PostMapping("/favorite")
   public ResponseEntity<DailyMealResponseDto> createDailyMealByFavorite(@RequestHeader("Authorization") String token,
-                                                           @RequestBody DailyMealDto dailyMealDto) throws Exception {
+                                                           @RequestBody DailyMealPostDto dailyMealPostDto) throws Exception {
     long memberId = tokenChanger.getMemberId(token);
     DailyMeal dailyMeal = new DailyMeal();
-    List<EachMeal> findeachMeals = dailyMealDto.getEachMeals().stream()
-        .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
-        .collect(Collectors.toList());
+    List<EachMeal> findeachMeals = dailyMealPostDto.getEachMeals().stream()
+                                                   .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
+                                                   .collect(Collectors.toList());
     
     //한번 등록된 끼니를 재사용 할 수 있게 복제
     List<EachMeal> eachMeals = new ArrayList<>();
@@ -101,7 +102,7 @@ public class DailyMealController {
     eachMealRepository.saveAll(eachMeals);
     
     dailyMeal = dailyMealService.createDailyMeal(
-        dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto), eachMeals, memberId);
+        dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealPostDto), eachMeals, memberId);
         DailyMealResponseDto response = dailyMealMapper.dailyMealToDailyMealResponseDto(dailyMeal);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
@@ -136,10 +137,10 @@ public class DailyMealController {
   //작성한 식단 수정
   @PatchMapping("/{dailymeal-id}")
   public ResponseEntity<DailyMealResponseDto> patchDailyMeal(@RequestHeader("Authorization") String token,
-                                                             @RequestBody DailyMealDto dailyMealDto,
-                                                             @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
+                                                             @RequestBody DailyMealPatchDto dailyMealDto,
+                                                             @PathVariable("dailymeal-id") long dailyMealId) {
     long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealMapper.dailyMealDtoToDailyMeal(dailyMealDto);
+    DailyMeal dailyMeal = dailyMealMapper.dailyMealPatchDtoToDailyMeal(dailyMealDto);
     List<EachMeal> eachMeals = dailyMealDto.getEachMeals().stream()
                                            .map(eachMeal -> eachMealService.findByEachMeal(eachMeal, memberId))
                                            .collect(Collectors.toList());

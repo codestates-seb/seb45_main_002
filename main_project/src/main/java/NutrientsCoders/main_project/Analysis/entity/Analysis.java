@@ -58,13 +58,15 @@ public class Analysis {
   
   @Transient
   private Double totalGrams;
-  @Transient
+  
+  @Column
   private String result;
-  @Transient
+  
+  @Column
   private String auctionURL;
-  @Transient
+  @Column
   private String naverURL;
-  @Transient
+  @Column
   private String coupangURL;
   
   public void calculator(Double kcal, Double carbohydrates, Double proteins, Double fats) {
