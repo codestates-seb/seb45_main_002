@@ -24,14 +24,9 @@ public class Analysis {
   private DailyMeal dailyMeal;
   
   @Column
-  private String result;
-  
-  @Column
   private Double idealKcal;
   @Column
   private Double overKcal;
-  @Column
-  private Double totalGrams;
   
   @Column
   private Double percentCarbos;
@@ -61,9 +56,17 @@ public class Analysis {
   @Column
   private Double overPercentFats;
   
+  @Transient
+  private Double totalGrams;
+  @Transient
+  private String result;
+  @Transient
   private String auctionURL;
+  @Transient
   private String naverURL;
+  @Transient
   private String coupangURL;
+  
   public void calculator(Double kcal, Double carbohydrates, Double proteins, Double fats) {
     // 초과, 부족 칼로리 계산(음수는 부족, 양수는 초과)
     overKcal = kcal- idealKcal;
