@@ -337,7 +337,7 @@ function MyPage() {
             <div>
               <ActivityRange
                 type="range"
-                // value={user.activity}
+                value={user.activity * 100}
                 onChange={(e) =>
                   setUser({ ...user, activity: e.target.value / 100 })
                 }

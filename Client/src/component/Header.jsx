@@ -25,6 +25,7 @@ const HeaderContainer = styled.header`
 
   & > * {
     display: flex;
+    gap: 10px;
     align-items: center;
   }
 
@@ -58,6 +59,7 @@ const SignUpButton = styled(LoginButton)`
 `;
 
 const Header = ({ setMenu }) => {
+  const { setMeal } = useZustand.useDailyMeals();
   const accessToken = useZustand.useToken((state) => state.accessToken);
   const setAccessToken = useZustand.useToken((state) => state.setAccessToken);
   const refreshToken = useZustand.useToken((state) => state.refreshToken);
@@ -81,7 +83,9 @@ const Header = ({ setMenu }) => {
   function logoutButton() {
     localStorage.removeItem("Authorization");
     localStorage.removeItem("Refresh");
+    setMeal("");
     navigate("/");
+    window.location.reload();
   }
 
   const handleOpenLoginModal = () => {

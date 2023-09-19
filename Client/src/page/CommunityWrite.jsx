@@ -121,6 +121,8 @@ const ExitAndSubmit = styled.div`
   justify-content: space-between;
   margin: 0 ${style.layout.wideMargin.width};
   &>*{
+    text-align: center;
+    align-self: center;
     width: 60px;
     height: 20px;
     background-color: white;
@@ -170,6 +172,8 @@ function CommunityWrite(){
   const [mealDinner, setMealDinner] = useState({})
   const [dinnerMenu,setDinnerMenu] = useState([])
 
+  const [analysis,setAnalysis] = useState("")
+
   const [onImg,setOnImg] = useState("")
   const [favorites, setFavorites] = useState([])
 
@@ -190,13 +194,28 @@ function CommunityWrite(){
         console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
         console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
         setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
-        setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+        res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods.forEach(menu=>setMorningMenu(prev=>[...prev, menu]))
   
         setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
-        setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+        res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods.forEach(menu=>setLunchMenu(prev=>[...prev, menu]))
         
         setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
-        setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+        res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods.forEach(menu=>setDinnerMenu(prev=>[...prev, menu]))
+        axios.post("http://43.201.194.176:8080/analysis/"+res.data.dailyMealId,null,{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          }
+        })
+        .then(res=>{
+          axios.get("http://43.201.194.176:8080/analysis/"+res.data.analysisId,{
+            headers: {
+              Authorization: localStorage.getItem("Authorization")
+            }
+          })
+          .then(res=>setAnalysis(res.data.result))
+          .catch(err=>console.log(err,"분석 가져오기 실패"))
+        })
+        .catch(err=>console.log(err,"분석 실패"))
       })
       .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
     }
@@ -208,6 +227,7 @@ console.log(morningMenu)
 //////// 선호 식단 불러오기
   const [openModal, setOpenModal] = useState(false)
   function openFavoriteListModal(){
+    // axios.get("http://43.201.194.176:8080/analysis/"+analysisId)
     axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
       headers: {
         Authorization: localStorage.getItem("Authorization"),
@@ -266,7 +286,7 @@ console.log(morningMenu)
       else{
         axios.post("http://43.201.194.176:8080/community",{
           communityTitle: form.communityTitle,
-          communityContent: form.communityContent,
+          communityContent: form.communityContent+"AnAlYsIs"+analysis,
           dailyMealId: dietData.dailyMealId
         },{
           headers: {
@@ -338,7 +358,7 @@ console.log(morningMenu)
             </div>
         </DietInfoContainer>
 
-        <ImgContainer>
+        {/* <ImgContainer>
           <DietBtn htmlFor="addImg">이미지 추가하기</DietBtn>
           <input id="addImg" type="file" accept="image/png, image/jpeg" capture onChange={e=>setOnImg(e.target.value)}></input>
           {onImg?
@@ -351,12 +371,12 @@ console.log(morningMenu)
               이미지를 추가하시면 미리보기용 이미지가 보여집니다.
             </NoImgBox>
           }
-          {/* 초과된 칼로리 : -1949.0<br />
+          초과된 칼로리 : -1949.0<br />
           초과된 탄수화물 : 4.0 (1.33%)<br />
           초과된 단백질 : -4.0 (-0.8%)<br />
           초과된 지방 : 0.0 (0.0%)<br />
-          총 평 : 칼로리 평가 불량 섭취 칼로리 양이 너무 높습니다. 3대 영양소 비율 평가 양호<br /> */}
-        </ImgContainer>
+          총 평 : 칼로리 평가 불량 섭취 칼로리 양이 너무 높습니다. 3대 영양소 비율 평가 양호<br />
+        </ImgContainer> */}
       </DietBtnContainer>
         
       <ContentContainer>

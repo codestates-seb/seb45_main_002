@@ -4,6 +4,7 @@ import NoEachMeal from "./NoEachMeal";
 import useZustand from "../../zustand/Store";
 import FavoriteEachList from "./FavoriteEachList";
 import FoodModal from "./FoodModal";
+// import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
 
 const EachMeal = ({
   date,

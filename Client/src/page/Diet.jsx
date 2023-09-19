@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
@@ -173,6 +173,7 @@ let month = today.getMonth() + 1; // 월
 let day = today.getDate(); //일
 
 const Diet = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
@@ -189,6 +190,7 @@ const Diet = () => {
   const [modalContents, setModalContents] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
+
   useEffect(() => {
     const asyncfunc = async () => {
       setMeal(await GetDailyDiet(date));
@@ -494,10 +496,17 @@ const Diet = () => {
     }
   };
 
+  // if (meal === "") {
+  //   return <></>;
+  // }
+
   if (meal === null) {
+    // alert("로그인 후 이용해주시기 바랍니다.");
+    // navigate("/");
     return <div>로그인 후 이용해주세요</div>;
   }
 
+  ///////////////////////////////////////////////////////////
   if (meal === "DailyMeal not found...") {
     /// 해당 날짜 저장된 식단이 없는 경우
     return (
