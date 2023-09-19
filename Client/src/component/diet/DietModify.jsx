@@ -38,7 +38,7 @@ const DietModify = async (daliymealId) => {
         },
       }
     );
-    console.log("postDietAnalyze COMPLETE", response.data);
+    // console.log("postDietAnalyze COMPLETE", response.data);
     return response.data;
   } catch (error) {
     console.error("Error posting DietAnalyze", error);

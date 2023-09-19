@@ -24,7 +24,7 @@ export const AnalyzedDiet = async (dailymealId) => {
         },
       }
     );
-    // console.log(analyzeResponse.data);
+
     const analysisId = analyzeResponse.data.analysisId;
 
     const getResponse = await axios.get(
@@ -43,52 +43,3 @@ export const AnalyzedDiet = async (dailymealId) => {
 };
 
 export default AnalyzedDiet;
-
-// const postDailymealData = async () => {
-//   const token = localStorage.getItem("Authorization");
-//   console.log(token);
-//   try {
-//     const response = await axios.post(
-//       "http://43.201.194.176:8080/dailymeals",
-//       {
-//         date: "2023-09-20",
-//         name: "test",
-//         eachMeals: [59],
-//       },
-//       {
-//         headers: {
-//           Authorization: token,
-//         },
-//       }
-//     );
-//     console.log("Calendar Data Posted:", response.data);
-//   } catch (error) {
-//     console.error("Error posting calendar data:");
-//   }
-// };
-
-// const postMealData = async () => {
-//   const token = localStorage.getItem("Authorization");
-//   console.log(token);
-//   try {
-//     const response = await axios.post(
-//       "http://43.201.194.176:8080/eachmeals",
-//       {
-//         timeSlots: 3,
-//         foods: [
-//           { foodId: 6, quantity: 0.5 },
-//           { foodId: 23, quantity: 0.5 },
-//         ],
-//       },
-
-//       {
-//         headers: {
-//           Authorization: token,
-//         },
-//       }
-//     );
-//     console.log("Calendar Data Posted:", response.data);
-//   } catch (error) {
-//     console.error("Error posting Meal data:");
-//   }
-// };

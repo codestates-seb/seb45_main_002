@@ -243,16 +243,16 @@ const Diet = () => {
 
   const handleAnalyzeDiet = async (dailymealId, analysisId) => {
     try {
-      console.log(meal);
+      // console.log(meal);
       dailymealId = meal.dailyMealId;
       const analyzedData = await AnalyzedDiet(dailymealId);
       setAnalyzedData();
       setIsModalOpen(true);
       setModalHeader(<h2>분석 결과</h2>);
       setModalFooter();
-      console.log(analyzedData);
-      console.log(analyzedData.dailyMeal);
-      console.log(analyzedData.result);
+      // console.log(analyzedData);
+      // console.log(analyzedData.dailyMeal);
+      // console.log(analyzedData.result);
 
       if (analyzedData === undefined) {
         setModalHeader(<h2>오류</h2>);
