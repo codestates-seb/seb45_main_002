@@ -167,6 +167,9 @@ const style = {
     yellow4: "rgb(139,139,0)",
     yellowgreen: "rgb(154,205,50)",
   },
+  rbcButtonLink: {
+    cursor: "default !important",
+  },
 };
 export default style;
 

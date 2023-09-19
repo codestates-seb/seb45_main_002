@@ -1,9 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --orange: #ffc123;
+  --black-025: hsl(210, 8%, 97.5%);
+  --black-050: hsl(210, 8%, 95%);
+  --black-075: hsl(210, 8%, 90%);
+  --black-100: hsl(210, 8%, 85%);
+  --black-150: hsl(210, 8%, 80%);
+  --black-200: hsl(210, 8%, 75%);
+  --black-300: hsl(210, 8%, 65%);
+  --black-350: hsl(210, 8%, 60%);
+  --black-400: hsl(210, 8%, 55%);
+  --black-500: hsl(210, 8%, 45%);
+  --black-600: hsl(210, 8%, 35%);
+  --black-700: hsl(210, 8%, 25%);
+  --black-750: hsl(210, 8%, 20%);
+  --black-800: hsl(210, 8%, 15%);
+  --black-900: hsl(210, 8%, 5%);
+  --fs-base: 15px;
+  --fs-normal: 13px;
+  --fs-small: 12px;
+  --fs-headline: 21px;
+  --fs-headline1: 27px;
+  --fs-headline2: 21px;
+  --fs-headline3: 17px;
+  --fs-big: 55px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none;
   color: inherit;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 #root {

@@ -26,9 +26,17 @@ const StyleFood = styled.div`
   }
 `;
 
-const IsEachFood = ({ item, timeslot, index }) => {
+const FoodDetailButton = styled.p`
+  cursor: pointer;
+  &:hover {
+    color: #898989;
+  }
+`;
+
+const IsEachFood = ({ item, timeslot, foodDetailOnClickHandler }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
+
   const { nowTimeSlot } = useZustand.useNowTimeSlot();
   const [quantity, setQuantity] = useState(item.quantity);
 
@@ -71,7 +79,13 @@ const IsEachFood = ({ item, timeslot, index }) => {
 
   return (
     <StyleFood>
-      <p>{item.foodName}</p>
+      <FoodDetailButton
+        onClick={() => {
+          foodDetailOnClickHandler(item.foodId);
+        }}
+      >
+        {item.foodName}
+      </FoodDetailButton>
       <p>
         {nowTimeSlot === timeslot ? (
           <input
@@ -99,7 +113,7 @@ const IsEachFood = ({ item, timeslot, index }) => {
           }}
           onClick={deleteOnClickHandler}
         >
-          X
+          ✕
         </Button>
       ) : null}
     </StyleFood>

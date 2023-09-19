@@ -264,7 +264,7 @@ console.log(morningMenu)
                 <OneLine>
                   <span>메뉴</span>
                   <span>
-                    {morningMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>))}
+                    {morningMenu[0]? morningMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>)) : null}
                   </span>
                 </OneLine>
               </div>
@@ -275,7 +275,7 @@ console.log(morningMenu)
                 <OneLine>
                   <span>메뉴</span>
                   <span>
-                    {lunchMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>))}
+                    {lunchMenu[0]? lunchMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>)) : null}
                   </span>
                 </OneLine>
               </div>
@@ -286,7 +286,7 @@ console.log(morningMenu)
                 <OneLine>
                   <span>메뉴</span>
                   <span>
-                    {dinnerMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>))}
+                    {dinnerMenu[0]? dinnerMenu.map(menu=>(<div>{menu.food.foodName+" "}</div>)) : null}
                   </span>
                 </OneLine>
               </div>
@@ -295,55 +295,55 @@ console.log(morningMenu)
             <InfoBox>
               <OneLine>
                 <span>칼로리</span>
-                <span>{morningInfo.totalEachKcal} kcal</span>
+                <span>{morningMenu[0]? morningInfo.totalEachKcal : null} kcal</span>
               </OneLine>
               <OneLine>
                 <span>단백질</span>
-                <span>{morningInfo.totalEachProtein} g</span>
+                <span>{morningMenu[0]? morningInfo.totalEachProtein : null} g</span>
               </OneLine>
               <OneLine>
                 <span>탄수화물</span>
-                <span>{morningInfo.totalEachCarbo} g</span>
+                <span>{morningMenu[0]? morningInfo.totalEachCarbo : null} g</span>
               </OneLine>
               <OneLine>
                 <span>지방</span>
-                <span>{morningInfo.totalEachFat} g</span>
+                <span>{morningMenu[0]? morningInfo.totalEachFat : null} g</span>
               </OneLine>
             </InfoBox>
             <InfoBox>
               <OneLine>
                 <span>칼로리</span>
-                <span>{lunchInfo.totalEachKcal} kcal</span>
+                <span>{lunchMenu[0]? lunchInfo.totalEachKcal : null} kcal</span>
               </OneLine>
               <OneLine>
                 <span>단백질</span>
-                <span>{lunchInfo.totalEachProtein} g</span>
+                <span>{lunchMenu[0]? lunchInfo.totalEachProtein : null} g</span>
               </OneLine>
               <OneLine>
                 <span>탄수화물</span>
-                <span>{lunchInfo.totalEachCarbo} g</span>
+                <span>{lunchMenu[0]? lunchInfo.totalEachCarbo : null} g</span>
               </OneLine>
               <OneLine>
                 <span>지방</span>
-                <span>{lunchInfo.totalEachFat} g</span>
+                <span>{lunchMenu[0]? lunchInfo.totalEachFat : null} g</span>
               </OneLine>
             </InfoBox>
             <InfoBox>
               <OneLine>
                 <span>칼로리</span>
-                <span>{dinnerInfo.totalEachKcal} kcal</span>
+                <span>{dinnerMenu[0]? dinnerInfo.totalEachKcal : null} kcal</span>
               </OneLine>
               <OneLine>
                 <span>단백질</span>
-                <span>{dinnerInfo.totalEachProtein} g</span>
+                <span>{dinnerMenu[0]? dinnerInfo.totalEachProtein : null} g</span>
               </OneLine>
               <OneLine>
                 <span>탄수화물</span>
-                <span>{dinnerInfo.totalEachCarbo} g</span>
+                <span>{dinnerMenu[0]? dinnerInfo.totalEachCarbo : null} g</span>
               </OneLine>
               <OneLine>
                 <span>지방</span>
-                <span>{dinnerInfo.totalEachFat} g</span>
+                <span>{dinnerMenu[0]? dinnerInfo.totalEachFat : null} g</span>
               </OneLine>
             </InfoBox>
 

@@ -69,13 +69,11 @@ const FavoriteDailyDetail = ({ id, setIsDetailPage, date, setIsModal }) => {
   };
 
   const copyFavoriteMealOnClickHandler = async () => {
-    console.log(date);
     const result = await postFavoriteDailyMeal(
       DailyMeal.eachMeals,
       "name",
       date
     );
-    console.log(result);
     setMeal(result);
     setIsModal(false);
   };

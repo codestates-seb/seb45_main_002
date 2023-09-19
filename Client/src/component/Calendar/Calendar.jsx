@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Children } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Modal from "../../atom/GlobalModal";
@@ -89,7 +89,7 @@ const customToolbar = (toolbar) => {
   );
 };
 
-const CustomCalendar = () => {
+const CustomCalendar = ({ nowDate, setNowDate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
@@ -144,14 +144,22 @@ const CustomCalendar = () => {
   }, []);
 
   const handleEventClick = (event) => {
+    console.log("handleEventClick");
     const startDate = new Date(event.start);
     startDate.setDate(startDate.getDate() + 1);
     const dateStr = startDate.toISOString().split("T")[0];
-
-    navigate(`pageswitch/diet/${dateStr}`);
+    setNowDate(dateStr);
   };
   // console.log(dateStr);
   // console.log(eventTitle);
+
+  const onSelectSlot = (event) => {
+    console.log("onSelectSlot");
+    const startDate = new Date(event.start);
+    startDate.setDate(startDate.getDate() + 1);
+    const dateStr = startDate.toISOString().split("T")[0];
+    setNowDate(dateStr);
+  };
 
   //
 
@@ -160,28 +168,53 @@ const CustomCalendar = () => {
   // const dailymealId = mealData?.dailymealId;
   // console.log(dailymealId);
 
+  const DateCellWrapper = (props, selected) => {
+    const { children, value } = props;
+    const isSelected =
+      new Date(value).valueOf() === new Date(selected).valueOf();
+
+    return React.cloneElement(Children.only(children), {
+      style: {
+        ...children.style,
+        backgroundColor: isSelected ? "#FFC123" : "#FFFFFF",
+      },
+    });
+  };
+
   return (
     <div>
       {/* <AnalizedDiet dailymealId={dailymealId} /> */}
-      <Calendar
-        // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
-        views={["month"]}
-        localizer={localizer}
-        events={events}
-        // startAccessor="start"
-        // endAccessor="end"
-        handleEventClick={handleEventClick}
-        onSelectEvent={handleEventClick}
-        onSelectSlot={handleEventClick}
-        components={{
-          event: ({ event }) => (event ? <CustomDot /> : null),
-          toolbar: customToolbar,
-        }}
-        eventPropGetter={(event, isSelected) => {
-          const backgroundColor = "white";
-          return { style: { backgroundColor } };
-        }}
-      />
+      <div className="custom-rbc-button-link">
+        <Calendar
+          // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
+          selectable={true}
+          views={["month"]}
+          localizer={localizer}
+          events={events}
+          // startAccessor="start"
+          // endAccessor="end"
+          handleEventClick={handleEventClick}
+          onSelectEvent={handleEventClick}
+          onSelectSlot={onSelectSlot}
+          components={{
+            event: ({ event }) => (event ? <CustomDot /> : null),
+            toolbar: customToolbar,
+            dateCellWrapper: DateCellWrapper,
+          }}
+          eventPropGetter={(event, isSelected) => {
+            const backgroundColor = "white";
+            return { style: { backgroundColor } };
+          }}
+          dayPropGetter={(date) => ({
+            style: { cursor: "default" },
+          })}
+          slotPropGetter={(date) => {
+            const slotStyle = {
+              cursor: "default",
+            };
+          }}
+        />
+      </div>
       <Modal
         isOpen={isModalOpen}
         content={modalContent}

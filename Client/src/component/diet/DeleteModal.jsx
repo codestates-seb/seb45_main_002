@@ -28,6 +28,7 @@ const DeleteModal = ({ dailyMealId, setIsModal }) => {
   return (
     <DivDeleteModalStyle>
       <p>정말 삭제하시겠습니까?</p>
+      <p>단, 커뮤니티 게시글으로 작성된 식단은 삭제할 수 없습니다.</p>
       <div>
         <Button
           size={"small"}
