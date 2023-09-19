@@ -1,6 +1,7 @@
 package NutrientsCoders.main_project.dailymeal.mapper;
 
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealPostDto;
+import NutrientsCoders.main_project.dailymeal.dto.DailyMealPatchDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
@@ -13,11 +14,18 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface DailyMealMapper {
-  default DailyMeal dailyMealDtoToDailyMeal(DailyMealDto dailyMealDto){
+  default DailyMeal dailyMealDtoToDailyMeal(DailyMealPostDto dailyMealPostDto){
     DailyMeal dailyMeal = new DailyMeal();
-    dailyMeal.setDate(dailyMealDto.getDate());
-    dailyMeal.setName(dailyMealDto.getName());
-    dailyMeal.setFavorite(dailyMealDto.getFavorite());
+    dailyMeal.setDate(dailyMealPostDto.getDate());
+    dailyMeal.setName(dailyMealPostDto.getName());
+    dailyMeal.setFavorite(dailyMealPostDto.getFavorite());
+    return dailyMeal;
+  }
+  
+  default DailyMeal dailyMealPatchDtoToDailyMeal(DailyMealPatchDto dailyMealPatchDto){
+    DailyMeal dailyMeal = new DailyMeal();
+    dailyMeal.setName(dailyMealPatchDto.getName());
+    dailyMeal.setFavorite(dailyMealPatchDto.getFavorite());
     return dailyMeal;
   }
   default DailyMealResponseDto dailyMealToDailyMealResponseDto(DailyMeal savedDailyMeal) {

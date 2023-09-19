@@ -21,7 +21,8 @@ public enum ExceptionCode {
     CANNOT_APPLY(403, "can not change, check your conditions"),
     NOT_IMPLEMENTATION(501, "Not Implementation"),
     SERVER_ERROR(500, "SERVER ERROR !!!"),
-    INVALID(400, "Invalid status, check your request");
+    INVALID(400, "Invalid status, check your request"),
+    NEED_REFRESH_TOKEN(400,"You need a refresh token.");
 
     private final int status;
 
