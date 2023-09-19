@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
@@ -16,6 +16,7 @@ import style from "../style/style";
 import auctionbuy from "../../src/asset/auctionbuy.png";
 import naverbuy from "../../src/asset/naverbuy.png";
 import coupangbuy from "../../src/asset/coupangbuy.png";
+
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -173,6 +174,7 @@ let month = today.getMonth() + 1; // 월
 let day = today.getDate(); //일
 
 const Diet = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [modalHeader, setModalHeader] = useState(null);
@@ -494,7 +496,13 @@ const Diet = () => {
     }
   };
 
+  if (meal === "") {
+    return <></>;
+  }
+
   if (meal === null) {
+    alert("로그인 후 이용해주시기 바랍니다.");
+    navigate("/");
     return <div>로그인 후 이용해주세요</div>;
   }
 

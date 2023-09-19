@@ -84,10 +84,11 @@ const LoginForm = () => {
         password: form.password
       })
       .then(res=>{
+        console.log(res)
         localStorage.setItem("Authorization",res.headers.authorization)
         localStorage.setItem("Refresh",res.headers.refresh)
-        navigate("/pageswitch/mypage")
-        window.location.reload()
+        // navigate("/pageswitch/mypage")
+        // window.location.reload()
       })
       .catch(err=>{
         console.log(err, "로그인을 실패했습니다.")
@@ -157,8 +158,8 @@ const LoginForm = () => {
         <div>{form.errMsg}</div>
         <button onClick={loginButton}>LOGIN</button>
       </LoginFormContainer>
-      <button onClick={googleLoginButton}>google login</button>
-      <button onClick={sendBackend}>sendBackend</button>
+      {/* <button onClick={googleLoginButton}>google login</button>
+      <button onClick={sendBackend}>sendBackend</button> */}
     </LoginContainer>
   );
 };

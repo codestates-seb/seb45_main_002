@@ -336,14 +336,14 @@ function MyPage() {
             <div>활동량</div>
             <div>
               <ActivityRange
-                type="range"
-                // value={user.activity}
-                onChange={(e) =>
-                  setUser({ ...user, activity: e.target.value / 100 })
-                }
-                min="50"
-                step="25"
-                max="150"
+
+               type="range"
+               value={user.activity*100}
+               onChange={e=>setUser({...user,activity: e.target.value/100})}
+               min="50"
+               step="25"
+               max="150"
+
               ></ActivityRange>
               <StepName>
                 <span>활동량 거의 없음</span>

@@ -4,6 +4,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
 
+import Button from "../atom/button";
+
 import Comments from "../component/Comments";
 
 import useZustand from "../zustand/Store";
@@ -86,9 +88,13 @@ const OneLine = styled.div`
   padding: 0 ${style.layout.narrowMargin.width};
 `
 
+const AnalysisButton = styled.button`
+  width: 100%;
+  padding: ${style.layout.narrowMargin.height};
+`
+
 const Content = styled.div`
   border: solid 1px orange;
-  margin: ${style.layout.narrowMargin.height} ${style.layout.wideMargin.width};
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
 `;
 
@@ -152,6 +158,42 @@ const DeleteButton = styled.input`
   cursor: pointer;
 `
 
+const AnalysisContainer = styled.article`
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.3);
+`
+const AnalysisContent = styled.section`
+  background-color: white;
+  width: ${style.layout.main.width-50};
+  height: ${style.layout.main.height-500};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  &>:nth-child(1){
+    font-weight: bolder;
+  }
+  &>:nth-child(2){
+    text-decoration: underline;
+  }
+  &>:nth-child(3){
+    margin-bottom: ${style.layout.narrowMargin.height};
+    color: rgb(160, 104, 0);
+  }
+  &>:nth-child(4){
+    font-weight: bolder;
+  }
+  &>:nth-child(5){
+    text-decoration: underline;
+  }
+`
+
 function CommunityDetail(){
   const [member, setMember] = useState({})
   const [detail, setDetail] = useState({})
@@ -174,6 +216,8 @@ function CommunityDetail(){
   const [hide,setHide] = useState(false)
   const params = useParams();
   const setCommunityId = useZustand.useCommunityId(state=>state.setCommunityId)
+
+  const [openAnalysis, setOpenAnalysis] = useState(false)
 
   const navigate = useNavigate()
 
@@ -203,7 +247,20 @@ function CommunityDetail(){
     .catch(err=>console.log(err, "게시글 데이터를 불러오지 못했습니다."))
   }
   useEffect(()=>loadDetail(),[])
-console.log(morningMenu)
+
+  // function openAnalysis(){
+  //   axios.post("http://43.201.194.176:8080/analysis/"+dailyMeals.dailyMealId,null,{
+  //     headers: {
+  //       Authorization: localStorage.getItem("Authorization")
+  //     }
+  //   })
+  //   .then(res=>{
+  //     console.log(res)
+  //     axios.get()
+  //   })
+  //   .catch(err=>console.log(err))
+  // }
+
   function sendLike(){
     axios.get("http://43.201.194.176:8080/community/recommendation/"+params["*"],{
       headers: {
@@ -240,20 +297,20 @@ console.log(morningMenu)
     })
     .catch(err=>console.log(err, "게시글 삭제 실패했습니다."))
   }
-
+  let AnAlYsIs = "AnAlYsIs"
   return (
     <Container>
       <Title>
         {detail.communityTitle}
       </Title>
       <div>
-        <DietImageContainer>
+        {/* <DietImageContainer>
           <img
            src="https://img.freepik.com/free-photo/front-view-delicious-cheeseburger-with-meat-tomatoes-green-salad-dark-background-sandwich-fast-food-meal-dish-french-fries-dinner_140725-156241.jpg?w=1480&t=st=1694570873~exp=1694571473~hmac=bf25d456d2680654d8a8aa0b398c08ba1c34d0ab50910592000964044c7d6241"
            alt="dietimg"
            width={style.layout.main.width/2}
           />
-        </DietImageContainer>
+        </DietImageContainer> */}
         <DietInfoContainer>
           <TimeContainer>
             <MenuBox>
@@ -368,6 +425,34 @@ console.log(morningMenu)
             </div>
           </TotalBox>
         </DietInfoContainer>
+        <Button size="fullwidth"
+          onClick={()=>setOpenAnalysis(!openAnalysis)}
+        >
+            식단 자세히 분석하기
+        </Button>
+        {openAnalysis?
+        <AnalysisContainer onClick={()=>setOpenAnalysis(!openAnalysis)}>
+          <AnalysisContent onClick={(e)=>e.stopPropagation()}>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+8,String(detail.communityContent).indexOf(AnAlYsIs)+15)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+14,String(detail.communityContent).indexOf(AnAlYsIs)+18)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+17,String(detail.communityContent).indexOf(AnAlYsIs)+37)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+36,String(detail.communityContent).indexOf(AnAlYsIs)+49)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+49,String(detail.communityContent).indexOf(AnAlYsIs)+52)}
+            </div>
+          </AnalysisContent>
+        </AnalysisContainer>
+        :
+        null
+        }
         {/* <DietImageContainer>
           초과된 칼로리 : -1949.0<br />
           초과된 탄수화물 : 4.0 (1.33%)<br />
@@ -377,7 +462,7 @@ console.log(morningMenu)
         </DietImageContainer> */}
       </div>
       <Content>
-        {detail.communityContent}
+        {String(detail.communityContent).slice(0,String(detail.communityContent).indexOf(AnAlYsIs))}
       </Content>
       <CommentsAndUserProfile>
         <CommentsOpener>
