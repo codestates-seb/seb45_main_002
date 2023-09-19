@@ -23,12 +23,17 @@ public class JwtController {
     @GetMapping("/refresh")
     public ResponseEntity refresh(@RequestHeader("Authorization")String access,
                                              @RequestHeader("Refresh")String refresh){
+        try {
 
-        List<String> tokens = tokenChanger.getRefresh(access, refresh);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", tokens.get(0));
-        headers.add("Refresh", tokens.get(1));
 
-        return ResponseEntity.ok().headers(headers).body("refreshed");
+            List<String> tokens = tokenChanger.getRefresh(access, refresh);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "SecurityBearer " + tokens.get(0));
+            headers.add("Refresh", tokens.get(1));
+
+            return ResponseEntity.ok().headers(headers).body("refreshed");
+        }catch (NullPointerException e){
+            return ResponseEntity.noContent().build();
+        }
     }
 }
