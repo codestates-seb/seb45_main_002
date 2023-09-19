@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class CommunityComment extends CommunityCommentBaseTime{
     private String communityCommentContent;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "COMMUNITY_ID",nullable = false)
+    @JoinColumn(name = "COMMUNITY_ID", nullable = false)
     private Community community;
 //    @ManyToOne
 //    @JoinColumn(name = "MEMBER_ID",nullable = false)

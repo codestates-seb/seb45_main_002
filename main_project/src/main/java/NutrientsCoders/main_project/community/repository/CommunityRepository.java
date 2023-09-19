@@ -4,9 +4,11 @@ import NutrientsCoders.main_project.community.entity.Community;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 
 @Repository
 public interface CommunityRepository extends JpaRepository<Community,Long> {
@@ -14,4 +16,7 @@ public interface CommunityRepository extends JpaRepository<Community,Long> {
     Page<Community> findByCommunityTitle(@Param("keyword")String keyword, Pageable pageable);
     @Query("SELECT c from Community c where c.communityId = :communityId")
     Community findByCommunityId(long communityId);
+    @Modifying
+    @Query("update Community c set c.communityViewCount = :communityViewCount where c.communityId = :communityId")
+    int updateViewCount(@Param("communityViewCount")int communityViewCount,@Param("communityId") Long communityId);
 }
