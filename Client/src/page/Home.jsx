@@ -12,12 +12,15 @@ const HomeMenuContainer = styled.article`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  text-align: center;
 
   & > a {
     width: 100%;
     max-width: 340px;
 
     button {
+      border: 2px solid #ffc123;
+      background-color: white;
       border-radius: 0;
       border-left: 0;
       border-right: 0;
@@ -30,16 +33,6 @@ const HomeMenuContainer = styled.article`
         color: white;
       }
     }
-  }
-
-  a:nth-child(1) > button:hover {
-    background-image: url("/image/orangeButton1.png");
-  }
-  a:nth-child(2) > button:hover {
-    background-image: url("/image/orangeButton2.png");
-  }
-  a:nth-child(3) > button:hover {
-    background-image: url("/image/orangeButton3.png");
   }
 
   & > a > span {
@@ -65,13 +58,15 @@ function Home({ setPage }) {
             setPage(nowDate ? `diet/${nowDate}` : "diet");
           }}
         >
-          <Button>식단 관리 {nowDate ? `: ${nowDate}` : null}</Button>
+          <button className="buttonStyle">
+            식단 관리 {nowDate ? `: ${nowDate}` : null}
+          </button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("community")}>
-          <Button>커뮤니티</Button>
+          <button className="buttonStyle">커뮤니티</button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("mypage")}>
-          <Button>마이페이지</Button>
+          <button className="buttonStyle">마이페이지</button>
         </Link>
         <Link to="https://github.com/codestates-seb/seb45_main_002">
           <span>코더스 깃허브</span>
