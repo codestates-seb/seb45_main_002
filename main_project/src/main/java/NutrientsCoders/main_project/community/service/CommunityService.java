@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 
 @Service
 @Slf4j
@@ -60,10 +62,11 @@ public class CommunityService {
         return communityRepository.findAll(PageRequest.of(page,size, Sort.by("communityId").descending()));
     }
     /** 리포지토리에서 게시글을 선택해 데이터를 가져오는 메서드 **/
+    @Transactional
     public Community findCommunity(long communityId){
         Community findIdCommunity = communityRepository.findById(communityId).orElse(null);
         findIdCommunity.setMember(memberRepository.findByMemberId(findIdCommunity.getMember().getMemberId()));
-        findIdCommunity.setCommunityViewCount(findIdCommunity.incrementViewCount());
+        communityRepository.updateViewCount(findIdCommunity.getCommunityViewCount()+1,communityId);
         findIdCommunity.setCommunityLike(findIdCommunity.getCommunityLike());
         findIdCommunity.setCommunityCommentCount(findIdCommunity.getCommunityCommentList().size());
         return communityRepository.save(findIdCommunity);
