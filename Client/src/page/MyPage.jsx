@@ -142,6 +142,34 @@ const SubmitBtn = styled.input`
   border-radius: 10px;
 `
 
+const LeaveContainer = styled.section`
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
+const LeaveBox = styled.form`
+  width: ${style.layout.main.width-style.layout.wideMargin.width*4};
+  height: ${style.layout.main.height-style.layout.wideMargin.height*4};
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 14px;
+  &>:first-child{
+    margin: ${style.layout.wideMargin.height};
+  }
+  &>:last-child{
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    width: 50%;
+  }
+`
+
 function MyPage() {
 
   const [user,setUser] = useState({
@@ -171,6 +199,7 @@ function MyPage() {
   }
   useEffect(()=>loadProfile(),[])
 
+  const [openLeave, setOpenLeave] = useState(false)
   function sendLeave(e){
     e.preventDefault()
     axios.delete("http://43.201.194.176:8080/mypage/",{
@@ -178,7 +207,11 @@ function MyPage() {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>navigate("/"))
+    .then(res=>{
+      localStorage.removeItem("Authorization");
+      localStorage.removeItem("Refresh");
+      navigate("/")
+    })
     .catch(err=>console.log(err,"탈퇴 실패"))
   }
 
@@ -264,10 +297,23 @@ function MyPage() {
           </OpenOrClose>
         </BlockContainer>
         <LeaveOrSubmit>
-          <LeaveButton onClick={sendLeave}>leave the NutritionCoders</LeaveButton>
+          <LeaveButton onClick={(e)=>{e.preventDefault(); setOpenLeave(!openLeave);}}>leave the NutritionCoders</LeaveButton>
           <SubmitBtn type="submit" onClick={sendUserData} value="SUBMIT"></SubmitBtn>
         </LeaveOrSubmit>
       </form>
+      {openLeave?
+        <LeaveContainer>
+          <LeaveBox>
+            <h1>정말 탈퇴하시겠습니까?</h1>
+            <div>
+              <LeaveButton type="submit" onClick={sendLeave}>회원탈퇴</LeaveButton>
+              <button onClick={()=>setOpenLeave(!openLeave)}>돌아가기</button>
+            </div>
+          </LeaveBox>
+        </LeaveContainer>
+        :
+        null
+      }
     </MypageContainer>
   );
 }
