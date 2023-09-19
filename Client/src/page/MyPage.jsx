@@ -128,12 +128,18 @@ const OpenOrClose = styled.span`
   }
 `
 
+const LeaveOrSubmit = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const LeaveButton = styled.button`
+  
+`
 const SubmitBtn = styled.input`
   margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   background-color: #ffc123;
   border-radius: 10px;
-  float: right;
 `
 
 function MyPage() {
@@ -165,6 +171,17 @@ function MyPage() {
   }
   useEffect(()=>loadProfile(),[])
 
+  function sendLeave(e){
+    e.preventDefault()
+    axios.delete("http://43.201.194.176:8080/mypage/",{
+      headers:{
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>navigate("/"))
+    .catch(err=>console.log(err,"탈퇴 실패"))
+  }
+
   function sendUserData(e){
     e.preventDefault();
     axios.patch("http://43.201.194.176:8080/mypage/",{
@@ -179,7 +196,10 @@ function MyPage() {
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>alert("개인정보 설정이 변경되었습니다."))
+    .then(res=>{
+      alert("개인정보 설정이 변경되었습니다.")
+      navigate("/")
+    })
     .catch(err=>console.log(err,"서버와의 소통 실패"))
   }
 
@@ -243,18 +263,11 @@ function MyPage() {
             </div>
           </OpenOrClose>
         </BlockContainer>
-        <SubmitBtn type="submit" onClick={sendUserData} value="SUBMIT"></SubmitBtn>
+        <LeaveOrSubmit>
+          <LeaveButton onClick={sendLeave}>leave the NutritionCoders</LeaveButton>
+          <SubmitBtn type="submit" onClick={sendUserData} value="SUBMIT"></SubmitBtn>
+        </LeaveOrSubmit>
       </form>
-
-      <section>
-
-      </section>
-
-      <section>
-
-      </section>
-
-        
     </MypageContainer>
   );
 }
