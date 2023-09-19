@@ -50,6 +50,7 @@ const LoginButton = styled.button`
   font-size: 18px;
   font-weight: bolder;
   white-space: nowrap;
+  border-radius: 5px;
   cursor: pointer;
 `;
 const SignUpButton = styled(LoginButton)`
@@ -85,13 +86,13 @@ const Header = ({ setMenu }) => {
 
   const handleOpenLoginModal = () => {
     setIsOpen(true);
-    setHeader("login header입니다");
+    setHeader(<h2>로그인</h2>);
     setFooter("login footer입니다");
     setContent(<LoginForm />);
   };
   const handleOpenSignUpModal = () => {
     setIsOpen(true);
-    setHeader("signup header입니다");
+    setHeader(<h2>회원가입</h2>);
     setFooter("sigunup footer입니다");
     setContent(<SignUpForm />);
   };

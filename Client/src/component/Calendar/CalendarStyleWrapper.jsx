@@ -76,12 +76,12 @@
 // }
 
 // .rbc-button-link {
-//   color: inherit;
+// color: inherit;
 //   background: none;
 //   margin: 0;
 //   padding: 0;
 //   border: none;
-//   cursor: pointer;
+// cursor: initial;
 //   -webkit-user-select: text;
 //      -moz-user-select: text;
 //       -ms-user-select: text;

@@ -184,28 +184,40 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
   return (
     <div>
       {/* <AnalizedDiet dailymealId={dailymealId} /> */}
-      <Calendar
-        // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
-
-        selectable={true}
-        views={["month"]}
-        localizer={localizer}
-        events={events}
-        // startAccessor="start"
-        // endAccessor="end"
-        handleEventClick={handleEventClick}
-        onSelectEvent={handleEventClick}
-        onSelectSlot={onSelectSlot}
-        components={{
-          event: ({ event }) => (event ? <CustomDot /> : null),
-          toolbar: customToolbar,
+      <div className="custom-rbc-button-link">
+        <Calendar
+          // style={{ maxWidth: "768px", width: "90%", backgroundColor: "white" }}
+          selectable={true}
+          views={["month"]}
+          localizer={localizer}
+          events={events}
+          // startAccessor="start"
+          // endAccessor="end"
+          handleEventClick={handleEventClick}
+          onSelectEvent={handleEventClick}
+          onSelectSlot={onSelectSlot}
+          components={{
+            event: ({ event }) => (event ? <CustomDot /> : null),
+            toolbar: customToolbar,
           dateCellWrapper: DateCellWrapper,
-        }}
-        eventPropGetter={(event, isSelected) => {
-          const backgroundColor = "white";
-          return { style: { backgroundColor } };
-        }}
-      />
+          }}
+          eventPropGetter={(event, isSelected) => {
+            const backgroundColor = "white";
+            return { style: { backgroundColor } };
+          }}
+          dayPropGetter={(date) => ({
+            style: { cursor: "default" },
+          })}
+          slotPropGetter={(date) => {
+            const slotStyle = {
+              cursor: "default",
+            };
+          eventPropGetter={(event, isSelected) => {
+            const backgroundColor = "white";
+            return { style: { backgroundColor } };
+          }}
+        />
+      </div>
       <Modal
         isOpen={isModalOpen}
         content={modalContent}
