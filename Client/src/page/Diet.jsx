@@ -16,8 +16,7 @@ import style from "../style/style";
 
 const StyleDiet = styled.div`
   width: 100%;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
+  height: max-content;
 
   & > p {
     font-size: 14px;
