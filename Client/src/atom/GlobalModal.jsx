@@ -45,6 +45,7 @@ const HeaderContainer = styled.div`
   height: 100%;
   padding: 5px;
   font-size: 13px;
+  margin-bottom: 30px;
 `;
 
 const FooterContainer = styled.div`
@@ -55,6 +56,7 @@ const FooterContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
+  max-height: 75%;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -64,6 +66,7 @@ const ContentContainer = styled.div`
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.4);
   color: black;
   font-size: 16px;
+  overflow: auto;
 
   & span {
     padding: 10px;

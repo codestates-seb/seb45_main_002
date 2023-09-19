@@ -47,6 +47,7 @@ const PageButton = styled.li`
   margin: ${style.layout.wideMargin.width};
   cursor: pointer;
   ${props=>props.className===Number(props.nowPage)? "color: rgb(0,0,0); font-weight: bolder; text-decoration: underline;" : "color: rgb(100, 100, 100);"}
+  ${props=>props.hide==="hide"? "display: none;" : ""}
 `
 
 const CommunityList = () => {
@@ -68,10 +69,6 @@ const CommunityList = () => {
   }
   useEffect(loadArticlesList,[nowPage])
 
-  function pagenation(e){
-    setNowPage(e.target.innerText)
-  }
-
   return (
     <CommunityContainer>
       <BtnContainer>
@@ -91,23 +88,12 @@ const CommunityList = () => {
         />
       ))}
       <Pagenation>
-        <PageButton onClick={()=>setNowPage(1)}>⇠</PageButton>
-        <PageButton
-         nowPage={nowPage}
-         className={
-          nowPage<3? 1 :
-            (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-4 : Number(nowPage)-2)
-         }
-         onClick={pagenation}>
-          {
-            nowPage<3? 1 :
-              (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-4 : Number(nowPage)-2)
-          }
-        </PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 2 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-3 : Number(nowPage)-1)} onClick={pagenation}>{nowPage<3? 2 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-3 : Number(nowPage)-1)}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 3 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-2 : Number(nowPage))} onClick={pagenation}>{nowPage<3? 3 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-2 : Number(nowPage))}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 4 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-1 : Number(nowPage)+1)} onClick={pagenation}>{nowPage<3? 4 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-1 : Number(nowPage)+1)}</PageButton>
-        <PageButton nowPage={nowPage} className={nowPage<3? 5 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages) : Number(nowPage)+2)} onClick={pagenation}>{nowPage<3? 5 : (Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages) : Number(nowPage)+2)}</PageButton>
+        <PageButton onClick={()=>setNowPage(1)}>⇠</PageButton> {/*(Number(pageInfo.totalPages)-2<nowPage? Number(pageInfo.totalPages)-4 : Number(nowPage)-2)*/}
+        <PageButton className={pageInfo.totalPages<6? 1 : (pageInfo.totalPages-nowPage<2? null : nowPage-2)} onClick={e=>setNowPage(e.target.innerText)} nowPage={nowPage}>{nowPage-2<1? 1 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-Number(nowPage)+1 : nowPage-2)}</PageButton>
+        <PageButton className={nowPage-2<1? 2 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-4 : nowPage-2)} onClick={e=>setNowPage(e.target.innerText)} nowPage={nowPage} hide={pageInfo.totalPages<2? "hide" : ""}>{nowPage-2<1? 2 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-Number(nowPage)+2 : nowPage-2)}</PageButton>
+        <PageButton className={nowPage-2<1? 3 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-4 : nowPage-2)} onClick={e=>setNowPage(e.target.innerText)} nowPage={nowPage} hide={pageInfo.totalPages<3? "hide" : ""}>{nowPage-2<1? 3 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-Number(nowPage)+3 : nowPage-2)}</PageButton>
+        <PageButton className={nowPage-2<1? 4 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-4 : nowPage-2)} onClick={e=>setNowPage(e.target.innerText)} nowPage={nowPage} hide={pageInfo.totalPages<4? "hide" : ""}>{nowPage-2<1? 4 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-1 : nowPage-2)}</PageButton>
+        <PageButton className={nowPage-2<1? 5 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages-4 : nowPage-2)} onClick={e=>setNowPage(e.target.innerText)} nowPage={nowPage} hide={pageInfo.totalPages<5? "hide" : ""}>{nowPage-2<1? 5 : (pageInfo.totalPages-nowPage<2? pageInfo.totalPages : nowPage-2)}</PageButton>
         <PageButton onClick={()=>setNowPage(Number(pageInfo.totalPages))}>⇢</PageButton>
       </Pagenation>
       <input
