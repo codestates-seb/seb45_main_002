@@ -129,7 +129,7 @@ const FlexContainer = styled.div`
 const ImageContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 25%;
+  max-height: 60%;
   flex-direction: column;
 `;
 
@@ -384,16 +384,23 @@ const Diet = () => {
                     <div>
                       {" "}
                       탄수화물 비율:{" "}
-                      {analyzedData.percentMacro.percentCarbos * 100}%
+                      {Math.floor(
+                        analyzedData.percentMacro.percentCarbos * 100
+                      )}
+                      %
                     </div>
                     <div>
                       {" "}
                       단백질 비율:{" "}
-                      {analyzedData.percentMacro.percentProteins * 100}%
+                      {Math.floor(
+                        analyzedData.percentMacro.percentProteins * 100
+                      )}
+                      %
                     </div>
                     <div>
                       {" "}
-                      지방 비율: {analyzedData.percentMacro.percentFats * 100}%
+                      지방 비율:{" "}
+                      {Math.floor(analyzedData.percentMacro.percentFats * 100)}%
                     </div>
                   </div>
                 </div>
@@ -402,29 +409,37 @@ const Diet = () => {
                 <div>
                   {analyzedData.overPercentMacro.overFats < 0
                     ? `부족한 탄수화물 비율: ${Math.abs(
-                        analyzedData.overPercentMacro.overPercentCarbos
+                        Math.floor(
+                          analyzedData.overPercentMacro.overPercentCarbos
+                        )
                       )}%`
                     : `초과 탄수화물 비율: ${Math.abs(
-                        analyzedData.overPercentMacro.overPercentCarbos * 100
+                        Math.floor(
+                          analyzedData.overPercentMacro.overPercentCarbos * 100
+                        )
                       )}%`}
                 </div>
                 <div>
                   {analyzedData.overPercentMacro.overPercentProteins < 0
                     ? `부족한 단백질 비율: ${Math.abs(
-                        analyzedData.overPercentMacro.overPercentProteins
+                        Math.floor(
+                          analyzedData.overPercentMacro.overPercentProteins
+                        )
                       )}%`
-                    : `초과 단백질 비율: ${
+                    : `초과 단백질 비율: ${Math.floor(
                         analyzedData.overPercentMacro.overPercentProteins * 100
-                      }%`}
+                      )}%`}
                 </div>
                 <div>
                   {analyzedData.overPercentMacro.overPercentFats < 0
                     ? `부족한 지방 비율: ${Math.abs(
-                        analyzedData.overPercentMacro.overPercentFats
+                        Math.floor(
+                          analyzedData.overPercentMacro.overPercentFats
+                        )
                       )}%`
-                    : `초과 지방 비율: ${
+                    : `초과 지방 비율: ${Math.floor(
                         analyzedData.overPercentMacro.overPercentFats * 100
-                      }%`}
+                      )}%`}
                 </div>
               </ItemContainer>
               <ItemContainer>
@@ -446,35 +461,34 @@ const Diet = () => {
                   })}
                 </div>
               </ItemContainer>{" "}
-              <ImageContainer style={{ height: "250px" }}>
-                <div>
-                  <h3 style={{ marginBottom: "20px" }}>추천 음식 구매하기</h3>
-                  <a href={analyzedData.auctionURL}>
-                    <img
-                      alt="auction"
-                      src={auctionbuy}
-                      style={{ width: "80%" }}
-                    ></img>
-                  </a>
-                  <a href={analyzedData.coupangURL}>
-                    <img
-                      alt="auction"
-                      src={naverbuy}
-                      style={{ width: "80%" }}
-                    ></img>
-                  </a>
-                  <a href={analyzedData.naverURL}>
-                    <img
-                      alt="auction"
-                      src={coupangbuy}
-                      style={{ width: "80%" }}
-                    ></img>
-                  </a>
-                </div>
+              <ImageContainer style={{ maxHeight: "600px" }}>
+                <h3 style={{ marginBottom: "20px" }}>추천 음식 구매하기</h3>
+                <a href={analyzedData.auctionURL}>
+                  <img
+                    alt="auction"
+                    src={auctionbuy}
+                    style={{ maxWidth: "80%", maxHeight: "80px" }}
+                  ></img>
+                </a>
+                <a href={analyzedData.coupangURL}>
+                  <img
+                    alt="auction"
+                    src={naverbuy}
+                    style={{ maxWidth: "80%", maxHeight: "80px" }}
+                  ></img>
+                </a>
+                <a href={analyzedData.naverURL}>
+                  <img
+                    alt="auction"
+                    src={coupangbuy}
+                    style={{ maxWidth: "80%", maxHeight: "80px" }}
+                  ></img>
+                </a>
               </ImageContainer>
             </FlexContainer>
           </Container>
         );
+      setModalFooter(<div></div>);
     } catch (error) {
       console.error("Error analyzing diet", error);
     }

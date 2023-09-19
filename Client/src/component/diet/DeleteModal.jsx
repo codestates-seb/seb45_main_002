@@ -23,6 +23,7 @@ const DeleteModal = ({ dailyMealId, setIsModal }) => {
   const deleteOnClickHandler = () => {
     deleteDailyMealId(dailyMealId);
     navigate("/");
+    window.location.reload();
   };
 
   return (
