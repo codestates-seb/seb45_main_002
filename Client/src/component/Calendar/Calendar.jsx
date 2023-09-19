@@ -199,7 +199,7 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
           components={{
             event: ({ event }) => (event ? <CustomDot /> : null),
             toolbar: customToolbar,
-          dateCellWrapper: DateCellWrapper,
+            dateCellWrapper: DateCellWrapper,
           }}
           eventPropGetter={(event, isSelected) => {
             const backgroundColor = "white";
@@ -212,9 +212,6 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
             const slotStyle = {
               cursor: "default",
             };
-          eventPropGetter={(event, isSelected) => {
-            const backgroundColor = "white";
-            return { style: { backgroundColor } };
           }}
         />
       </div>
