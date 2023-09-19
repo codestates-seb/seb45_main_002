@@ -20,10 +20,6 @@ public class MainProjectApplication extends SpringBootServletInitializer {
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(MainProjectApplication.class);
-	}
-	@PostConstruct
-	public void init() {
-		// timezone 설정
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
 	}
 }
