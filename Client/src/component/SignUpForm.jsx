@@ -108,7 +108,7 @@ const SignUpForm = () => {
         email: form.email,
         password: form.password
       })
-      .then(res=>console.log(res+"회원가입에 성공했습니다."))
+      .then(res=>window.location.reload())
       .catch(err=>console.log(err, "회원가입에 실패하였습니다."))
     }
     else{errMsg();}
