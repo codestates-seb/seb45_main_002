@@ -19,8 +19,7 @@ import coupangbuy from "../../src/asset/coupangbuy.png";
 
 const StyleDiet = styled.div`
   width: 100%;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
+  height: max-content;
 
   & > p {
     font-size: 14px;

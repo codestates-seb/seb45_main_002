@@ -5,7 +5,6 @@ const StyleCalendar = styled.div`
   width: calc(100% - 16px);
   max-width: 340px;
   height: 280px;
-  margin-top: 10px;
   margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
@@ -14,10 +13,10 @@ const StyleCalendar = styled.div`
   padding: 10px;
 `;
 
-const Calendar = () => {
+const Calendar = ({ nowDate, setNowDate }) => {
   return (
     <StyleCalendar>
-      <CustomCalendar />
+      <CustomCalendar nowDate={nowDate} setNowDate={setNowDate} />
     </StyleCalendar>
   );
 };
