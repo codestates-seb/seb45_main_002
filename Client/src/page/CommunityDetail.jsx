@@ -184,7 +184,7 @@ const AnalysisContent = styled.section`
   }
   &>:nth-child(3){
     margin-bottom: ${style.layout.narrowMargin.height};
-    color: #a06800;
+    color: rgb(160, 104, 0);
   }
   &>:nth-child(4){
     font-weight: bolder;
