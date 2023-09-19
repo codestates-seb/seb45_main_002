@@ -14,11 +14,14 @@ const HomeMenuContainer = styled.article`
   gap: 10px;
 
   & > a {
+    width: 100%;
+    max-width: 340px;
+
     button {
       border-radius: 0;
       border-left: 0;
       border-right: 0;
-      width: 340px;
+      width: 100%;
       height: 48px;
       font-weight: 600;
 
