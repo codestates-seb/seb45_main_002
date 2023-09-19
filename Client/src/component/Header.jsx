@@ -8,47 +8,46 @@ import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import { useState } from "react";
 import useZustand from "../zustand/Store";
+import useWindowSize from "../hook/useWindowSize";
+import hamburgerIcon from "../asset/hamburgerIcon.png";
 
 const HeaderContainer = styled.header`
-  background-color: antiquewhite;
+  background-color: var(--white);
   display: flex;
   position: fixed;
   top: 0;
   width: 100%;
-  height: ${style.layout.header.height};
+  height: 60px;
   justify-content: space-between;
-  border: solid 1px orange;
-  font-size: ${(style.layout.header.height * 7) / 8};
+  align-items: center;
+  padding: 0 40px;
+  box-shadow: 0 2px 4px 1px rgba(255, 255, 255, 0.2);
+
   & > * {
     display: flex;
-  }
-  & > :first-child > * {
-    margin-left: ${style.layout.maxWidth / 20 / 3}px;
-  }
-  & > :last-child {
     align-items: center;
-    margin-right: ${style.layout.maxWidth / 30}px;
-    padding: 1% 0;
-    > :first-child {
-      margin-right: ${style.layout.maxWidth / 20 / 3}px;
-    }
   }
-`;
 
-const HambergerI = styled.i`
-  cursor: pointer;
-  @media (min-width: 769px) {
-    display: none;
+  img.hamburger,
+  img.profileImage {
+    height: 32px;
+    margin-right: 10px;
+  }
+
+  img.logo {
+    height: 40px;
   }
 `;
 
 const LoginButton = styled.button`
-  height: ${style.layout.header.height / 2};
+  width: 100px;
+  height: 40px;
   border: none;
+  border-radius: 8px;
   background-color: orange;
-  padding: 0 3%;
+  padding: 5px;
   color: white;
-  font-size: ${style.layout.header.height / 3};
+  font-size: 18px;
   font-weight: bolder;
   white-space: nowrap;
   border-radius: 5px;
@@ -56,15 +55,14 @@ const LoginButton = styled.button`
 `;
 const SignUpButton = styled(LoginButton)`
   background-color: green;
-  border-radius: 5px;
-  margin-right: 3px;
 `;
 
-function Header({ menu, setMenu }) {
+const Header = ({ setMenu }) => {
   const accessToken = useZustand.useToken((state) => state.accessToken);
   const setAccessToken = useZustand.useToken((state) => state.setAccessToken);
   const refreshToken = useZustand.useToken((state) => state.refreshToken);
   const setRefreshToken = useZustand.useToken((state) => state.setRefreshToken);
+  const size = useWindowSize();
 
   const navigate = useNavigate();
 
@@ -102,16 +100,20 @@ function Header({ menu, setMenu }) {
   return (
     <HeaderContainer>
       <span>
-        {style.layout.maxWidth < 769 ? (
-          <HambergerI
-            className="fa-solid fa-bars"
-            onClick={() => setMenu(!menu)}
+        {size.width < 1040 ? (
+          <img
+            className="hamburger"
+            src={hamburgerIcon}
+            alt="menu button"
+            onClick={() => {
+              setMenu(true);
+            }}
           />
         ) : null}
         <Link to="/">
           <img
+            className="logo"
             src="https://media.discordapp.net/attachments/483947972380327936/1144245243550638090/NutritionCoders-1.png?width=1498&height=1002"
-            height={(style.layout.header.height * 7) / 8}
             alt="logo"
           />
         </Link>
@@ -120,12 +122,12 @@ function Header({ menu, setMenu }) {
         <span>
           <Link to="/pageswitch/mypage">
             <img
+              className="profileImage"
               alt="My Page"
               src="https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100"
-              height={style.layout.wideMargin.height * 2}
             />
           </Link>
-          <SignUpButton onClick={logoutButton}>로그아웃</SignUpButton>
+          <LoginButton onClick={logoutButton}>로그아웃</LoginButton>
         </span>
       ) : (
         <span>
@@ -147,6 +149,6 @@ function Header({ menu, setMenu }) {
       )}
     </HeaderContainer>
   );
-}
+};
 
 export default Header;
