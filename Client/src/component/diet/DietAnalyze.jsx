@@ -24,7 +24,7 @@ export const AnalyzedDiet = async (dailymealId) => {
         },
       }
     );
-    console.log(analyzeResponse.data);
+    // console.log(analyzeResponse.data);
     const analysisId = analyzeResponse.data.analysisId;
 
     const getResponse = await axios.get(

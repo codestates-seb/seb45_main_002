@@ -119,7 +119,6 @@ const NoEachMeal = ({
                 <br />
                 분석을 확인하세요!
                 <br />
-                {/* 진행하시겠습니까? <br /> */}
               </SpanContainer>
             </ModalContainer>
           </>
