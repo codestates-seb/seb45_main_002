@@ -114,7 +114,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("http://mainproj.s3-website.ap-northeast-2.amazonaws.com")
+                .host("http://nutrients.com.s3-website.ap-northeast-2.amazonaws.com")
                 .path("/")
                 .queryParams(queryParams)
                 .build()

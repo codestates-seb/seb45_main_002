@@ -119,7 +119,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://43.201.194.176:8080","http://mainproj.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://43.201.194.176:8080",
+                "http://nutrients-coders.com.s3-website.ap-northeast-2.amazonaws.com",
+                "http://www.nutrients-coders.com.s3-website.ap-northeast-2.amazonaws.com",
+                "http://mainproj.s3-website.ap-northeast-2.amazonaws.com",
+                "http://localhost:3000","http://localhost:8080"));
         configuration.setAllowedMethods(Arrays.asList("GET","PATCH","DELETE","POST","OPTIONS")); //+options
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization","Refresh"));
