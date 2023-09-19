@@ -9,6 +9,8 @@ import NutrientsCoders.main_project.food.service.FoodService;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +31,6 @@ public class EachMealService {
     this.foodService = foodService;
     this.memberService = memberService;
   }
-  
   //foodId로 food 엔티티를 찾아 끼니 저장
   @Transactional
   public EachMeal createEachMeal(EachMeal eachMeal, List<EachMealFood> eachMealFoods, long memberId) throws Exception {
@@ -47,8 +48,12 @@ public class EachMealService {
   }
   
   //끼니 전체 조회
-  public List<EachMeal> findByEachMeals(long memberId) {
-    return eachMealRepository.findEachMealByMemberId(memberId);
+  public Page<EachMeal> findByEachMeals(long memberId, Pageable pageable) {
+    return eachMealRepository.findEachMealByMemberId(memberId, pageable);
+  }
+  
+  public Page<EachMeal> findByfavoriteEachMeals(long memberId, Pageable pageable) {
+    return eachMealRepository.findFavoriteEachMealByMemberId(memberId, pageable);
   }
   
   //선택 끼니 수정
@@ -56,9 +61,11 @@ public class EachMealService {
   public EachMeal updateEachMeal(long memberId, EachMeal eachMeal, List<EachMealFood> newEachMealFoods, long eachMealId) {
     EachMeal findEachMeal = verifyExistsEachMeal(eachMealId, memberId);
     eachMealFoodRepository.deleteEachMealFoodsByEachMeal_EachMealId(eachMealId);
-    List<EachMealFood> eachMealFoodsfindFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
-    findEachMeal.setEachMealFoods(eachMealFoodsfindFood);
+    List<EachMealFood> findFood = eachMealFoodsfindFood(newEachMealFoods, eachMeal);
+    findEachMeal.setEachMealFoods(findFood);
     findEachMeal.getEachMealFoods().forEach(eachMealFood -> eachMealFood.setEachMeal(findEachMeal));
+    findEachMeal.setFavorite(eachMeal.getFavorite());
+    findEachMeal.calculateTotal();
     
     return eachMealRepository.save(findEachMeal);
   }
@@ -67,6 +74,11 @@ public class EachMealService {
   @Transactional
   public void deleteEachMeal(long eachMealId, long memberId) {
     eachMealRepository.delete(verifyExistsEachMeal(eachMealId, memberId));
+  }
+  
+  @Transactional
+  public void deleteEachMeals(List<EachMeal> eachMeals) {
+    eachMealRepository.deleteAll(eachMeals);
   }
   
   //전체 eachMealFood 목록 삭제

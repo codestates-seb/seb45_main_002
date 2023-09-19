@@ -2,6 +2,8 @@ package NutrientsCoders.main_project.eachmeal.repository;
 
 
 import NutrientsCoders.main_project.eachmeal.entity.EachMeal;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +17,10 @@ public interface EachMealRepository extends JpaRepository<EachMeal, Long> {
   Optional<EachMeal> findByEachMealId(@Param("eachMealId") long eachMealId, long memberId);
   
   @Query("SELECT e FROM EachMeal e WHERE e.member.memberId = :memberId")
-  List<EachMeal> findEachMealByMemberId(@Param("memberId") long memberId);
+  Page<EachMeal> findEachMealByMemberId(@Param("memberId") long memberId, Pageable pageable);
+  
+  @Query("SELECT e FROM EachMeal e WHERE e.member.memberId = :memberId AND e.favorite = true")
+  Page<EachMeal> findFavoriteEachMealByMemberId(@Param("memberId") long memberId, Pageable pageable);
+  
+  List<EachMeal> findByDailyMeal_DailyMealId(long dailyMealId);
 }

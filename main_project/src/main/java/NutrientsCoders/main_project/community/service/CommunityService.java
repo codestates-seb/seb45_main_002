@@ -1,10 +1,10 @@
 package NutrientsCoders.main_project.community.service;
 
+
+import NutrientsCoders.main_project.community.dto.CommunityPostDto;
 import NutrientsCoders.main_project.community.entity.Community;
 import NutrientsCoders.main_project.community.repository.CommunityRepository;
-
-import NutrientsCoders.main_project.dailymeal.repository.DailyMealRepository;
-import NutrientsCoders.main_project.member.entity.Member;
+import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
 import NutrientsCoders.main_project.member.repository.MemberRepository;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import lombok.extern.slf4j.Slf4j;
@@ -14,28 +14,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 
 @Service
 @Slf4j
 public class CommunityService {
     private final CommunityRepository communityRepository;
     private final MemberRepository memberRepository;
-    private final DailyMealRepository dailyMealRepository;
+    private final DailyMealService dailyMealService;
 
-    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealRepository dailyMealRepository) {
+    public CommunityService(CommunityRepository communityRepository, MemberRepository memberRepository, DailyMealService dailyMealService) {
         this.communityRepository = communityRepository;
         this.memberRepository = memberRepository;
-        this.dailyMealRepository = dailyMealRepository;
+        this.dailyMealService = dailyMealService;
     }
 
     /** 리포지토리에 데이터를 저장하는 메서드 **/
-
-    public Community createCommunity(Community community,long memberId){
+    public Community createCommunity(CommunityPostDto communityPostDto, long memberId){
+        Community community = new Community();
         community.setMember(memberRepository.findByMemberId(memberId));
-        community.setDailyMeal(dailyMealRepository.findByMemberId(memberId));
+        community.setCommunityTitle(communityPostDto.getCommunityTitle());
+        community.setCommunityContent(communityPostDto.getCommunityContent());
+        community.setCommunityLike(community.getCommunityLike());
+        community.setDailyMeal(dailyMealService.findByDailyMeal(communityPostDto.getDailyMealId(),memberId));
         return communityRepository.save(community);
     }
-
     /** 리포지토리에 수정한 데이터를 저장하는 메서드 **/
     public Community updateCommunity(Community community,long memberId){
         try {
@@ -58,10 +62,13 @@ public class CommunityService {
         return communityRepository.findAll(PageRequest.of(page,size, Sort.by("communityId").descending()));
     }
     /** 리포지토리에서 게시글을 선택해 데이터를 가져오는 메서드 **/
+    @Transactional
     public Community findCommunity(long communityId){
         Community findIdCommunity = communityRepository.findById(communityId).orElse(null);
         findIdCommunity.setMember(memberRepository.findByMemberId(findIdCommunity.getMember().getMemberId()));
-        findIdCommunity.setCommunityViewCount(findIdCommunity.incrementViewCount());
+        communityRepository.updateViewCount(findIdCommunity.getCommunityViewCount()+1,communityId);
+        findIdCommunity.setCommunityLike(findIdCommunity.getCommunityLike());
+        findIdCommunity.setCommunityCommentCount(findIdCommunity.getCommunityCommentList().size());
         return communityRepository.save(findIdCommunity);
     }
     /** 리포지토리에서 게시글을 지우는 메서드 **/
@@ -84,10 +91,10 @@ public class CommunityService {
         Pageable pageable = PageRequest.of(page, size);
         return communityRepository.findByCommunityTitle(keyword,pageable);
     }
+    /** 게시글 추천 **/
     public Community recommendCommunity(long communityId,long memberId){
         Community findCommunityId = communityRepository.findById(communityId).orElse(null);
-        Member findMemberId = memberRepository.findByMemberId(memberId);
-        if(findMemberId.getCommunityLike() == 0 && findCommunityId.isMemberId(memberId) == false) {
+        if(findCommunityId.isMemberId(memberId) == false) {
             findCommunityId.addMembers(memberId);
             findCommunityId.setRecommendationCount(findCommunityId.incrementRecommendationCount());
             findCommunityId.setCommunityLike(1);

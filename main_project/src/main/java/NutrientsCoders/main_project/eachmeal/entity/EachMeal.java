@@ -2,6 +2,7 @@ package NutrientsCoders.main_project.eachmeal.entity;
 
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class EachMeal {
   @OneToMany(mappedBy = "eachMeal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<EachMealFood> eachMealFoods;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "DAILYMEAL_ID")
   private DailyMeal dailyMeal;
@@ -66,15 +68,21 @@ public class EachMeal {
                             .sum() * Math.pow(10, 2)) / Math.pow(10, 2);
       
       Double totalMacros = totalEachCarbo + totalEachProtein + totalEachFat;
-      totalPercentCarbo =  Math.round(totalEachCarbo / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
-      totalPercentProtein =  Math.round(totalEachProtein / totalMacros)* Math.pow(10, 2) / Math.pow(10, 2);
-      totalPercentFat =  Math.round(1.0 - totalPercentCarbo - totalPercentProtein)* Math.pow(10, 2) / Math.pow(10, 2);
+      totalPercentCarbo =  Math.round((totalEachCarbo / totalMacros) * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalPercentProtein =  Math.round((totalEachProtein / totalMacros) * Math.pow(10, 2)) / Math.pow(10, 2);
+      totalPercentFat =  Math.round((1.0 - totalPercentCarbo - totalPercentProtein) * Math.pow(10, 2)) / Math.pow(10, 2);
+      
       
     } else {
       totalEachKcal = 0.0;
       totalEachCarbo = 0.0;
       totalEachProtein = 0.0;
       totalEachFat = 0.0;
+      
+      totalPercentCarbo = 0.0;
+      totalPercentProtein = 0.0;
+      totalPercentFat = 0.0;
+      
     }
   }
   }
