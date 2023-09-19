@@ -32,7 +32,7 @@ public class Community extends CommunityBaseTime {
     @Column
     private int communityLike = 0;
     @Column
-    private Integer communityCommentCount;
+    private int communityCommentCount = 0;
     @ElementCollection
     @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
     @Column(name = "LIKE_MEMBERS",insertable = false)
