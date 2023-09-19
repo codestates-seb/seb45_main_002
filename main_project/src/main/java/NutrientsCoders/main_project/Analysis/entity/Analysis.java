@@ -58,10 +58,8 @@ public class Analysis {
   
   @Transient
   private Double totalGrams;
-  
   @Column
   private String result;
-  
   @Column
   private String auctionURL;
   @Column
