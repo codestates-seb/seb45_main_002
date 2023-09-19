@@ -10,16 +10,14 @@ import PageSwitch from "./PageSwitch";
 import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
 
-import style from "../style/style";
-
 const MainContainer = styled.main`
-  position: absolute;
-  top: ${style.layout.header.height};
-  bottom: 0;
-  /* bottom: ${style.layout.wideMargin.height}; */
-  left: ${style.layout.sideMargin};
-  right: ${style.layout.sideMargin};
-  border: solid 1px orange;
+  width: 100vw;
+  max-width: 840px;
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  height: max-content;
+  min-height: calc(100vh - 80px);
 `;
 
 function Main({ page, setPage }) {
