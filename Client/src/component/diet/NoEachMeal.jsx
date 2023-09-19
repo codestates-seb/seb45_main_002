@@ -98,6 +98,7 @@ const NoEachMeal = ({
           throw error;
         }
       });
+      console.log(fixedData);
 
       try {
         const updatedData = await Promise.all(fixedData);
@@ -106,6 +107,24 @@ const NoEachMeal = ({
         console.error("Error in processing PATCH requests", error);
       }
     } catch (error) {
+      if (error) {
+        setModalContent(
+          <>
+            <ModalContainer>
+              <SpanContainer>
+                섭취한 칼로리와 권장 칼로리를 비교했을 때 <br />
+                끼니당 500kcal 이하 이거나, <br />
+                이미 권장 칼로리가 초과 되었어요. 😅
+                <br />
+                <br />
+                분석을 확인하세요!
+                <br />
+                {/* 진행하시겠습니까? <br /> */}
+              </SpanContainer>
+            </ModalContainer>
+          </>
+        );
+      }
       console.error("Error in recommended", error);
     }
   };
@@ -117,9 +136,9 @@ const NoEachMeal = ({
         <ModalContainer>
           <SpanContainer>
             권장 칼로리와 영양소를 분석하여 <br />
-            채워지지 않은 식단을 모두 채웁니다.
+            채워지지 않은 식단을 모두 채워요.
             <br />
-            진행하시겠습니까? <br />
+            진행하시겠어요? <br />
           </SpanContainer>
 
           <Button primary={true} onClick={recommendMealHandler} size={"small"}>
