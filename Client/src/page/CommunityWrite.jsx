@@ -299,31 +299,31 @@ console.log(morningMenu)
             <div>
               <span>아침</span>
               <Info>
-                <div><span>식단명</span><span>: {morningMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
-                <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealMorning.totalEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {morningMenu[0]? morningMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ") : null}</span></div>
+                <div><span>칼로리</span><span>: {morningMenu[0]? mealMorning.totalEachKcal : null} Kcal</span></div>
+                <div><span>지방</span><span>: {morningMenu[0]? mealMorning.totalEachFat : null} g</span></div>
+                <div><span>단백질</span><span>: {morningMenu[0]? mealMorning.totalEachProtein : null} g</span></div>
+                <div><span>탄수화물</span><span>: {morningMenu[0]? mealMorning.totalEachCarbo : null} g</span></div>
               </Info>
             </div>
             <div>
               <span>점심</span>
               <Info>
-                <div><span>식단명</span><span>: {lunchMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
-                <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealLunch.totalEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {lunchMenu[0]? lunchMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ") : null}</span></div>
+                <div><span>칼로리</span><span>: {lunchMenu[0]? mealLunch.totalEachKcal : null} Kcal</span></div>
+                <div><span>지방</span><span>: {lunchMenu[0]? mealLunch.totalEachFat : null} g</span></div>
+                <div><span>단백질</span><span>: {lunchMenu[0]? mealLunch.totalEachProtein : null} g</span></div>
+                <div><span>탄수화물</span><span>: {lunchMenu[0]? mealLunch.totalEachCarbo : null} g</span></div>
               </Info>
             </div>
             <div>
               <span>저녁</span>
               <Info>
-                <div><span>식단명</span><span>: {dinnerMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
-                <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
-                <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
-                <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>
-                <div><span>탄수화물</span><span>: {mealDinner.totalEachCarbo} g</span></div>
+                <div><span>식단명</span><span>: {dinnerMenu[0]? dinnerMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ") : null}</span></div>
+                <div><span>칼로리</span><span>: {dinnerMenu[0]? mealDinner.totalEachKcal : null} Kcal</span></div>
+                <div><span>지방</span><span>: {dinnerMenu[0]? mealDinner.totalEachFat : null} g</span></div>
+                <div><span>단백질</span><span>: {dinnerMenu[0]? mealDinner.totalEachProtein : null} g</span></div>
+                <div><span>탄수화물</span><span>: {dinnerMenu[0]? mealDinner.totalEachCarbo : null} g</span></div>
               </Info>
             </div>
             <div>
