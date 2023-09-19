@@ -157,8 +157,8 @@ const LoginForm = () => {
         <div>{form.errMsg}</div>
         <button onClick={loginButton}>LOGIN</button>
       </LoginFormContainer>
-      <button onClick={googleLoginButton}>google login</button>
-      <button onClick={sendBackend}>sendBackend</button>
+      {/* <button onClick={googleLoginButton}>google login</button>
+      <button onClick={sendBackend}>sendBackend</button> */}
     </LoginContainer>
   );
 };
