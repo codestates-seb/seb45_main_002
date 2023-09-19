@@ -1,33 +1,113 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { styled } from "styled-components";
 
-const WriteFormContainer = styled.div`
+import axios from "axios"
+
+import useZustand from "../zustand/Store";
+
+import FavoriteDiet from "../component/FavoriteDiet";
+
+import style from "../style/style"
+
+const WriteFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  max-width: 768px;
-  width: 100%;
-  height: 100vh;
-  /* border: 1px solid black; */
   background-color: #efefef;
-  padding: 10px;
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
 `;
 
-const TitleContainer = styled.div`
-  width: 100%;
-  height: 5%;
-  /* border: 1px solid black; */
-  padding: 0.5rem;
-
-  & > input {
+const TitleContainer = styled.h1`
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>input{
     width: 100%;
   }
 `;
+
+const DietBtnContainer = styled.div`
+`;
+const DietBtnBox = styled.div`
+  padding: 0 ${style.layout.main.width/10};
+  &>div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    >input{
+      border: none;
+      border-radius: 10px;
+      margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+      padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+    }
+  }
+`
+const DietBtn = styled.label`
+  display: flex;
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  background-color: #ffc123;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+const DietInfoContainer = styled.div`
+  background-color: white;
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>div{
+    display: flex;
+    margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  }
+  &>div>:first-child{
+    width: 25%;
+    text-align: center;
+    margin-right: ${style.layout.wideMargin.width};
+    border-right: solid 1px orange;
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  }
+  &>:last-child{
+    font-weight: bolder;
+  }
+`;
+const Info = styled.span`
+  width: 100%;
+  &>div{
+    display: flex;
+    >:first-child{
+      width: 25%;
+      margin-right: ${style.layout.wideMargin.width};
+      margin-bottom: ${style.layout.narrowMargin.height};
+    }
+  }
+`
+
+const ImgContainer = styled.div`
+  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  &>input{
+    display: none;
+  }
+  &>label{
+    border-radius: 10px 10px 0 0 !important;
+  }
+`
+const ImgBox = styled.img`
+  width: 100%;
+  border-radius: 0 0 10px 10px !important;
+`
+const NoImgBox = styled.div`
+  display: flex;
+  background-color: white;
+  width: 100%;  height: ${style.layout.main.width/2};
+  border-radius: 0 0 10px 10px !important;
+  align-items: center;
+  justify-content: center;
+`
 
 const ContentContainer = styled.div`
   width: 100%;
   height: 70%;
   /* border: 1px solid red; */
   padding: 0.5rem;
-
   & > textarea {
     width: 100%;
     height: 40vh;
@@ -36,119 +116,263 @@ const ContentContainer = styled.div`
   }
 `;
 
-const DietContainer = styled.div`
+const ExitAndSubmit = styled.div`
   display: flex;
-  width: 100%;
-  height: 10%;
-  /* border: 1px solid red; */
-`;
-
-const DietImageContainer = styled.div`
-  display: flex;
-  width: 30%;
-  /* border: 1px solid blue; */
-  justify-content: center;
-  align-items: center;
-
-  & > img {
-    width: 90%;
-    height: 90%;
-    border: 1px solid BLACK;
-    border-radius: 15px;
-    margin: 0 auto;
+  justify-content: space-between;
+  margin: 0 ${style.layout.wideMargin.width};
+  &>*{
+    width: 60px;
+    height: 20px;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
   }
-`;
-
-const DietInfoContainer = styled.div`
-  width: 70%;
-  /* border: 1px solid red; */
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-  padding-left: 20px;
-
-  & > div {
-    display: flex;
-    width: 100%;
-    height: 30%;
-    /* border: 1px solid red; */
+  &>:last-child{
+    background-color: #ffc123;
   }
-`;
+`
 
-const FoodInfo = styled.div`
-  justify-content: center;
-  margin: 0 auto;
-  width: 70%;
-  height: 100%;
-  /* border: 1px solid red; */
-`;
-
-const DietBtnContainer = styled.div`
+const FavoriteDietListModalContainer = styled.section`
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  background-color: rgba(127,127,127,0.7);
   display: flex;
-`;
-
-const DietBtn = styled.div`
-  display: flex;
-  background-color: #ffc123;
-  color: black;
   justify-content: center;
   align-items: center;
-  max-width: 30%;
-  width: auto;
-  height: 30px;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
-  font-size: 12px;
-`;
-
-const SubmitBtn = styled.div`
-  display: flex;
-  width: 60px;
-  height: 20px;
-  background-color: #ffc123;
-  border-radius: 10px;
-  margin-top: 10px;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-`;
+`
+const FavoriteDietListModalBox = styled.ul`
+  list-style: none;
+  background-color: #5cffa3;
+  width: ${style.layout.main.width*4/5};
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
+`
 
 function CommunityWrite(){
+
+  const [form,setForm] = useState({
+    communityTitle: "",
+    communityImg: "https://img.freepik.com/free-photo/front-view-delicious-cheeseburger-with-meat-tomatoes-green-salad-dark-background-sandwich-fast-food-meal-dish-french-fries-dinner_140725-156241.jpg?w=1480&t=st=1694570873~exp=1694571473~hmac=bf25d456d2680654d8a8aa0b398c08ba1c34d0ab50910592000964044c7d6241",
+    communityContent: "",
+    communityDietDate: Date()
+  })
+  
+  const [dietData, setDietData] = useState({})
+
+  const [mealMorning, setMealMorning] = useState({})
+  const [morningMenu, setMorningMenu] = useState([])
+
+  const [mealLunch, setMealLunch] = useState({})
+  const [lunchMenu,setLunchMenu] = useState([])
+
+  const [mealDinner, setMealDinner] = useState({})
+  const [dinnerMenu,setDinnerMenu] = useState([])
+
+  const [onImg,setOnImg] = useState("")
+  const [favorites, setFavorites] = useState([])
+
+  const communityId = useZustand.useCommunityId(state=>state.communityId)
+
+//////// 캘린더로 식단 불러오기
+  function loadDietInDate(){
+    if(form.communityDietDate){
+      axios.get("http://43.201.194.176:8080/dailymeals/date/"+form.communityDietDate,{
+        headers: {
+          Authorization: localStorage.getItem("Authorization")
+        }
+      })
+      .then(res=>{
+        console.log(res.data) // 하루(데일리) 총 식단에 대한 정보
+        setDietData(res.data)
+
+        console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
+        console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
+        setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
+        setMorningMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+  
+        setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
+        setLunchMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+        
+        setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
+        setDinnerMenu([res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods[0].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[1].foodName,res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods[2].foodName])
+      })
+      .catch(err=>console.log(err, "서버와 소통에 실패했습니다."))
+    }
+    else{
+      alert("날짜를 선택해주시기 바랍니다.")
+    }
+  }
+console.log(morningMenu)
+//////// 선호 식단 불러오기
+  const [openModal, setOpenModal] = useState(false)
+  function openFavoriteListModal(){
+    axios.get("http://43.201.194.176:8080/dailymeals?page=1&size=100", {
+      headers: {
+        Authorization: localStorage.getItem("Authorization"),
+      }
+    })
+    .then(res=>setFavorites(res.data.content))
+    .catch(err=>console.log(err, "선호식단리스트 불러오기를 실패했습니다."));
+    setOpenModal(!openModal)
+  }
+  function loadDietInFavorite(){
+    axios.get("http://43.201.194.176:8080/dailymeals/"+dietData.dailyMealId,{
+      headers: {
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>{
+      console.log(res.data) // 하루(데일리) 총 식단에 대한 정보
+      setDietData(res.data)
+
+      console.log(res.data.eachMeals) // 하루(데일리) 각 끼니들을 배열형태로
+      console.log(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1)) // 아침 식사(eachMeal) 식단에 대한 정보
+      setMealMorning(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1))
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===1).quantityfoods.forEach(menu=>setMorningMenu(prev=>[...prev, menu])) // prev는 렌더링이 너무 자주 일어난다. 다른 방법으로는 배열 하나를 만들어서 push 하는 방법이 있을 것 같다.
+      
+      setMealLunch(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2))
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===2).quantityfoods.forEach(menu=>setLunchMenu(prev=>[...prev, menu]))
+      
+      setMealDinner(res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3))
+      res.data.eachMeals.find(eachMeal=>eachMeal.timeSlots===3).quantityfoods.forEach(menu=>setDinnerMenu(prev=>[...prev, menu]))
+    })
+    .catch(err=>console.log(err, "선택된 선호데이터 불러오기를 실패했습니다."))
+  }
+
+  // 게시글 등록하기
+  function sendArticle(e){
+    if(form.communityTitle===""){
+      alert("제목을 입력해주시기 바랍니다.")
+    }
+    else if(form.communityContent===""){
+      alert("본문 내용을 입력해주시기 바랍니다.")
+    }
+    else{
+      if(communityId){
+        axios.patch("http://43.201.194.176:8080/community/"+communityId,{
+          communityTitle: form.communityTitle,
+          communityContent: form.communityContent,
+          dailyMealId: dietData.dailyMealId
+        },{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          }
+        })
+        .then(res=>window.location.reload())
+        .catch(err=>console.log(err))
+      }
+      else{
+        axios.post("http://43.201.194.176:8080/community",{
+          communityTitle: form.communityTitle,
+          communityContent: form.communityContent,
+          dailyMealId: dietData.dailyMealId
+        },{
+          headers: {
+            Authorization: localStorage.getItem("Authorization")
+          }
+        })
+        .then(res=>window.location.reload())
+        .catch(err=>console.log(err, "게시물 등록에 실패했습니다."))
+      }
+    }
+  }
+
   return(
     <WriteFormContainer>
+
       <TitleContainer>
-        <input placeholder="제목" />
+        <input placeholder="제목" value={form.communityTitle} onChange={e=>setForm({...form,communityTitle: e.target.value})} autoFocus/>
       </TitleContainer>
+
       <DietBtnContainer>
-        <DietBtn>이미지 추가하기</DietBtn>
-        <DietBtn>식단 불러오기</DietBtn>
-      </DietBtnContainer>
-      <DietContainer>
-        <DietImageContainer>
-          <img alt="dietimg" />
-        </DietImageContainer>
+        <DietBtnBox>
+          <div>
+            <input id="addDiet" type="date" value={form.communityDietDate} onChange={e=>setForm({...form,communityDietDate: String(e.target.value)})}></input>
+            <DietBtn htmlFor="addDiet" onClick={loadDietInDate}>캘린더에서<br />불러오기</DietBtn>
+          </div>
+          <DietBtn onClick={openFavoriteListModal}>내 선호식단<br />리스트에서 불러오기</DietBtn>
+        </DietBtnBox>
+
         <DietInfoContainer>
-          <div>
-            아침
-            <FoodInfo>XXX</FoodInfo>
-          </div>
-          <div>
-            점심
-            <FoodInfo>YYY</FoodInfo>
-          </div>
-          <div>
-            저녁 <FoodInfo>ZZZ</FoodInfo>
-          </div>
-          <div>
-            총 <FoodInfo>XYZXYZ</FoodInfo>
-          </div>
+            <div>
+              <span>아침</span>
+              <Info>
+                <div><span>식단명</span><span>: {morningMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
+                <div><span>칼로리</span><span>: {mealMorning.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealMorning.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealMorning.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealMorning.totalEachCarbo} g</span></div>
+              </Info>
+            </div>
+            <div>
+              <span>점심</span>
+              <Info>
+                <div><span>식단명</span><span>: {lunchMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
+                <div><span>칼로리</span><span>: {mealLunch.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealLunch.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealLunch.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealLunch.totalEachCarbo} g</span></div>
+              </Info>
+            </div>
+            <div>
+              <span>저녁</span>
+              <Info>
+                <div><span>식단명</span><span>: {dinnerMenu.map(menu=>menu.foodName? menu.foodName+" " : menu+" ")}</span></div>
+                <div><span>칼로리</span><span>: {mealDinner.totalEachKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {mealDinner.totalEachFat} g</span></div>
+                <div><span>단백질</span><span>: {mealDinner.totalEachProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {mealDinner.totalEachCarbo} g</span></div>
+              </Info>
+            </div>
+            <div>
+              <span>총 평가</span>
+              <Info>
+                {/* <div><span>식단명</span><span>: {dietData.foodName}</span></div> */}
+                <div><span>칼로리</span><span>: {dietData.totalDailyKcal} Kcal</span></div>
+                <div><span>지방</span><span>: {dietData.totalDailyFat} g</span></div>
+                <div><span>단백질</span><span>: {dietData.totalDailyProtein} g</span></div>
+                <div><span>탄수화물</span><span>: {dietData.totalDailyCarbo} g</span></div>
+              </Info>
+            </div>
         </DietInfoContainer>
-      </DietContainer>
+
+        <ImgContainer>
+          <DietBtn htmlFor="addImg">이미지 추가하기</DietBtn>
+          <input id="addImg" type="file" accept="image/png, image/jpeg" capture onChange={e=>setOnImg(e.target.value)}></input>
+          {onImg?
+            <ImgBox
+              src={form.communityImg}
+              alt="업로드한 식단 이미지"
+            ></ImgBox>
+            :
+            <NoImgBox>
+              이미지를 추가하시면 미리보기용 이미지가 보여집니다.
+            </NoImgBox>
+          }
+        </ImgContainer>
+      </DietBtnContainer>
+        
       <ContentContainer>
-        <textarea placeholder="내용" />
-        <SubmitBtn>SUBMIT</SubmitBtn>
+        <textarea placeholder="내용" value={form.communityContent} onChange={e=>{setForm({...form,communityContent: e.target.value})}} />
       </ContentContainer>
+
+      <ExitAndSubmit>
+        <Link to="/pageswitch/community">Exit</Link>
+        <Link to="/pageswitch/community" onClick={sendArticle}>Submit</Link>
+      </ExitAndSubmit>
+
+      {openModal?
+        <FavoriteDietListModalContainer onClick={(e)=>{e.preventDefault();setOpenModal(!openModal);}}>
+          <FavoriteDietListModalBox>
+            {favorites.map(favorite=>(
+              <FavoriteDiet favorite={favorite} dietData={dietData} setDietData={setDietData} openModal={openModal} setOpenModal={setOpenModal} loadDietInFavorite={loadDietInFavorite} />
+            ))}
+          </FavoriteDietListModalBox>
+        </FavoriteDietListModalContainer>
+        :
+        null}
     </WriteFormContainer>
   );
 };

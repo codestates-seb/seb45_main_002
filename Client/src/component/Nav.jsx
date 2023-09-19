@@ -1,37 +1,73 @@
 import { styled } from "styled-components";
 import style from "../style/style";
+import { Link } from "react-router-dom";
+import navHomeIcon from "../asset/navHomeIcon.png";
+import navCommunityIcon from "../asset/navCommunityIcon.png";
+import navMyPageIcon from "../asset/navMyPageIcon.png";
 
 const NavContainer = styled.nav`
   position: absolute;
-  top: ${style.layout.header.height + style.layout.wideMargin.height};
-  left: ${style.layout.sideMargin / 3};
+  top: 80px;
+  left: 56px;
 `;
 const UlBox = styled.ul`
   list-style: none;
   & > li {
-    border: solid orange 1px;
-    width: 25%; //아이콘 크기에 맞게 변경 필요
+    width: 48px;
+    margin-bottom: 20px;
     overflow: hidden;
     white-space: nowrap;
     transition: 1s;
+    background-color: orange;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.2);
+    & > a {
+      display: flex;
+      align-items: center;
+    }
+    & > a > img {
+      margin: 0;
+      padding: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+    }
+    & > a > :last-child {
+      padding-left: 10px;
+    }
     &:hover {
-      width: ${style.layout.sideMargin / 3};
+      width: 160px;
       transition: 1s;
     }
   }
 `;
 
-function Nav({setPage}) {
+const Nav = () => {
   return (
     <NavContainer>
       <UlBox>
-        <li>1 2345</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
+        <li>
+          <Link to="/">
+            <img src={navHomeIcon} alt="home icon" />
+            <div>홈 화면</div>
+          </Link>
+        </li>
+        <li>
+          <Link to="/pageswitch/community">
+            <img src={navCommunityIcon} alt="community icon" />
+            <div>커뮤니티</div>
+          </Link>
+        </li>
+        <li>
+          <Link to="/pageswitch/mypage">
+            <img src={navMyPageIcon} alt="community icon" />
+            <div>마이페이지</div>
+          </Link>
+        </li>
       </UlBox>
     </NavContainer>
   );
-}
+};
 export default Nav;

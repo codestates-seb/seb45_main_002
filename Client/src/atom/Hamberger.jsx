@@ -1,34 +1,42 @@
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-
-import style from "../style/style";
+import navHomeIcon from "../asset/navHomeIcon.png";
+import navCommunityIcon from "../asset/navCommunityIcon.png";
+import navMyPageIcon from "../asset/navMyPageIcon.png";
 
 const MenuContainer = styled.article`
   position: absolute;
   display: flex;
+  gap: 20px;
   justify-content: center;
-  top: ${style.layout.header.height};
+  top: 60px;
   left: 0;
-  width: ${style.layout.maxWidth};
-  height: ${style.layout.maxHeight};
-  background-color: rgba(125,125,125,0.5);
-  padding-top: ${style.layout.narrowMargin.height};
+  width: 100vw;
+  height: calc(100vh - 60px);
+  background-color: rgba(125, 125, 125, 0.5);
+  padding-top: 20px;
   z-index: 999;
-  &>a{
-    height: ${style.layout.header.height};
+
+  img {
+    height: 48px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.2);
   }
-`
+`;
 
-function Hamberger({setPage,menu,setMenu}){
-
-  return(
-    <MenuContainer onClick={(e)=>setMenu(!menu)}>
-      <Link to="/"><img height={style.layout.header.height} alt="serch" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585284116530/Frame_1.png?width=116&height=116"></img></Link>
-      <Link to="/"><img height={style.layout.header.height} alt="home" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585548349542/Frame_2.png?width=116&height=116"></img></Link>
-      <Link to="/pageswitch" onClick={() => setPage("mypage")}><img height={style.layout.header.height} alt="mypage" src="https://media.discordapp.net/attachments/1144143589740400680/1146772585787445348/Frame_3.png?width=116&height=116"></img></Link>
-      <Link to="/pageswitch" onClick={() => setPage("community")}><img height={style.layout.header.height} alt="comunity" src="https://media.discordapp.net/attachments/1144143589740400680/1146772586051674152/Frame_4.png?width=116&height=116"></img></Link>
-      <Link to="/"><img height={style.layout.header.height} alt="chat" src="https://media.discordapp.net/attachments/1144143589740400680/1146772586496262275/Frame_5.png?width=116&height=116"></img></Link>
+function Hamberger({ setPage, menu, setMenu }) {
+  return (
+    <MenuContainer onClick={(e) => setMenu(!menu)}>
+      <Link to="/">
+        <img alt="home" src={navHomeIcon}></img>
+      </Link>
+      <Link to="/pageswitch" onClick={() => setPage("community")}>
+        <img alt="comunity" src={navCommunityIcon}></img>
+      </Link>
+      <Link to="/pageswitch" onClick={() => setPage("mypage")}>
+        <img alt="mypage" src={navMyPageIcon}></img>
+      </Link>
     </MenuContainer>
-  )
+  );
 }
 export default Hamberger;
