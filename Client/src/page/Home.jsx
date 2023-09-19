@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import Calendar from "../component/Calendar";
 import { useState } from "react";
-import Button from "../atom/button";
+import Modal from "../atom/GlobalModal";
+import HowThis from "../component/HowThis";
 
 const HomeMenuContainer = styled.article`
   width: 100%;
@@ -47,9 +48,32 @@ const HomeMenuContainer = styled.article`
 
 function Home({ setPage }) {
   const [nowDate, setNowDate] = useState("");
+  const [modalContents, setModalContents] = useState(null);
+  const [isModal, setIsModal] = useState(false);
+
+  const howThisOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => <HowThis setIsModal={setIsModal} />);
+  };
 
   return (
     <>
+      {isModal ? (
+        <Modal
+          style={{
+            minWidth: "240px",
+            maxWidth: "90vw",
+            minHeight: "180px",
+            maxHeight: "80vh",
+          }}
+          isOpen={isModal}
+          content={modalContents}
+          setIsOpen={setIsModal}
+          setContent={setModalContents}
+          setHeader={() => {}}
+          setFooter={() => {}}
+        />
+      ) : null}
       <Calendar nowDate={nowDate} setNowDate={setNowDate} />
       <HomeMenuContainer>
         <Link
@@ -58,15 +82,16 @@ function Home({ setPage }) {
             setPage(nowDate ? `diet/${nowDate}` : "diet");
           }}
         >
-          <button className="buttonStyle">
-            식단 관리 {nowDate ? `: ${nowDate}` : null}
-          </button>
+          <button>식단 관리 {nowDate ? `: ${nowDate}` : null}</button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("community")}>
-          <button className="buttonStyle">커뮤니티</button>
+          <button>커뮤니티</button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("mypage")}>
-          <button className="buttonStyle">마이페이지</button>
+          <button>마이페이지</button>
+        </Link>
+        <Link onClick={howThisOnClickHandler}>
+          <button>사용 설명서</button>
         </Link>
         <Link to="https://github.com/codestates-seb/seb45_main_002">
           <span>코더스 깃허브</span>
