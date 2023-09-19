@@ -11,6 +11,9 @@ import { Routes, Route } from "react-router-dom";
 import { styled } from "styled-components";
 
 const MainContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100vw;
   max-width: 840px;
   margin-top: 80px;

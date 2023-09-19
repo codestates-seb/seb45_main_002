@@ -2,27 +2,53 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import Calendar from "../component/Calendar";
 import { useState } from "react";
-import style from "../style/style";
+import Button from "../atom/button";
 
 const HomeMenuContainer = styled.article`
-  & > * {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: ${(style.layout.main.width * 4) / 5};
-    height: ${(style.layout.header.height * 2) / 3};
-    margin-bottom: ${style.layout.wideMargin.height};
-    background-color: #ffc123;
-    font-size: ${(style.layout.header.height * 1) / 3};
-    font-weight: 800;
+  width: 100%;
+  height: max-content;
+  min-height: calc(100% - 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  & > a {
+    width: 100%;
+    max-width: 340px;
+
+    button {
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      width: 100%;
+      height: 48px;
+      font-weight: 600;
+
+      &:hover {
+        background-color: #ffc123;
+        color: white;
+      }
+    }
   }
-  & > :nth-child(odd) {
-    border-radius: 0 8px 8px 0;
+
+  a:nth-child(1) > button:hover {
+    background-image: url("/image/orangeButton1.png");
   }
-  & > :nth-child(even) {
-    margin-left: auto;
-    margin-right: 0;
-    border-radius: 8px 0 0 8px;
+  a:nth-child(2) > button:hover {
+    background-image: url("/image/orangeButton2.png");
+  }
+  a:nth-child(3) > button:hover {
+    background-image: url("/image/orangeButton3.png");
+  }
+
+  & > a > span {
+    font-size: 12px;
+    font-weight: 400;
+
+    &:hover {
+      color: #898989;
+    }
   }
 `;
 
@@ -39,19 +65,16 @@ function Home({ setPage }) {
             setPage(nowDate ? `diet/${nowDate}` : "diet");
           }}
         >
-          식단 관리 {nowDate ? `: ${nowDate}` : null}
+          <Button>식단 관리 {nowDate ? `: ${nowDate}` : null}</Button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("community")}>
-          커뮤니티
+          <Button>커뮤니티</Button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("mypage")}>
-          마이페이지
-        </Link>
-        <Link to="https://www.notion.so/codestates/316e22f2ce454966879a980eca003515">
-          코더스 노션
+          <Button>마이페이지</Button>
         </Link>
         <Link to="https://github.com/codestates-seb/seb45_main_002">
-          코더스 깃허브
+          <span>코더스 깃허브</span>
         </Link>
       </HomeMenuContainer>
     </>
