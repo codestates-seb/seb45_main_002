@@ -36,6 +36,7 @@ const FoodDetailButton = styled.p`
 const IsEachFood = ({ item, timeslot, foodDetailOnClickHandler }) => {
   const { meal, setEachMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
+
   const { nowTimeSlot } = useZustand.useNowTimeSlot();
   const [quantity, setQuantity] = useState(item.quantity);
 
