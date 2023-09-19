@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import Calendar from "../component/Calendar";
 import { useState } from "react";
-import Button from "../atom/button";
+import Modal from "../atom/GlobalModal";
+import HowThis from "../component/HowThis";
 
 const HomeMenuContainer = styled.article`
   width: 100%;
@@ -12,12 +13,15 @@ const HomeMenuContainer = styled.article`
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  text-align: center;
 
   & > a {
     width: 100%;
     max-width: 340px;
 
     button {
+      border: 2px solid #ffc123;
+      background-color: white;
       border-radius: 0;
       border-left: 0;
       border-right: 0;
@@ -32,16 +36,6 @@ const HomeMenuContainer = styled.article`
     }
   }
 
-  a:nth-child(1) > button:hover {
-    background-image: url("/image/orangeButton1.png");
-  }
-  a:nth-child(2) > button:hover {
-    background-image: url("/image/orangeButton2.png");
-  }
-  a:nth-child(3) > button:hover {
-    background-image: url("/image/orangeButton3.png");
-  }
-
   & > a > span {
     font-size: 12px;
     font-weight: 400;
@@ -54,9 +48,32 @@ const HomeMenuContainer = styled.article`
 
 function Home({ setPage }) {
   const [nowDate, setNowDate] = useState("");
+  const [modalContents, setModalContents] = useState(null);
+  const [isModal, setIsModal] = useState(false);
+
+  const howThisOnClickHandler = () => {
+    setIsModal(true);
+    setModalContents(() => <HowThis setIsModal={setIsModal} />);
+  };
 
   return (
     <>
+      {isModal ? (
+        <Modal
+          style={{
+            minWidth: "240px",
+            maxWidth: "90vw",
+            minHeight: "180px",
+            maxHeight: "80vh",
+          }}
+          isOpen={isModal}
+          content={modalContents}
+          setIsOpen={setIsModal}
+          setContent={setModalContents}
+          setHeader={() => {}}
+          setFooter={() => {}}
+        />
+      ) : null}
       <Calendar nowDate={nowDate} setNowDate={setNowDate} />
       <HomeMenuContainer>
         <Link
@@ -65,13 +82,16 @@ function Home({ setPage }) {
             setPage(nowDate ? `diet/${nowDate}` : "diet");
           }}
         >
-          <Button>식단 관리 {nowDate ? `: ${nowDate}` : null}</Button>
+          <button>식단 관리 {nowDate ? `: ${nowDate}` : null}</button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("community")}>
-          <Button>커뮤니티</Button>
+          <button>커뮤니티</button>
         </Link>
         <Link to="/pageswitch" onClick={() => setPage("mypage")}>
-          <Button>마이페이지</Button>
+          <button>마이페이지</button>
+        </Link>
+        <Link onClick={howThisOnClickHandler}>
+          <button>사용 설명서</button>
         </Link>
         <Link to="https://github.com/codestates-seb/seb45_main_002">
           <span>코더스 깃허브</span>
