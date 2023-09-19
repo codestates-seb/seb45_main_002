@@ -9,20 +9,44 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface FoodSuggestRepository extends JpaRepository<Food, Long> {
-  
-  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.kcal < :limitKcal AND f.breakfast = :timeSlot" +
-      " ORDER BY CASE :nutrientType" +
-      " WHEN 'protein' THEN f.protein" +
-      " WHEN 'fat' THEN f.fat" +
-      " WHEN 'carbo' THEN f.carbo END ASC")
-  Page<Food> findInCategoryBreackFast(@Param("category") String category, @Param("nutrientType") String nutrientType,
-                                      @Param("timeSlot") String timeSlot, Pageable pageable);
 
-  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.kcal < :limitKcal" +
-      " ORDER BY CASE :nutrientType" +
-      " WHEN 'protein' THEN f.protein" +
-      " WHEN 'fat' THEN f.fat" +
-      " WHEN 'carbo' THEN f.carbo END ASC")
-  Page<Food> findInCategoryOther(@Param("category") String category, @Param("nutrientType") String nutrientType, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.protein DESC")
+  Page<Food> findInCategoryAndBreakfastOrderByProteinDesc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.fat DESC")
+  Page<Food> findInCategoryAndBreakfastOrderByFatDesc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.carbo DESC")
+  Page<Food> findInCategoryAndBreakfastOrderByCarboDesc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.protein ASC")
+  Page<Food> findInCategoryAndBreakfastOrderByProteinAsc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.fat ASC")
+  Page<Food> findInCategoryAndBreakfastOrderByFatAsc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category AND f.breakfast = :timeSlot ORDER BY f.carbo ASC")
+  Page<Food> findInCategoryAndBreakfastOrderByCarboAsc(@Param("category") String category,@Param("timeSlot") String timeSlot, Pageable pageable);
+
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.protein DESC")
+  Page<Food> findInCategoryOrderByProteinDesc(@Param("category") String category, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.fat DESC")
+  Page<Food> findInCategoryOrderByFatDesc(@Param("category") String category, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.carbo DESC")
+  Page<Food> findInCategoryOrderByCarboDesc(@Param("category") String category, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.protein ASC")
+  Page<Food> findInCategoryOrderByProteinAsc(@Param("category") String category, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.fat ASC")
+  Page<Food> findInCategoryOrderByFatAsc(@Param("category") String category, Pageable pageable);
+
+  @Query("SELECT f FROM Food f WHERE f.foodCategory2 = :category ORDER BY f.carbo ASC")
+  Page<Food> findInCategoryOrderByCarboAsc(@Param("category") String category, Pageable pageable);
+
 }
 

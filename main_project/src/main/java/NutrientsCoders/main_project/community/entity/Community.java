@@ -3,6 +3,7 @@ package NutrientsCoders.main_project.community.entity;
 import NutrientsCoders.main_project.communitycomment.entity.CommunityComment;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,16 +28,24 @@ public class Community extends CommunityBaseTime {
     @Column
     private long recommendationCount = 0L;
     @Column
-    private long communityViewCount = 0L;
+    private int communityViewCount = 0;
     @Column
     private int communityLike = 0;
+    @Column
+    private int communityCommentCount = 0;
     @ElementCollection
     @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
     @Column(name = "LIKE_MEMBERS",insertable = false)
     private List<Long> likeMembers;
+
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DAILYMEAL_ID", nullable = true)
     private DailyMeal dailyMeal;
+//    @ManyToOne
+//    @JoinColumn(name = "ANALYSIS_ID")
+//    private Analysis analysis;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID",nullable = false)
     private Member member;
@@ -45,8 +54,6 @@ public class Community extends CommunityBaseTime {
     }
     @OneToMany(mappedBy = "community")
     private List<CommunityComment> communityCommentList = new ArrayList<>();
-//    @OneToMany(mappedBy = "community")
-//    private List<CommunityMember> communityMemeberList = new ArrayList<>();
     /** 게시판을 조회하면 viewCount 증가 **/
     public long incrementViewCount(){
         return ++communityViewCount;

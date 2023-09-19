@@ -4,13 +4,12 @@ import NutrientsCoders.main_project.Analysis.dto.AnalysisResponseDto;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.mapper.AnalysisMapper;
 import NutrientsCoders.main_project.Analysis.service.AnalysisService;
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
-import NutrientsCoders.main_project.dailymeal.mapper.DailyMealMapper;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
-import NutrientsCoders.main_project.dailymeal.service.DailyMealSuggestService;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.TokenChanger;
+import NutrientsCoders.main_project.utils.exception.ExceptionCode;
+import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,18 +36,21 @@ public class AnalysisController {
   @PostMapping("/{dailymeal-id}")
   public ResponseEntity<AnalysisResponseDto> createAnalysis(@RequestHeader("Authorization") String token,
                                                               @PathVariable("dailymeal-id") long dailyMealId) throws Exception {
-    long memberId = tokenChanger.getMemberId(token);
-    DailyMeal dailyMeal = dailyMealService.findByDailyMeal(dailyMealId, memberId);
-    Double needKacl = Double.valueOf(memberService.findMember(memberId).getNeedKcal());
-    Analysis analysis = analysisService.createAnalysis(dailyMeal, needKacl);
-    AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
-    
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
+    try {
+      long memberId = tokenChanger.getMemberId(token);
+      DailyMeal dailyMeal = dailyMealService.findByDailyMeal(dailyMealId, memberId);
+      Double needKcal = Double.valueOf(memberService.findMember(memberId).getNeedKcal());
+      Analysis analysis = analysisService.createAnalysis(dailyMeal, needKcal);
+      AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
+      
+      return new ResponseEntity<>(response, HttpStatus.CREATED);
+    } catch (NullPointerException e) {
+      throw new LogicException(ExceptionCode.BMI_NOT_FOUND);
+    }
   }
-  
   //작성한 분석 조회(Id)
-  @GetMapping("/{dailymeal-id}")
-  public ResponseEntity<AnalysisResponseDto> getAnalysisById(@PathVariable("dailymeal-id") long analysisId) {
+  @GetMapping("/{anlysis-id}")
+  public ResponseEntity<AnalysisResponseDto> getAnalysisById(@PathVariable("anlysis-id") long analysisId) {
     Analysis analysis = analysisService.findByAnalysis(analysisId);
     AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
     
@@ -56,8 +58,8 @@ public class AnalysisController {
   }
   
   //작성한 분석 삭제
-  @DeleteMapping("/{dailymeal-id}")
-  public ResponseEntity<AnalysisResponseDto> deleteAnalysis(@PathVariable("dailymeal-id") long analysisId) {
+  @DeleteMapping("/{anlysis-id}")
+  public ResponseEntity<AnalysisResponseDto> deleteAnalysis(@PathVariable("anlysis-id") long analysisId) {
     analysisService.deleteAnalysis(analysisId);
     
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);

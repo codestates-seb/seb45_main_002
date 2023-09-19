@@ -31,13 +31,12 @@ public class CommunityController {
 
     @PostMapping
     public ResponseEntity<CommunityResponseDto> postCommunity(@RequestHeader("Authorization") String token, @RequestBody CommunityPostDto communityPostDto){
-
-        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto), tokenChanger.getMemberId(token));
+//        Community community = communityService.createCommunity(communityMapper.communityPostDtoToCommunity(communityPostDto), tokenChanger.getMemberId(token));
+        Community community = communityService.createCommunity(communityPostDto, tokenChanger.getMemberId(token));
         CommunityResponseDto response = communityMapper.communityToCommunityResponseDto(community);
-        response.setMemberId(communityPostDto.getMemberId());
+        response.setMemberId(tokenChanger.getMemberId(token));
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
-
     /** 게시글 수정 **/
     @PatchMapping("/{community-id}")
     public ResponseEntity<CommunityResponseDto> patchCommunity(@PathVariable("community-id") @Positive long communityId,
