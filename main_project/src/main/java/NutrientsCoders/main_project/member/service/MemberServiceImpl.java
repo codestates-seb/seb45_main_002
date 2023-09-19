@@ -187,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
         float activity = member.getActivity();
 
         float bmi = (float) (weight /((height/100.0)*(height/100.0)));
-        float kcal = (float)(((10*weight)+(6.25*height)-(5*age)+gender)*activity);
+        float kcal = (float)(((10*weight)+(6.25*height)-(5*age)+gender)*activity+400);
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         bmi = Float.parseFloat(decimalFormat.format(bmi));
@@ -198,9 +198,9 @@ public class MemberServiceImpl implements MemberService {
     }
     private int genderCalculate(String gender){
         if (gender.equals("M")){
-            return 10;
+            return 100;
         } else if (gender.equals("F")) {
-            return -150;
+            return -50;
         } else return -80;
     }
     public String findNickname(Long memberId){
