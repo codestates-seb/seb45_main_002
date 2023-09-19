@@ -210,9 +210,7 @@ console.log(morningMenu)
         Authorization: localStorage.getItem("Authorization")
       }
     })
-    .then(res=>{
-      loadDetail()
-    })
+    .then(res=>loadDetail())
     .catch(err=>console.log(err, "좋아요 변경 실패"))
   }
 
@@ -370,6 +368,13 @@ console.log(morningMenu)
             </div>
           </TotalBox>
         </DietInfoContainer>
+        {/* <DietImageContainer>
+          초과된 칼로리 : -1949.0<br />
+          초과된 탄수화물 : 4.0 (1.33%)<br />
+          초과된 단백질 : -4.0 (-0.8%)<br />
+          초과된 지방 : 0.0 (0.0%)<br />
+          총 평 : 칼로리 평가 불량 섭취 칼로리 양이 너무 높습니다. 3대 영양소 비율 평가 양호<br />
+        </DietImageContainer> */}
       </div>
       <Content>
         {detail.communityContent}

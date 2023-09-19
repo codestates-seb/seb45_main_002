@@ -108,7 +108,7 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
   useEffect(() => {
     const fetchedMeals = async () => {
       // const token = localStorage.getItem("Authorization");
-      console.log(localStorage.getItem("Authorization"));
+      // console.log(localStorage.getItem("Authorization"));
 
       try {
         const response = await axios.get(
@@ -118,7 +118,7 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
           }
         );
         const mealData = response.data;
-        console.log(mealData);
+        // console.log(mealData);
         // console.log(mealData[0].dailyMealId);
         setDailymealId(mealData[0].dailyMealId);
 
