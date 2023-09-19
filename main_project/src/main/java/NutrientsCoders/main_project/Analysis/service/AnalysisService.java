@@ -22,14 +22,14 @@ public class AnalysisService {
   }
   
   @Transactional
-  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKacl) throws UnsupportedEncodingException {
+  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKcal) throws UnsupportedEncodingException {
     
     if (dailyMeal.getEachMeals().isEmpty()) {
       throw new LogicException(ExceptionCode.DAILYMEAL_EMPTY);
     }
     
     //분석페이지 생성
-    Analysis analysis = analyzeMeal(dailyMeal, needKacl);
+    Analysis analysis = analyzeMeal(dailyMeal, needKcal);
     Optional<Analysis> findAnalysis = analysisRepository.findByDailyMeal(dailyMeal);
     findAnalysis.ifPresent(analysisRepository::delete); //기존 것 삭제
     
@@ -46,8 +46,8 @@ public class AnalysisService {
     return analysisRepository.save(analysis);
   }
   
-  public String[] uriMaker(String result) throws UnsupportedEncodingException {
-    String keyword = "";
+  public String[] uriMaker(String result) {
+    String keyword = "영양제";
     if (result.contains("불량") && result.contains("단백질 섭취 비율이 너무 낮습니다.")) {keyword = "고단백";}
     else if (result.contains("불량") && result.contains("지방 섭취 비율이 너무 높습니다.")) {keyword = "저지방";}
     else if (result.contains("불량") && result.contains("탄수화물 섭취 비율이 너무 높습니다.")) {keyword = "저탄수화물";}
@@ -57,8 +57,7 @@ public class AnalysisService {
     String auctionURL = "https://browse.auction.co.kr/search?keyword=" + encodedKeyword;
     String naverURL = "https://search.shopping.naver.com/search/all?query=" + encodedKeyword;
     String coupangURL = "https://www.coupang.com/np/search?component=&q=" + encodedKeyword;
-    String URL[] = {auctionURL, naverURL, coupangURL};
-    return URL;
+    return new String[]{auctionURL, naverURL, coupangURL};
   }
 
 
@@ -99,35 +98,36 @@ public class AnalysisService {
 
     String resultText = "칼로리 평가\n";
     if (overKcal > 100) resultText += "불량\n" + addText[6];
-    if (overKcal < -200) resultText += "불량\n" + addText[7];
+    else if (overKcal < -350) resultText += "불량\n" + addText[7];
+    else resultText += "양호\n";
     
     resultText += "3대 영양소 비율 평가\n";
     if (overSum < 1.0) resultText += majorText[0];
     else if (overSum < 1.5) resultText += majorText[1];
     else resultText += majorText[2];
     
-    if (overCarbos > 1.0 ) resultText += addText[0];
-    if (overProteins > 1.0 ) resultText += addText[1];
-    if (overFats > 1.0 ) resultText += addText[2];
-    if (overCarbos < -1.0 ) resultText += addText[3];
-    if (overProteins < -1.0 ) resultText += addText[4];
-    if (overFats < -1.0 ) resultText += addText[5];
+    if (overCarbos > 0.5 ) resultText += addText[0];
+    if (overProteins > 0.5 ) resultText += addText[1];
+    if (overFats > 0.5 ) resultText += addText[2];
+    if (overCarbos < -0.5 ) resultText += addText[3];
+    if (overProteins < -0.5 ) resultText += addText[4];
+    if (overFats < -0.5 ) resultText += addText[5];
     
   return resultText;
   }
 
   
   //식단 분석 메서드
-  private Analysis analyzeMeal(DailyMeal dailyMeal, Double needKacl)  {
-    Double Kacls = dailyMeal.getTotalDailyKcal();
+  private Analysis analyzeMeal(DailyMeal dailyMeal, Double needKcal)  {
+    Double Kcals = dailyMeal.getTotalDailyKcal();
     Double carbohydrates = dailyMeal.getTotalDailyCarbo();
     Double proteins = dailyMeal.getTotalDailyProtein();
     Double fats = dailyMeal.getTotalDailyFat();
     
     Analysis analysis = new Analysis();
     analysis.setDailyMeal(dailyMeal);
-    analysis.setIdealKacl(needKacl);
-    analysis.calculator(Kacls, carbohydrates, proteins, fats);
+    analysis.setIdealKcal(needKcal);
+    analysis.calculator(Kcals, carbohydrates, proteins, fats);
     return analysis;
   }
 }

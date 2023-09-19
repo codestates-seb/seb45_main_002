@@ -196,7 +196,7 @@ public class DailyMealSuggestService {
 
 
       //비율 보정 2
-      if (i > 4 && eachMeal.getTotalPercentCarbo() > 0.35 && eachMeal.getTotalPercentProtein() < 0.5 && eachMeal.getTotalPercentFat() > 0.2) {
+      if (i > 4 && eachMeal.getTotalPercentCarbo() > 0.5 && eachMeal.getTotalPercentProtein() < 0.3 && eachMeal.getTotalPercentFat() > 0.2) {
         selectNum = random.nextInt(allCategory.length);
         i = 0;
         continue;
@@ -210,7 +210,7 @@ public class DailyMealSuggestService {
     //칼로리 보정(단백질 위주)
     while (eachMeal.getTotalEachKcal() < baseRemainKcal - 100){
       eachMeal.getEachMealFoods().stream().forEach(eachMealFood -> {
-        eachMealFood.setQuantity(eachMealFood.getQuantity() + 0.02);
+        eachMealFood.setQuantity(eachMealFood.getQuantity() + 0.1);
         eachMealFood.calculateRate();
       });
       EachMealFood highestProteinFood =
@@ -218,7 +218,7 @@ public class DailyMealSuggestService {
                   .max(Comparator.comparingDouble(EachMealFood::getRateProtein))
                   .orElse(null);
       
-      highestProteinFood.setQuantity(highestProteinFood.getQuantity() + 0.3);
+      highestProteinFood.setQuantity(highestProteinFood.getQuantity() + 0.15);
       highestProteinFood.calculateRate();
       
       eachMeal.calculateTotal();
@@ -268,7 +268,7 @@ public class DailyMealSuggestService {
   }
 
   private String findOrderType(EachMeal eachMeal, Double[] baseMacrosPercent) {
-    Double[] targetMacros = {0.3, 0.5, 0.2};
+    Double[] targetMacros = {0.5, 0.3, 0.2};
     
     eachMeal.calculateTotal();
     baseMacrosPercent[0] = (baseMacrosPercent[0] + eachMeal.getTotalPercentCarbo()) / 2;
@@ -296,15 +296,15 @@ public class DailyMealSuggestService {
     }
   }
   
-  private void cannotSuggest(DailyMeal dailyMeal, Double remainKacl) {
+  private void cannotSuggest(DailyMeal dailyMeal, Double remainKcal) {
     long num = dailyMeal.getEachMeals().size(); //포함 끼니 갯수
-    long eachRemainKacl = (long) (remainKacl / (3 - num));
+    long eachRemainKcal = (long) (remainKcal / (3 - num));
     if (num == 3) {
       System.out.println("끼니가 적어도 한개 이상 비워져 있어야 추천을 받을 수 있습니다");
       throw new LogicException(ExceptionCode.MEAL_ALREADY_FULL);
     }
-      if (eachRemainKacl < 500) {
-        System.out.println("남은 끼니당 칼로리가 적어도 500kacl 이상일 때에만 추천 받을 수 있습니다");
+      if (eachRemainKcal < 500) {
+        System.out.println("남은 끼니당 칼로리가 적어도 500kcal 이상일 때에만 추천 받을 수 있습니다");
         throw new LogicException(ExceptionCode.CALORIE_TOO_LOW);
       }
     }

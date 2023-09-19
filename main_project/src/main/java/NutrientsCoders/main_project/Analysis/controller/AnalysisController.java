@@ -39,8 +39,8 @@ public class AnalysisController {
     try {
       long memberId = tokenChanger.getMemberId(token);
       DailyMeal dailyMeal = dailyMealService.findByDailyMeal(dailyMealId, memberId);
-      Double needKacl = Double.valueOf(memberService.findMember(memberId).getNeedKcal());
-      Analysis analysis = analysisService.createAnalysis(dailyMeal, needKacl);
+      Double needKcal = Double.valueOf(memberService.findMember(memberId).getNeedKcal());
+      Analysis analysis = analysisService.createAnalysis(dailyMeal, needKcal);
       AnalysisResponseDto response = analysisMapper.analysisToAnalysisResponseDto(analysis);
       
       return new ResponseEntity<>(response, HttpStatus.CREATED);
