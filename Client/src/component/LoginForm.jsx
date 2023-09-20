@@ -75,31 +75,27 @@ const LoginForm = () => {
     }
   };
 
-  function loginButton(e) {
-    e.preventDefault();
-    if (emailRegExp.test(form.email) && passwordRegExp.test(form.password)) {
-      axios
-        .post("http://43.201.194.176:8080/login", {
-          email: form.email,
-          password: form.password,
-        })
-        .then((res) => {
-          console.log(res);
-          localStorage.setItem("Authorization", res.headers.authorization);
-          localStorage.setItem("Refresh", res.headers.refresh);
-          // navigate("/pageswitch/mypage")
-          window.location.reload();
-        })
-        .catch((err) => {
-          console.log(err, "로그인을 실패했습니다.");
-          setForm({
-            ...form,
-            errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다.",
-          });
-        });
-    } else {
-      errMsg();
+
+  function loginButton(e){
+    e.preventDefault()
+    if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
+      axios.post("http://43.201.194.176:8080/login",{
+        email: form.email,
+        password: form.password
+      })
+      .then(res=>{
+        console.log(res)
+        localStorage.setItem("Authorization",res.headers.authorization)
+        localStorage.setItem("Refresh",res.headers.refresh)
+        // navigate("/pageswitch/mypage")
+        window.location.reload();
+      })
+      .catch(err=>{
+        console.log(err, "로그인을 실패했습니다.")
+        setForm({...form,errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다."})
+      })
     }
+    else{errMsg();}
   }
 
   async function getGoogleToken() {
