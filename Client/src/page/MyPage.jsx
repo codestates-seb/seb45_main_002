@@ -230,28 +230,23 @@ function MyPage() {
 
   function sendUserData(e) {
     e.preventDefault();
-    axios
-      .patch(
-        "http://43.201.194.176:8080/mypage/",
-        {
-          nickname: user.nickname,
-          height: user.height,
-          weight: user.weight,
-          gender: user.gender,
-          age: user.age,
-          activity: user.activity,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("Authorization"),
-          },
-        }
-      )
-      .then((res) => {
-        alert("개인정보 설정이 변경되었습니다.");
-        navigate("/");
-      })
-      .catch((err) => console.log(err, "서버와의 소통 실패"));
+    axios.patch("http://43.201.194.176:8080/mypage/",{
+      nickname : user.nickname,
+      height : user.height,
+      weight : user.weight,
+      gender : user.gender,
+      age : user.age,
+      activity : user.activity===1? 0.75 : user.activity===2? 0.9 : user.activity===3? 1 : user.activity===4? 1.25 : 1.5
+    },{
+      headers:{
+        Authorization: localStorage.getItem("Authorization")
+      }
+    })
+    .then(res=>{
+      alert("개인정보 설정이 변경되었습니다.")
+      navigate("/")
+    })
+    .catch(err=>console.log(err,"서버와의 소통 실패"))
   }
 
   return (
@@ -338,12 +333,11 @@ function MyPage() {
               <ActivityRange
 
                type="range"
-               value={user.activity*100}
-               onChange={e=>setUser({...user,activity: e.target.value/100})}
-               min="50"
-               step="25"
-               max="150"
-
+               value={user.activity}
+               onChange={e=>setUser({...user,activity: e.target.value})}
+               min="1"
+               step="1"
+               max="5"
               ></ActivityRange>
               <StepName>
                 <span>활동량 거의 없음</span>
