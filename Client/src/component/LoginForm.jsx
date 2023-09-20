@@ -75,57 +75,61 @@ const LoginForm = () => {
     }
   };
 
-
-  function loginButton(e){
-    e.preventDefault()
-    if(emailRegExp.test(form.email)&&passwordRegExp.test(form.password)){
-      axios.post("http://43.201.194.176:8080/login",{
-        email: form.email,
-        password: form.password
-      })
-      .then(res=>{
-        console.log(res)
-        localStorage.setItem("Authorization",res.headers.authorization)
-        localStorage.setItem("Refresh",res.headers.refresh)
-        // navigate("/pageswitch/mypage")
-        // window.location.reload()
-      })
-      .catch(err=>{
-        console.log(err, "로그인을 실패했습니다.")
-        setForm({...form,errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다."})
-      })
+  function loginButton(e) {
+    e.preventDefault();
+    if (emailRegExp.test(form.email) && passwordRegExp.test(form.password)) {
+      axios
+        .post("http://43.201.194.176:8080/login", {
+          email: form.email,
+          password: form.password,
+        })
+        .then((res) => {
+          console.log(res);
+          localStorage.setItem("Authorization", res.headers.authorization);
+          localStorage.setItem("Refresh", res.headers.refresh);
+          // navigate("/pageswitch/mypage")
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err, "로그인을 실패했습니다.");
+          setForm({
+            ...form,
+            errMsg: "아이디와 비밀번호를 확인하여 주시기 바랍니다.",
+          });
+        });
+    } else {
+      errMsg();
     }
-    else{errMsg();}
   }
 
-
-  async function getGoogleToken(){
-    window.location.href = "https://accounts.google.com/o/oauth2/auth?" +
-    "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
-    "redirect_uri=localhost:3000" +
-    "response_type=token&" +
-    "scope=" +
-    "https://www.googleapis.com/auth/userinfo.email"
+  async function getGoogleToken() {
+    window.location.href =
+      "https://accounts.google.com/o/oauth2/auth?" +
+      "client_id=999588881445-qssr877h8rnlnrq4fv6nfc7r0mg6fvtp.apps.googleusercontent.com&" +
+      "redirect_uri=localhost:3000" +
+      "response_type=token&" +
+      "scope=" +
+      "https://www.googleapis.com/auth/userinfo.email";
 
     // const parsedHash = await new URLSearchParams(window.location.hash.substring(1))
     // return parsedHash
   }
-  async function googleLoginButton(e){
-    window.location.href = "http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/";
-  };
+  async function googleLoginButton(e) {
+    window.location.href =
+      "http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/";
+  }
 
-    // for(let el of new URLSearchParams(window.location.hash.substring(1))){
-    //   console.log(el)
+  // for(let el of new URLSearchParams(window.location.hash.substring(1))){
+  //   console.log(el)
 
-    // }
+  // }
 
-    // localStorage.setItem("google_access_token",await getGoogleToken())
+  // localStorage.setItem("google_access_token",await getGoogleToken())
   // }
 
   function sendBackend() {
     window.location.href =
       "http://ec2-43-201-194-176.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google";
-
 
     // window.location.href ="http://43.201.194.176:8080/login/oauth2/code/google"
     // window.location.href ="http://43.201.194.176:8080/oauth2/authorization/google"
@@ -142,7 +146,7 @@ const LoginForm = () => {
   return (
     <LoginContainer>
       <LoginFormContainer>
-      <input
+        <input
           type="email"
           placeholder="E-mail"
           value={form.email}
