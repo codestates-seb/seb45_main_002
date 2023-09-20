@@ -202,7 +202,20 @@ function MyPage() {
           Authorization: localStorage.getItem("Authorization"),
         },
       })
-      .then((res) => setUser(res.data))
+      .then((res) =>{
+        console.log(res.data.activity)
+        setUser({...res.data,activity:
+        res.data.activity == 0.75
+        ? 1
+        : res.data.activity == 0.9
+        ? 2
+        : res.data.activity == 1
+        ? 3
+        : res.data.activity == 1.25
+        ? 4
+        : res.data.activity == 1.5
+        ? 5
+        : 1})})
       .catch((err) => {
         console.log(err, "서버접속 실패");
         alert("로그인 후 이용해주시기 바랍니다.");
@@ -240,15 +253,16 @@ function MyPage() {
           gender: user.gender,
           age: user.age,
           activity:
-            user.activity === 1
+            user.activity == 1
               ? 0.75
-              : user.activity === 2
+              : user.activity == 2
               ? 0.9
-              : user.activity === 3
+              : user.activity == 3
               ? 1
-              : user.activity === 4
+              : user.activity == 4
               ? 1.25
-              : 1.5,
+              : user.activity == 5
+              ? 1.5 : 0.75
         },
         {
           headers: {
@@ -269,7 +283,7 @@ function MyPage() {
         <BlockContainer>
           <h2>프로필</h2>
           <ImgNicknameContainer>
-            <ImgBox>
+            {/* <ImgBox>
               <AddImgBtn htmlFor="addImg">이미지 추가하기</AddImgBtn>
               <input
                 id="addImg"
@@ -279,7 +293,7 @@ function MyPage() {
                 onChange={(e) => setImgURL(e.target.value)}
               ></input>
               <ProfileImg src={imgURL} alt="업로드한 이미지"></ProfileImg>
-            </ImgBox>
+            </ImgBox> */}
             <NicknameContainer>
               <div>닉네임</div>
               <input
@@ -347,7 +361,10 @@ function MyPage() {
               <ActivityRange
                 type="range"
                 value={user.activity}
-                onChange={(e) => setUser({ ...user, activity: e.target.value })}
+                onChange={(e) =>{
+                  console.log(e.target.value)
+                  setUser({ ...user, activity: e.target.value})}
+                }
                 min="1"
                 step="1"
                 max="5"
@@ -387,14 +404,14 @@ function MyPage() {
           </OpenOrClose>
         </BlockContainer>
         <LeaveOrSubmit>
-          <LeaveButton
+          {/* <LeaveButton
             onClick={(e) => {
               e.preventDefault();
               setOpenLeave(!openLeave);
             }}
           >
             leave the NutritionCoders
-          </LeaveButton>
+          </LeaveButton> */}
           <SubmitBtn
             type="submit"
             onClick={sendUserData}
@@ -402,7 +419,7 @@ function MyPage() {
           ></SubmitBtn>
         </LeaveOrSubmit>
       </form>
-      {openLeave ? (
+      {/* {openLeave ? (
         <LeaveContainer>
           <LeaveBox>
             <h1>정말 탈퇴하시겠습니까?</h1>
@@ -414,7 +431,7 @@ function MyPage() {
             </div>
           </LeaveBox>
         </LeaveContainer>
-      ) : null}
+      ) : null} */}
     </MypageContainer>
   );
 }

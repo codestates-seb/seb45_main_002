@@ -496,45 +496,34 @@ function CommunityDetail() {
             </div>
           </TotalBox>
         </DietInfoContainer>
-        <Button size="fullwidth" onClick={() => setOpenAnalysis(!openAnalysis)}>
-          식단 자세히 분석하기
+        {/* <Button size="fullwidth"
+          onClick={()=>setOpenAnalysis(!openAnalysis)}
+        >
+            식단 자세히 분석하기
         </Button>
-        {openAnalysis ? (
-          <AnalysisContainer onClick={() => setOpenAnalysis(!openAnalysis)}>
-            <AnalysisContent onClick={(e) => e.stopPropagation()}>
-              <div>
-                {String(detail.communityContent).slice(
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 8,
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 15
-                )}
-              </div>
-              <div>
-                {String(detail.communityContent).slice(
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 14,
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 18
-                )}
-              </div>
-              <div>
-                {String(detail.communityContent).slice(
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 17,
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 37
-                )}
-              </div>
-              <div>
-                {String(detail.communityContent).slice(
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 36,
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 49
-                )}
-              </div>
-              <div>
-                {String(detail.communityContent).slice(
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 49,
-                  String(detail.communityContent).indexOf(AnAlYsIs) + 52
-                )}
-              </div>
-            </AnalysisContent>
-          </AnalysisContainer>
-        ) : null}
+        {openAnalysis?
+        <AnalysisContainer onClick={()=>setOpenAnalysis(!openAnalysis)}>
+          <AnalysisContent onClick={(e)=>e.stopPropagation()}>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+8,String(detail.communityContent).indexOf(AnAlYsIs)+15)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+14,String(detail.communityContent).indexOf(AnAlYsIs)+18)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+17,String(detail.communityContent).indexOf(AnAlYsIs)+37)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+36,String(detail.communityContent).indexOf(AnAlYsIs)+49)}
+            </div>
+            <div>
+              {String(detail.communityContent).slice(String(detail.communityContent).indexOf(AnAlYsIs)+49,String(detail.communityContent).indexOf(AnAlYsIs)+52)}
+            </div>
+          </AnalysisContent>
+        </AnalysisContainer>
+        :
+        null
+        } */}
         {/* <DietImageContainer>
           초과된 칼로리 : -1949.0<br />
           초과된 탄수화물 : 4.0 (1.33%)<br />
