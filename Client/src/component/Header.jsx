@@ -85,6 +85,7 @@ const Header = ({ setMenu }) => {
     localStorage.removeItem("Refresh");
     setMeal("");
     navigate("/");
+    window.location.reload();
   }
 
   const handleOpenLoginModal = () => {
