@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../atom/button";
 import { styled } from "styled-components";
 import useZustand from "../../zustand/Store";
-import { changeEachMeal } from "../../util/Diet";
+import { changeEachMeal, PatchDailyMeal } from "../../util/Diet";
 
 const StyleFood = styled.div`
   width: 100%;
@@ -58,6 +58,7 @@ const IsEachFood = ({ item, timeslot, foodDetailOnClickHandler }) => {
       patchFood
     );
     setEachMeal(result);
+    PatchDailyMeal(result);
   };
 
   const deleteOnClickHandler = async () => {
@@ -74,7 +75,9 @@ const IsEachFood = ({ item, timeslot, foodDetailOnClickHandler }) => {
       timeslot,
       patchFood
     );
+    // console.log(result);
     setEachMeal(result);
+    PatchDailyMeal(result);
   };
 
   return (
