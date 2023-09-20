@@ -108,9 +108,10 @@ function Comments({comment}){
           {comment.answerComment_createdAt.slice(5,7)}월 {comment.answerComment_createdAt.slice(8,10)}일 {comment.answerComment_createdAt.slice(11,16)}
         </span>
       </Createed>
+
       <EditBox>
-        <button onClick={commentModify}>{modifyOpen? "완료" : "수정"}</button>
-        <button onClick={commentDelete}>{modifyOpen? "취소" : "삭제"}</button>
+          <button onClick={commentModify}>{modifyOpen? "완료" : "수정"}</button>
+          <button onClick={commentDelete}>{modifyOpen? "취소" : "삭제"}</button>
       </EditBox>
     </CommentListBox>
   )

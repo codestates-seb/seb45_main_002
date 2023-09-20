@@ -25,6 +25,7 @@ const HeaderContainer = styled.header`
 
   & > * {
     display: flex;
+    gap: 10px;
     align-items: center;
   }
 
@@ -58,6 +59,7 @@ const SignUpButton = styled(LoginButton)`
 `;
 
 const Header = ({ setMenu }) => {
+  const { setMeal } = useZustand.useDailyMeals();
   const accessToken = useZustand.useToken((state) => state.accessToken);
   const setAccessToken = useZustand.useToken((state) => state.setAccessToken);
   const refreshToken = useZustand.useToken((state) => state.refreshToken);
@@ -81,6 +83,7 @@ const Header = ({ setMenu }) => {
   function logoutButton() {
     localStorage.removeItem("Authorization");
     localStorage.removeItem("Refresh");
+    setMeal("");
     navigate("/");
   }
 
@@ -113,7 +116,7 @@ const Header = ({ setMenu }) => {
         <Link to="/">
           <img
             className="logo"
-            src="https://media.discordapp.net/attachments/483947972380327936/1144245243550638090/NutritionCoders-1.png?width=1498&height=1002"
+            src="https://media.discordapp.net/attachments/1144080831686660210/1153629042252197920/2023__6_-removebg-preview_1.png"
             alt="logo"
           />
         </Link>
@@ -124,7 +127,7 @@ const Header = ({ setMenu }) => {
             <img
               className="profileImage"
               alt="My Page"
-              src="https://media.discordapp.net/attachments/1144143589740400680/1151117333704749116/myPage_1.png?width=100&height=100"
+              src="https://media.discordapp.net/attachments/1144080831686660210/1153633184265818132/-removebg-preview.png"
             />
           </Link>
           <LoginButton onClick={logoutButton}>로그아웃</LoginButton>
