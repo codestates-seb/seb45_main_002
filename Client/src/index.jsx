@@ -6,13 +6,11 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-console.log(`                                                                                           
-                                                                                           
-    /|    / /                                                                              
-   //|   / /              __  ___     __       ( )   __  ___    ( )      ___         __    
-  // |  / /     //   / /   / /      //  ) )   / /     / /      / /     //   ) )   //   ) ) 
- //  | / /     //   / /   / /      //        / /     / /      / /     //   / /   //   / /  
-//   |/ /     ((___( (   / /      //        / /     / /      / /     ((___/ /   //   / /    `);
+console.log(`    /|    / /                                                                                 
+   //|   / /              __  ___     __       ( )      ___         __     __  ___     ___    
+  // |  / /     //   / /   / /      //  ) )   / /     //___) )   //   ) )   / /      ((   ) ) 
+ //  | / /     //   / /   / /      //        / /     //         //   / /   / /        \\ \\     
+//   |/ /     ((___( (   / /      //        / /     ((____     //   / /   / /      //   ) )`);
 
 console.log(`                                                                     
                                                                      
