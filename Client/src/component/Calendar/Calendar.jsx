@@ -144,7 +144,7 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
   }, []);
 
   const handleEventClick = (event) => {
-    console.log("handleEventClick");
+    // console.log("handleEventClick");
     const startDate = new Date(event.start);
     startDate.setDate(startDate.getDate() + 1);
     const dateStr = startDate.toISOString().split("T")[0];
@@ -154,7 +154,7 @@ const CustomCalendar = ({ nowDate, setNowDate }) => {
   // console.log(eventTitle);
 
   const onSelectSlot = (event) => {
-    console.log("onSelectSlot");
+    // console.log("onSelectSlot");
     const startDate = new Date(event.start);
     startDate.setDate(startDate.getDate() + 1);
     const dateStr = startDate.toISOString().split("T")[0];

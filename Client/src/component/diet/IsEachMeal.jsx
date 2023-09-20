@@ -1,10 +1,12 @@
 import { styled } from "styled-components";
-
+import { useState } from "react";
 import Button from "../../atom/button";
+
 import useZustand from "../../zustand/Store";
 import FoodSearchForm from "./FoodSearchForm";
 import IsEachFood from "./IsEachFood";
 import { deleteEachMeal } from "../../util/Diet";
+import Modal from "../../atom/GlobalModal";
 
 const StyleEachMeal = styled.div`
   margin: 5px;
@@ -76,6 +78,11 @@ const IsEachMeal = ({
   addEachMealOnClickHandler,
   foodDetailOnClickHandler,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [modalHeader, setModalHeader] = useState(null);
+  const [modalFooter, setModalFooter] = useState(null);
+
   const { meal, setMeal } = useZustand.useDailyMeals();
   const eachMeal = meal.eachMeals.find((item) => item.timeSlots === timeslot);
   const { nowTimeSlot, setNowTimeSlot } = useZustand.useNowTimeSlot();
@@ -83,19 +90,43 @@ const IsEachMeal = ({
 
   return (
     <StyleEachMeal>
+      <Modal
+        isOpen={isModalOpen}
+        content={modalContent}
+        header={modalHeader}
+        footer={modalFooter}
+        setIsOpen={setIsModalOpen}
+        setContent={setModalContent}
+        setHeader={setModalHeader}
+        setFooter={setModalFooter}
+      />
       <div className={timelabel[timeslot]}>
         <h2>
           <p>{timelabel[timeslot]}</p>
           {nowTimeSlot === timeslot ? (
             <Button
               onClick={() => {
-                deleteEachMeal(eachMeal.eachMealId);
-                setMeal({
-                  ...meal,
-                  eachMeals: meal.eachMeals.filter(
+                if (eachMeal && eachMeal.quantityfoods.length === 0) {
+                  deleteEachMeal(eachMeal.eachMealId);
+
+                  const updatedEachMeals = meal.eachMeals.filter(
                     (item) => item.eachMealId !== eachMeal.eachMealId
-                  ),
-                });
+                  );
+
+                  setMeal({
+                    ...meal,
+                    eachMeals: updatedEachMeals,
+                  });
+                } else {
+                  setIsModalOpen(true);
+                  setModalHeader(
+                    <div style={{ padding: "10px" }}>
+                      <h4 style={{ marginBottom: "-80px", color: "black" }}>
+                        음식이 끼니에 남아있어요!
+                      </h4>
+                    </div>
+                  );
+                }
               }}
               style={{
                 width: "20px",

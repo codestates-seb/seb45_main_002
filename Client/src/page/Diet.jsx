@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
+import { GetDailyDiet, PostDailyMeal, PatchDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
 import Button from "../atom/button";
 import useZustand from "../zustand/Store";
@@ -472,14 +472,14 @@ const Diet = () => {
                     style={{ maxWidth: "80%", maxHeight: "80px" }}
                   ></img>
                 </a>
-                <a href={analyzedData.coupangURL}>
+                <a href={analyzedData.naverURL}>
                   <img
                     alt="auction"
                     src={naverbuy}
                     style={{ maxWidth: "80%", maxHeight: "80px" }}
                   ></img>
                 </a>
-                <a href={analyzedData.naverURL}>
+                <a href={analyzedData.coupangURL}>
                   <img
                     alt="auction"
                     src={coupangbuy}
