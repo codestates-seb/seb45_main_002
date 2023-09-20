@@ -89,7 +89,7 @@ const IsEachMeal = ({
   const timelabel = { 1: "breakfast", 2: "lunch", 3: "dinner" };
 
   return (
-    <StyleEachMeal>
+    <>
       <Modal
         isOpen={isModalOpen}
         content={modalContent}
@@ -100,94 +100,96 @@ const IsEachMeal = ({
         setHeader={setModalHeader}
         setFooter={setModalFooter}
       />
-      <div className={timelabel[timeslot]}>
-        <h2>
-          <p>{timelabel[timeslot]}</p>
-          {nowTimeSlot === timeslot ? (
-            <Button
-              onClick={() => {
-                if (eachMeal && eachMeal.quantityfoods.length === 0) {
-                  deleteEachMeal(eachMeal.eachMealId);
+      <StyleEachMeal>
+        <div className={timelabel[timeslot]}>
+          <h2>
+            <p>{timelabel[timeslot]}</p>
+            {nowTimeSlot === timeslot ? (
+              <Button
+                onClick={() => {
+                  if (eachMeal && eachMeal.quantityfoods.length === 0) {
+                    deleteEachMeal(eachMeal.eachMealId);
 
-                  const updatedEachMeals = meal.eachMeals.filter(
-                    (item) => item.eachMealId !== eachMeal.eachMealId
-                  );
+                    const updatedEachMeals = meal.eachMeals.filter(
+                      (item) => item.eachMealId !== eachMeal.eachMealId
+                    );
 
-                  setMeal({
-                    ...meal,
-                    eachMeals: updatedEachMeals,
-                  });
-                } else {
-                  setIsModalOpen(true);
-                  setModalHeader(
-                    <div style={{ padding: "10px" }}>
-                      <h4 style={{ marginBottom: "-80px", color: "black" }}>
-                        음식이 끼니에 남아있어요!
-                      </h4>
-                    </div>
-                  );
-                }
-              }}
-              style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                fontSize: "14px",
-                fontWeight: "800",
-                marginLeft: "5px",
-              }}
-            >
-              ✕
-            </Button>
-          ) : null}
-        </h2>
-        {eachMeal.quantityfoods?.map((item, index) => {
-          return (
-            <IsEachFood
-              item={item}
-              timeslot={timeslot}
-              foodDetailOnClickHandler={foodDetailOnClickHandler}
-              key={index}
-            />
-          );
-        }) ?? null}
-        <DivSummary>
-          <div>
-            <p>칼로리: {eachMeal.totalEachKcal}kcal</p>
-            <p>단백질: {eachMeal.totalEachProtein}g</p>
-          </div>
-          <div>
-            <p>탄수화물: {eachMeal.totalEachCarbo}g</p>
-            <p>지방: {eachMeal.totalEachFat}g</p>
-          </div>
-          {nowTimeSlot === timeslot ? (
-            <Button
-              onClick={() => addEachMealOnClickHandler(eachMeal)}
-              size={"small"}
-              style={{ fontSize: "14px" }}
-            >
-              선호 끼니 저장하기
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                setNowTimeSlot(timeslot);
-              }}
-              size={"small"}
-              style={{ fontSize: "14px" }}
-            >
-              끼니 수정하기
-            </Button>
-          )}
-        </DivSummary>
-      </div>
-      {nowTimeSlot === timeslot ? (
-        <FoodSearchForm
-          timeslot={timeslot}
-          foodDetailOnClickHandler={foodDetailOnClickHandler}
-        />
-      ) : null}
-    </StyleEachMeal>
+                    setMeal({
+                      ...meal,
+                      eachMeals: updatedEachMeals,
+                    });
+                  } else {
+                    setIsModalOpen(true);
+                    setModalHeader(
+                      <div style={{ padding: "10px" }}>
+                        <h4 style={{ marginBottom: "-80px", color: "black" }}>
+                          음식이 끼니에 남아있어요!
+                        </h4>
+                      </div>
+                    );
+                  }
+                }}
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  fontSize: "14px",
+                  fontWeight: "800",
+                  marginLeft: "5px",
+                }}
+              >
+                ✕
+              </Button>
+            ) : null}
+          </h2>
+          {eachMeal.quantityfoods?.map((item, index) => {
+            return (
+              <IsEachFood
+                item={item}
+                timeslot={timeslot}
+                foodDetailOnClickHandler={foodDetailOnClickHandler}
+                key={index}
+              />
+            );
+          }) ?? null}
+          <DivSummary>
+            <div>
+              <p>칼로리: {eachMeal.totalEachKcal}kcal</p>
+              <p>단백질: {eachMeal.totalEachProtein}g</p>
+            </div>
+            <div>
+              <p>탄수화물: {eachMeal.totalEachCarbo}g</p>
+              <p>지방: {eachMeal.totalEachFat}g</p>
+            </div>
+            {nowTimeSlot === timeslot ? (
+              <Button
+                onClick={() => addEachMealOnClickHandler(eachMeal)}
+                size={"small"}
+                style={{ fontSize: "14px" }}
+              >
+                선호 끼니 저장하기
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  setNowTimeSlot(timeslot);
+                }}
+                size={"small"}
+                style={{ fontSize: "14px" }}
+              >
+                끼니 수정하기
+              </Button>
+            )}
+          </DivSummary>
+        </div>
+        {nowTimeSlot === timeslot ? (
+          <FoodSearchForm
+            timeslot={timeslot}
+            foodDetailOnClickHandler={foodDetailOnClickHandler}
+          />
+        ) : null}
+      </StyleEachMeal>
+    </>
   );
 };
 

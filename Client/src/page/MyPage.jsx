@@ -270,7 +270,7 @@ function MyPage() {
           <h2>프로필</h2>
           <ImgNicknameContainer>
             <ImgBox>
-              <AddImgBtn htmlFor="addImg">이미지 추가하기</AddImgBtn>
+              {/* <AddImgBtn htmlFor="addImg">이미지 추가하기</AddImgBtn> */}
               <input
                 id="addImg"
                 type="file"
@@ -387,14 +387,14 @@ function MyPage() {
           </OpenOrClose>
         </BlockContainer>
         <LeaveOrSubmit>
-          <LeaveButton
+          {/* <LeaveButton
             onClick={(e) => {
               e.preventDefault();
               setOpenLeave(!openLeave);
             }}
           >
             leave the NutritionCoders
-          </LeaveButton>
+          </LeaveButton> */}
           <SubmitBtn
             type="submit"
             onClick={sendUserData}
