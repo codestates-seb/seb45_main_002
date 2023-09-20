@@ -59,7 +59,7 @@ function Comments({comment}){
         }
       })
       .then(res=>{
-        window.location.reload()
+        
         setModifyOpen(!modifyOpen)
       })
       .catch(err=>{
@@ -82,7 +82,7 @@ function Comments({comment}){
           Authorization: localStorage.getItem("Authorization")
         }
       })
-      .then(res=>window.location.reload())
+      .then(res=>null)
       .catch(err=>{
         alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
         console.log(err,"댓글삭제 실패")
