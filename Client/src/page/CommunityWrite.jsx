@@ -14,7 +14,7 @@ import style from "../style/style"
 const WriteFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  background-color: #efefef;
+  background-color: rgba(239, 239, 239, 0.5);
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
 `;
 

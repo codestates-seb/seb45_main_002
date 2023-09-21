@@ -11,17 +11,15 @@ const MypageContainer = styled.article`
   height: ${style.layout.main.height + style.layout.wideMargin.height};
   width: ${style.layout.main.width};
   padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
-  background-color: rgb(242, 242, 242);
 `;
 
 const BlockContainer = styled.div`
   border-radius: 10px;
-  background-color: white;
+  background-color: rgba(255,255,255,0.3);
   margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   & > h2 {
-    background-color: ${style.color.ivory4};
+    background-color: rgba(0,0,0,0.1);
     border-radius: 10px 10px 0 0;
-    background-color: ${style.color.ivory3};
     padding: ${style.layout.narrowMargin.height}
       ${style.layout.narrowMargin.width};
   }
