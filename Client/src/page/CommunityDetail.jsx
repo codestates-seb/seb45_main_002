@@ -16,12 +16,13 @@ const Container = styled.article`
   display: flex;
   flex-direction: column;
   background-color: #efefef;
+  width: 95%;
+  margin: 0;
 `;
 
 const Title = styled.h1`
   border: solid 1px orange;
-  padding: ${style.layout.narrowMargin.height}
-    ${style.layout.narrowMargin.width};
+  padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   text-align: center;
 `;
 
@@ -128,8 +129,7 @@ const CommentsWriteBox = styled.div`
     width: ${style.layout.main.width - style.layout.wideMargin.width * 8};
   }
   & > button {
-    padding: ${style.layout.narrowMargin.height}
-      ${style.layout.narrowMargin.width};
+    padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
     background-color: orange;
     cursor: pointer;
   }
@@ -212,10 +212,8 @@ function CommunityDetail() {
   const [dinnerInfo, setDinnerInfo] = useState({});
   const [dinnerMenu, setDinnerMenu] = useState([]);
 
-  const [comment, setComment] = useState({
-    newComment: "",
-    commentList: [],
-  });
+  const [commentList, setCommentList] = useState([]);
+  const [newComment,setNewComment] = useState("")
   const [hide, setHide] = useState(false);
   const params = useParams();
   const setCommunityId = useZustand.useCommunityId(
@@ -236,7 +234,7 @@ function CommunityDetail() {
         console.log(res.data);
         setDetail(res.data); // 게시글에 대한 정보(제목, 본문, 댓글 등)
 
-        setComment({ ...comment, commentList: res.data.communityCommentList }); // 작성되어있던 댓글들
+        setCommentList(res.data.communityCommentList); // 작성되어있던 댓글들
 
         console.log(res.data.dailyMeal);
         setDailyMeals(res.data.dailyMeal); // 하루 식단 정보
@@ -287,7 +285,7 @@ function CommunityDetail() {
       })
       .catch((err) => console.log(err, "게시글 데이터를 불러오지 못했습니다."));
   }
-  useEffect(() => loadDetail(), [params["*"]]);
+  useEffect(() => loadDetail(), []);
 
   // function openAnalysis(){
   //   axios.post("http://43.201.194.176:8080/analysis/"+dailyMeals.dailyMealId,null,{
@@ -322,7 +320,7 @@ function CommunityDetail() {
         "http://43.201.194.176:8080/communitycomment",
         {
           communityId: params["*"],
-          communityCommentContent: comment.newComment,
+          communityCommentContent: newComment,
         },
         {
           headers: {
@@ -330,7 +328,7 @@ function CommunityDetail() {
           },
         }
       )
-      .then((res) => window.location.reload())
+      .then((res) => loadDetail())
       .catch((err) => console.log(err, "댓글등록 실패"));
   }
 
@@ -349,7 +347,6 @@ function CommunityDetail() {
   }
   let AnAlYsIs = "AnAlYsIs";
 
-  console.log(dailyMeals);
   return (
     <Container>
       <Title>{detail.communityTitle}</Title>
@@ -557,7 +554,7 @@ function CommunityDetail() {
             좋아요 {detail.recommendationCount}
           </span>
           <span onClick={() => setHide(!hide)}>
-            <i className="fa-solid fa-comment"></i>댓글보기
+            <i className="fa-solid fa-comment"></i>댓글보기 {commentList.length}
             {hide ? (
               <i className="fa-solid fa-caret-up"></i>
             ) : (
@@ -571,16 +568,16 @@ function CommunityDetail() {
         <CommentsWriteBox>
           <input
             type="text"
-            value={comment.newComment}
+            value={newComment}
             onChange={(e) =>
-              setComment({ ...comment, newComment: e.target.value })
+              setNewComment(e.target.value)
             }
           ></input>
           <button onClick={sendComment}>등록</button>
         </CommentsWriteBox>
         <CommentsListBox>
-          {comment.commentList.map((comment) => (
-            <Comments comment={comment} />
+          {commentList.map((comment) => (
+            <Comments comment={comment} loadDetail={loadDetail} />
           ))}
         </CommentsListBox>
       </CommentsBox>
