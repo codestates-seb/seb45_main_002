@@ -15,7 +15,7 @@ import style from "../style/style";
 const Container = styled.article`
   display: flex;
   flex-direction: column;
-  background-color: #efefef;
+  background-color: rgba(239, 239, 239, 0.5);
   width: 95%;
   margin: 0;
 `;
