@@ -2,7 +2,6 @@ import Header from "./component/Header";
 import Main from "./component/Main";
 import Nav from "./component/Nav";
 import Hamberger from "./atom/Hamberger";
-
 import { useState } from "react";
 
 import useWindowSize from "./hook/useWindowSize";
