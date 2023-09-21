@@ -15,8 +15,7 @@ const CommunityContainer = styled.article`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #efefef;
-  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width};
+  padding: ${style.layout.wideMargin.height} ${style.layout.wideMargin.width/2};
 `;
 
 const BtnContainer = styled.div`
@@ -36,15 +35,17 @@ const WriteBtn = styled.div`
 const Pagenation = styled.ul`
   list-style: none;
   display: flex;
+  background-color: rgba(240,240,240,0.5);
+  border-radius: 50px;
+  margin-bottom: ${style.layout.narrowMargin.height};
   &>span{
-    
     font-weight: bolder;
     color: rgb(0,0,0) !important;
     text-decoration: underline;
   }
 `
 const PageButton = styled.li`
-  margin: ${style.layout.wideMargin.width};
+  margin: ${style.layout.narrowMargin.height} ${style.layout.wideMargin.width};
   cursor: pointer;
   ${props=>props.className===Number(props.nowPage)? "color: rgb(0,0,0); font-weight: bolder; text-decoration: underline;" : "color: rgb(100, 100, 100);"}
   ${props=>props.hide==="hide"? "display: none;" : ""}
