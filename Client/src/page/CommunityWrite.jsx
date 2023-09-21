@@ -52,20 +52,22 @@ const DietBtn = styled.label`
 `;
 const DietInfoContainer = styled.div`
   background-color: white;
-  margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  /* margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width}; */
   padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
+  font-size: small;
   &>div{
     display: flex;
     margin: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
   &>div>:first-child{
-    width: 25%;
+    width: 10%;
     text-align: center;
     margin-right: ${style.layout.wideMargin.width};
     border-right: solid 1px orange;
     padding: ${style.layout.narrowMargin.height} ${style.layout.narrowMargin.width};
   }
   &>:last-child{
+    font-size: medium;
     font-weight: bolder;
   }
 `;
@@ -74,7 +76,7 @@ const Info = styled.span`
   &>div{
     display: flex;
     >:first-child{
-      width: 25%;
+      width: 24%;
       margin-right: ${style.layout.wideMargin.width};
       margin-bottom: ${style.layout.narrowMargin.height};
     }

@@ -66,7 +66,7 @@ const NoEachMeal = ({
           },
         }
       );
-
+      console.log(recommendedData.data);
       setMeal(recommendedData.data);
 
       const fixedData = recommendedData.data.eachMeals.map(async (eachMeal) => {
@@ -98,11 +98,11 @@ const NoEachMeal = ({
           throw error;
         }
       });
-      // console.log(fixedData);
+      console.log(fixedData);
 
       try {
         const updatedData = await Promise.all(fixedData);
-        // console.log(updatedData);
+        console.log(updatedData);
       } catch (error) {
         console.error("Error in processing PATCH requests", error);
       }
