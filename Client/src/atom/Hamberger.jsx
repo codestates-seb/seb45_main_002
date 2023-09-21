@@ -16,7 +16,9 @@ const MenuContainer = styled.article`
   background-color: rgba(125, 125, 125, 0.5);
   padding-top: 20px;
   z-index: 999;
-
+  & a{
+    height: 48px;
+  }
   img {
     height: 48px;
     border-radius: 8px;

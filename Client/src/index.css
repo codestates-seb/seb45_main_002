@@ -42,5 +42,6 @@
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
-  background-color: #efefef;
+  background-image: url("https://media.discordapp.net/attachments/1144080831686660210/1154287566246383626/70050864_6257a4.jpg?width=1896&height=1002");
+  background-size: cover;
 }
