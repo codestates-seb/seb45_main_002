@@ -22,8 +22,7 @@ const HeaderContainer = styled.header`
   align-items: center;
   padding: 0 40px;
   box-shadow: 0 2px 4px 1px rgba(255, 255, 255, 0.2);
-
-  & > * {
+  &>*{
     display: flex;
     gap: 10px;
     align-items: center;
@@ -33,6 +32,7 @@ const HeaderContainer = styled.header`
   img.profileImage {
     height: 32px;
     margin-right: 10px;
+    cursor: pointer;
   }
 
   img.logo {
@@ -117,7 +117,7 @@ const Header = ({ setMenu }) => {
         <Link to="/">
           <img
             className="logo"
-            src="https://media.discordapp.net/attachments/1144080831686660210/1153629042252197920/2023__6_-removebg-preview_1.png"
+            src="https://media.discordapp.net/attachments/1144080831686660210/1154275099738914876/2023-removebg-preview.png?width=292&height=194"
             alt="logo"
           />
         </Link>
