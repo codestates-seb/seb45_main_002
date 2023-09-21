@@ -5,7 +5,7 @@ import axios from "axios";
 import useZustand from "../zustand/Store";
 
 import style from "../style/style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CommentListBox = styled.li`
   background-color: white;
@@ -40,10 +40,10 @@ const EditBox = styled.div`
   
 `
 
-function Comments({comment}){
+function Comments({comment, loadDetail}){
 
   const [modifyOpen,setModifyOpen] = useState(false)
-  const [newComment, setNewComment] = useState(comment.communityCommentContent)
+  const [newComment, setNewComment] = useState("")
 
   const communityId = useZustand.useCommunityId(state=>state.communityId)
 
@@ -59,7 +59,7 @@ function Comments({comment}){
         }
       })
       .then(res=>{
-        
+        loadDetail()
         setModifyOpen(!modifyOpen)
       })
       .catch(err=>{
@@ -68,6 +68,7 @@ function Comments({comment}){
       })
     }
     else{
+      setNewComment(comment.communityCommentContent)
       localStorage.getItem("Authorization")? setModifyOpen(!modifyOpen) : alert("로그인 후 이용해주시기 바랍니다.")
     }
   }
@@ -82,7 +83,7 @@ function Comments({comment}){
           Authorization: localStorage.getItem("Authorization")
         }
       })
-      .then(res=>null)
+      .then(res=>loadDetail())
       .catch(err=>{
         alert("본인이 작성한 댓글만 삭제할 수 있습니다.")
         console.log(err,"댓글삭제 실패")
@@ -94,7 +95,7 @@ function Comments({comment}){
     <CommentListBox>
       <Comment
        className={modifyOpen? "modifyOpen" : "modifyClose"}
-       value={newComment}
+       value={modifyOpen? newComment : comment.communityCommentContent}
        onChange={e=>modifyOpen? setNewComment(e.target.value) : console.log("수정버튼을 눌러주세요.")}
        readOnly={modifyOpen? false : true}
       >
