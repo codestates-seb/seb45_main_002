@@ -53,8 +53,7 @@ const MenuBox = styled.div`
   flex-direction: column;
   border: solid 1px orange;
   border-bottom: none !important;
-  padding: ${style.layout.narrowMargin.height}
-    ${style.layout.narrowMargin.width};
+  padding: ${style.layout.narrowMargin.height} 0;
   & > :first-child {
     text-align: center;
     margin-bottom: ${style.layout.narrowMargin.height};
@@ -73,16 +72,14 @@ const TotalBox = styled.div`
   font-weight: bolder;
   & > :first-child {
     text-align: center;
-    padding: ${style.layout.narrowMargin.height}
-      ${style.layout.narrowMargin.width} 0;
+    padding: ${style.layout.narrowMargin.height} 0 0;
   }
   & > :last-child {
     display: flex;
     flex-direction: column;
     align-self: center;
     width: 50%;
-    padding: ${style.layout.narrowMargin.height}
-      ${style.layout.narrowMargin.width};
+    padding: ${style.layout.narrowMargin.height} 0;
   }
 `;
 
@@ -249,21 +246,28 @@ function CommunityDetail() {
             (eachMeal) => eachMeal.timeSlot === 1
           )
         ); // 아침 식사 정보
+        let morningMenuArr = []
         res.data.dailyMeal.eachMeals
           .find((eachMeal) => eachMeal.timeSlot === 1)
-          .eachMealFoods.forEach((menu) =>
-            setMorningMenu((prev) => [...prev, menu])
+          .eachMealFoods.forEach((menu) =>{
+            // setMorningMenu((prev) => [...prev, menu])
+            morningMenuArr.push(menu)
+            setMorningMenu(morningMenuArr)
+          }
           ); // 아침 식사 메뉴 이름
-
         setLunchInfo(
           res.data.dailyMeal.eachMeals.find(
             (eachMeal) => eachMeal.timeSlot === 2
           )
         ); // 점심 식사 정보
+        let lunchMenuArr = []
         res.data.dailyMeal.eachMeals
           .find((eachMeal) => eachMeal.timeSlot === 2)
-          .eachMealFoods.forEach((menu) =>
-            setLunchMenu((prev) => [...prev, menu])
+          .eachMealFoods.forEach((menu) =>{
+            lunchMenuArr.push(menu)
+            setLunchMenu(lunchMenuArr)
+            // setLunchMenu((prev) => [...prev, menu])
+          }
           ); // 점심 식사 메뉴 이름
 
         setDinnerInfo(
@@ -271,15 +275,19 @@ function CommunityDetail() {
             (eachMeal) => eachMeal.timeSlot === 3
           )
         ); // 저녁 식사 정보
+        let dinnerMenuArr = []
         res.data.dailyMeal.eachMeals
           .find((eachMeal) => eachMeal.timeSlot === 3)
-          .eachMealFoods.forEach((menu) =>
-            setDinnerMenu((prev) => [...prev, menu])
+          .eachMealFoods.forEach((menu) =>{
+            dinnerMenuArr.push(menu)
+            setDinnerMenu(dinnerMenuArr)
+            // setDinnerMenu((prev) => [...prev, menu])
+          }
           ); // 저녁 식사 메뉴 이름
       })
       .catch((err) => console.log(err, "게시글 데이터를 불러오지 못했습니다."));
   }
-  useEffect(() => loadDetail(), []);
+  useEffect(() => loadDetail(), [params["*"]]);
 
   // function openAnalysis(){
   //   axios.post("http://43.201.194.176:8080/analysis/"+dailyMeals.dailyMealId,null,{
