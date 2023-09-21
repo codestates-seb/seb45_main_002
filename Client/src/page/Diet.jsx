@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { GetDailyDiet, PostDailyMeal } from "../util/Diet";
+import { GetDailyDiet, PostDailyMeal, PatchDailyMeal } from "../util/Diet";
 import EachMeal from "../component/diet/EachMeal";
 import Button from "../atom/button";
 import useZustand from "../zustand/Store";
@@ -16,7 +16,6 @@ import style from "../style/style";
 import auctionbuy from "../../src/asset/auctionbuy.png";
 import naverbuy from "../../src/asset/naverbuy.png";
 import coupangbuy from "../../src/asset/coupangbuy.png";
-
 
 const StyleDiet = styled.div`
   width: 100%;
@@ -191,6 +190,7 @@ const Diet = () => {
   const [modalContents, setModalContents] = useState(null);
   const [isModal, setIsModal] = useState(false);
   const { meal, setMeal } = useZustand.useDailyMeals();
+
   useEffect(() => {
     const asyncfunc = async () => {
       setMeal(await GetDailyDiet(date));
@@ -472,14 +472,14 @@ const Diet = () => {
                     style={{ maxWidth: "80%", maxHeight: "80px" }}
                   ></img>
                 </a>
-                <a href={analyzedData.coupangURL}>
+                <a href={analyzedData.naverURL}>
                   <img
                     alt="auction"
                     src={naverbuy}
                     style={{ maxWidth: "80%", maxHeight: "80px" }}
                   ></img>
                 </a>
-                <a href={analyzedData.naverURL}>
+                <a href={analyzedData.coupangURL}>
                   <img
                     alt="auction"
                     src={coupangbuy}
@@ -496,16 +496,17 @@ const Diet = () => {
     }
   };
 
-  if (meal === "") {
-    return <></>;
-  }
+  // if (meal === "") {
+  //   return <></>;
+  // }
 
   if (meal === null) {
-    alert("로그인 후 이용해주시기 바랍니다.");
-    navigate("/");
+    // alert("로그인 후 이용해주시기 바랍니다.");
+    // navigate("/");
     return <div>로그인 후 이용해주세요</div>;
   }
 
+  ///////////////////////////////////////////////////////////
   if (meal === "DailyMeal not found...") {
     /// 해당 날짜 저장된 식단이 없는 경우
     return (

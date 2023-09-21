@@ -88,7 +88,7 @@ const LoginForm = () => {
         localStorage.setItem("Authorization",res.headers.authorization)
         localStorage.setItem("Refresh",res.headers.refresh)
         // navigate("/pageswitch/mypage")
-        // window.location.reload()
+        window.location.reload()
       })
       .catch(err=>{
         console.log(err, "로그인을 실패했습니다.")

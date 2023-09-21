@@ -80,7 +80,7 @@ const NoEachMeal = ({
             })),
           };
 
-          console.log(data);
+          // console.log(data);
 
           const response = await axios.patch(
             `http://43.201.194.176:8080/eachmeals/${eachMeal.eachMealId}`,
@@ -98,11 +98,11 @@ const NoEachMeal = ({
           throw error;
         }
       });
-      console.log(fixedData);
+      // console.log(fixedData);
 
       try {
         const updatedData = await Promise.all(fixedData);
-        console.log(updatedData);
+        // console.log(updatedData);
       } catch (error) {
         console.error("Error in processing PATCH requests", error);
       }

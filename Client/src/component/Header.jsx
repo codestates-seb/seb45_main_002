@@ -85,18 +85,19 @@ const Header = ({ setMenu }) => {
     localStorage.removeItem("Refresh");
     setMeal("");
     navigate("/");
+    window.location.reload();
   }
 
   const handleOpenLoginModal = () => {
     setIsOpen(true);
     setHeader(<h2>로그인</h2>);
-    setFooter("login footer입니다");
+    setFooter("");
     setContent(<LoginForm />);
   };
   const handleOpenSignUpModal = () => {
     setIsOpen(true);
     setHeader(<h2>회원가입</h2>);
-    setFooter("sigunup footer입니다");
+    setFooter("");
     setContent(<SignUpForm />);
   };
 
