@@ -5,10 +5,8 @@ import NutrientsCoders.main_project.Analysis.dto.AnalysisViewResponseDto;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.mapper.AnalysisMapper;
 import NutrientsCoders.main_project.Analysis.service.AnalysisService;
-import NutrientsCoders.main_project.dailymeal.dto.DailyMealSimpleResponseDto;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
-import NutrientsCoders.main_project.member.entity.Member;
 import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.PagedResponse;
 import NutrientsCoders.main_project.utils.TokenChanger;
@@ -69,7 +67,7 @@ public class AnalysisController {
   //작성된 분석 전체 조회
   @GetMapping
   public ResponseEntity<PagedResponse<AnalysisViewResponseDto>> getAnalyses(@RequestHeader("Authorization") String token,
-                                                                        @RequestParam("page") int page, @RequestParam("size") int size) throws Exception {
+                                                                        @RequestParam("page") int page, @RequestParam("size") int size) {
     long memberId = tokenChanger.getMemberId(token);
     Pageable pageable = PageRequest.of(page - 1, size);
     Page<Analysis> analyses = analysisService.findByAllAnalysis(memberId, pageable);

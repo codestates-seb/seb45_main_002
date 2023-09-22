@@ -3,8 +3,6 @@ package NutrientsCoders.main_project.Analysis.service;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.repository.AnalysisRepository;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
-import NutrientsCoders.main_project.member.entity.Member;
-import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
 import org.springframework.data.domain.Page;
@@ -19,11 +17,9 @@ import java.util.Optional;
 @Service
 public class AnalysisService {
   private final AnalysisRepository analysisRepository;
-  private final MemberService memberService;
   
-  public AnalysisService(AnalysisRepository analysisRepository, MemberService memberService) {
+  public AnalysisService(AnalysisRepository analysisRepository) {
     this.analysisRepository = analysisRepository;
-    this.memberService = memberService;
   }
   
   @Transactional
