@@ -42,6 +42,8 @@ public interface AnalysisMapper {
     AnalysisResponseDto analysisResponseDto =
         AnalysisResponseDto.builder()
             .analysisId(savedanalysis.getAnalysisId())
+            .weight(savedanalysis.getWeight())
+            .height(savedanalysis.getHeight())
             .dailyMeal(dailyMealToDailyMealSimpleResponseDto(savedanalysis.getDailyMeal()))
             .idealKcal(savedanalysis.getIdealKcal())
             .overKcal(savedanalysis.getOverKcal())
@@ -74,20 +76,22 @@ public interface AnalysisMapper {
                                             .overPercentProteins(savedanalysis.getOverPercentProteins())
                                             .overPercentFats(savedanalysis.getOverPercentFats()).build();
     
-    AnalysisViewResponseDto AnalysisViewResponseDto =
+    AnalysisViewResponseDto analysisViewResponseDto =
         NutrientsCoders.main_project.Analysis.dto.AnalysisViewResponseDto.builder()
-             .analysisId(savedanalysis.getAnalysisId())
-             .dailyMeal(dailyMealToDailyMealListResponseDto(savedanalysis.getDailyMeal()))
+            .analysisId(savedanalysis.getAnalysisId())
+            .weight(savedanalysis.getWeight())
+            .height(savedanalysis.getHeight())
+            .dailyMeal(dailyMealToDailyMealListResponseDto(savedanalysis.getDailyMeal()))
              
-             .idealKcal(savedanalysis.getIdealKcal())
-             .overKcal(savedanalysis.getOverKcal())
+            .idealKcal(savedanalysis.getIdealKcal())
+            .overKcal(savedanalysis.getOverKcal())
              
-             .percentMacro(analysisToPercentMacro)
-             .overPercentMacro(analysisToOverPercentMacro)
+            .percentMacro(analysisToPercentMacro)
+            .overPercentMacro(analysisToOverPercentMacro)
              
-             .result(savedanalysis.getResult()).build();
+            .result(savedanalysis.getResult()).build();
     
-    return AnalysisViewResponseDto;
+    return analysisViewResponseDto;
   }
   
   //개별 분석용

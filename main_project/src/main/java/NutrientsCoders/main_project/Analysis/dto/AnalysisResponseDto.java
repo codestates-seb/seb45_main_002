@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Getter
 public class AnalysisResponseDto {
   private long analysisId;
+  private Integer height;
+  private Integer weight;
   
   private DailyMealSimpleResponseDto dailyMeal;
   

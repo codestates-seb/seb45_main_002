@@ -13,6 +13,9 @@ public class AnalysisViewResponseDto {
   private long analysisId;
   private DailyMealSimpleResponseDto dailyMeal;
   
+  private Integer height;
+  private Integer weight;
+  
   private Double idealKcal;
   private Double overKcal;
   
