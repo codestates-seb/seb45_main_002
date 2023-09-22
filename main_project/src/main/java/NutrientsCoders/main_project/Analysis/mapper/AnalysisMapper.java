@@ -1,9 +1,12 @@
 package NutrientsCoders.main_project.Analysis.mapper;
 
 import NutrientsCoders.main_project.Analysis.dto.AnalysisResponseDto;
+import NutrientsCoders.main_project.Analysis.dto.AnalysisViewResponseDto;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AnalysisMapper {
@@ -55,5 +58,43 @@ public interface AnalysisMapper {
     
   }
   
+  default AnalysisViewResponseDto analysisToAnalysisViewResponseDto(Analysis savedanalysis) {
+    if ( savedanalysis == null ) {
+      return null;
+    }
+    AnalysisViewResponseDto.percentMacro analysisToPercentMacro =
+        AnalysisViewResponseDto.percentMacro.builder()
+                                        .percentCarbos(savedanalysis.getPercentCarbos())
+                                        .percentProteins(savedanalysis.getPercentProteins())
+                                        .percentFats(savedanalysis.getPercentFats()).build();
+    
+    AnalysisViewResponseDto.overPercentMacro analysisToOverPercentMacro =
+        AnalysisViewResponseDto.overPercentMacro.builder()
+                                            .overPercentCarbos(savedanalysis.getOverPercentCarbos())
+                                            .overPercentProteins(savedanalysis.getOverPercentProteins())
+                                            .overPercentFats(savedanalysis.getOverPercentFats()).build();
+    
+    AnalysisViewResponseDto AnalysisViewResponseDto =
+        NutrientsCoders.main_project.Analysis.dto.AnalysisViewResponseDto.builder()
+             .analysisId(savedanalysis.getAnalysisId())
+             .dailyMeal(dailyMealToDailyMealListResponseDto(savedanalysis.getDailyMeal()))
+             
+             .idealKcal(savedanalysis.getIdealKcal())
+             .overKcal(savedanalysis.getOverKcal())
+             
+             .percentMacro(analysisToPercentMacro)
+             .overPercentMacro(analysisToOverPercentMacro)
+             
+             .result(savedanalysis.getResult()).build();
+    
+    return AnalysisViewResponseDto;
+  }
+  
+  //개별 분석용
   AnalysisResponseDto.DailyMealSimpleResponseDto dailyMealToDailyMealSimpleResponseDto(DailyMeal dailyMeal);
+  
+  //전체 분석용
+  AnalysisViewResponseDto.DailyMealSimpleResponseDto dailyMealToDailyMealListResponseDto(DailyMeal dailyMeal);
+  
+  List<AnalysisViewResponseDto> analysesToAnalysisResponseDtos(List<Analysis> analyses);
 }

@@ -3,12 +3,15 @@ package NutrientsCoders.main_project.Analysis.service;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.repository.AnalysisRepository;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
+import NutrientsCoders.main_project.member.entity.Member;
+import NutrientsCoders.main_project.member.service.MemberService;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -16,13 +19,15 @@ import java.util.Optional;
 @Service
 public class AnalysisService {
   private final AnalysisRepository analysisRepository;
+  private final MemberService memberService;
   
-  public AnalysisService(AnalysisRepository analysisRepository) {
+  public AnalysisService(AnalysisRepository analysisRepository, MemberService memberService) {
     this.analysisRepository = analysisRepository;
+    this.memberService = memberService;
   }
   
   @Transactional
-  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKcal) throws UnsupportedEncodingException {
+  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKcal) {
     
     if (dailyMeal.getEachMeals().isEmpty()) {
       throw new LogicException(ExceptionCode.DAILYMEAL_EMPTY);
@@ -60,7 +65,11 @@ public class AnalysisService {
     return new String[]{auctionURL, naverURL, coupangURL};
   }
 
-
+  @Transactional
+  public Page<Analysis> findByAllAnalysis(long memberId, Pageable pageable) {
+    return analysisRepository.findAllByMemberId(memberId, pageable);
+  }
+  
   @Transactional
   public Analysis findByAnalysis(long analysisId) {
     return verifyExistsEachMeal(analysisId);
