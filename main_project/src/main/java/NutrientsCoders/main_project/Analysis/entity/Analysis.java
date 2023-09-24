@@ -18,6 +18,9 @@ public class Analysis {
   @Column(name = "ANALYSIS_ID")
   private long analysisId;
   
+  private Integer height;
+  private Integer weight;
+  
   @JsonIgnore
   @JoinColumn(name = "DailyMeal_ID")
   @OneToOne

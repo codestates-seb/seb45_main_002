@@ -9,19 +9,16 @@ import java.time.LocalDate;
 @Builder
 @Setter
 @Getter
-public class AnalysisResponseDto {
+public class AnalysisViewResponseDto {
   private long analysisId;
+  private DailyMealSimpleResponseDto dailyMeal;
+  
   private Integer height;
   private Integer weight;
-  
-  private DailyMealSimpleResponseDto dailyMeal;
   
   private Double idealKcal;
   private Double overKcal;
   
-  private Double totalGrams;
-  private idealMacro idealMacro;
-  private overMacro overMacro;
   private percentMacro percentMacro;
   private overPercentMacro overPercentMacro;
   
@@ -51,29 +48,9 @@ public class AnalysisResponseDto {
   @Getter
   @Setter
   @Builder
-  public static class idealMacro {
-    private Double idealCarbohydrates;
-    private Double idealProteins;
-    private Double idealFats;
-  }
-  @Getter
-  @Setter
-  @Builder
-  public static class overMacro {
-    private Double overCarbohydrates;
-    private Double overProteins;
-    private Double overFats;
-  }
-  @Getter
-  @Setter
-  @Builder
   public static class overPercentMacro {
     private Double overPercentCarbos;
     private Double overPercentProteins;
     private Double overPercentFats;
   }
-  
-  private String auctionURL;
-  private String naverURL;
-  private String coupangURL;
 }

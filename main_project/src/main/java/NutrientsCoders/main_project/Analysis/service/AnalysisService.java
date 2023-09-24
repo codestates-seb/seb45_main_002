@@ -5,10 +5,11 @@ import NutrientsCoders.main_project.Analysis.repository.AnalysisRepository;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class AnalysisService {
   }
   
   @Transactional
-  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKcal) throws UnsupportedEncodingException {
+  public Analysis createAnalysis(DailyMeal dailyMeal, Double needKcal) {
     
     if (dailyMeal.getEachMeals().isEmpty()) {
       throw new LogicException(ExceptionCode.DAILYMEAL_EMPTY);
@@ -36,13 +37,13 @@ public class AnalysisService {
     String result = checkResult(analysis); // 분석
     analysis.setResult(result);
     String URL[] = uriMaker(result);
-    
     String auctionURL = URL[0]; // 분석기반 구매 uri 생성
     String naverURL = URL[1]; // 분석기반 구매 uri 생성
     String coupangURL = URL[2]; // 분석기반 구매 uri 생성
     analysis.setAuctionURL(auctionURL);
     analysis.setNaverURL(naverURL);
     analysis.setCoupangURL(coupangURL);
+    
     return analysisRepository.save(analysis);
   }
   
@@ -60,7 +61,11 @@ public class AnalysisService {
     return new String[]{auctionURL, naverURL, coupangURL};
   }
 
-
+  @Transactional
+  public Page<Analysis> findByAllAnalysis(long memberId, Pageable pageable) {
+    return analysisRepository.findAllByMemberId(memberId, pageable);
+  }
+  
   @Transactional
   public Analysis findByAnalysis(long analysisId) {
     return verifyExistsEachMeal(analysisId);
@@ -125,6 +130,8 @@ public class AnalysisService {
     Double fats = dailyMeal.getTotalDailyFat();
     
     Analysis analysis = new Analysis();
+    analysis.setHeight(dailyMeal.getMember().getHeight());
+    analysis.setWeight(dailyMeal.getMember().getWeight());
     analysis.setDailyMeal(dailyMeal);
     analysis.setIdealKcal(needKcal);
     analysis.calculator(Kcals, carbohydrates, proteins, fats);

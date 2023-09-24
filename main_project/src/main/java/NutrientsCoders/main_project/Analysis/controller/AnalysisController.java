@@ -1,18 +1,25 @@
 package NutrientsCoders.main_project.Analysis.controller;
 
 import NutrientsCoders.main_project.Analysis.dto.AnalysisResponseDto;
+import NutrientsCoders.main_project.Analysis.dto.AnalysisViewResponseDto;
 import NutrientsCoders.main_project.Analysis.entity.Analysis;
 import NutrientsCoders.main_project.Analysis.mapper.AnalysisMapper;
 import NutrientsCoders.main_project.Analysis.service.AnalysisService;
 import NutrientsCoders.main_project.dailymeal.entity.DailyMeal;
 import NutrientsCoders.main_project.dailymeal.service.DailyMealService;
 import NutrientsCoders.main_project.member.service.MemberService;
+import NutrientsCoders.main_project.utils.PagedResponse;
 import NutrientsCoders.main_project.utils.TokenChanger;
 import NutrientsCoders.main_project.utils.exception.ExceptionCode;
 import NutrientsCoders.main_project.utils.exception.LogicException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/analysis")
@@ -56,6 +63,23 @@ public class AnalysisController {
     
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
+  
+  //작성된 분석 전체 조회
+  @GetMapping
+  public ResponseEntity<PagedResponse<AnalysisViewResponseDto>> getAnalyses(@RequestHeader("Authorization") String token,
+                                                                        @RequestParam("page") int page, @RequestParam("size") int size) {
+    long memberId = tokenChanger.getMemberId(token);
+    Pageable pageable = PageRequest.of(page - 1, size);
+    Page<Analysis> analyses = analysisService.findByAllAnalysis(memberId, pageable);
+    List<AnalysisViewResponseDto> response = analysisMapper.analysesToAnalysisResponseDtos(analyses.getContent());
+    
+    PagedResponse<AnalysisViewResponseDto> pagedResponse = new PagedResponse<>(
+        response, analyses.getTotalElements(), analyses.getTotalPages(), analyses.isLast()
+    );
+    
+    return  new ResponseEntity<>(pagedResponse, HttpStatus.OK);
+  }
+  
   
   //작성한 분석 삭제
   @DeleteMapping("/{anlysis-id}")
