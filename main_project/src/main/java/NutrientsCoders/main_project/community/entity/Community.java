@@ -37,8 +37,6 @@ public class Community extends CommunityBaseTime {
     @CollectionTable(name = "MEMBER_ID", joinColumns = @JoinColumn(name = "member_Id"))
     @Column(name = "LIKE_MEMBERS",insertable = false)
     private List<Long> likeMembers;
-
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DAILYMEAL_ID", nullable = true)
@@ -53,6 +51,7 @@ public class Community extends CommunityBaseTime {
         this.member = member;
     }
     @OneToMany(mappedBy = "community")
+    @OrderBy("communityCommentId DESC")
     private List<CommunityComment> communityCommentList = new ArrayList<>();
     /** 게시판을 조회하면 viewCount 증가 **/
     public long incrementViewCount(){
